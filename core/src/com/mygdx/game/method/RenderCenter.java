@@ -78,6 +78,17 @@ public class RenderCenter {
 //                    }
                 }
             }
+            LightSystem.lightsRender.clear();
+            for(LightingMainSystem.Light light : LightSystem.lights){
+                if(light.XRender+LightSystem.limitLightingRender >0 &
+                        light.YRender+LightSystem.limitLightingRender >0&
+                        light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
+                        light.YRender-LightSystem.limitLightingRender <Main.screenHeight
+                ){
+                    LightSystem.lightsRender.add(light);
+
+                }
+            }
             Main.TickBlock = 0;
 
         }

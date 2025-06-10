@@ -99,7 +99,6 @@ public class ActionMenu extends ActionGame {
             unit.all_action_client();
         }
         RC.BuildingIteration();
-        Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
         Render.begin();
 
@@ -114,11 +113,6 @@ public class ActionMenu extends ActionGame {
         for (i= 0; i< UnitList.size(); i++){
             UnitList.get(i).update();
         }
-        for (i = 0;i< ButtonList.size();i++){
-            if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu) {
-                ButtonList.get(i).render(i);
-            }
-        }
 //        for (i= 0; i< AirList.size(); i++){
 //            for(int i2= 0; i2< AirList.get(i).size(); i2++) {
 //                AirList.get(i).get(i2).all_action();
@@ -128,21 +122,21 @@ public class ActionMenu extends ActionGame {
         //LightSystem.end(Batch);
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);}
-        Render.end();
         Batch.end();
         Batch.begin();
-        //LightSystem.end(Batch);
+
         for (i = 0;i< ButtonList.size();i++){
-            if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu & !ButtonList.get(i).TypeFont) {
-                ButtonList.get(i).TXTRender();
-            }
-        }
-        for (i = 0;i< ButtonList.size();i++){
-            if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu & ButtonList.get(i).TypeFont) {
-                ButtonList.get(i).TXTRender2();
+            if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu) {
+                ButtonList.get(i).render(i);
+                if (!ButtonList.get(i).TypeFont) {
+                    ButtonList.get(i).TXTRender();
+                } else {
+                    ButtonList.get(i).TXTRender2();
+                }
             }
         }
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
+        Render.end();
         Batch.end();
         if(GameStart) {
             PacketServer = new PackerServer();

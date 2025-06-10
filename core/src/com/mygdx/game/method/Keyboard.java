@@ -190,8 +190,17 @@ public class Keyboard extends InputAdapter{
         RC.cam_x_width = (int) (RC.WidthRenderZoom/Main.width_block);
         RC.cam_y_height= (int) (RC.HeightRenderZoom/Main.height_block);
 
+        LightSystem.lightsRender.clear();
         for(LightingMainSystem.Light light : LightSystem.lights){
             light.radiusZoom = light.radius*Main.Zoom;
+            if(light.XRender+LightSystem.limitLightingRender >0 &
+                    light.YRender+LightSystem.limitLightingRender >0&
+                    light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
+                    light.YRender-LightSystem.limitLightingRender <Main.screenHeight
+            ){
+                LightSystem.lightsRender.add(light);
+
+            }
         }
 
         Main.width_block_zoom = (int) (Main.width_block_render * Main.Zoom);

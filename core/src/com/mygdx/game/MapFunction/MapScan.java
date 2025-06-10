@@ -15,14 +15,14 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
-import static com.mygdx.game.main.Main.BlockList2D;
-import static com.mygdx.game.main.Main.VoidObj;
+import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.object_map.ObjectLoad.MapSpawnObject;
 import static java.nio.file.Files.readAllLines;
 
 public class MapScan {
     public static void MapInput(String Map) {
-
+        LightSystem.lightsRender.clear();
+        LightSystem.lights.clear();
         Main.BuildingList.clear();
         BlockDelete();
         int conf = 0;
@@ -128,6 +128,7 @@ public class MapScan {
                 System.out.println(TotalTxT);
             }
         }
+
 
     }
 

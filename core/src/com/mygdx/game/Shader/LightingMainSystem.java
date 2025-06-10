@@ -19,7 +19,7 @@ public class LightingMainSystem implements Disposable {
     public final Array<Light> lightsRender;
     private Color ambientColor;
     private float minLightness;
-    public int limitLightingRender = 550;
+    public int limitLightingRender = 650;
 
     public static class Light {
         public final Vector2 position = new Vector2();

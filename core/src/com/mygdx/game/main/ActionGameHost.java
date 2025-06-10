@@ -153,7 +153,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         RC.BuildingIteration();
         inventoryMain.InventoryIteration();
         //System.out.println(inventoryMain.SlotInventory.length);
-        Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
 
         Render.begin();

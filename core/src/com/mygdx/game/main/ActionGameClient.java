@@ -147,7 +147,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         }
         RC.BuildingIteration();
         inventoryMain.InventoryIterationClient();
-        Batch.draw(textureBuffer,-20,1,1,1);
         Render.end();
 
         Render.begin();
