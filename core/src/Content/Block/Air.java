@@ -9,6 +9,7 @@ public class Air extends Block {
         this.x = x;
         this.y = y;
     }
+    @Override final
     public void all_action(){
         super.UpdateAir();
         radius = NULL;

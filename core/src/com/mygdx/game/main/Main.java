@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -119,7 +120,6 @@ public class Main extends ApplicationAdapter {
 	public static InventoryInterface inventoryMain;
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
-	public static boolean[][] MapLighting;
 	public static RenderPrimitive Render;
 
 
@@ -333,7 +333,6 @@ public class Main extends ApplicationAdapter {
 		Render.dispose();
 		font.dispose();
 		font2.dispose();
-		ContentImage.dispose();
 		if(ServerMain.Server != null) {
 			try {
 				ServerMain.Server.dispose();

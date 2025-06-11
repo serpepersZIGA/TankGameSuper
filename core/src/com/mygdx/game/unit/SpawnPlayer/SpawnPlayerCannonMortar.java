@@ -11,6 +11,7 @@ import static com.mygdx.game.main.Main.inventoryMain;
 import static com.mygdx.game.unit.TransportRegister.PlayerCannonMortarA1;
 
 public class SpawnPlayerCannonMortar extends PlayerSpawnData{
+    @Override final
     public void SpawnPlayer(boolean host){
         //Main.UnitList.add(PlayerCannonFlameA1.UnitAdd(200,200,host, (byte) 1,Main.RegisterControl.controllerPlayer));
         PlayerCannonMortarA1.UnitAdd(200,200,host, (byte) 1,Main.RegisterControl.controllerPlayer,new Inventory(new Item[3][4]));

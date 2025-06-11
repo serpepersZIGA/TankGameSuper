@@ -18,6 +18,7 @@ public class Bang extends Particle {
         this.g = (float)1/255*(90+rand.rand(60));
         this.b = (float)1/255*(20+rand.rand(3));
     }
+    @Override final
     public void all_action(int i) {
         size_rise();
         float[]xy = Main.RC.render_objZoom(this.x,this.y);

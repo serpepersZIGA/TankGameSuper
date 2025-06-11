@@ -25,6 +25,7 @@ public class Flame extends Particle {
         }
 
     }
+    @Override final
     public void all_action(int i){
         //super.flame_physic(i, Main.flame_obj);
         create_flame_particle(Main.FlameParticleList);
@@ -32,6 +33,7 @@ public class Flame extends Particle {
         timer(Main.FlameList);
 
     }
+    @Override final
     public void update(){
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
         Main.Render.circle(xy[0],xy[1],size_render,size_render,new Color(r,g,b,1));

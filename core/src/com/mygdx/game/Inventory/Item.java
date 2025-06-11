@@ -12,7 +12,7 @@ import static com.mygdx.game.main.Main.Option;
 public class Item implements Cloneable{
     public String ID;
     public static ArrayList<Object[]>IDListItem = new ArrayList<>();
-    public Sprite image;
+    public String image;
     public TypeItem typeItem;
     public ArrayList<TegItem>teg;
     public Gun gun;
@@ -23,7 +23,7 @@ public class Item implements Cloneable{
         this.gun = gun;
         this.typeItem = TypeItem.Gun;
     }
-    public Item(Gun gun,String ID,ArrayList<TegItem>teg,Sprite image){
+    public Item(Gun gun,String ID,ArrayList<TegItem>teg,String image){
         this.teg = teg;
         this.ID = ID;
         this.gun = gun;
@@ -31,7 +31,7 @@ public class Item implements Cloneable{
         this.typeItem = TypeItem.Gun;
         IDListItem.add(new Object[]{this,ID});
     }
-    public Item(int HPHill,String ID,ArrayList<TegItem>teg,Sprite image){
+    public Item(int HPHill,String ID,ArrayList<TegItem>teg,String image){
         this.teg = teg;
         this.ID = ID;
         this.HPHill = HPHill;

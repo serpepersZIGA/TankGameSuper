@@ -14,7 +14,7 @@ public class CollisionBreak extends ComponentCollisionSystem{
         this.width = width;
         this.height = height;
     }
-    @Override
+    @Override final
     public void collision(Unit tr, int ix, int iy) {
         if(rect_collision(x,y,width,height,0,
                 (int)tr.x,(int)tr.y,(int)tr.corpus_width,(int)tr.corpus_height,tr.rotation_corpus)){

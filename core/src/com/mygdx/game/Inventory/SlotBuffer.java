@@ -5,6 +5,7 @@ import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.method.RenderMethod;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
@@ -157,6 +158,6 @@ public class SlotBuffer {
     }
 
     public void SlotRender() {
-        RenderMethod.transorm_img(this.x, this.y, this.width, this.height,item.image);
+        RenderMethod.transorm_img(this.x, this.y, this.width, this.height,TextureAtl.createSprite(item.image));
     }
 }

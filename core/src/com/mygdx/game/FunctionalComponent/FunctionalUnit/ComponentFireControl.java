@@ -4,11 +4,11 @@ import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.unit.Unit;
 
 public class ComponentFireControl extends FunctionalComponent {
-    @Override
+    @Override final
     public void FunctionalIterationAnHost(Unit unit) {
         unit.FireControl();
     }
-    @Override
+    @Override final
     public void FunctionalIterationClientAnHost(Unit unit) {
         unit.FireControl();
     }

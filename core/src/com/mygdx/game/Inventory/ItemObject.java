@@ -1,5 +1,6 @@
 package com.mygdx.game.Inventory;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.main.Main;
@@ -10,6 +11,7 @@ import com.mygdx.game.unit.moduleUnit.Gun;
 import java.util.ArrayList;
 
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.ItemPackList;
 import static com.mygdx.game.main.Main.UnitList;
 import static com.mygdx.game.method.pow2.pow2;
@@ -34,7 +36,7 @@ public class ItemObject{
     }
     public void IterationItem(){
         CenterRender();
-        RenderMethod.transorm_img(x_rend,y_rend,widthRender,heightRender,item.image);
+        RenderMethod.transorm_img(x_rend,y_rend,widthRender,heightRender, TextureAtl.createSprite(item.image));
         Press();
         ItemPacket pack = new ItemPacket();
         pack.ID = item.ID;
@@ -45,7 +47,7 @@ public class ItemObject{
     }
     public void IterationItemClient(){
         CenterRender();
-        RenderMethod.transorm_img(x_rend,y_rend,widthRender,heightRender,item.image);
+        RenderMethod.transorm_img(x_rend,y_rend,widthRender,heightRender,TextureAtl.createSprite(item.image));
         //Press();
 
 

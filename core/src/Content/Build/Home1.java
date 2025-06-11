@@ -25,6 +25,7 @@ public class Home1 extends Building {
 
 
     }
+    @Override final
     public void all_action(int i) {
         super.all_action(i);
         super.flame_build(Main.FlameStaticList);

@@ -9,6 +9,7 @@ import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
 import com.mygdx.game.block.Block;
+import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.Unit;
@@ -21,7 +22,7 @@ import static com.mygdx.game.unit.Unit.IDList;
 public class ActionMenu extends ActionGame {
     private int i;
     private int timer = 0;
-    @Override
+    @Override final
     public void action() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Main.RC.method();
@@ -122,19 +123,23 @@ public class ActionMenu extends ActionGame {
         //LightSystem.end(Batch);
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);}
+
+
         Batch.end();
         Batch.begin();
 
         for (i = 0;i< ButtonList.size();i++){
-            if(Main.ConfigMenu == ButtonList.get(i).ConfigMenu) {
-                ButtonList.get(i).render(i);
-                if (!ButtonList.get(i).TypeFont) {
-                    ButtonList.get(i).TXTRender();
+            Button but = ButtonList.get(i);
+            if(Main.ConfigMenu == but.ConfigMenu) {
+                but.render(i);
+                if (but.TypeFont) {
+                    but.TXTRender2();
                 } else {
-                    ButtonList.get(i).TXTRender2();
+                    but.TXTRender();
                 }
             }
         }
+
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         Render.end();
         Batch.end();

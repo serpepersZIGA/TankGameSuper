@@ -10,6 +10,7 @@ import com.mygdx.game.unit.moduleUnit.Soldat;
 
 import java.util.ArrayList;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.EventData;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
@@ -70,7 +71,8 @@ public class UnitPattern extends Unit {
     }
     public void UpdateUnit(){
         center_render();
-        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom,this.rotation_corpus,this.corpus_img,const_x_corpus,const_y_corpus);
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom
+                ,this.rotation_corpus,TextureAtl.createSprite(this.corpus_img),const_x_corpus,const_y_corpus);
         for(Unit Tower : tower_obj){
             Tower.x = x;
             Tower.y = y;
@@ -89,7 +91,8 @@ public class UnitPattern extends Unit {
         //this.y = tower_y;
         TowerXY2();
         center_render();
-        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,this.rotation_tower,this.tower_img,const_x_tower,const_y_tower
+        RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom
+                ,this.rotation_tower,TextureAtl.createSprite(this.tower_img),const_x_tower,const_y_tower
         );
     }
 }

@@ -30,6 +30,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
     }
     int i;
     private static int timer = 0;
+    @Override final
     public void action() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         Main.RC.method();

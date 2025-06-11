@@ -11,11 +11,11 @@ public class Corpus extends moduleUnit implements Cloneable{
     public int corpus_width,corpus_width_2;
     public int corpus_height,corpus_height_2;
     public float RotationCorpus;
-    public Sprite image;
+    public String image;
     public float CenterCorpusX;
     public float CenterCorpusY;
     public int Difference;
-    public Corpus(int max_hp, int armor, int corpus_width, int corpus_height,int Difference, Sprite image,
+    public Corpus(int max_hp, int armor, int corpus_width, int corpus_height,int Difference, String image,
     FunctionalList func){
         this.max_hp = max_hp;
         this.Difference = Difference;

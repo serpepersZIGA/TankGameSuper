@@ -26,6 +26,7 @@ import static com.mygdx.game.unit.TransportRegister.*;
 public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     private int i;
     private static int timer = 0;
+    @Override final
     public void action() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();

@@ -84,12 +84,14 @@ public abstract class Button {
         Render.circle(this.x*ZoomWindowX,this.y*ZoomWindowY,radius,radius,new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f));
     }
     public void TXTRender(){
+        //font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
         font.setColor(0.1f,0.9f,0.8f,1f);
         font.draw(Batch,txt,XTXT*ZoomWindowX,YTXT*ZoomWindowY);
     }
     public void TXTRender2(){
-        font2.setColor(0.1f,0.9f,0.8f,1f);
-        font2.draw(Batch,txt,XTXT*ZoomWindowX,YTXT*ZoomWindowY);
+        //font = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
+        font.setColor(0.1f,0.9f,0.8f,1f);
+        font.draw(Batch,txt,XTXT*ZoomWindowX,YTXT*ZoomWindowY);
     }
 
 }

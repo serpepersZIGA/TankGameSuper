@@ -12,20 +12,18 @@ public class RegisterModuleCorpus {
         func.Add(RegisterFunctionalComponent.TowerIteration);
         func.Add(RegisterFunctionalComponent.BuildCollision);
         func.Add(RegisterFunctionalComponent.TowerXY);
-        //this.tower_x_const = (int) (corpus_width/2)-(width_tower/2)-6;
-        //this.tower_y_const = (int) (corpus_height/2)-(height_tower/2);
-        CorpusT1 = new Corpus(1200,35,50,130,18,ContentImage.corpus_enemy,func);
-        CorpusT2 = new Corpus(2400,75,50,130,18,ContentImage.corpus_enemy,func);
+        CorpusT1 = new Corpus(1200,35,50,130,18,"corpus_enemy",func);
+        CorpusT2 = new Corpus(2400,75,50,130,18,"corpus_enemy",func);
 
         func = new FunctionalList();
         func.Add(RegisterFunctionalComponent.TowerIteration);
         func.Add(RegisterFunctionalComponent.BuildCollision);
         func.Add(RegisterFunctionalComponent.TowerXY);
         CorpusRemountTrackR1 = new Corpus(850,25,50,130,18
-                ,ContentImage.corpus_track_remount_enemy,func);
+                ,"corpus_track_remount_enemy",func);
         func.Add(RegisterFunctionalComponent.SoldatSpawn);
         CorpusSoldatTrackS1 = new Corpus(520,15,50,130,18
-                ,ContentImage.corpus_track_soldat_enemy,func);
+                ,"corpus_track_soldat_enemy",func);
 
     }
 

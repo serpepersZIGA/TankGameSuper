@@ -249,12 +249,12 @@ public class ClientMain extends Listener {
         }
     }
 
-    public void object_create(int ix, int iy, ObjectMapAssets assets, int x, int y, int width, int height,
+    public void object_create(int ix, int iy, String assets, int x, int y, int width, int height,
                               boolean light, float distance_lighting) {
         try {
             if (width != 0) {
-                Sprite asset = ObjectLoad.ImageLoad(assets);
-                BlockList2D.get(iy).get(ix).objMap = new MapObject(x - ix * width_block, y - iy * height_block, asset, width, height, 0, ix, iy, new CollisionVoid()
+                BlockList2D.get(iy).get(ix).objMap = new MapObject(x - ix * width_block,
+                        y - iy * height_block, assets, width, height, 0, ix, iy, new CollisionVoid()
                         , light, distance_lighting, assets);
             } else {
                 BlockList2D.get(iy).get(ix).objMap = new VoidObject();

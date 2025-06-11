@@ -23,12 +23,15 @@ public class FlameParticle extends Particle {
         this.speed_y = -6+rand.rand(12);
         this.r = FlameR;this.g = FlameG;this.b = FlameB;
     }
+    @Override final
+
     public void all_action(int i){
         super.color_fire();
         super.move_particle();
         this.update();
         super.timer(Main.FlameParticleList);
     }
+    @Override final
     public void update(){
         float[]xy = Main.RC.render_objZoom(this.x,this.y);
         Main.Render.circle(xy[0],xy[1],size_render,size_render,new Color(r,g,b,0.4f));

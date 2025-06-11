@@ -20,6 +20,7 @@ public class FlameSpawn extends Particle {
                 ,RGBFlame[2],0.3f),3.2f,420,0.2f);
 
     }
+    @Override final
     public void all_action(int i){
         spawn_flame();
         sound_play();

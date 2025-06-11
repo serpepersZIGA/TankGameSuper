@@ -24,12 +24,14 @@ public class FlameStatic extends Particle {
             case 2:{r = FlameR3;g = FlameG3;b = FlameB3;break;}
         }
     }
+    @Override final
     public void all_action(int i){
         create_flame_particle(Main.FlameParticleList);
         this.update();
         timer(Main.FlameStaticList);
 
     }
+    @Override final
     public void update(){
         center_render();
         Main.Render.circle(this.x_rend,this.y_rend,size_render,size_render,new Color(r,g,b,1));

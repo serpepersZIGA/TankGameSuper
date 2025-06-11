@@ -22,6 +22,7 @@ public class Acid extends Particle {
 
 
     }
+    @Override final
     public void all_action(int i){
         super.size_update();
         float[]xy = Main.RC.render_objZoom(this.x,this.y);

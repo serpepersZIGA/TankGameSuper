@@ -1,10 +1,12 @@
 package com.mygdx.game.Inventory;
 
+import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.Unit;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.MouseX;
 import static com.mygdx.game.method.Keyboard.MouseY;
@@ -14,8 +16,8 @@ public class InventoryInterface {
     public static boolean InventoryConfMoving = false;
     public int XCol,YCol,XColUs,YColUs,XCol2,YCol2;
     public int XInterface,YInterface,XSlots,YSlots,WidthWindow,HeightWindow,x,y;
-    public Sprite frame = ContentImage.frameInventory;
-    public Sprite frameInventory = ContentImage.InventoryBackground;
+    public String frame = "frameInventory";
+    public String frameInventory = "InventoryBackground";
     public Slot[][]SlotInventory;
     public SlotBuffer SlotBuffer;
     public Slot slotBuf;
@@ -40,11 +42,6 @@ public class InventoryInterface {
         WidthWindow = 600;
         HeightWindow = 350;
     }
-    public void FrameImageSet(Sprite frame,Sprite frameInventory){
-        this.frame = frame;
-        this.frameInventory = frameInventory;
-
-    }
     public void SlotGeneration(Inventory inventory){
         for(int ix = 0;ix<inventory.InventorySlots.length;ix++){
             for(int iy = 0;iy<inventory.InventorySlots[ix].length;iy++){
@@ -58,13 +55,15 @@ public class InventoryInterface {
         if(InventoryConf) {
             ix = 0;
             iy = 0;
-            RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow, this.frameInventory);
+            RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow,
+                    TextureAtl.createSprite(frameInventory));
             for (Slot[] slotX : SlotInventory) {
                 for (Slot slot : slotX) {
-                    RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
+                    RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width,
+                            slot.height, TextureAtl.createSprite(frame));
                     if(inventory.InventorySlots[ix][iy] != null & slotBuf !=slot) {
                         RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height,
-                                inventory.InventorySlots[ix][iy].image);
+                                TextureAtl.createSprite(inventory.InventorySlots[ix][iy].image));
                     }
                     iy++;
                 }
@@ -86,13 +85,15 @@ public class InventoryInterface {
         if(InventoryConf) {
             ix = 0;
             iy = 0;
-            RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow, this.frameInventory);
+            RenderMethod.transorm_img(this.x, this.y, this.WidthWindow,
+                    this.HeightWindow, TextureAtl.createSprite(frameInventory));
             for (Slot[] slotX : SlotInventory) {
                 for (Slot slot : slotX) {
-                    RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height, this.frame);
+                    RenderMethod.transorm_img(slot.x+x, slot.y+y, slot.width, slot.height,
+                            TextureAtl.createSprite(frame));
                     if(inventory.InventorySlots[ix][iy] != null & slotBuf !=slot) {
                         RenderMethod.transorm_img(slot.x + x, slot.y + y,
-                                slot.width, slot.height, inventory.InventorySlots[ix][iy].image);
+                                slot.width, slot.height, TextureAtl.createSprite(inventory.InventorySlots[ix][iy].image));
                     }
                     iy++;
                 }

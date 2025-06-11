@@ -12,6 +12,7 @@ import com.mygdx.game.object_map.component_collision_system.ComponentCollisionSy
 import java.util.ArrayList;
 
 import static Data.DataColor.RGBFlame;
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.ContentImage;
 import static com.mygdx.game.main.Main.LightSystem;
 
@@ -19,16 +20,16 @@ public class MapObject {
     public static ArrayList<PacketMapObject> PacketMapObjects = new ArrayList<>();
     public int width,height,hp,y,x;
     public int width_render,height_render;
-    public Sprite img;
+    public String img;
     public float distance_lighting,distance_lighting_2;
     public boolean lighting;
     public ComponentCollisionSystem Collision;
-    public ObjectMapAssets assets;
+    public String assets;
     public LightingMainSystem.Light light;
     public MapObject(){
     }
-    public MapObject(int x, int y, Sprite img, int width, int height, int hp, int ix, int iy,
-        ComponentCollisionSystem collision,boolean lighting,float distance_lighting,ObjectMapAssets assets){
+    public MapObject(int x, int y, String img, int width, int height, int hp, int ix, int iy,
+        ComponentCollisionSystem collision,boolean lighting,float distance_lighting,String assets){
         this.x = x+ix*Main.width_block;
         this.y = y+iy*Main.height_block;
         this.width = width;
@@ -54,17 +55,6 @@ public class MapObject {
         int[]xy = Main.RC.render_objZoom(this.x,this.y);
         //if(lighting)Block.LightingAirObject(xy[0],xy[1],RGBFlame,distance_lighting*Main.Zoom);
 
-        RenderMethod.transorm_img(xy[0],xy[1],width_render,height_render,img);
-    }
-    public static Sprite ImageLoad(ObjectMapAssets assets){
-        Sprite img = null;
-        switch (assets){
-            case pepper:{img = ContentImage.pepper_object_map;}
-            break;
-            case building:{img = ContentImage.big_build_wood_1;}
-            break;
-        }
-        return img;
-
+        RenderMethod.transorm_img(xy[0],xy[1],width_render,height_render,TextureAtl.createSprite(img));
     }
 }

@@ -10,6 +10,7 @@ import static com.mygdx.game.main.Main.inventoryMain;
 import static com.mygdx.game.unit.TransportRegister.PlayerCannonAcidA1;
 
 public class SpawnPlayerCannonAcid extends PlayerSpawnData{
+    @Override final
     public void SpawnPlayer(boolean host){
         PlayerCannonAcidA1.UnitAdd(200,200,host, (byte) 1,Main.RegisterControl.controllerPlayer,new Inventory(new Item[3][4]));
         UnitList.get(UnitList.size()-1).PlayerConf = true;

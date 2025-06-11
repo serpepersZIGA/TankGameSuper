@@ -4,6 +4,7 @@ import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.unit.Unit;
 
 public class ComponentSpawnSoldat extends FunctionalComponent {
+    @Override final
     public void FunctionalIterationAnHost(Unit unit){
         unit.spawn_soldat();
     }

@@ -161,7 +161,7 @@ public class RenderPrimitive implements Disposable {
         //new PolygonSprite(polyReg).draw(polyBatch);
     }
 
-    @Override
+    @Override final
     public void dispose() {
         polyBatch.dispose();
         whitePixel.dispose();

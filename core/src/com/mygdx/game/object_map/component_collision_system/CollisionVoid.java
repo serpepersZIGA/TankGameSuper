@@ -6,7 +6,8 @@ public class CollisionVoid extends ComponentCollisionSystem{
     public CollisionVoid(){
 
     }
-    public void collision(Unit tr){
+    @Override final
+    public void collision(Unit tr, int ix, int iy){
 
     }
 }

@@ -27,11 +27,11 @@ public class Cannon extends moduleUnit implements Cloneable{
     public int differenceY, differenceX,TowerX,TowerY,XTower, YTower,CenterX,CenterY,AmountFragment;
     public int XTowerRend,YTowerRend,TowerWidth2,TowerHeight2;
     public Sound sound;
-    public Sprite image;
+    public String image;
 
     public Cannon(int WidthTower, int HeightTower, int ConstTowerX, int ConstTowerY, float SpeedRotationTower,
                   float damage, float penetration, float damage_fragment, float penetration_fragment, float TemperatureDamage,
-                  int SizeBullet, int ReloadMax, float SpeedBullet, int TimeBullet,int TowerX,int TowerY, Fire fire, Sprite image,FunctionalList functional
+                  int SizeBullet, int ReloadMax, float SpeedBullet, int TimeBullet,int TowerX,int TowerY, Fire fire, String image,FunctionalList functional
             ,Sound sound,int AmountFragment){
         this.AmountFragment = AmountFragment;
         this.WidthTower = WidthTower;
@@ -63,7 +63,7 @@ public class Cannon extends moduleUnit implements Cloneable{
     public Cannon(int WidthTower, int HeightTower, int ConstTowerX, int ConstTowerY, float SpeedRotationTower,
                   float damage, float penetration
             , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
-                  float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,Sprite image,FunctionalList functional
+                  float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,String image,FunctionalList functional
             ,Sound sound,int AmountFragment){
         this.AmountFragment = AmountFragment;
         this.WidthTower = WidthTower;

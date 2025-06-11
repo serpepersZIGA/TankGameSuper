@@ -99,7 +99,7 @@ public abstract class Unit implements Cloneable{
     public boolean press_a;
     public boolean press_s;
     public boolean press_d,press_f;
-    public Sprite tower_img,corpus_img;
+    public String tower_img,corpus_img;
     public Fire fire = FireVoid;
     public Controller control = RegisterControl.controllerVoid;
     public int HPTriggerHill;
@@ -109,7 +109,7 @@ public abstract class Unit implements Cloneable{
 
     }
     public Unit(float x, float y, float rotation, float speed, float inert_rotation,
-                float inert_speed, Sprite corpus, float width, float height, UnitType type){
+                float inert_speed, String corpus, float width, float height, UnitType type){
         this.x = x;
         this.y = y;
         this.rotation_corpus = rotation;

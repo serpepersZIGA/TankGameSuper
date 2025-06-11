@@ -18,6 +18,7 @@ public class Blood extends Particle {
         this.interval_rise_size = 0.02f;
         liquid_const();
     }
+    @Override final
     public void all_action(int i){
         super.size_rise_delete();
         float[]xy = Main.RC.render_objZoom(this.x,this.y);

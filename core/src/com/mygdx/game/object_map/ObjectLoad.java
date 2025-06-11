@@ -17,6 +17,7 @@ import java.io.FileReader;
 import java.io.IOException;
 import java.util.ArrayList;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.MapFunction.MapScan.AsphaltSpawn;
 import static com.mygdx.game.MapFunction.MapScan.dataIntilization;
 import static com.mygdx.game.main.Main.ContentImage;
@@ -45,20 +46,12 @@ public class ObjectLoad {
              conf = false;
          }
 
-
-         if (objList.get(2).equals("pepper_object_map")) {
-             sprite = Main.ContentImage.pepper_object_map;
-             assets = ObjectMapAssets.pepper;
-         } else if (objList.get(2).equals("big_build_wood_1")) {
-             sprite = Main.ContentImage.big_build_wood_1;
-             assets = ObjectMapAssets.building;
-         }
-
          switch (Build) {
              case "ObjectMap": {
                  Main.BlockList2D.get(y).get(x).objMap = new MapObject((Integer) objList.get(0),
-                         (Integer) objList.get(1), sprite, (Integer) objList.get(3),
-                         (Integer) objList.get(4), (Integer) objList.get(5), x, y, col, conf, (Integer) objList.get(8), assets);
+                         (Integer) objList.get(1),(String) objList.get(2), (Integer) objList.get(3),
+                         (Integer) objList.get(4), (Integer) objList.get(5), x, y, col, conf, (Integer) objList.get(8),
+                         (String) objList.get(2));
 
              }
              break;
@@ -102,8 +95,9 @@ public class ObjectLoad {
         switch (Build) {
             case "ObjectMap": {
                 Main.BlockList2D.get(y).get(x).objMap = new MapObject((Integer) objList.get(0),
-                        (Integer) objList.get(1), sprite, (Integer) objList.get(3),
-                        (Integer) objList.get(4), (Integer) objList.get(5), x, y, col, conf, (Integer) objList.get(8), assets);
+                        (Integer) objList.get(1),(String)objList.get(2), (Integer) objList.get(3),
+                        (Integer) objList.get(4), (Integer) objList.get(5), x, y, col, conf, (Integer) objList.get(8),
+                        (String)objList.get(2));
 
             }
             break;
@@ -111,16 +105,5 @@ public class ObjectLoad {
                 AsphaltSpawn(x, y);
             }
         }
-    }
-    public static Sprite ImageLoad(ObjectMapAssets assets){
-        Sprite img = null;
-        switch (assets){
-            case pepper:{img = ContentImage.pepper_object_map;}
-            break;
-            case building:{img = ContentImage.big_build_wood_1;}
-            break;
-        }
-        return img;
-
     }
 }

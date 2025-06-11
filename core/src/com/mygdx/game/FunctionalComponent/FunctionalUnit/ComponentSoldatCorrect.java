@@ -5,7 +5,7 @@ import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Unit;
 
 public class ComponentSoldatCorrect extends FunctionalComponent {
-    @Override
+    @Override final
     public void FunctionalIterationAnHost(Unit unit) {
         unit.tower_x = unit.x;
         unit.tower_y = unit.y;
