@@ -16,7 +16,6 @@ public class Item implements Cloneable{
     public TypeItem typeItem;
     public ArrayList<TegItem>teg;
     public Gun gun;
-    public float Reload;
     public int HPHill;
     public Item(Gun gun,ArrayList<TegItem>teg){
         this.teg = teg;
