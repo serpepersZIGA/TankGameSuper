@@ -2,7 +2,6 @@ package com.mygdx.game.unit;
 import Content.Particle.Blood;
 import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Sound.SoundPacket;
@@ -46,7 +45,7 @@ public abstract class Unit implements Cloneable{
     public Item GunUse = null;
     public String ID;
     public TypeCollision collision = TypeCollision.rect;
-    public UnitType type_unit;
+    public UnitType TypeUnit;
     public int[][]TowerXY;
     public int SizeBullet,TimeBullet,TimeBulletRand;
     public float SpeedBullet,SpeedBulletRand;
@@ -119,7 +118,7 @@ public abstract class Unit implements Cloneable{
         this.corpus_img = corpus;
         this.corpus_width = width;
         this.corpus_height = height;
-        this.type_unit = type;
+        this.TypeUnit = type;
 
     }
     public Unit(Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit

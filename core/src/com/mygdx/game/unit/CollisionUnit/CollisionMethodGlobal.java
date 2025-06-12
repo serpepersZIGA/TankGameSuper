@@ -3,6 +3,7 @@ package com.mygdx.game.unit.CollisionUnit;
 import com.mygdx.game.Sound.SoundPacket;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Unit;
 
 import java.awt.*;
@@ -36,68 +37,46 @@ public class CollisionMethodGlobal {
     }
     public void CollisionMethod(Unit unit1,Unit unit2){
         if(unit1.height == unit2.height) {
-            switch (unit1.collision) {
-                case rect: {
-                    switch (unit2.collision) {
-                        case rect: {
-                            if (CollisionRectRect(unit1, unit2)) {
-                                SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(unit1.x_rend) + pow2(unit1.y_rend)) / SoundConst));
+            if (CollisionRectRect(unit1, unit2)) {
+                SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(unit1.x_rend) + pow2(unit1.y_rend)) / SoundConst));
+                if(unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
+                    SoundPacket soundPacket = new SoundPacket();
+                    soundPacket.ix = (int) unit1.x;
+                    soundPacket.iy = (int) unit1.y;
+                    soundPacket.ID = 7;
+                    SoundPack.add(soundPacket);
 
-                                SoundPacket soundPacket = new SoundPacket();
-                                soundPacket.ix = (int) unit1.x;
-                                soundPacket.iy = (int) unit1.y;
-                                soundPacket.ID = 7;
-                                SoundPack.add(soundPacket);
-
-                                CollisionFunctional.physicCollision(unit1, unit2);
-                                CollisionFunctional.MethodCollisionTransport(unit1, unit2);
-                            }
-                        }
-                        break;
-                        case circle: {
-                            if (CollisionRectCircle(unit1, unit2)) {
-                                if (unit1.team == unit2.team) {
-                                    CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
-                                } else {
-                                    unit2.hp = -1;
-                                    CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
-                                }
-
-                            }
-                        }
-                        break;
-
-                    }
+                    CollisionFunctional.physicCollision(unit1, unit2);
+                    CollisionFunctional.MethodCollisionTransport(unit1, unit2);
                 }
-                break;
-                case circle: {
-                    switch (unit2.collision) {
-                        case rect: {
-                            if (CollisionRectCircle(unit2, unit1)) {
-                                if (unit1.team == unit2.team) {
-                                    CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
-                                } else {
-                                    CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
-                                    unit1.hp = -1;
-                                }
-                            }
-                        }
-                        break;
-                        case circle: {
-                            if (CollisionCircleCircle(unit1, unit2)) {
-                                CollisionFunctional.MethodCollisionSoldatSoldat(unit1, unit2);
-                            }
+                else if(unit1.classUnit == ClassUnit.Soldat & unit2.classUnit == ClassUnit.Soldat){
+                    CollisionFunctional.MethodCollisionSoldatSoldat(unit1, unit2);
+                }
+                else if(unit1.classUnit == ClassUnit.Soldat){
 
-                        }
-                        break;
-
+                    if (unit1.team == unit2.team) {
+                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
+                    } else {
+                        unit1.hp = -1;
+                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
                     }
 
+
+
                 }
-                break;
+                else{
+                    if (unit1.team == unit2.team) {
+                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
+                    } else {
+                        unit2.hp = -1;
+                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
+                    }
+                }
+                }
             }
-        }
+
     }
+
     private boolean CollisionRectCircle(Unit unit1,Unit unit2){
         Rectangle2D rect1 = new Rectangle2D.Double(unit1.x,unit1.y,unit1.corpus_width,unit1.corpus_height);
         AffineTransform transform1 = new AffineTransform();

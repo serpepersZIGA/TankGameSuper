@@ -29,6 +29,7 @@ public class BigBuildingWood1 extends Building {
         super.flame_build(Main.FlameStaticList);
 
     }
+    @Override final
     public void update(){
         RenderBuilding.render(this.x,this.y,this.width_render,this.height_render);
     }

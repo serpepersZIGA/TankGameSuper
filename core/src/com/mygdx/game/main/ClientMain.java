@@ -3,7 +3,6 @@ import Content.Build.BigBuildingWood1;
 import Content.Build.Home1;
 import Content.Particle.*;
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
@@ -25,7 +24,6 @@ import com.mygdx.game.build.PacketBuildingServer;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
-import com.mygdx.game.object_map.ObjectLoad;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.ObjectMapAssets;
@@ -274,7 +272,7 @@ public class ClientMain extends Listener {
 
     public void player_data(Unit unit) {
         TransportPacket packet = PacketUnit.get(i);
-        unit.type_unit = packet.name;
+        unit.TypeUnit = packet.name;
         unit.x = packet.x;
         unit.y = packet.y;
         unit.rotation_corpus = packet.rotation_corpus;
@@ -292,7 +290,7 @@ public class ClientMain extends Listener {
     }
 
     public void UnitDataCreate(TransportPacket pack, Unit transport) {
-        transport.type_unit = pack.name;
+        transport.TypeUnit = pack.name;
         transport.x = pack.x;
         transport.y = pack.y;
         transport.rotation_corpus = pack.rotation_corpus;

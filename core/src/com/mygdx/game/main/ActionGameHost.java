@@ -2,7 +2,6 @@ package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import com.mygdx.game.build.BuildPacket;
@@ -223,7 +222,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     private void packet_player_server(Unit unit){
         PacketUnit.add(new TransportPacket());
         TransportPacket pack = PacketUnit.get(i);
-        pack.name = unit.type_unit;
+        pack.name = unit.TypeUnit;
         pack.x = unit.x;
         pack.y = unit.y;
         pack.PlayerConf = unit.PlayerConf;

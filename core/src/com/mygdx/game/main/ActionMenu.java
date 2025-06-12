@@ -16,6 +16,7 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.Objects;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.unit.Unit.IDList;
 
@@ -62,9 +63,8 @@ public class ActionMenu extends ActionGame {
 
         }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
-        Batch.begin();
         LightSystem.begin(Batch);
-
+        Batch.begin();
         Render.begin();
         Main.RC.render_block();
         Batch.end();
@@ -81,12 +81,13 @@ public class ActionMenu extends ActionGame {
                 Main.BulletList.get(i).update();
             }
         }
-        Render.end();
+//        Render.end();
         Batch.begin();
-        Render.begin();
+//        Render.begin();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
+
         for(i = 0; i< Main.UnitList.size(); i++) {
             Main.UnitList.get(i).UpdateUnit();
             Main.UnitList.get(i).all_action_client_2();
@@ -100,8 +101,9 @@ public class ActionMenu extends ActionGame {
             unit.all_action_client();
         }
         RC.BuildingIteration();
-        Render.end();
-        Render.begin();
+        //Batch.draw(TextureAtl.createSprite("BottleFlame"),20,20,10,10);
+//        Render.end();
+//        Render.begin();
 
         for (i = 0; i< Main.BulletList.size(); i++){
             if(Main.BulletList.get(i).height == 2) {
@@ -125,20 +127,30 @@ public class ActionMenu extends ActionGame {
             Main.BangList.get(i).all_action(i);}
 
 
-        Batch.end();
-        Batch.begin();
+//        Batch.end();
+//        Batch.begin();
 
         for (i = 0;i< ButtonList.size();i++){
             Button but = ButtonList.get(i);
             if(Main.ConfigMenu == but.ConfigMenu) {
-                but.render(i);
                 if (but.TypeFont) {
                     but.TXTRender2();
-                } else {
+                }
+                else{
                     but.TXTRender();
                 }
+                but.render(i);
             }
         }
+//        for (i = 0;i< ButtonList.size();i++){
+//            Button but = ButtonList.get(i);
+//            if(Main.ConfigMenu == but.ConfigMenu) {
+//                if (!but.TypeFont) {
+//                    but.TXTRender();
+//                }
+//                but.render(i);
+//            }
+//        }
 
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         Render.end();

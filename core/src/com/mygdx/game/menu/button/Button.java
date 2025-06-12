@@ -78,10 +78,10 @@ public abstract class Button {
     }
     protected void RenderButtonRect(){
         Render.rect(this.x*ZoomWindowX,this.y*ZoomWindowY,this.width*ZoomWindowX,this.height*ZoomWindowY,
-                new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f));
+                new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],0.5f));
     }
     protected void RenderButtonCircle(){
-        Render.circle(this.x*ZoomWindowX,this.y*ZoomWindowY,radius,radius,new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],1f));
+        Render.circle(this.x*ZoomWindowX,this.y*ZoomWindowY,radius,radius,new Color(RGBTotal[0],RGBTotal[1],RGBTotal[2],0.5f));
     }
     public void TXTRender(){
         //font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
@@ -90,8 +90,8 @@ public abstract class Button {
     }
     public void TXTRender2(){
         //font = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
-        font.setColor(0.1f,0.9f,0.8f,1f);
-        font.draw(Batch,txt,XTXT*ZoomWindowX,YTXT*ZoomWindowY);
+        font2.setColor(0.1f,0.9f,0.8f,1f);
+        font2.draw(Batch,txt,XTXT*ZoomWindowX,YTXT*ZoomWindowY);
     }
 
 }
