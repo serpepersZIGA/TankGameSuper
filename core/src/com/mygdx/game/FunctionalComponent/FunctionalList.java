@@ -1,5 +1,6 @@
 package com.mygdx.game.FunctionalComponent;
 
+import com.mygdx.game.build.Building;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.unit.Unit;
 
@@ -58,6 +59,14 @@ public class FunctionalList implements Cloneable{
     public void FunctionalIterationOtherAnClient(Bullet bullet){
         for(FunctionalComponent func : functional){
             func.FunctionalIterationOtherAnClient(bullet);
+        }
+    }
+
+
+
+    public void FunctionalIterationAnHost(Building building){
+        for(FunctionalComponent func : functional){
+            func.FunctionalIterationAnHost(building);
         }
     }
 
