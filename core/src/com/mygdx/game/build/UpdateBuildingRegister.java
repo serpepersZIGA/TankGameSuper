@@ -1,7 +1,7 @@
 package com.mygdx.game.build;
 
-import Content.Build.UpdateBigBuildWood1;
-import Content.Build.UpdateBuildExp;
+import com.mygdx.game.build.Build.UpdateBigBuildWood1;
+import com.mygdx.game.build.Build.UpdateBuildExp;
 
 public class UpdateBuildingRegister {
     public UpdateBuilding Update_big_build_wood1 = new UpdateBigBuildWood1();

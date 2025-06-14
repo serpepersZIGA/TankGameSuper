@@ -8,6 +8,7 @@ import Content.Particle.FlameSpawn;
 import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
+import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.DebrisPacket;
@@ -76,7 +77,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
 
 
         Batch.begin();
-        LightSystem.begin(Batch);
         Render.begin();
         Main.RC.render_block();
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
@@ -163,6 +163,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);
         }
+        LightSystem.begin(Batch);
         if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
         Render.end();
         Batch.end();

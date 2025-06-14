@@ -1,6 +1,5 @@
 package com.mygdx.game.main;
-import Content.Build.BigBuildingWood1;
-import Content.Build.Home1;
+import com.mygdx.game.build.Build.BigBuildingWood1;
 import Content.Particle.*;
 import com.badlogic.gdx.audio.Sound;
 import com.esotericsoftware.kryonet.Client;
@@ -20,6 +19,7 @@ import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.BuildPacket;
 import com.mygdx.game.build.BuildType;
+import com.mygdx.game.build.Building;
 import com.mygdx.game.build.PacketBuildingServer;
 import com.mygdx.game.bull.BullPacket;
 import com.mygdx.game.bull.Bullet;
@@ -35,6 +35,7 @@ import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.Sound.SoundRegister.IDSound;
+import static com.mygdx.game.build.BuildRegister.BuildingID;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
@@ -324,14 +325,14 @@ public class ClientMain extends Listener {
 
 
     public void Building_create(int i, int x, int y) {
-        if (PacketBuilding.get(i).name != null) {
-            switch (PacketBuilding.get(i).name) {
-                case BigBuildingWood1:
-                    BuildingList.add(new BigBuildingWood1(x, y));
-                    break;
-                case Home1:
-                    BuildingList.add(new Home1(x, y));
-                    break;
+        if (PacketBuilding.get(i).ID != null) {
+            for(Object[] obj :BuildingID){
+                if(Objects.equals(obj[1], PacketBuilding.get(i).ID)){
+                    Building build = (Building)obj[0];
+//                    build.x = x;
+//                    build.y = y;
+                    BuildingList.add(build.BuildingCreate(x,y));
+                }
             }
         }
     }

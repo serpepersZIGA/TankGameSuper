@@ -268,7 +268,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
     }
     public void PacketBuildServer(int i){
         PacketBuilding.add(new BuildPacket());
-        PacketBuilding.get(i).name = BuildingList.get(i).name;
+        PacketBuilding.get(i).ID = BuildingList.get(i).ID;
         PacketBuilding.get(i).x = BuildingList.get(i).x;
         PacketBuilding.get(i).y = BuildingList.get(i).y;
     }

@@ -23,7 +23,7 @@ public class CollisionBreak extends ComponentCollisionSystem{
             Main.PacketServer.mapObject.add(new PacketMapObject());
             Main.PacketServer.mapObject.get(n).ix = ix;
             Main.PacketServer.mapObject.get(n).iy = iy;
-            LightSystem.lights.removeValue(Main.BlockList2D.get(iy).get(ix).objMap.light,true);
+            LightSystem.lights.remove(Main.BlockList2D.get(iy).get(ix).objMap.light);
             Main.BlockList2D.get(iy).get(ix).objMap = Main.VoidObj;
 
         }

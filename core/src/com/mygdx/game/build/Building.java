@@ -1,37 +1,70 @@
 package com.mygdx.game.build;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.Shader.LightingMainSystem;
-import com.mygdx.game.block.Block;
 import com.mygdx.game.main.Main;
 import static Data.DataColor.*;
 
 
+import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
 import Content.Particle.FlameStatic;
-import com.mygdx.game.particle.Particle;
 
 import java.io.Serializable;
 import java.util.ArrayList;
-import java.util.LinkedList;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.LightSystem;
 
 
-public abstract class Building implements Serializable {
+public class Building implements Serializable,Cloneable {
     public int width,height,x,y,time_flame,width_2,height_2,x_rend,y_rend,width_render,height_render,brightness_max = 240,brightness;
-    public static float[]rgb = {(float)1/255 * 236, (float) 1/255 * 124, (float) 1/255 * 38};
-    //public float[]rgb = {(float)1/255 * rand.rand(20,250), (float) 1/255 * rand.rand(20,250), (float) 1/255 * rand.rand(20,250)};
-    public Sprite build_image;
+    public String build_image;
     private int distance_light,density_light_x,density_light_y;
     public ArrayList<int[]>xy_light = new ArrayList<>();
     public ArrayList<int[]>xy_light_render = new ArrayList<>();
     public ArrayList<LightingMainSystem.Light>Lighting = new ArrayList<>();
-    public BuildType name;
+    public String name;
+    public String ID;
     public boolean[][]ConstructBuilding;
     public int xMatrix,yMatrix;
     public UpdateBuilding RenderBuilding;
     public int RightTopPointX,RightTopPointY;
+    public FunctionalList ListFunc;
+    public static int SpawnMaxTime = 600,SpawnTotalTime;
+    public byte team;
+    public Building(int x, int y, String ID, boolean[][]Struct, String Asset, FunctionalList List){
+        name = ID;
+        this.x = x;
+        this.y = y;
+        this.ListFunc = List;
+        //RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
+        this.build_image = Asset;
+        this.ID = ID;
+        ConstructBuilding = Struct;
+    }
+    public Building(int x, int y,byte team){
+        this.x = x;
+        this.y = y;
+        this.team = team;
+        //RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
+        ConstructBuilding = new boolean[][]{{false}};
+
+    }
+    public Building BuildingCreate(int x,int y) {
+        Building building = this.clone();
+        building.Lighting = new ArrayList<>();
+//        building.Lighting.addAll(this.Lighting);
+
+        building.x = x;
+        building.y = y;
+        building.Data();
+//        for(LightingMainSystem.Light light : Lighting){
+//            light.work = false;
+//        }
+        //System.out.println(building.ID);
+        return building;
+    }
 
 
 
@@ -76,8 +109,13 @@ public abstract class Building implements Serializable {
             y_light = y;
         }
     }
-    public void all_action(int i){
-        this.update();
+    public void all_action(){
+        update();
+        ListFunc.FunctionalIterationAnHost(this);
+    }
+    public void SpawnUnit(){
+
+
     }
     public void iteration_light_build(){
         for (int[] ints : xy_light) {
@@ -85,6 +123,9 @@ public abstract class Building implements Serializable {
         }
     }
     public void update(){
+        int[] xy = Building.center_render(x,y);
+        RenderMethod.transorm_img((int) (xy[0]* Main.Zoom),(int) (xy[1]* Main.Zoom)
+                ,width_render,height_render,TextureAtl.createSprite(build_image));
     }
     public void center_render(){
         int[]xy = Main.RC.render_objZoom(this.x,this.y);
@@ -96,8 +137,9 @@ public abstract class Building implements Serializable {
     }
 
 
-    public void flame_build(LinkedList<Particle> part){
+    public void flame_build(){
         if(this.time_flame>0){
+            this.time_flame -= 1;
             //iteration_light_build();
 //            for (int[] ints : xy_light_render) {
 //                Block.LightingAir((int) (ints[0] * Main.Zoom), (int) (ints[1] * Main.Zoom), rgb);
@@ -108,20 +150,19 @@ public abstract class Building implements Serializable {
             this.brightness = brightness_max;
             if(rand.rand(4)== 1) {
                 int z = rand.rand(4);
-                this.time_flame -= 1;
                     switch (z) {
                         case 0:{
-                            part.add(new FlameStatic(this.x + rand.rand(this.width), this.y + this.height));break;}
+                            Main.FlameStaticList.add(new FlameStatic(this.x + rand.rand(this.width), this.y + this.height));break;}
                         case 1:{
-                            part.add(new FlameStatic(this.x + rand.rand(this.width), this.y));break;}
+                            Main.FlameStaticList.add(new FlameStatic(this.x + rand.rand(this.width), this.y));break;}
                         case 2:{
-                            part.add(new FlameStatic(this.x + this.width, this.y + rand.rand(height)));break;}
+                            Main.FlameStaticList.add(new FlameStatic(this.x + this.width, this.y + rand.rand(height)));break;}
                         case 3:{
-                            part.add(new FlameStatic(this.x, this.y + rand.rand(height)));break;}
+                            Main.FlameStaticList.add(new FlameStatic(this.x, this.y + rand.rand(height)));break;}
                     }
             }
         }
-        else{
+        else {
             for(LightingMainSystem.Light light : Lighting){
                 light.work = false;
             }
@@ -129,4 +170,14 @@ public abstract class Building implements Serializable {
         }
     }
 
+    @Override final
+    public Building clone() {
+        try {
+            Building clone = (Building) super.clone();
+            // TODO: copy mutable state here, so the clone can't change the internals of the original
+            return clone;
+        } catch (CloneNotSupportedException e) {
+            throw new AssertionError();
+        }
+    }
 }

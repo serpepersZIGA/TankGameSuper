@@ -9,14 +9,16 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.Disposable;
 import com.mygdx.game.main.Main;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.main.Main.LightSystem;
 import static com.mygdx.game.method.CycleTimeDay.lightTotal;
 
 
 public class LightingMainSystem implements Disposable {
     public final ShaderProgram shader;
-    public final Array<Light> lights;
-    public final Array<Light> lightsRender;
+    public final ArrayList<Light> lights;
+    public final ArrayList<Light> lightsRender;
     private Color ambientColor;
     private float minLightness;
     public int limitLightingRender = 650;
@@ -72,8 +74,8 @@ public class LightingMainSystem implements Disposable {
         if (!shader.isCompiled()) {
             throw new RuntimeException("Shader compilation error: " + shader.getLog());
         }
-        lightsRender = new Array<>();
-        lights = new Array<>();
+        lightsRender = new ArrayList<>();
+        lights = new ArrayList<>();
         ambientColor = new Color(0.1f, 0.1f, 0.15f, 1f);
         minLightness = 0.3f;
     }
@@ -87,40 +89,52 @@ public class LightingMainSystem implements Disposable {
         //Render.setAutoShapeType(true);
 
         // Устанавливаем общие параметры освещения
+        LightSystem.lightsRender.clear();
+        for(LightingMainSystem.Light light : LightSystem.lights){
+            //light.radiusZoom = light.radius*Main.Zoom;
+            if(light.XRender+LightSystem.limitLightingRender >0 &
+                    light.YRender+LightSystem.limitLightingRender >0&
+                    light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
+                    light.YRender-LightSystem.limitLightingRender <Main.screenHeight &
+                    light.work
+            ){
+                LightSystem.lightsRender.add(light);
+
+            }
+        }
         shader.setUniformf("u_ambientColor", ambientColor.r, ambientColor.g, ambientColor.b
                 ,ambientColor.a);
         shader.setUniformf("u_minLightness", minLightness);
-        shader.setUniformi("u_activeLights", lightsRender.size);
-        for(int i = 0; i < lights.size; i++){
-            Light light = lights.get(i);
-            float[]xy = Main.RC.render_objZoom(light.position.x,light.position.y);
+        shader.setUniformi("u_activeLights", lightsRender.size());
+        for (Light light : lights) {
+            float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
             light.XRender = xy[0];
             light.YRender = xy[1];
         }
 
         // Устанавливаем параметры каждого источника света
-        for (int i = 0; i < lightsRender.size && i < 160; i++) {
+        for (int i = 0; i < lightsRender.size() && i < 160; i++) {
             Light light = lightsRender.get(i);
-            if(light.work) {
-                float[]xy = Main.RC.render_objZoom(light.position.x,light.position.y);
-                light.XRender = xy[0];
-                light.YRender = xy[1];
-                shader.setUniformf("u_lights[" + i + "].position", light.XRender, light.YRender);
-                shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
-                        light.color.a);
-                shader.setUniformf("u_lights[" + i + "].intensity", light.intensity);
-                shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom / 2 * lightTotal);
-                shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
-            }
-            else{
-                shader.setUniformf("u_lights[" + i + "].position", light.XRender, light.YRender);
-                shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
-                        light.color.a);
-                shader.setUniformf("u_lights[" + i + "].intensity", 0);
-                shader.setUniformf("u_lights[" + i + "].radius", 0);
-                shader.setUniformf("u_lights[" + i + "].transparency", 0);
-            }
+            float[]xy = Main.RC.render_objZoom(light.position.x,light.position.y);
+            light.XRender = xy[0];
+            light.YRender = xy[1];
+            shader.setUniformf("u_lights[" + i + "].position", light.XRender, light.YRender);
+            shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
+                    light.color.a);
+            shader.setUniformf("u_lights[" + i + "].intensity", light.intensity);
+            shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom / 2 * lightTotal);
+            shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
+
+//            else{
+//                shader.setUniformf("u_lights[" + i + "].position", light.XRender, light.YRender);
+//                shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
+//                        light.color.a);
+//                shader.setUniformf("u_lights[" + i + "].intensity", 0);
+//                shader.setUniformf("u_lights[" + i + "].radius", 0);
+//                shader.setUniformf("u_lights[" + i + "].transparency", 0);
+//            }
         }
+        //end(batch);
     }
     public void end(SpriteBatch batch) {
         batch.setShader(null);
@@ -133,7 +147,7 @@ public class LightingMainSystem implements Disposable {
     }
 
     public void removeLight(Light light) {
-        lights.removeValue(light, true);
+        lights.remove(light);
     }
 
     public void setAmbientColor(Color color) {

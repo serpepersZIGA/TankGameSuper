@@ -123,7 +123,7 @@ public class ServerMain extends Listener {
     }
     public void PacketBuildServer(int i){
         PacketBuildingServer.BuildPack.add(new BuildPacket());
-        PacketBuildingServer.BuildPack.get(i).name = BuildingList.get(i).name;
+        PacketBuildingServer.BuildPack.get(i).ID = BuildingList.get(i).ID;
         PacketBuildingServer.BuildPack.get(i).x = BuildingList.get(i).x;
         PacketBuildingServer.BuildPack.get(i).y = BuildingList.get(i).y;
     }

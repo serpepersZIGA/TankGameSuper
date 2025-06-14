@@ -47,6 +47,8 @@ void main() {
         accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
     }
     finalColor = texColor;
+    if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
+        finalColor.rgb += ((accumulatedLight.r + accumulatedLight.g + accumulatedLight.b) * 0.3333) * 0.025;
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);

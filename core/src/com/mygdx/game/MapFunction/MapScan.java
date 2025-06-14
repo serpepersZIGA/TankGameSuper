@@ -1,13 +1,11 @@
 package com.mygdx.game.MapFunction;
 
-import Content.Build.BigBuildingWood1;
-import Content.Build.Home1;
+import com.mygdx.game.build.Build.BigBuildingWood1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.block.UpdateRegister;
+import com.mygdx.game.build.Building;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.object_map.MapObject;
-import com.mygdx.game.object_map.ObjectLoad;
 
 import java.io.*;
 import java.nio.charset.StandardCharsets;
@@ -15,6 +13,8 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.mygdx.game.build.BuildRegister.BuildingID;
+import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.object_map.ObjectLoad.MapSpawnObject;
 import static java.nio.file.Files.readAllLines;
@@ -173,17 +173,13 @@ public class MapScan {
             SpawnStructure("Map/Structure/"+Build+".str",x, y);
         }
         else {
-            switch (Build) {
-                case "BigBuildingWood1": {
-                    Main.BuildingList.add(new BigBuildingWood1(x * Main.width_block, y * Main.height_block));
-                }
-                break;
-                case "Home1": {
-                    Main.BuildingList.add(new Home1(x * Main.width_block, y * Main.height_block));
-                }
-                break;
-                case "Asphalt": {
-                    AsphaltSpawn(x, y);
+            //System.out.println(Build);
+            for(Object[] obj :BuildingID){
+                //System.out.println(Build+" "+obj[1]);
+                if(Objects.equals(obj[1],Build)){
+
+                    Building build = (Building)obj[0];
+                    BuildingList.add(build.BuildingCreate(x * Main.width_block,y * Main.width_block));
                 }
             }
         }

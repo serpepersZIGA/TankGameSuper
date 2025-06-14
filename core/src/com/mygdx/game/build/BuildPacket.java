@@ -1,6 +1,6 @@
 package com.mygdx.game.build;
 
 public class BuildPacket {
-    public BuildType name;
+    public String ID;
     public int x,y;
 }

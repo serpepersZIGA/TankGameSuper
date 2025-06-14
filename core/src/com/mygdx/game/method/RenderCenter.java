@@ -137,7 +137,7 @@ public class RenderCenter {
     }
     public void BuildingIteration(){
         for (Integer integer : IndBuilding) {
-            Main.BuildingList.get(integer).all_action(integer);
+            Main.BuildingList.get(integer).all_action();
             Main.BuildingList.get(integer).xy_light_render.clear();
         }
 
