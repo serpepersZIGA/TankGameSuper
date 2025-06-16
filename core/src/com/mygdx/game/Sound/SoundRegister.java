@@ -1,6 +1,6 @@
 package com.mygdx.game.Sound;
 
-import com.badlogic.gdx.audio.Sound;
+import com.mygdx.game.Network.SoundPacket;
 
 import java.util.ArrayList;
 

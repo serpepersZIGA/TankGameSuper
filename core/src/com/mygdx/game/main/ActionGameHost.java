@@ -4,14 +4,14 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
-import com.mygdx.game.build.BuildPacket;
+import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
-import com.mygdx.game.unit.DebrisPacket;
+import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.Inventory.PacketInventory;
 import com.mygdx.game.unit.Unit;
-import com.mygdx.game.unit.TransportPacket;
+import com.mygdx.game.Network.TransportPacket;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 

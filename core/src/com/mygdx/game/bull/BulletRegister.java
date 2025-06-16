@@ -2,6 +2,7 @@ package com.mygdx.game.bull;
 
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
+import com.mygdx.game.Network.BullPacket;
 
 import java.util.ArrayList;
 

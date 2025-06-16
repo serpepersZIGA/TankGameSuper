@@ -1,6 +1,8 @@
 package com.mygdx.game.unit;
 
-import com.mygdx.game.main.PacketUnitUpdate;
+import com.mygdx.game.Network.PacketUnitUpdate;
+import com.mygdx.game.Network.DebrisPacket;
+import com.mygdx.game.Network.TransportPacket;
 import com.mygdx.game.unit.moduleUnit.*;
 
 import java.util.ArrayList;

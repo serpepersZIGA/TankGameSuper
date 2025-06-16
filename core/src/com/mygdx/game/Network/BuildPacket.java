@@ -1,4 +1,4 @@
-package com.mygdx.game.build;
+package com.mygdx.game.Network;
 
 public class BuildPacket {
     public String ID;

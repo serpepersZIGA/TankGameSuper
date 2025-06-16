@@ -1,6 +1,6 @@
 package com.mygdx.game.unit.CollisionUnit;
 
-import com.mygdx.game.Sound.SoundPacket;
+import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.unit.ClassUnit;

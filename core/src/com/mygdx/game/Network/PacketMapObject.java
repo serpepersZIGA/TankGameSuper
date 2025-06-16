@@ -1,4 +1,4 @@
-package com.mygdx.game.object_map;
+package com.mygdx.game.Network;
 
 public class PacketMapObject {
     public int ix,iy;

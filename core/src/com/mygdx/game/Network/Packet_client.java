@@ -1,4 +1,4 @@
-package com.mygdx.game.main;
+package com.mygdx.game.Network;
 
 import java.util.ArrayList;
 

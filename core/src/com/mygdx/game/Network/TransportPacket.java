@@ -1,4 +1,6 @@
-package com.mygdx.game.unit;
+package com.mygdx.game.Network;
+
+import com.mygdx.game.unit.UnitType;
 
 import java.util.ArrayList;
 

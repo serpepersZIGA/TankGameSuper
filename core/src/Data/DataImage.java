@@ -49,6 +49,7 @@ public class DataImage {
         LoadImage("image/enemy/helicopter_corpus.png","helicopter_enemy_t1");
         LoadImage("image/enemy/medic_machine_enemy.png","track_enemy_1lvl");
         LoadImage("image/other/blade_helicopter.png","helicopter_blade");
+        LoadImage("image/build/Build2.png","Build2");
     }
     private Texture LoadImage(String image){
         buff = new Texture(image);

@@ -1,5 +1,6 @@
 package com.mygdx.game.build;
 import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.main.Main;
@@ -15,12 +16,14 @@ import java.util.ArrayList;
 
 import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.LightSystem;
+import static com.mygdx.game.main.Main.width_block_render;
 
 
 public class Building implements Serializable,Cloneable {
     public int width,height,x,y,time_flame,width_2,height_2,x_rend,y_rend,width_render,height_render,brightness_max = 240,brightness;
     public String build_image;
-    private int distance_light,density_light_x,density_light_y;
+    public int density_light_x,density_light_y;
+    public static int distance_light = width_block_render*2;
     public ArrayList<int[]>xy_light = new ArrayList<>();
     public ArrayList<int[]>xy_light_render = new ArrayList<>();
     public ArrayList<LightingMainSystem.Light>Lighting = new ArrayList<>();
@@ -70,10 +73,13 @@ public class Building implements Serializable,Cloneable {
 
     protected void Data(){
         DataCollision();
-        distance_light = 200;
-        density_light_y=(int)((double)height/distance_light);
-        density_light_x=(int)((double)width/distance_light);
-        size_light();
+        for (FunctionalComponent comp : ListFunc.functional){
+            comp.FunctionalCreateBuildData(this);
+        }
+        //distance_light = width_block_render*2;
+//        density_light_y=(int)((double)height/distance_light);
+//        density_light_x=(int)((double)width/distance_light);
+//        size_light();
     }
     private void DataCollision(){
         int ConstructX = ConstructBuilding[0].length;
@@ -89,7 +95,9 @@ public class Building implements Serializable,Cloneable {
         this.width_2 = this.width/2;
         this.height_2 = this.height/2;
     }
-    private void size_light(){
+    public void size_light(){
+        density_light_y=(int)((double)height/distance_light);
+        density_light_x=(int)((double)width/distance_light);
         int x_light = x;
         int y_light = y;
         for(int i = 0;i<density_light_x;i++){

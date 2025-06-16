@@ -1,5 +1,6 @@
 package com.mygdx.game.bull;
 import com.mygdx.game.Event.EventGame;
+import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.bull.Updater.UpdaterBullet;
 import com.mygdx.game.main.Main;

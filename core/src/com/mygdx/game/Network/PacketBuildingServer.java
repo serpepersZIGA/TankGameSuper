@@ -1,6 +1,7 @@
-package com.mygdx.game.build;
+package com.mygdx.game.Network;
 
-import com.mygdx.game.object_map.PacketMapObject;
+import com.mygdx.game.Network.BuildPacket;
+import com.mygdx.game.Network.PacketMapObject;
 
 import java.util.ArrayList;
 

@@ -3,20 +3,18 @@ package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Inventory.Inventory;
-import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
+import com.mygdx.game.Network.PackerServer;
+import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.Unit;
 
 import java.util.Objects;
 
-import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.unit.Unit.IDList;
 

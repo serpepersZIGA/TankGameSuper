@@ -1,7 +1,7 @@
 package com.mygdx.game.object_map.component_collision_system;
 
 import com.mygdx.game.main.Main;
-import com.mygdx.game.object_map.PacketMapObject;
+import com.mygdx.game.Network.PacketMapObject;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.Main.LightSystem;

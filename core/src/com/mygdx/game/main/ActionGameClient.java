@@ -2,16 +2,11 @@ package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
-import com.mygdx.game.Inventory.Inventory;
-import com.mygdx.game.Inventory.InventoryInterface;
-import com.mygdx.game.Inventory.Item;
-import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.unit.DebrisPacket;
+import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.unit.SpawnPlayer.SpawnPlayerPack;
 import com.mygdx.game.unit.Unit;
 

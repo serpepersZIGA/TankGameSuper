@@ -40,7 +40,7 @@ public abstract class FunctionalComponent {
     public void FunctionalIterationAnHost(Building building){
 
     }
-    public void FunctionalIterationClientAnHost(Building building){
+    public void FunctionalCreateBuildData(Building building){
 
     }
     public void FunctionalIterationAnClient(Building building){

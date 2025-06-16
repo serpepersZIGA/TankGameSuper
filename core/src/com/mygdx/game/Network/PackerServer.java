@@ -1,13 +1,7 @@
-package com.mygdx.game.main;
+package com.mygdx.game.Network;
 
 import com.mygdx.game.Inventory.ItemPacket;
-import com.mygdx.game.Sound.SoundPacket;
-import com.mygdx.game.bull.BullPacket;
-import com.mygdx.game.build.BuildPacket;
-import com.mygdx.game.object_map.PacketMapObject;
-import com.mygdx.game.unit.DebrisPacket;
 import com.mygdx.game.Inventory.PacketInventory;
-import com.mygdx.game.unit.TransportPacket;
 
 import java.util.ArrayList;
 

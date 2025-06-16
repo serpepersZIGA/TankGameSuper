@@ -2,25 +2,22 @@ package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
-import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShaderProgram;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
-import com.badlogic.gdx.math.Matrix4;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.MapFunction.MapScan;
+import com.mygdx.game.Network.PackerServer;
+import com.mygdx.game.Network.PacketBuildingServer;
+import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
-import Content.Block.Air;
 import com.mygdx.game.build.*;
 import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
@@ -44,14 +41,11 @@ import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
 import com.mygdx.game.unit.moduleUnit.*;
 
-import java.io.File;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
-import static com.mygdx.game.unit.TransportRegister.PlayerCannonFlameA2;
-import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
 
 
 public class Main extends ApplicationAdapter {
@@ -84,15 +78,15 @@ public class Main extends ApplicationAdapter {
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
-	public static int width_block_2, height_block_2,x_block,y_block,width_block= 50,height_block =50,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
-	public static int width_block_zoom= 50,height_block_zoom =50,width_block_render= 64,height_block_render =64;
+	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,height_block =70,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
+	public static int width_block_zoom= 70,height_block_zoom =70,width_block_render= 73,height_block_render =73;
 	public static float radius_air_max = 150,radius_air_max_zoom;
 	public static ServerMain serverMain;
 	public static ClientMain Main_client;
 	public static Option Option;
 	public static PackerServer PacketServer;
 	public static MapObject VoidObj;
-	public static PacketBuildingServer PacketBuildingServer;
+	public static com.mygdx.game.Network.PacketBuildingServer PacketBuildingServer;
 	public static Packet_client PacketClient;
 	public static int TickBlock,TickBlockMax = 600;
 	public static BitmapFont font,font2;
@@ -158,41 +152,33 @@ public class Main extends ApplicationAdapter {
 		quantity_height = height_field;
 		width_block_2 = width_block/2;
 		height_block_2 = height_block/2;
-		width_block*=1.24;
-		height_block*=1.24;
-		boolean confWallY = false;
-		boolean confWallX;
+		//width_block*=1.24;
+		//height_block*=1.24;
+
 		x_block = width_block_2;
 		y_block = 0;
 		for(int i = 0;i<quantity_height;i++){
 			BlockList2D.add(new ArrayList<>());
-			if(y_block == 0){
-				confWallY = true;
-			}
-			else if(i == quantity_height){
-				confWallY = true;
-			}
 			y_block += height_block;
 			x_block = 0;
-			confWallX = true;
-
-
 			for(int i2 = 0;i2<quantity_width;i2++){
 				x_block += width_block;
 				BlockList2D.get(i).add(new BlockMap(x_block,y_block));
-				if(quantity_width == i2){
-					confWallX = true;
-				}
-				if(confWallX || confWallY){
-					BlockList2D.get(i).get(i2).passability= true;
-					confWallX = false;
-
-				}
 
 
 			}
-			confWallY = false;
 		}
+		for(int i = 0;i<quantity_height;i++){
+
+			for(int i2 = 0;i2<quantity_width;i2++){
+				BlockList2D.get(quantity_height-3).get(i2).passability= true;
+				BlockList2D.get(0).get(i2).passability= true;
+
+			}
+			BlockList2D.get(i).get(0).passability= true;
+			BlockList2D.get(i).get(quantity_width-3).passability= true;
+		}
+		//for()
 		//width_block-= 1;
 		//height_block-= 1;
 //		quantity_width = (int)(screenWidth/width_block_air);
@@ -222,7 +208,7 @@ public class Main extends ApplicationAdapter {
 		BangList.add(new Bang(200,200,10));
 	}
 
-	@Override
+	@Override final
 	public void create () {
 		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
 		FunctionalComponentBulletRegister.FunctionalComponentBulletRegisters();
@@ -276,7 +262,7 @@ public class Main extends ApplicationAdapter {
 		Ai = new AI();
 		TransportRegister.Create();
 		BuildRegister.Create();
-		field(160, 160);
+		field(120, 120);
 		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));
@@ -307,12 +293,12 @@ public class Main extends ApplicationAdapter {
 		generator.dispose();
 		return font;
 	}
-	@Override
+	@Override final
 	public void render () {
 		ActionGame.action();
 		//LightSystem.clearLights();
 	}
-	@Override
+	@Override final
 	public void dispose () {
 		ContentSound.dispose();
 		textureBuffer.dispose();

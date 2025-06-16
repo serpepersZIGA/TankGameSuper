@@ -2,14 +2,14 @@ package com.mygdx.game.FunctionalComponent.FunctionalBuilding;
 
 import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.build.Building;
+import com.mygdx.game.unit.Unit;
 
-public class ComponentFlameBuild extends FunctionalComponent {
+public class ComponentSpawnUnit extends FunctionalComponent {
     @Override final
     public void FunctionalIterationAnHost(Building building) {
-        building.flame_build();
-    }
-    @Override final
-    public void FunctionalCreateBuildData(Building building) {
-        building.size_light();
+        //super.FunctionalIterationAnHost(building);
+        if(Building.SpawnTotalTime>Building.SpawnMaxTime){
+
+        }
     }
 }

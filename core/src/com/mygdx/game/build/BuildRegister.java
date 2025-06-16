@@ -2,6 +2,7 @@ package com.mygdx.game.build;
 
 import com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
+import com.mygdx.game.Network.BuildPacket;
 
 import java.util.ArrayList;
 
@@ -24,6 +25,16 @@ public class BuildRegister {
         func.Add(FlameBuild);
         BuildingID.add(new Object[]{new Building(0,0,"BigBuildingWood1",ConstructBuilding,
                 "big_build_wood_1",func),"BigBuildingWood1"});
+        ConstructBuilding = new boolean[][]{
+                {true,true,true,true,true,true},
+                {true,true,true,true,true,true},
+                {true,true,true,true,true,true},
+                {false,false,false,false,false,false},
+                {false,false,false,false,false,false},
+                {true,true,true,true,true,true}
+        };
+        BuildingID.add(new Object[]{new Building(0,0,"Build2",ConstructBuilding,
+                "Build2",func),"Build2"});
         //Building building = (Building)BuildingID.get(0)[0];
         //building.ListFunc.Add(FlameBuild);
 

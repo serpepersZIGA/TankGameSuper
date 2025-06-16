@@ -1,11 +1,9 @@
 package com.mygdx.game.object_map;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.mygdx.game.Network.PacketMapObject;
 import com.mygdx.game.Shader.LightingMainSystem;
-import com.mygdx.game.block.Block;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.object_map.component_collision_system.ComponentCollisionSystem;
 
@@ -13,7 +11,6 @@ import java.util.ArrayList;
 
 import static Data.DataColor.RGBFlame;
 import static Data.DataImage.TextureAtl;
-import static com.mygdx.game.main.Main.ContentImage;
 import static com.mygdx.game.main.Main.LightSystem;
 
 public class MapObject {

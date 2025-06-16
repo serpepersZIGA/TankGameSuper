@@ -1,4 +1,4 @@
-package com.mygdx.game.Sound;
+package com.mygdx.game.Network;
 
 public class SoundPacket {
     public int ix,iy;

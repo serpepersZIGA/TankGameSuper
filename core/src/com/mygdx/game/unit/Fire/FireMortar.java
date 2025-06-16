@@ -1,7 +1,7 @@
 package com.mygdx.game.unit.Fire;
 
-import com.mygdx.game.Sound.SoundPacket;
-import com.mygdx.game.bull.BullPacket;
+import com.mygdx.game.Network.SoundPacket;
+import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.method.rand;
