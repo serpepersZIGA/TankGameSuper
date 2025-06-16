@@ -11,7 +11,7 @@ public class MapBaseAdd {
         new File("Map/Structure").mkdirs();
         new File("Map/ObjectMap").mkdirs();
         File MapFile = new File("Map/maps/MapBase.mapt");
-        File Str2File = new File("Map/Structure/street1.str");
+        File Str2File = new File("Map/Structure/streetPoselok.str");
         File StrFile = new File("Map/Structure/street1.str");
         try {
             StrFile.createNewFile();
@@ -76,7 +76,7 @@ public class MapBaseAdd {
                         "Asphalt:0:0:>Y7;\n" +
                         "Asphalt:28:0:>Y7;";
         try {
-            PrintWriter out = new PrintWriter("Map/Structure/street1.str");
+            PrintWriter out = new PrintWriter("Map/Structure/streetPoselok.str");
             out.println(dataStr);
             out.close();
         } catch (IOException ignored) {
