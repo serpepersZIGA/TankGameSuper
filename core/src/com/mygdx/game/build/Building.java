@@ -15,6 +15,7 @@ import java.io.Serializable;
 import java.util.ArrayList;
 
 import static Data.DataImage.TextureAtl;
+import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FlameBuild;
 import static com.mygdx.game.main.Main.LightSystem;
 import static com.mygdx.game.main.Main.width_block_render;
 
@@ -41,6 +42,18 @@ public class Building implements Serializable,Cloneable {
         this.x = x;
         this.y = y;
         this.ListFunc = List;
+        //RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
+        this.build_image = Asset;
+        this.ID = ID;
+        ConstructBuilding = Struct;
+    }
+    public Building(int x, int y, String ID, boolean[][]Struct, String Asset, boolean FlameConf){
+        name = ID;
+        this.x = x;
+        this.y = y;
+        this.ListFunc = new FunctionalList();
+        this.ListFunc.Add(FlameBuild);
+
         //RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
         this.build_image = Asset;
         this.ID = ID;

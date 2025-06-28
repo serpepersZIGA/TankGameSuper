@@ -19,6 +19,7 @@ import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
 import com.mygdx.game.build.*;
+import com.mygdx.game.build.Build.BuildingScan;
 import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
 import com.mygdx.game.bull.BulletRegister;
@@ -45,6 +46,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 
+import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 
 
@@ -215,6 +217,8 @@ public class Main extends ApplicationAdapter {
 		UpdateRegister.UpdateBulletRegisterCreate();
 		LightSystem = new LightingMainSystem();
 		LightSystem.setAmbientColor(new Color(0,0,0,1f));
+		FunctionalComponentBuildingRegisters();
+		BuildingScan.ScanGlobal();
 
 
 		VoidObj = new VoidObject();
@@ -223,6 +227,7 @@ public class Main extends ApplicationAdapter {
 		ContentSound = new DataSound();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
+
 		SoundRegister.SoundAdd();
 		FireRegister.Create();
 		BulletRegister.BulletRegisterAdd();
@@ -249,6 +254,7 @@ public class Main extends ApplicationAdapter {
 
 		RC = new RenderCenter(0,0);
 		Batch = new SpriteBatch();
+
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
 		InputWindow = new InputWindow();

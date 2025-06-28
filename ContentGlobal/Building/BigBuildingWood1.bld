@@ -1,0 +1,8 @@
+Struct = true,true,true,true,false,false,true,true,true,true:
+true,true,true,true,false,false,true,true,true,true:
+true,true,true,true,false,false,true,true,true,true:
+true,true,true,true,false,false,true,true,true,true:
+true,true,true,true,false,false,true,true,true,true:
+true,true,true,true,false,false,true,true,true,true;
+Asset = big_build_wood_1;
+FlameStatus = true;

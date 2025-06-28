@@ -125,7 +125,6 @@ public class MapScan {
                 //StructConf = false;
             } else if (!confS) {
                 TotalTxT = TotalTxT + c;
-                System.out.println(TotalTxT);
             }
         }
 
@@ -264,7 +263,6 @@ public class MapScan {
         boolean confAsphalt = false;
         boolean confAsphaltX = false;
         boolean confAsphaltY = false;
-        boolean StructConf = false;
         boolean ObjConf = false;
         ArrayList<Object>dataObj = new ArrayList<>();
         StringBuilder result = new StringBuilder();
