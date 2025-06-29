@@ -100,17 +100,6 @@ public class BuildingScan {
 
         for (int i = u;i < TxT.length(); i++) {
             char c = TxT.charAt(i);
-            if(TotalTxT.equals("true")){
-                StructBuffer[Y][X] = true;
-                TotalTxT = "";
-            }
-            else if(TotalTxT.equals("false")){
-                StructBuffer[Y][X] = false;
-                TotalTxT = "";
-            }
-            else if (c == '\n' ||  c == ' '|| c =='{'|| c =='}') {
-                //TotalTxT = "";
-            }
             if (c == ',') {
                 X+= 1;
                 TotalTxT = "";
@@ -123,8 +112,19 @@ public class BuildingScan {
             else if(c ==';'){
                 return i;
             }
-            else{
+            else if(c !=' '& c !='\n' & c !='{'& c !='}'){
                 TotalTxT = TotalTxT + c;
+            }
+            else{
+                TotalTxT = "";
+            }
+            if(TotalTxT.equals("true")){
+                StructBuffer[Y][X] = true;
+                TotalTxT = "";
+            }
+            else if(TotalTxT.equals("false")){
+                StructBuffer[Y][X] = false;
+                TotalTxT = "";
             }
 
         }
