@@ -33,6 +33,7 @@ public class BuildingScan {
 //            }
 //            StructBuffer = new boolean[][]{{true,true},
 //                    {true,true}};
+
             BuildRegister.BuildingID.add(new Object[]{
                     new Building(0,0,file.name().replace(".bld",""),StructBuffer,Path,FlameStatus)
                     ,file.name().replace(".bld","")});
@@ -176,19 +177,19 @@ public class BuildingScan {
         //int XMax = xy[0];
         //int YMax = xy[1];
 
-        for (int i = u;i < TxT.length(); i++) {
+        for (int i = u+1;i < TxT.length(); i++) {
             char c = TxT.charAt(i);
-            if (c != '\n' &  c != ' '& c !='{'& c !='}'& c !='='){
-                TotalTxT = TotalTxT + c;
-            }
             if(c ==';'){
-                if(TotalTxT.trim().equals("true")){
+                if(TotalTxT.equals("true")){
                     FlameStatus = true;
                 }
-                else if(TotalTxT.trim().equals("false")){
+                else if(TotalTxT.equals("false")){
                     FlameStatus = false;
                 }
                 return i;
+            }
+            else if (c != '\n' &  c != ' '& c !='{'& c !='}'& c !='='){
+                TotalTxT = TotalTxT + c;
             }
 
         }
@@ -211,31 +212,31 @@ public class BuildingScan {
             MapFile.createNewFile();
         } catch (IOException ignored) {
         }
-        String dataMap = "Asset = image/build/big_build_wood_1.png;\n" +
-                "Struct = {true,true,true,true,false,false,true,true,true,true}:\n" +
-                "                         {true,true,true,true,false,false,true,true,true,true}:\n" +
-                "                         {true,true,true,true,false,false,true,true,true,true}:\n" +
-                "                         {true,true,true,true,false,false,true,true,true,true}:\n" +
-                "                         {true,true,true,true,false,false,true,true,true,true}:\n" +
-                "                         {true,true,true,true,false,false,true,true,true,true};\n" +
+        String dataMap = "Asset = big_build_wood_1;\n" +
+                "Struct = true,true,true,true,false,false,true,true,true,true:\n" +
+                "         true,true,true,true,false,false,true,true,true,true:\n" +
+                "         true,true,true,true,false,false,true,true,true,true:\n" +
+                "         true,true,true,true,false,false,true,true,true,true:\n" +
+                "         true,true,true,true,false,false,true,true,true,true:\n" +
+                "         true,true,true,true,false,false,true,true,true,true;\n" +
                 "FlameStatus = true;";
         try {
-            PrintWriter out = new PrintWriter("Content/Building/BigBuildingWood1.bld");
+            PrintWriter out = new PrintWriter(MapFile);
             out.println(dataMap);
             out.close();
         } catch (IOException ignored) {
         }
         String dataStr =
-                "ConstructBuilding = {true,true,true,true,true,true}:\n" +
-                        "                {true,true,true,true,true,true}:\n" +
-                        "                {true,true,true,true,true,true}:\n" +
-                        "                {false,false,false,false,false,false}:\n" +
-                        "                {false,false,false,false,false,false}:\n" +
-                        "                {true,true,true,true,true,true};\n" +
-                        "Asset = image/build/Build2.png;\n" +
+                "ConstructBuilding = true,true,true,true,true,true:\n" +
+                        "            true,true,true,true,true,true:\n" +
+                        "            true,true,true,true,true,true:\n" +
+                        "            false,false,false,false,false,false:\n" +
+                        "            false,false,false,false,false,false:\n" +
+                        "            true,true,true,true,true,true;\n" +
+                        "Asset = Build2;\n" +
                         "FlameStatus = true; ";
         try {
-            PrintWriter out = new PrintWriter("Content/Building/Building2.bld");
+            PrintWriter out = new PrintWriter(StrFile);
             out.println(dataStr);
             out.close();
         } catch (IOException ignored) {

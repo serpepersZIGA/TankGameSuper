@@ -52,7 +52,9 @@ public class Building implements Serializable,Cloneable {
         this.x = x;
         this.y = y;
         this.ListFunc = new FunctionalList();
-        this.ListFunc.Add(FlameBuild);
+        if(FlameConf) {
+            this.ListFunc.Add(FlameBuild);
+        }
 
         //RenderBuilding = Main.BuildingRegister.Update_big_build_wood1;
         this.build_image = Asset;
