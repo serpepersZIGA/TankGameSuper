@@ -14,6 +14,7 @@ import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.Packet_client;
+import com.mygdx.game.Parsing.UnitsParser;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
@@ -217,19 +218,22 @@ public class Main extends ApplicationAdapter {
 		UpdateRegister.UpdateBulletRegisterCreate();
 		LightSystem = new LightingMainSystem();
 		LightSystem.setAmbientColor(new Color(0,0,0,1f));
+		ContentSound = new DataSound();
+		SoundRegister.SoundAdd();
 		FunctionalComponentBuildingRegisters();
+		FireRegister.Create();
 		BuildingScan.ScanGlobal();
+		CorpusParser.ParsCorpus();
+		EngineParser.ParsEngine();
+		CannonParser.ParsCannon();
 
 
 		VoidObj = new VoidObject();
 		textureBuffer = new Texture("image/infantry/soldat_enemy.png");
 		ContentImage = new DataImage();
-		ContentSound = new DataSound();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
 
-		SoundRegister.SoundAdd();
-		FireRegister.Create();
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
 
@@ -240,7 +244,7 @@ public class Main extends ApplicationAdapter {
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(5,5,3,3,0.3f,0.95f);
+		CycleDayNight = new CycleTimeDay(5,5,3,3,0.15f,0.80f);
 		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();
 
@@ -266,6 +270,7 @@ public class Main extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(KeyboardObj);
 		Option = new Option();
 		Ai = new AI();
+		UnitsParser.Pars();
 		TransportRegister.Create();
 		BuildRegister.Create();
 		field(120, 120);

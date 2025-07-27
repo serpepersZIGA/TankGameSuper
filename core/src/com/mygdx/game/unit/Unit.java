@@ -104,9 +104,6 @@ public abstract class Unit implements Cloneable{
     public int HPTriggerHill;
     public Unit(){
     }
-    public Unit(float x, float y,boolean host, byte team){
-
-    }
     public Unit(float x, float y, float rotation, float speed, float inert_rotation,
                 float inert_speed, String corpus, float width, float height, UnitType type){
         this.x = x;
@@ -128,6 +125,20 @@ public abstract class Unit implements Cloneable{
         this.CorpusUnit = corpus.CorpusAdd();
         this.EngineUnit = engine.EngineAdd();
         this.CannonUnitList = cannon;
+        this.TowerXY = TowerXY;
+        this.classUnit = classUnit;
+//        for(int i = 0;i<cannon.size();i++){
+//            tower_obj.add(new UnitPattern(cannon.get(i).CannonAdd(this,TowerXY[i][0],TowerXY[i][1]),this));
+//        }
+    }
+    public Unit(String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,ClassUnit classUnit
+            ,int medic_help){
+        this.medic_help = (byte) medic_help;
+        this.CorpusUnit = Corpus.CorpusAdd(corpus);
+        this.EngineUnit = Engine.EngineAdd(engine);
+        for (int i = 0;i<cannon.size();i++) {
+            this.CannonUnitList.add(Cannon.CannonAdd(cannon.get(i),this,TowerXY[i][0],TowerXY[i][1]));
+        }
         this.TowerXY = TowerXY;
         this.classUnit = classUnit;
 //        for(int i = 0;i<cannon.size();i++){

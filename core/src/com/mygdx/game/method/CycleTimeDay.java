@@ -37,7 +37,7 @@ public class CycleTimeDay {
         lightRealGlobal = lightGlobal*1.5f;
         lightColorGlobal = lightGlobal*8f;
         LightSystem.setAmbientColor(new Color(0,0,0,lightTotal));
-        //LightSystem.setMinLightness(lightTotal);
+        LightSystem.setMinLightness(lightTotal);
 
         totalTime += 1;
         if (MaxTime < totalTime) {

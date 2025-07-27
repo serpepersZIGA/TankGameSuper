@@ -3,8 +3,8 @@ package com.mygdx.game.FunctionalComponent.FunctionalUnit;
 import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 
 public class FunctionalComponentUnitRegister {
-    public FunctionalComponent TowerXY,MotorControl,BuildCollision,Hill,SoldatSpawn,TowerIteration,FireControl;
-    public FunctionalComponent SoldatControl,SoldatCorrect,WorkBlade,MoveDebris,TowerControl;
+    public static FunctionalComponent TowerXY,MotorControl,BuildCollision,Hill,SoldatSpawn,TowerIteration,FireControl;
+    public static FunctionalComponent SoldatControl,SoldatCorrect,WorkBlade,MoveDebris,TowerControl;
     public FunctionalComponentUnitRegister(){
         TowerControl = new ComponentTowerControl();
         MoveDebris = new ComponentMoveDebris();

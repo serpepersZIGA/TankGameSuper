@@ -6,6 +6,11 @@ import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
 
+import java.util.Objects;
+
+import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
+import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
+
 public class Cannon extends moduleUnit implements Cloneable{
     public Fire fire;
     public int WidthTower,WidthTower2;
@@ -22,6 +27,7 @@ public class Cannon extends moduleUnit implements Cloneable{
     public Sound SoundFire;
     public float fire_x;
     public float fire_y;
+    public String ID;
     public FunctionalList functional = new FunctionalList();
     public float damage_fragment, penetration_fragment, TemperatureDamage;
     public int differenceY, differenceX,TowerX,TowerY,XTower, YTower,CenterX,CenterY,AmountFragment;
@@ -90,6 +96,38 @@ public class Cannon extends moduleUnit implements Cloneable{
         this.functional = functional.clone();
         this.sound = sound;
     }
+    public Cannon(String ID,int WidthTower, int HeightTower, int ConstTowerX, int ConstTowerY, float SpeedRotationTower,
+                  float damage, float penetration
+            , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
+                  float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,String image,FunctionalList functional
+            ,Sound sound,int AmountFragment){
+        this.ID = ID;
+        CannonListID.add(new Object[]{this,ID});
+        this.AmountFragment = AmountFragment;
+        this.WidthTower = WidthTower;
+        this.HeightTower = HeightTower;
+        WidthTower2 = WidthTower/2;
+        HeightTower2 = HeightTower/2;
+        this.ConstTowerX = ConstTowerX;
+        this.ConstTowerY = ConstTowerY;
+        this.SpeedRotationTower = SpeedRotationTower;
+        this.fire = fire;
+        this.damage = damage;
+        this.penetration = penetration;
+        this.SpeedBullet = SpeedBullet;
+        this.TimeBullet =  TimeBullet;
+        this.TimeBulletRand =  TimeBulletRand;
+        this.ReloadMax =  ReloadMax;
+        this.SizeBullet =  SizeBullet;
+        this.damage_fragment =  damage_fragment;
+        this.penetration_fragment =  penetration_fragment;
+        this.TemperatureDamage =  TemperatureDamage;
+        this.TowerX = TowerX;
+        this.TowerY = TowerY;
+        this.image =  image;
+        this.functional = functional.clone();
+        this.sound = sound;
+    }
     public Cannon CannonAdd(Unit unit,int differenceX,int differenceY){
         Cannon CannonAdd;
         try {
@@ -105,6 +143,27 @@ public class Cannon extends moduleUnit implements Cloneable{
             throw new RuntimeException(e);
         }
         return CannonAdd;
+    }
+    public static Cannon CannonAdd(String string,Unit unit,int differenceX,int differenceY){
+        Cannon cannon = null;
+        try {System.out.println(CannonListID.size());
+            for(Object[] cannon1 : CannonListID) {
+                if(Objects.equals(cannon1[1], string)) {
+                    cannon = (Cannon)cannon1[0];
+                }
+            }
+            cannon = (Cannon) cannon.clone();
+            cannon.differenceX = differenceX;
+            cannon.differenceY = differenceY;
+
+            cannon.CenterX = unit.CorpusUnit.corpus_width_2-cannon.WidthTower2-6;
+            cannon.CenterY = unit.CorpusUnit.corpus_height_2-cannon.HeightTower2;
+            //CannonAdd.ConstTowerX = unit.const_tower_x;
+            //CannonAdd.ConstTowerY = unit.const_tower_y;
+            return (Cannon) cannon.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
 
     }
     public void CannonLoad(Unit unit){

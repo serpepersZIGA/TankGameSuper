@@ -3,9 +3,12 @@ package com.mygdx.game.unit.moduleUnit;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Fire.FireRegister;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.main.Main.*;
 
 public class RegisterModuleCannon {
+    public static ArrayList<Object[]> CannonListID = new ArrayList<>();
     public static Cannon CannonFlame,CannonMortar,CannonFlameAuxiliary, CannonMachineGun,CannonMachineGunAuxiliary,CannonAcid;
     public static void Create(){
         FunctionalList func = new FunctionalList();

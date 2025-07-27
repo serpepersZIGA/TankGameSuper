@@ -3,6 +3,11 @@ package com.mygdx.game.unit.moduleUnit;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
 
+import java.util.Objects;
+
+import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
+import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
+
 public class Engine extends moduleUnit implements Cloneable{
     public float Acceleration;
     public float MaxSpeed,MinSpeed;
@@ -11,7 +16,12 @@ public class Engine extends moduleUnit implements Cloneable{
     public float Speed;
     public float slowing = 0.05f;
     public static float speedMinimum = 0.5f;
-    public Engine(float MaxSpeed, float MinSpeed, float Acceleration,float SpeedRotation, FunctionalList functional){
+    public Engine(String ID,float MaxSpeed, float MinSpeed, float Acceleration,float SpeedRotation, boolean ConfControl){
+        EngineListID.add(new Object[]{this,ID});
+        this.functional = new FunctionalList();
+        if(ConfControl){
+            this.functional.Add(RegisterFunctionalComponent.MotorControl);
+        }
         this.MaxSpeed = MaxSpeed;
         this.MinSpeed = MinSpeed;
         this.Acceleration = Acceleration;
@@ -24,6 +34,19 @@ public class Engine extends moduleUnit implements Cloneable{
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
+    }
+    public static Engine EngineAdd(String string){
+        try {
+            for(Object[] engine : EngineListID) {
+                if(Objects.equals(engine[1], string)) {
+                    Engine engine1 = (Engine)engine[0];
+                    return (Engine) engine1.clone();
+                }
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        throw new RuntimeException();
     }
     public void EngineLoad(Unit unit){
         unit.max_speed = MaxSpeed;

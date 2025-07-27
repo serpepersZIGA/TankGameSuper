@@ -26,6 +26,17 @@ public class UnitPattern extends Unit {
         data();
         IDList.add(new Object[]{this,str});
     }
+    public UnitPattern(String str,String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,ClassUnit classUnit,int medic_help){
+        super(corpus,engine,cannon,TowerXY,classUnit,medic_help);
+        tower_obj = new ArrayList<>();
+        behavior = 3;
+        this.collision = TypeCollision.rect;
+        this.CorpusUnit.CorpusLoad(this);
+        this.EngineUnit.EngineLoad(this);
+        ID = str;
+        data();
+        IDList.add(new Object[]{this,str});
+    }
     public UnitPattern(Cannon cannon,Unit unit){
         super(cannon,unit);
         cannon.XTower = (int) unit.CorpusUnit.CenterCorpusX;

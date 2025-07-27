@@ -1,0 +1,25 @@
+WidthTower = 20;
+HeightTower = 15;
+ConstTowerX = 12;
+ConstTowerY = 7;
+SpeedRotationTower = 1;
+Damage = 320;
+Penetration = 24;
+DamageFragment = 12;
+PenetrationFragment = 16;
+TemperatureDamage = 0;
+SizeBullet = 2;
+ReloadMax = 200;
+SpeedBullet = 10;
+TimeBullet = 450;
+TowerX = 15;
+TowerY = 20;
+Fire = Mortar;
+Image = tower_enemy_auxiliary_1;
+
+func.Add = ComponentTowerXY;
+func.Add = ComponentTowerControl;
+func.Add = ComponentFireControl;
+
+Sound = 4;
+AmountFragment = 12;

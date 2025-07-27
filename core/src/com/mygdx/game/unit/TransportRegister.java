@@ -21,8 +21,12 @@ public class TransportRegister {
         list.add(RegisterModuleCannon.CannonFlameAuxiliary);
         list.add(RegisterModuleCannon.CannonFlameAuxiliary);
         list.add(RegisterModuleCannon.CannonFlame);
+        ArrayList<String>listr = new ArrayList<>();
+        listr.add("Flk4CL");
+        listr.add("Flk4CL");
+        listr.add("Flk4C");
         PlayerCannonFlameA1 = new UnitPattern("PanzFlA1",
-                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine1E,list,new int[][]{{-12,52},{12,52},{1,18}},
+                "Panzer1","V2A",listr,new int[][]{{-12,52},{12,52},{1,18}},
                 ClassUnit.Transport,0);
 
         list = new ArrayList<>();
