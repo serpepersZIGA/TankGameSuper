@@ -48,7 +48,7 @@ void main() {
     }
     finalColor = texColor;
     if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
-        finalColor.rgb += ((accumulatedLight.r + accumulatedLight.g + accumulatedLight.b) * 0.3333) * 0.025;
+        finalColor.rgb += ((((accumulatedLight.r+texColor.r)/10) + (accumulatedLight.g+texColor.g)/2 + (accumulatedLight.b+texColor.b)/2) * 0.3333) * 0.025;
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);

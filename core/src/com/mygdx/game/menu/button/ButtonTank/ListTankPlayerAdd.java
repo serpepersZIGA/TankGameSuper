@@ -13,11 +13,10 @@ public class ListTankPlayerAdd {
 //        File PlayerCannonMortarFile = new File("PlayerAllSpawnList/PlayerCannonMortar");
 //        File PlayerCannonFlameFile = new File("PlayerAllSpawnList/PlayerCannonFlame");
         ArrayList<File>FileTank = new ArrayList<>();
-        FileTank.add(new File("PlayerAllSpawnList/PanzFlA1"));
-        FileTank.add(new File("PlayerAllSpawnList/PanzMortA1"));
-        FileTank.add(new File("PlayerAllSpawnList/PanzFlA2"));
-        FileTank.add(new File("PlayerAllSpawnList/PanzMachGunA1"));
-        FileTank.add(new File("PlayerAllSpawnList/PanzAcA1"));
+        FileTank.add(new File("PlayerAllSpawnList/Pz-2A"));
+        FileTank.add(new File("PlayerAllSpawnList/Pz-2AC"));
+        FileTank.add(new File("PlayerAllSpawnList/Pz-2F"));
+        FileTank.add(new File("PlayerAllSpawnList/Pz-2M"));
         for (File file : FileTank){
             try {
                 PrintWriter out = new PrintWriter(file.getPath());
