@@ -7,9 +7,7 @@ import com.mygdx.game.Parsing.Parser;
 import com.mygdx.game.build.BuildRegister;
 import com.mygdx.game.build.Building;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
 
@@ -20,7 +18,7 @@ public class EngineParser {
     public static void ParsEngine(){
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Module/Engine").list();
         if(files.length== 0){
-            //AddBuilding();
+            AddBuilding();
             files = Gdx.files.internal("ContentGlobal/Module/Engine").list();
         }
         for (FileHandle file: files) {
@@ -107,6 +105,33 @@ public class EngineParser {
             }
         }
 
+
+    }
+    public static void AddBuilding(){
+        new File("ContentGlobal").mkdirs();
+        new File("ContentGlobal/Module").mkdirs();
+        new File("ContentGlobal/Module/Engine").mkdirs();
+        File V2A = new File("ContentGlobal/Module/Engine/V2A.Engine");
+        String data = "MaxSpeed = 4.5;\n" +
+                "MinSpeed = -4.5;\n" +
+                "Acceleration = 0.2;\n" +
+                "SpeedRotation = 1;\n" +
+                "ConfControl = true;";
+        Create(V2A,data);
+
+
+    }
+    private static void Create(File file, String str){
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
+            out.close();
+        } catch (IOException ignored) {
+        }
 
     }
 }

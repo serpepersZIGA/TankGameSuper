@@ -9,9 +9,7 @@ import com.mygdx.game.MapFunction.MapBaseAdd;
 import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.UnitPattern;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
@@ -26,11 +24,13 @@ public class UnitsParser {
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Unit").list();
+        System.out.println(files.length);
         if (files.length == 0) {
-            //AddBuilding();
+            AddBuilding();
             files = Gdx.files.internal("ContentGlobal/Unit").list();
         }
         for (FileHandle file : files) {
+            System.out.println(file.name());
             //System.out.println(file.path());
             try {
                 JSON(file.path());
@@ -58,34 +58,11 @@ public class UnitsParser {
 
 
     public static void JSON(String JSON) throws IOException {
-
-        StringBuilder result = new StringBuilder();
-        try (BufferedReader br = new BufferedReader(new FileReader(JSON))) {
-            result.append(br.readLine());
-
-        } catch (IOException e) {
-            e.printStackTrace();
-            MapBaseAdd.AddMap();
-            try {
-                BufferedReader br = new BufferedReader(new FileReader(JSON));
-                result.append(br.readLine());
-            } catch (IOException ignored) {
-            }
-        }
         FileHandle file = Gdx.files.internal(JSON);
-
-
-
         String TxT = file.readString();
         // Чтение JSON-файла и создание объекта Person
         ObjectMapper objectMapper = new ObjectMapper();
 
-
-        // Преобразуем строку JSON в JsonNode
-        JsonNode jsonNode = objectMapper.readTree(TxT);
-        //Motor = jsonNode.get("Engine").asText();
-
-        //Corpus = jsonNode.get("Corpus").asText();
         buff obj = objectMapper.readValue(TxT, buff.class);  ;
         Cannon = new ArrayList<>();
         Cannon.addAll(obj.Cannon);
@@ -93,28 +70,60 @@ public class UnitsParser {
         Corpus = obj.Corpus;
         TowerXY = obj.TowerXY;
         medic_help = obj.MedicConf;
+    }
+    public static void AddBuilding(){
+        new File("ContentGlobal").mkdirs();
+        new File("ContentGlobal/Unit").mkdirs();
+        File Pz2A = new File("ContentGlobal/Unit/Pz2A.json");
+        File Pz2AC = new File("ContentGlobal/Unit/Pz2AC.json");
+        File Pz2F = new File("ContentGlobal/Unit/Pz2F.json");
+        File Pz2M = new File("ContentGlobal/Unit/Pz2M.json");
+        String data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
+                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"MedicConf\": 0\n" +
+                "}";
+        Create(Pz2A,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
+                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"MedicConf\": 0\n" +
+                "}";
+        Create(Pz2AC,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"]," +
+                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"MedicConf\": 0\n" +
+                "}";
+        Create(Pz2F,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"]," +
+                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"MedicConf\": 0\n" +
+                "}";
+        Create(Pz2M,data);
 
-        //for (String node : strings) {
 
-        //}
-        //Cannon.addAll(strings);
-        //Cannon.add("ZX");
-
-//        List<String> cannon = jsonNode.findValuesAsText("Cannon");
-//        System.out.println(cannon);
-//        Cannon = new ArrayList<>(cannon);
-        //List<String> towerXY  = jsonNode.readValue("TowerXY");
-        //System.out.println(towerXY);
-
-
-
-        //int age = jsonNode.get("age").asInt();
-
-        // Вывод данных на экран
-//            System.out.println("Name: " + person.getName());
-//            System.out.println("Age: " + person.getAge());
-//            System.out.println("Email: " + person.getEmail());
-
+    }
+    private static void Create(File file, String str){
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
+            out.close();
+        } catch (IOException ignored) {
+        }
 
     }
 

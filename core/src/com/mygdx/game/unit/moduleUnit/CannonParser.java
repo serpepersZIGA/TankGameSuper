@@ -10,10 +10,9 @@ import com.mygdx.game.Parsing.Parser;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.unit.Fire.Fire;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
+import static com.mygdx.game.build.Build.BuildingScan.AddBuilding;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
 
@@ -33,7 +32,7 @@ public class CannonParser {
     public static void ParsCannon(){
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Module/Cannon").list();
         if(files.length== 0){
-            //AddBuilding();
+            AddBuilding();
             files = Gdx.files.internal("ContentGlobal/Module/Cannon").list();
         }
         for (FileHandle file: files) {
@@ -247,6 +246,241 @@ public class CannonParser {
             }
         }
 
+
+    }
+    public static void AddBuilding(){
+        new File("ContentGlobal").mkdirs();
+        new File("ContentGlobal/Module").mkdirs();
+        new File("ContentGlobal/Module/Cannon").mkdirs();
+        File Ack2A = new File("ContentGlobal/Module/Cannon/Ack2A.Cannon");
+        File Ack2AL = new File("ContentGlobal/Module/Cannon/Ack2AL.Cannon");
+        File Flk4C = new File("ContentGlobal/Module/Cannon/Flk4C.Cannon");
+        File Flk4CL = new File("ContentGlobal/Module/Cannon/Flk4CL.Cannon");
+        File Kwk12A = new File("ContentGlobal//Module/Cannon/Kwk12A.Cannon");
+        File Kwk12AL = new File("ContentGlobal/Module/Cannon/Kwk12AL.Cannon");
+        File Kwk12M = new File("ContentGlobal/Module/Cannon/Kwk12M.Cannon");
+        File Kwk12ML = new File("ContentGlobal/Module/Cannon/Kwk12ML.Cannon");
+        String data = "WidthTower = 55;\n" +
+                "HeightTower = 35;\n" +
+                "ConstTowerX = 34;\n" +
+                "ConstTowerY = 17;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 22;\n" +
+                "Penetration = 20;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 4;\n" +
+                "TimeBullet = 85;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Acid;\n" +
+                "Image = tower_enemy;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 2;\n" +
+                "AmountFragment = 0;";
+        Create(Ack2A,data);
+        data = "WidthTower = 20;\n" +
+                "HeightTower = 15;\n" +
+                "ConstTowerX = 12;\n" +
+                "ConstTowerY = 7;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 15;\n" +
+                "Penetration = 20;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 4;\n" +
+                "TimeBullet = 85;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Acid;\n" +
+                "Image = tower_enemy_auxiliary_1;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 2;\n" +
+                "AmountFragment = 0;";
+        Create(Ack2AL,data);
+        data = "WidthTower = 55;\n" +
+                "HeightTower = 35;\n" +
+                "ConstTowerX = 34;\n" +
+                "ConstTowerY = 17;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 10;\n" +
+                "Penetration = 2;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 1.5;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 4;\n" +
+                "TimeBullet = 85;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Flame;\n" +
+                "Image = tower_enemy;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 5;\n" +
+                "AmountFragment = 0;";
+        Create(Flk4C,data);
+        data = "WidthTower = 20;\n" +
+                "HeightTower = 15;\n" +
+                "ConstTowerX = 12;\n" +
+                "ConstTowerY = 7;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 10;\n" +
+                "Penetration = 2;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 1.5;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 4;\n" +
+                "TimeBullet = 85;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Flame;\n" +
+                "Image = tower_enemy_auxiliary_1;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 5;\n" +
+                "AmountFragment = 0;";
+        Create(Flk4CL,data);
+        data = "WidthTower = 55;\n" +
+                "HeightTower = 35;\n" +
+                "ConstTowerX = 34;\n" +
+                "ConstTowerY = 17;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 15;\n" +
+                "Penetration = 12;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 12;\n" +
+                "TimeBullet = 270;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Bullet;\n" +
+                "Image = tower_enemy;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 4;\n" +
+                "AmountFragment = 0;";
+        Create(Kwk12A,data);
+        data = "WidthTower = 20;\n" +
+                "HeightTower = 15;\n" +
+                "ConstTowerX = 12;\n" +
+                "ConstTowerY = 7;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 15;\n" +
+                "Penetration = 12;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 12;\n" +
+                "TimeBullet = 270;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Bullet;\n" +
+                "Image = tower_enemy_auxiliary_1;\n" +
+                "\n" +
+                "func.Add ComponentTowerXY;\n" +
+                "func.Add ComponentTowerControl;\n" +
+                "func.Add ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 4;\n" +
+                "AmountFragment = 0;";
+        Create(Kwk12AL,data);
+        data = "WidthTower = 55;\n" +
+                "HeightTower = 35;\n" +
+                "ConstTowerX = 34;\n" +
+                "ConstTowerY = 17;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 420;\n" +
+                "Penetration = 24;\n" +
+                "DamageFragment = 12;\n" +
+                "PenetrationFragment = 16;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 200;\n" +
+                "SpeedBullet = 10;\n" +
+                "TimeBullet = 450;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Mortar;\n" +
+                "Image = tower_enemy;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 4;\n" +
+                "AmountFragment = 15;";
+        Create(Kwk12M,data);
+        data = "WidthTower = 20;\n" +
+                "HeightTower = 15;\n" +
+                "ConstTowerX = 12;\n" +
+                "ConstTowerY = 7;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 320;\n" +
+                "Penetration = 24;\n" +
+                "DamageFragment = 12;\n" +
+                "PenetrationFragment = 16;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 200;\n" +
+                "SpeedBullet = 10;\n" +
+                "TimeBullet = 450;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Mortar;\n" +
+                "Image = tower_enemy_auxiliary_1;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 4;\n" +
+                "AmountFragment = 12;";
+        Create(Kwk12ML,data);
+
+    }
+    private static void Create(File file,String str){
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
+            out.close();
+        } catch (IOException ignored) {
+        }
 
     }
 

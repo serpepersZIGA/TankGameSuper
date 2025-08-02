@@ -7,9 +7,7 @@ import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.MapFunction.MapBaseAdd;
 import com.mygdx.game.Parsing.Parser;
 
-import java.io.BufferedReader;
-import java.io.FileReader;
-import java.io.IOException;
+import java.io.*;
 
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
@@ -23,7 +21,7 @@ public class CorpusParser {
     public static void ParsCorpus(){
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Module/Corpus").list();
         if(files.length== 0){
-            //AddBuilding();
+            AddBuilding();
             files = Gdx.files.internal("ContentGlobal/Module/Corpus").list();
         }
         for (FileHandle file: files) {
@@ -131,4 +129,37 @@ public class CorpusParser {
 
 
     }
+    public static void AddBuilding(){
+        new File("ContentGlobal").mkdirs();
+        new File("ContentGlobal/Module").mkdirs();
+        new File("ContentGlobal/Module/Corpus").mkdirs();
+        File Panzer1 = new File("ContentGlobal/Module/Corpus/V2A.Corpus");
+        String data = "MaxHP = 1200;\n" +
+                "Armor = 35;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 130;\n" +
+                "Difference = 18;\n" +
+                "Image = corpus_enemy;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(Panzer1,data);
+
+
+    }
+    private static void Create(File file, String str){
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
+            out.close();
+        } catch (IOException ignored) {
+        }
+
+    }
+
 }

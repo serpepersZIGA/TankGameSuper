@@ -146,7 +146,7 @@ public class Cannon extends moduleUnit implements Cloneable{
     }
     public static Cannon CannonAdd(String string,Unit unit,int differenceX,int differenceY){
         Cannon cannon = null;
-        try {System.out.println(CannonListID.size());
+        try {
             for(Object[] cannon1 : CannonListID) {
                 if(Objects.equals(cannon1[1], string)) {
                     cannon = (Cannon)cannon1[0];

@@ -25,37 +25,6 @@ public class TransportRegister {
         listr.add("Flk4CL");
         listr.add("Flk4CL");
         listr.add("Flk4C");
-        PlayerCannonFlameA1 = new UnitPattern("PanzFlA1",
-                "Panzer1","V2A",listr,new int[][]{{-12,52},{12,52},{1,18}},
-                ClassUnit.Transport,0);
-
-        list = new ArrayList<>();
-        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
-        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
-        list.add(RegisterModuleCannon.CannonMortar);
-        PlayerCannonMortarA1 = new UnitPattern("PanzMortA1",
-                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine1E,list,new int[][]{{-12,52},{12,52},{1,18}},
-                ClassUnit.Transport,0);
-
-        PlayerCannonFlameA2 = new UnitPattern("PanzFlA2",
-                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine2E,list,new int[][]{{-12,52},{12,52},{1,18}},
-                ClassUnit.Transport,0);
-
-        list = new ArrayList<>();
-        list.add(RegisterModuleCannon.CannonMachineGunAuxiliary);
-        list.add(RegisterModuleCannon.CannonMachineGunAuxiliary);
-        list.add(RegisterModuleCannon.CannonMachineGun);
-        PlayerCannonMachineGunA1 = new UnitPattern("PanzMachGunA1",
-                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine1E,list,new int[][]{{-12,52},{12,52},{1,18}}
-        ,ClassUnit.Transport,0);
-
-        list = new ArrayList<>();
-        list.add(RegisterModuleCannon.CannonMachineGunAuxiliary);
-        list.add(RegisterModuleCannon.CannonMachineGunAuxiliary);
-        list.add(RegisterModuleCannon.CannonAcid);
-        PlayerCannonAcidA1 = new UnitPattern("PanzAcA1",
-                RegisterModuleCorpus.CorpusT1, RegisterModuleEngine.Engine3E,list,new int[][]{{-12,52},{12,52},{1,18}},
-                ClassUnit.Transport,0);
 
         list = new ArrayList<>();
         TrackSoldatT1 = new UnitPattern("TrSolS1",RegisterModuleCorpus.CorpusSoldatTrackS1,
