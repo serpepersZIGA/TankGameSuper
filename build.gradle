@@ -50,6 +50,7 @@ project(":desktop") {
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+
         
     }
 }
@@ -64,9 +65,11 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
 
-        implementation 'com.fasterxml.jackson.core:jackson-core:2.10.1'
-        implementation 'com.fasterxml.jackson.core:jackson-annotations:2.10.1'
-        implementation 'com.fasterxml.jackson.core:jackson-databind:2.10.1'
-        
+
+        implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
+        implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.4'
+        implementation 'com.fasterxml.jackson.core:jackson-core:2.12.4'
+
+
     }
 }

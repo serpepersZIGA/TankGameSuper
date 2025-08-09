@@ -1,19 +1,13 @@
 package com.mygdx.game.Parsing;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
-
-import com.mygdx.game.MapFunction.MapBaseAdd;
 import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.UnitPattern;
 
 import java.io.*;
 import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-
 
 public class UnitsParser {
     public static String Engine, Corpus, Soldat;
@@ -38,18 +32,10 @@ public class UnitsParser {
             } catch (IOException e) {
                 throw new RuntimeException(e);
             }
-//            for (int i = file.name().length()-4;i<file.name().length();i++){
-//                Name = file.name().replace(".bld");
-//            }
-//            StructBuffer = new boolean[][]{{true,true},
-//                    {true,true}};
 
             new UnitPattern(file.name().replace(".json", ""),
                     Corpus, Engine, Cannon, TowerXY, classUnit, medic_help);
 
-
-            //List.Clear();
-            //System.out.println(BuildRegister.BuildingID.size());
 
         }
 
@@ -63,7 +49,7 @@ public class UnitsParser {
         // Чтение JSON-файла и создание объекта Person
         ObjectMapper objectMapper = new ObjectMapper();
 
-        buff obj = objectMapper.readValue(TxT, buff.class);  ;
+        buff obj = objectMapper.readValue(TxT, buff.class);
         Cannon = new ArrayList<>();
         Cannon.addAll(obj.Cannon);
         Engine = obj.Engine;
@@ -74,10 +60,10 @@ public class UnitsParser {
     public static void AddBuilding(){
         new File("ContentGlobal").mkdirs();
         new File("ContentGlobal/Unit").mkdirs();
-        File Pz2A = new File("ContentGlobal/Unit/Pz2A.json");
-        File Pz2AC = new File("ContentGlobal/Unit/Pz2AC.json");
-        File Pz2F = new File("ContentGlobal/Unit/Pz2F.json");
-        File Pz2M = new File("ContentGlobal/Unit/Pz2M.json");
+        File Pz2A = new File("ContentGlobal/Unit/Pz-2A.json");
+        File Pz2AC = new File("ContentGlobal/Unit/Pz-2AC.json");
+        File Pz2F = new File("ContentGlobal/Unit/Pz-2F.json");
+        File Pz2M = new File("ContentGlobal/Unit/Pz-2M.json");
         String data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +

@@ -227,14 +227,14 @@ public class BuildingScan {
         } catch (IOException ignored) {
         }
         String dataStr =
-                "ConstructBuilding = true,true,true,true,true,true:\n" +
-                        "            true,true,true,true,true,true:\n" +
-                        "            true,true,true,true,true,true:\n" +
-                        "            false,false,false,false,false,false:\n" +
-                        "            false,false,false,false,false,false:\n" +
-                        "            true,true,true,true,true,true;\n" +
+                "Struct = true,true,true,true,true,true:\n" +
+                        "true,true,true,true,true,true:\n" +
+                        "true,true,true,true,true,true:\n" +
+                        "false,false,false,false,false,false:\n" +
+                        "false,false,false,false,false,false:\n" +
+                        "true,true,true,true,true,true;\n" +
                         "Asset = Build2;\n" +
-                        "FlameStatus = true; ";
+                        "FlameStatus = true;";
         try {
             PrintWriter out = new PrintWriter(StrFile);
             out.println(dataStr);

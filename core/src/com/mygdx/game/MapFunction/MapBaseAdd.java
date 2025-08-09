@@ -64,10 +64,10 @@ public class MapBaseAdd {
         }
 
         dataStr =
-                "Build2:1:1:;\n" +
-                        "Build2:8:1:;\n" +
-                        "Build2:15:1:;\n" +
-                        "Build2:22:1:;\n" +
+                "Building2:1:1:;\n" +
+                        "Building2:8:1:;\n" +
+                        "Building2:15:1:;\n" +
+                        "Building2:22:1:;\n" +
                         "Asphalt:0:0:>X29;\n" +
                         "Asphalt:0:7:>X29;\n" +
                         "Asphalt:7:0:>Y7;\n" +
