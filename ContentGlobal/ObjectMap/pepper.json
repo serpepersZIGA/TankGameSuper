@@ -1,0 +1,12 @@
+{
+  "Image": "pepper_object_map",
+  "Collision":"CollisionSlow",
+  "X":2,
+  "Y":2,
+  "width":20,
+  "height":20,
+  "HP":120,
+  "LightingConf":true,
+  "Lighting":600,
+  "SpawnUnit": true
+}

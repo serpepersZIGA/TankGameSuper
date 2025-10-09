@@ -61,7 +61,7 @@ public class WeatherMainSystem {
         texture = new Texture(Gdx.files.internal("buffer2.png"));
     }
     public static void  WeatherCycle(){
-        WeatherGlobal = rand.rand(1);
+        WeatherGlobal = rand.rand(2);
     }
     public static void  WeatherIteration(SpriteBatch batch){
         //WeatherGlobal = 0;
@@ -71,7 +71,7 @@ public class WeatherMainSystem {
             break;
             case 1:{
                 // Рендерим эффект дождя
-                WeatherRain(batch);
+                //WeatherRain(batch);
 
             }
             break;

@@ -1,0 +1,6 @@
+{
+  "Engine": "V2A",
+  "Corpus": "Panzer1",
+  "Cannon": ["Flk4CL","Flk4CL","Flk4C"],  "TowerXY": [[-12,52],[12,52],[1,18]],
+  "MedicConf": 0
+}
