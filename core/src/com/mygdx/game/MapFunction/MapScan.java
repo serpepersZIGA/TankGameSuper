@@ -1,9 +1,5 @@
 package com.mygdx.game.MapFunction;
 
-import com.fasterxml.jackson.core.JsonProcessingException;
-import com.fasterxml.jackson.databind.ObjectMapper;
-import com.mygdx.game.Parsing.buffObjMap;
-import com.mygdx.game.build.Build.BigBuildingWood1;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.block.UpdateRegister;
@@ -17,11 +13,10 @@ import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.mygdx.game.build.BuildRegister.BuildingID;
-import static com.mygdx.game.build.BuildRegister.PacketBuilding;
+
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.object_map.MapObject.ObjectMapIDList;
 
-//import static com.mygdx.game.object_map.ObjectLoad.MapSpawnObject;
 import static java.nio.file.Files.readAllLines;
 
 public class MapScan {

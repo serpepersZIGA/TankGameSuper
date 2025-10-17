@@ -1,19 +1,10 @@
-package com.mygdx.game.build.Build;
+package com.mygdx.game.build;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.MapFunction.MapBaseAdd;
-import com.mygdx.game.build.BuildRegister;
-import com.mygdx.game.build.Building;
-import com.mygdx.game.main.Main;
-import com.mygdx.game.menu.button.ButtonTank.ListTankPlayerAdd;
-import com.mygdx.game.menu.button.ButtonTank.TankChoice;
 
 import java.io.*;
-import java.util.Objects;
-
-import static com.mygdx.game.main.Main.LightSystem;
-import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.SpawnList;
 
 public class BuildingScan {
     public static boolean[][]StructBuffer;

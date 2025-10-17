@@ -32,7 +32,6 @@ public class Building implements Serializable,Cloneable {
     public String ID;
     public boolean[][]ConstructBuilding;
     public int xMatrix,yMatrix;
-    public UpdateBuilding RenderBuilding;
     public int RightTopPointX,RightTopPointY;
     public FunctionalList ListFunc;
     public static int SpawnMaxTime = 600,SpawnTotalTime;

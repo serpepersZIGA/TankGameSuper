@@ -3,7 +3,6 @@ import Content.Particle.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
@@ -22,7 +21,7 @@ import com.mygdx.game.Weather.WeatherMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
 import com.mygdx.game.build.*;
-import com.mygdx.game.build.Build.BuildingScan;
+import com.mygdx.game.build.BuildingScan;
 import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
 import com.mygdx.game.bull.BulletRegister;
@@ -102,11 +101,8 @@ public class Main extends ApplicationAdapter {
 	public static int yMaxAir;
 	public static int xMap ;
 	public static int yMap ;
-	public static Texture textureBuffer;
 	public static EventRegister EventData;
 	public static int IDClient;
-	public static UpdateBuildingRegister BuildingRegister;
-	public static  ArrayList<Packet_client> Clients = new ArrayList<>();
 	public static PlayerSpawnData SpawnPlayer;
 	public static String SpawnIDPlayer;
 	public static CycleTimeDay CycleDayNight;
@@ -121,7 +117,6 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
-    public static SpriteBatch BatchShader;
 
 
 
@@ -234,7 +229,6 @@ public class Main extends ApplicationAdapter {
 
 
 		VoidObj = new VoidObject();
-		textureBuffer = new Texture("image/infantry/soldat_enemy.png");
 		ContentImage = new DataImage();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
@@ -250,7 +244,6 @@ public class Main extends ApplicationAdapter {
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(80,80,15,15,0.15f,0.80f);
-		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();
 
 		Render = new RenderPrimitive();
@@ -263,7 +256,6 @@ public class Main extends ApplicationAdapter {
 
 		RC = new RenderCenter(0,0);
 		Batch = new SpriteBatch();
-        BatchShader = new SpriteBatch();
         new WeatherMainSystem();
 
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
@@ -320,7 +312,6 @@ public class Main extends ApplicationAdapter {
 	@Override final
 	public void dispose () {
 		ContentSound.dispose();
-		textureBuffer.dispose();
 		BlockList2D.clear();
 		BuildingList.clear();
 		AirList.clear();
@@ -334,7 +325,6 @@ public class Main extends ApplicationAdapter {
 		ButtonList.clear();
 		KeyboardObj = null;
 		RC= null;
-		Clients= null;
 		Batch.dispose();
 		Render.dispose();
 		font.dispose();

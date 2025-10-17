@@ -12,9 +12,7 @@ import com.mygdx.game.unit.Fire.Fire;
 
 import java.io.*;
 
-import static com.mygdx.game.build.Build.BuildingScan.AddBuilding;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
-import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
 
 public class CannonParser {
     public static int WidthTower,HeightTower,ConstTowerX,ConstTowerY,Difference,SizeBullet,ReloadMax,TimeBullet

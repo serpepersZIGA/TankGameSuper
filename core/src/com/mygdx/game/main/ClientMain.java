@@ -14,21 +14,17 @@ import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Network.*;
-import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.Network.BuildPacket;
-import com.mygdx.game.build.BuildType;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.Sound.SoundPlay;
-import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.ObjectMapAssets;
 import com.mygdx.game.object_map.VoidObject;
-import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.SpawnPlayer.*;
 
@@ -83,7 +79,6 @@ public class ClientMain extends Listener {
         Client.getKryo().register(Blood.class);
         Client.getKryo().register(FlameStatic.class);
         Client.getKryo().register(BuildPacket.class);
-        Client.getKryo().register(BuildType.class);
         Client.getKryo().register(PacketBuildingServer.class);
         Client.getKryo().register(SoundPacket.class);
 

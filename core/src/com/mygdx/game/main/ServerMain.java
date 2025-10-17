@@ -9,7 +9,6 @@ import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Network.*;
 import com.mygdx.game.Network.BuildPacket;
-import com.mygdx.game.build.BuildType;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.method.CycleTimeDay;
@@ -62,7 +61,6 @@ public class ServerMain extends Listener {
         Server.getKryo().register(Blood.class);
         Server.getKryo().register(FlameStatic.class);
         Server.getKryo().register(BuildPacket.class);
-        Server.getKryo().register(BuildType.class);
         Server.getKryo().register(PacketBuildingServer.class);
 
         Server.getKryo().register(SoundPacket.class);

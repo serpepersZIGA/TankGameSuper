@@ -35,7 +35,6 @@ public abstract class Bullet implements Serializable,Cloneable {
     public boolean BangSpawn;
     public boolean FlameSpawn;
     public EventGame SpawnParticle;
-    private boolean z;
     public EffectBullet effectBullet = EffectBullet.Void;
     public byte type_team,height,clear_sost;
     public FunctionalList functionalList;
