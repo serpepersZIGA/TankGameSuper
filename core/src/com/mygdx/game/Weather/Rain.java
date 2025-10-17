@@ -12,14 +12,13 @@ public class Rain {
     public float speedX = 1.2f,speedY = -15;
     public Rain(){
         x = rand.rand(Gdx.graphics.getWidth());
-        y = Gdx.graphics.getHeight();
+        y = Gdx.graphics.getHeight()+rand.rand(Gdx.graphics.getHeight());
         width = 6;
         height = 18;
     }
     public void RainIteration(){
         this.y+=speedY;
         this.x+=speedX;
-        System.out.println(x+"  "+y);
         if(y <0){
             speedY = -10;
             speedY += rand.rand(-7);

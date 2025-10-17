@@ -170,6 +170,7 @@ public class ActionMenu extends ActionGame {
                 }
             } else {
                 try {
+                    LightSystem.lights.clear();
                     Main_client = new ClientMain();
                     Main_client.create();
                     ActionGame = ActionGameCl;

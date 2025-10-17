@@ -6,6 +6,8 @@ import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Network.PacketMapObject;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.block.Block;
+import com.mygdx.game.main.ActionGameClient;
+import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
@@ -17,6 +19,7 @@ import com.mygdx.game.object_map.component_collision_system.ComponentCollisionSy
 import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.Objects;
 
 import static Data.DataColor.RGBFlame;
 import static Data.DataImage.TextureAtl;
@@ -27,7 +30,7 @@ public class MapObject implements Cloneable{
     public static ArrayList<PacketMapObject> PacketMapObjects = new ArrayList<>();
     public static ArrayList<int[]>SpawnerList = new ArrayList<>();
     public int width,height,hp,y,x,ix,iy;
-    public int width_render,height_render,id;
+    public int width_render,height_render;
     public String img,CollisionBuff;
     public float distance_lighting,distance_lighting_2;
     public boolean lighting,SpawnUnit;
@@ -37,30 +40,6 @@ public class MapObject implements Cloneable{
     public static HashMap<String,MapObject> ObjectMapIDList=new HashMap<>();
     public MapObject(){
     }
-    public MapObject(int x, int y, String img, int width, int height, int hp, int ix, int iy,
-        ComponentCollisionSystem collision,boolean lighting,float distance_lighting,String assets){
-        this.x = x+ix*Main.width_block;
-        this.y = y+iy*Main.height_block;
-        this.width = width;
-        this.lighting = lighting;
-        this.height = height;
-        this.width_render = (int) (width*Main.Zoom);
-        this.height_render = (int) (height*Main.Zoom);
-        this.distance_lighting = distance_lighting;
-        this.hp = hp;
-        this.img = img;
-        this.assets = assets;
-        if(lighting){
-            light = LightSystem.addLight().set(this.x,this.y,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
-                    4f,distance_lighting,0.2f);
-            //light.radius = distance_lighting;
-
-        }
-        //center_render();
-
-        Collision = collision;
-    }
-
     public MapObject(String img, int width, int height, int hp, int ix, int iy,
                      String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,String assets){
         this.ix = ix;
@@ -87,20 +66,21 @@ public class MapObject implements Cloneable{
     }
     public void MapObjectAdd(int x,int y){
         try {
-            BlockList2D.get(y).get(x).objMap = (MapObject) this.clone();
-            MapObject obj = BlockList2D.get(y).get(x).objMap;
+            MapObject obj = (MapObject) this.clone();
+            BlockList2D.get(y).get(x).objMap = obj;
 
             obj.x = x*Main.width_block+ix;
             obj.y = y*Main.height_block+iy;
 
-            if(lighting){
+            if(this.lighting){
+                obj.lighting = true;
                 obj.light = LightSystem.addLight().set(obj.x,obj.y
                         ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
                         4f,distance_lighting,0.2f);
                 //light.radius = distance_lighting;
 
             }
-            switch (CollisionBuff){
+            switch (this.CollisionBuff){
                 case "CollisionBreak":obj.Collision = new CollisionBreak(obj.x,obj.y,width,height);
                 break;
                 case "CollisionSlow":obj.Collision = new CollisionSlow(obj.x,obj.y,width,height);
@@ -108,7 +88,7 @@ public class MapObject implements Cloneable{
                 case "CollisionVoid":obj.Collision = new CollisionVoid();
                     break;
             }
-            if(SpawnUnit){
+            if(this.SpawnUnit){
                 SpawnerList.add(new int[]{y,x});
             }
 

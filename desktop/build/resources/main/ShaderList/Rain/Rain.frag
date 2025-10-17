@@ -15,7 +15,6 @@ struct Rain {
 uniform Rain u_rain[MAX];
 
 uniform vec2 u_resolution;
-uniform float u_time;
 
 varying vec4 v_color;
 varying vec2 v_texCoords;

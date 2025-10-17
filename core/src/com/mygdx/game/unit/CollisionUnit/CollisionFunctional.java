@@ -35,11 +35,12 @@ public abstract class CollisionFunctional{
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
-                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
             }
             if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
-                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
             }
+
             if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
                 unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
@@ -68,10 +69,10 @@ public abstract class CollisionFunctional{
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
             }
             if(sqrt(pow2(x_2_1_2 - x_1_1) + pow2(y_2_1_2 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
             }
             if(sqrt(pow2(x_1_1_1 - x_2_1) + pow2(y_1_1_1 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
                 unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;
@@ -95,10 +96,10 @@ public abstract class CollisionFunctional{
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
             }
             if(sqrt(pow2(x_2_2_2 - x_1_1) + pow2(y_2_2_2 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
             }
             if(sqrt(pow2(x_1_1_1 - x_2_2) + pow2(y_1_1_1 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
                 unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;

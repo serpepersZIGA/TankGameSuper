@@ -117,6 +117,7 @@ public class ServerMain extends Listener {
         YMap.get(ix).lighting = BlockList2D.get(iy).get(ix).objMap.lighting;
         YMap.get(ix).distance_lighting = BlockList2D.get(iy).get(ix).objMap.distance_lighting;
         YMap.get(ix).objectAssets = BlockList2D.get(iy).get(ix).objMap.assets;
+
     }
     public void PacketBuildServer(int i){
         PacketBuildingServer.BuildPack.add(new BuildPacket());

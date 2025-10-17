@@ -14,6 +14,7 @@ import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Network.*;
+import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.Network.BuildPacket;
@@ -105,7 +106,6 @@ public class ClientMain extends Listener {
         }
         packetUnitUpdate.ConfUnitList = true;
         packetUnitUpdate.ConfDebrisList = true;
-
         Client.addListener(Main.Main_client);
     }
 
@@ -209,6 +209,8 @@ public class ClientMain extends Listener {
 
             PacketMapObjects = ((PackerServer) p).mapObject;
             for (PacketMapObject packetMapObject : PacketMapObjects) {
+                LightSystem.lights.removeIf(light -> BlockList2D.get(packetMapObject.iy).get(packetMapObject.ix).objMap.light == light);
+
                 BlockList2D.get(packetMapObject.iy).get(packetMapObject.ix).objMap
                         = new VoidObject();
                 //KeyboardObj.zoom_const();
@@ -226,6 +228,8 @@ public class ClientMain extends Listener {
         } else if (p instanceof PacketBuildingServer) {
             PacketBuilding = ((PacketBuildingServer) p).BuildPack;
             BuildingList.clear();
+
+            //LightSystem.lightsRender.clear();
             for (int i = 0; i < PacketBuilding.size(); i++) {
                 Building_create(i, PacketBuilding.get(i).x - width_block, PacketBuilding.get(i).y - height_block);
             }
@@ -235,8 +239,7 @@ public class ClientMain extends Listener {
                 for (int ix = 0; ix < objMapList.get(iy).size(); ix++) {
                     //System.out.println(ix+" "+iy);
                     object_create(ix, iy, objMapList.get(iy).get(ix).objectAssets, objMapList.get(iy).get(ix).x,
-                            objMapList.get(iy).get(ix).y, objMapList.get(iy).get(ix).width, objMapList.get(iy).get(ix).height,
-                            objMapList.get(iy).get(ix).lighting, objMapList.get(iy).get(ix).distance_lighting);
+                            objMapList.get(iy).get(ix).y);
                 }
             }
             Block.passability_detected();
@@ -246,14 +249,15 @@ public class ClientMain extends Listener {
             packetUnitUpdate = (PacketUnitUpdate)p;
         }
     }
+    //public static int si = 0;
 
-    public void object_create(int ix, int iy, String assets, int x, int y, int width, int height,
-                              boolean light, float distance_lighting) {
+    public void object_create(int ix, int iy, String assets, int x, int y) {
         try {
-            if (width != 0) {
-                ObjectMapIDList.get(assets).MapObjectAdd(x,y);
-            } else {
-                BlockList2D.get(iy).get(ix).objMap = new VoidObject();
+             if(!Objects.equals(assets, "")) {
+                 ObjectMapIDList.get(assets).MapObjectAdd(ix, iy);
+             }
+             else {
+                BlockList2D.get(iy).get(ix).objMap = VoidObj;
             }
         } catch (IndexOutOfBoundsException e) {
             e.printStackTrace();
@@ -334,7 +338,7 @@ public class ClientMain extends Listener {
         }
     }
 
-    public void debris_create(DebrisPacket debris) {
+    public void debris_create(DebrisPacket debris){
         Unit unit = Unit.IDList.get(debris.UnitID);
         DebrisList.add(new UnitPattern(unit.CorpusUnit, debris.UnitID,debris.x,debris.y,debris.rotation,0,0,0));
     }

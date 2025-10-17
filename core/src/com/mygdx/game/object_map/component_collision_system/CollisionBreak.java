@@ -24,6 +24,8 @@ public class CollisionBreak extends ComponentCollisionSystem{
             Main.PacketServer.mapObject.get(n).iy = iy;
             LightSystem.lights.remove(Main.BlockList2D.get(iy).get(ix).objMap.light);
             Main.BlockList2D.get(iy).get(ix).objMap = Main.VoidObj;
+            //Main.BlockList2D.get(iy).get(ix).objMap.assets = "";
+            //Main.BlockList2D.get(iy).get(ix).objMap.lighting
 
         }
 

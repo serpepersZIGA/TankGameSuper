@@ -1,6 +1,6 @@
 {
   "Image": "pepper_object_map",
-  "Collision":"CollisionSlow",
+  "Collision":"CollisionBreak",
   "X":2,
   "Y":2,
   "width":20,

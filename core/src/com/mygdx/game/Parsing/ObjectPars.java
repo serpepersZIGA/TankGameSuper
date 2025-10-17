@@ -66,43 +66,21 @@ public class ObjectPars {
     }
     public static void AddBuilding(){
         new File("ContentGlobal").mkdirs();
-        new File("ContentGlobal/Unit").mkdirs();
-        File Pz2A = new File("ContentGlobal/Unit/Pz-2A.json");
-        File Pz2AC = new File("ContentGlobal/Unit/Pz-2AC.json");
-        File Pz2F = new File("ContentGlobal/Unit/Pz-2F.json");
-        File Pz2M = new File("ContentGlobal/Unit/Pz-2M.json");
+        new File("ContentGlobal/ObjectMap").mkdirs();
+        File Pz2A = new File("ContentGlobal/ObjectMap/pepper.json");
         String data = "{\n" +
-                "  \"Engine\": \"V2A\",\n" +
-                "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
+                "  \"Image\": \"pepper_object_map\",\n" +
+                "  \"Collision\":\"CollisionBreak\",\n" +
+                "  \"X\":2,\n" +
+                "  \"Y\":2,\n" +
+                "  \"width\":20,\n" +
+                "  \"height\":20,\n" +
+                "  \"HP\":120,\n" +
+                "  \"LightingConf\":true,\n" +
+                "  \"Lighting\":600,\n" +
+                "  \"SpawnUnit\": false\n" +
                 "}";
         Create(Pz2A,data);
-        data = "{\n" +
-                "  \"Engine\": \"V2A\",\n" +
-                "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
-                "}";
-        Create(Pz2AC,data);
-        data = "{\n" +
-                "  \"Engine\": \"V2A\",\n" +
-                "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"]," +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
-                "}";
-        Create(Pz2F,data);
-        data = "{\n" +
-                "  \"Engine\": \"V2A\",\n" +
-                "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"]," +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
-                "}";
-        Create(Pz2M,data);
 
 
     }

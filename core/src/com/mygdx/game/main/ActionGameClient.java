@@ -88,6 +88,10 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             Main.FlameList.get(i).all_action(i);}
         for (i = 0; i< Main.FlameParticleList.size(); i++){
             Main.FlameParticleList.get(i).all_action(i);}
+
+        for (i= 0; i< Main.FlameSpawnList.size(); i++){
+            Main.FlameSpawnList.get(i).all_action(i);
+        }
         for (i = 0; i< Main.BulletList.size(); i++){
             Bullet bullet = Main.BulletList.get(i);
             if(bullet != null) {
@@ -96,9 +100,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
-        for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action(i);
-        }
+        //Batch.flush();
         for(int i = 0;i<ItemList.size();i++){
             ItemList.get(i).IterationItemClient();
         }

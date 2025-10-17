@@ -103,7 +103,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action();
             }
         }
-        Batch.flush();
+        //Batch.flush();
         for(int i = 0;i<ItemList.size();i++){
             ItemList.get(i).IterationItem();
         }

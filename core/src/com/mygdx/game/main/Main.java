@@ -18,7 +18,6 @@ import com.mygdx.game.Parsing.ObjectPars;
 import com.mygdx.game.Parsing.UnitsParser;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
-import com.mygdx.game.Weather.RainRippleShader;
 import com.mygdx.game.Weather.WeatherMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
@@ -123,7 +122,6 @@ public class Main extends ApplicationAdapter {
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
     public static SpriteBatch BatchShader;
-    public static RainRippleShader RainRippleShader;
 
 
 
@@ -251,7 +249,7 @@ public class Main extends ApplicationAdapter {
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(5,5,3,3,0.15f,0.80f);
+		CycleDayNight = new CycleTimeDay(80,80,15,15,0.15f,0.80f);
 		BuildingRegister = new UpdateBuildingRegister();
 		PacketBuildingServer = new PacketBuildingServer();
 
@@ -267,7 +265,6 @@ public class Main extends ApplicationAdapter {
 		Batch = new SpriteBatch();
         BatchShader = new SpriteBatch();
         new WeatherMainSystem();
-        RainRippleShader = new RainRippleShader();
 
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
