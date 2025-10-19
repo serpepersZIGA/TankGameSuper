@@ -20,7 +20,7 @@ public class Ripple {
     public Ripple(int x,int y){
         this.x= (int) (x+RC.x2);
         this.y= (int) (y+RC.y2);
-        timer = 120;
+        timer = 40;
     }
     public void render(){
         timer-=1;
