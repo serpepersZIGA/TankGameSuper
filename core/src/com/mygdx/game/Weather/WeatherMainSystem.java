@@ -61,7 +61,6 @@ public class WeatherMainSystem {
     public static void  RippleIteration(SpriteBatch batch){
         switch (WeatherGlobal){
             case 0:{
-                WeatherRipple(batch);
 
             }
             break;
@@ -103,7 +102,7 @@ public class WeatherMainSystem {
     public static void  WeatherIteration(SpriteBatch batch){
         switch (WeatherGlobal){
             case 0:{
-                WeatherRain(batch);
+
             }
             break;
             case 1:{

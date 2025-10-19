@@ -37,9 +37,7 @@ void main() {
     vec4 textureColor = vec4(0.0, 0.0, 0.0, 0.0);
 
     // Вычисление текущего цикла волны
-    if(u_time<20 && u_time>30){u_time =20;}
-    float cycleTime = u_time * waveSpeed;
-    float waveAge = cycleTime;// Возраст текущей волны
+    float waveAge = u_time * waveSpeed;// Возраст текущей волны
 
     // Случайная позиция волны для текущего цикла
     //float cycleId = floor(u_time * waveSpeed / waveDuration);// Уникальный ID цикла
