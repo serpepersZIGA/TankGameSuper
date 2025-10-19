@@ -1,0 +1,1271 @@
+version 2
+JvmtiExport can_access_local_variables 0
+JvmtiExport can_hotswap_or_post_breakpoint 0
+JvmtiExport can_post_on_exceptions 0
+# 183 ciObject found
+instanceKlass java/util/concurrent/CopyOnWriteArrayList
+ciInstanceKlass java/lang/Cloneable 1 0 7 100 1 100 1 1 1
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ee0800
+instanceKlass com/google/common/collect/MapMakerInternalMap$WeakKeyStrongValueEntry$Helper
+instanceKlass com/google/common/collect/Ordering$ArbitraryOrderingHolder
+instanceKlass org/gradle/internal/hash/HashCode$1
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ed8400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ed2c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ed2000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ed0000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ecdc00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800eb8400
+instanceKlass  @bci org/gradle/api/internal/changedetection/state/AbiExtractingClasspathResourceHasher hashClassBytes ([B)Lorg/gradle/internal/hash/HashCode; 17 <appendix> argL0 ; # org/gradle/api/internal/changedetection/state/AbiExtractingClasspathResourceHasher$$Lambda$1358+0x0000000801362000
+instanceKlass com/google/common/collect/ComparisonChain
+instanceKlass org/gradle/internal/normalization/java/impl/Member
+instanceKlass  @bci org/gradle/api/internal/changedetection/state/AbiExtractingClasspathResourceHasher hash (Lorg/gradle/internal/fingerprint/hashing/RegularFileSnapshotContext;)Lorg/gradle/internal/hash/HashCode; 26 <appendix> member <vmtarget> ; # org/gradle/api/internal/changedetection/state/AbiExtractingClasspathResourceHasher$$Lambda$1357+0x000000080153da40
+instanceKlass org/gradle/internal/io/IoFunction
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e38800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e34400
+instanceKlass  @bci org/gradle/internal/execution/history/impl/OutputSnapshotUtil filterOutputAfterExecution (Lorg/gradle/internal/snapshot/FileSystemSnapshot;Lorg/gradle/internal/snapshot/FileSystemSnapshot;Lorg/gradle/internal/snapshot/FileSystemSnapshot;)Lorg/gradle/internal/snapshot/FileSystemSnapshot; 36 <appendix> member <vmtarget> ; # org/gradle/internal/execution/history/impl/OutputSnapshotUtil$$Lambda$1356+0x000000080153d618
+instanceKlass  @bci org/gradle/internal/execution/history/impl/OutputSnapshotUtil filterOutputsAfterExecution (Lcom/google/common/collect/ImmutableSortedMap;Lcom/google/common/collect/ImmutableSortedMap;Lcom/google/common/collect/ImmutableSortedMap;)Lcom/google/common/collect/ImmutableSortedMap; 3 <appendix> member <vmtarget> ; # org/gradle/internal/execution/history/impl/OutputSnapshotUtil$$Lambda$1355+0x000000080153d408
+instanceKlass  @bci org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep captureOutputs (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/BeforeExecutionContext;Lorg/gradle/internal/execution/history/BeforeExecutionState;)Lcom/google/common/collect/ImmutableSortedMap; 61 <appendix> argL0 ; # org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$$Lambda$1354+0x000000080153d1e0
+instanceKlass  @bci org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep captureOutputs (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/BeforeExecutionContext;Lorg/gradle/internal/execution/history/BeforeExecutionState;)Lcom/google/common/collect/ImmutableSortedMap; 36 <appendix> argL0 ; # org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$$Lambda$1353+0x000000080153cfb8
+instanceKlass it/unimi/dsi/fastutil/ints/IntIterators$EmptyIterator
+instanceKlass it/unimi/dsi/fastutil/ints/IntList
+instanceKlass it/unimi/dsi/fastutil/ints/IntListIterator
+instanceKlass it/unimi/dsi/fastutil/ints/IntIterators
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/asm/ClassRelevancyFilter
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800dca800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800dc7000
+instanceKlass java/nio/file/Path$1
+instanceKlass  @bci com/sun/tools/javac/comp/TypeEnter ensureImportsChecked (Lcom/sun/tools/javac/util/List;)V 50 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/TypeEnter$$Lambda$1352+0x000000080152b820
+instanceKlass  @bci org/gradle/api/internal/file/FileCollectionBackedFileTree visit (Lorg/gradle/api/file/FileVisitor;)Lorg/gradle/api/file/FileTree; 2 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/FileCollectionBackedFileTree$$Lambda$1351+0x00000008011e3ce8
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection createDelegate ()Lorg/gradle/api/internal/file/FileCollectionInternal; 40 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection$$Lambda$1350+0x00000008011e3ac0
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection createDelegate ()Lorg/gradle/api/internal/file/FileCollectionInternal; 30 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection$$Lambda$1349+0x00000008011e3898
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection createDelegate ()Lorg/gradle/api/internal/file/FileCollectionInternal; 20 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection$$Lambda$1348+0x00000008011e3670
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection createDelegate ()Lorg/gradle/api/internal/file/FileCollectionInternal; 10 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/TaskExecution$PreviousOutputFileCollection$$Lambda$1347+0x00000008011e3448
+instanceKlass  @bci org/gradle/internal/snapshot/SnapshotUtil rootIndex (Lorg/gradle/internal/snapshot/FileSystemSnapshot;)Ljava/util/Map; 10 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/SnapshotUtil$$Lambda$1346+0x00000008011e3218
+instanceKlass  @bci org/gradle/internal/execution/steps/RemovePreviousOutputsStep lambda$cleanupOverlappingOutputs$2 (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/BeforeExecutionContext;Lorg/gradle/internal/execution/history/PreviousExecutionState;)V 46 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/RemovePreviousOutputsStep$$Lambda$1345+0x00000008011e2fd8
+instanceKlass  @bci org/gradle/internal/execution/steps/RemovePreviousOutputsStep lambda$cleanupOverlappingOutputs$2 (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/BeforeExecutionContext;Lorg/gradle/internal/execution/history/PreviousExecutionState;)V 39 <appendix> argL0 ; # org/gradle/internal/execution/steps/RemovePreviousOutputsStep$$Lambda$1344+0x00000008011e2da0
+instanceKlass org/gradle/internal/execution/steps/RemovePreviousOutputsStep$3
+instanceKlass org/gradle/internal/execution/steps/RemovePreviousOutputsStep$1
+instanceKlass  @bci org/gradle/internal/execution/steps/RemovePreviousOutputsStep cleanupOverlappingOutputs (Lorg/gradle/internal/execution/steps/BeforeExecutionContext;Lorg/gradle/internal/execution/UnitOfWork;)V 9 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/RemovePreviousOutputsStep$$Lambda$1343+0x00000008011e2758
+instanceKlass  @bci org/gradle/internal/execution/steps/RemovePreviousOutputsStep execute (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/ChangingOutputsContext;)Lorg/gradle/internal/execution/steps/Result; 24 <appendix> argL0 ; # org/gradle/internal/execution/steps/RemovePreviousOutputsStep$$Lambda$1342+0x00000008011e2530
+instanceKlass org/gradle/internal/execution/history/changes/NonIncrementalInputChanges
+instanceKlass org/gradle/internal/execution/history/impl/OutputSnapshotUtil$SnapshotFilteringVisitor$1
+instanceKlass  @bci org/gradle/internal/execution/history/impl/OutputSnapshotUtil findOutputPropertyStillPresentSincePreviousExecution (Lorg/gradle/internal/snapshot/FileSystemSnapshot;Lorg/gradle/internal/snapshot/FileSystemSnapshot;)Lorg/gradle/internal/snapshot/FileSystemSnapshot; 7 <appendix> member <vmtarget> ; # org/gradle/internal/execution/history/impl/OutputSnapshotUtil$$Lambda$1341+0x00000008011e19c8
+instanceKlass  @bci org/gradle/internal/execution/history/impl/OutputSnapshotUtil findOutputsStillPresentSincePreviousExecution (Lcom/google/common/collect/ImmutableSortedMap;Lcom/google/common/collect/ImmutableSortedMap;)Lcom/google/common/collect/ImmutableSortedMap; 2 <appendix> member <vmtarget> ; # org/gradle/internal/execution/history/impl/OutputSnapshotUtil$$Lambda$1340+0x00000008011e17b8
+instanceKlass org/gradle/internal/execution/history/impl/OutputSnapshotUtil
+instanceKlass org/gradle/internal/execution/history/OverlappingOutputs
+instanceKlass org/gradle/internal/execution/history/impl/DefaultOverlappingOutputDetector$OverlappingOutputsDetectingVisitor$1
+instanceKlass  @bci org/gradle/internal/snapshot/SnapshotUtil index (Lorg/gradle/internal/snapshot/FileSystemSnapshot;)Ljava/util/Map; 10 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/SnapshotUtil$$Lambda$1339+0x00000008011e0cf8
+instanceKlass  @bci org/gradle/internal/io/IoSupplier wrap (Lorg/gradle/internal/io/IoSupplier;)Ljava/util/function/Supplier; 1 <appendix> member <vmtarget> ; # org/gradle/internal/io/IoSupplier$$Lambda$1338+0x00000008011e0ae8
+instanceKlass  @bci org/gradle/api/internal/changedetection/state/LineEndingNormalizingFileSystemLocationSnapshotHasher hash (Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot;)Lorg/gradle/internal/hash/HashCode; 7 <appendix> member <vmtarget> ; # org/gradle/api/internal/changedetection/state/LineEndingNormalizingFileSystemLocationSnapshotHasher$$Lambda$1337+0x00000008011e08d8
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800cd0400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800cd1800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800cd2000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800cd9000
+instanceKlass java/net/Proxy
+instanceKlass java/net/UrlDeserializedState
+instanceKlass org/gradle/internal/serialize/NestedExceptionPlaceholder
+instanceKlass java/lang/Short$ShortCache
+instanceKlass org/gradle/internal/serialize/ExceptionPlaceholder$2
+instanceKlass org/gradle/internal/serialize/ExceptionPlaceholder$Java14NullPointerExceptionUsefulMessageSupport
+instanceKlass org/gradle/internal/serialize/StackTraceElementPlaceholder
+instanceKlass org/gradle/internal/serialize/ExceptionReplacingObjectOutputStream$2
+instanceKlass org/gradle/internal/serialize/PlaceholderExceptionSupport
+instanceKlass org/gradle/internal/serialize/ExceptionPlaceholder
+instanceKlass org/gradle/internal/serialize/ExceptionReplacingObjectOutputStream$1
+instanceKlass org/gradle/tooling/internal/provider/serialization/WellKnownClassLoaderRegistry$1
+instanceKlass org/gradle/tooling/internal/provider/serialization/DefaultPayloadClassLoaderRegistry$1
+instanceKlass  @bci org/gradle/internal/buildevents/BuildExceptionReporter addBuildScanMessage (Lorg/gradle/internal/buildevents/BuildExceptionReporter$ContextImpl;)V 1 <appendix> argL0 ; # org/gradle/internal/buildevents/BuildExceptionReporter$$Lambda$1336+0x000000080100cab8
+instanceKlass  @bci org/gradle/internal/buildevents/BuildExceptionReporter fillInFailureResolution (Lorg/gradle/internal/buildevents/BuildExceptionReporter$FailureDetails;)V 76 <appendix> member <vmtarget> ; # org/gradle/internal/buildevents/BuildExceptionReporter$$Lambda$1335+0x000000080100c898
+instanceKlass org/gradle/internal/logging/text/BufferingStyledTextOutput$ChangeStyleAction
+instanceKlass  @bci org/gradle/internal/buildevents/BuildExceptionReporter fillInFailureResolution (Lorg/gradle/internal/buildevents/BuildExceptionReporter$FailureDetails;)V 50 <appendix> member <vmtarget> ; # org/gradle/internal/buildevents/BuildExceptionReporter$$Lambda$1334+0x000000080100c458
+instanceKlass org/gradle/internal/buildevents/BuildExceptionReporter$ContextImpl
+instanceKlass org/gradle/internal/logging/text/BufferingStyledTextOutput$1
+instanceKlass org/gradle/internal/buildevents/BuildExceptionReporter$FailureDetails
+instanceKlass java/time/Clock
+instanceKlass java/time/InstantSource
+instanceKlass java/util/logging/LogRecord
+instanceKlass org/codehaus/groovy/runtime/StackTraceUtils
+instanceKlass org/gradle/internal/exceptions/Contextual
+instanceKlass java/lang/StackTraceElement$HashedModules
+instanceKlass java/lang/Throwable$PrintStreamOrWriter
+instanceKlass org/gradle/internal/building/event/types/DefaultFailure
+instanceKlass org/gradle/tooling/internal/protocol/InternalFailure
+instanceKlass  @bci org/gradle/launcher/daemon/server/api/HandleInvalidateVirtualFileSystem lambda$execute$1 (Lorg/gradle/launcher/daemon/protocol/InvalidateVirtualFileSystem;Lorg/gradle/internal/service/ServiceRegistry;)V 31 <appendix> argL0 ; # org/gradle/launcher/daemon/server/api/HandleInvalidateVirtualFileSystem$$Lambda$1333+0x00000008015628f0
+instanceKlass  @bci org/gradle/launcher/daemon/server/api/HandleInvalidateVirtualFileSystem execute (Lorg/gradle/launcher/daemon/server/api/DaemonCommandExecution;)V 28 <appendix> member <vmtarget> ; # org/gradle/launcher/daemon/server/api/HandleInvalidateVirtualFileSystem$$Lambda$1332+0x00000008015626d0
+instanceKlass java/io/ObjectInputStream$GetField
+instanceKlass  @bci java/io/ObjectInputFilter$Config <clinit> ()V 368 <appendix> argL0 ; # java/io/ObjectInputFilter$Config$$Lambda$1331+0x00000008014c9cd0
+instanceKlass jdk/internal/access/JavaObjectInputFilterAccess
+instanceKlass java/io/ObjectInputFilter$Config$BuiltinFilterFactory
+instanceKlass  @bci java/io/ObjectInputFilter$Config <clinit> ()V 80 <appendix> argL0 ; # java/io/ObjectInputFilter$Config$$Lambda$1330+0x00000008014c96b0
+instanceKlass  @bci java/io/ObjectInputFilter$Config <clinit> ()V 56 <appendix> argL0 ; # java/io/ObjectInputFilter$Config$$Lambda$1329+0x00000008014c94a8
+instanceKlass java/io/ObjectInputFilter
+instanceKlass java/io/ObjectInputFilter$Config
+instanceKlass java/io/ObjectInputStream$ValidationList
+instanceKlass java/io/ObjectInputStream$HandleTable$HandleList
+instanceKlass java/io/ObjectInputStream$HandleTable
+instanceKlass  @bci java/io/ObjectInputStream <clinit> ()V 100 <appendix> argL0 ; # java/io/ObjectInputStream$$Lambda$1328+0x00000008014c7fb8
+instanceKlass jdk/internal/access/JavaObjectInputStreamReadString
+instanceKlass  @bci java/io/ObjectInputStream <clinit> ()V 92 <appendix> argL0 ; # java/io/ObjectInputStream$$Lambda$1327+0x00000008014c5d78
+instanceKlass  @cpi java/io/ObjectInputStream 1235 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801550000
+instanceKlass jdk/internal/access/JavaObjectInputStreamAccess
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800dbdc00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ddb400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ddc800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800df4800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e04400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e13c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e21c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e35000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e35c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e38000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e3d800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800e3e000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800eba800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ecd400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ed0c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ed1800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ee0000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ee2c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ee8400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800eea800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f48000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f49400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f4b400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f4bc00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f50800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f51000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f53400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f53c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f59000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f59c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f5a400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f5ac00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f60400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f60c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f61c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f62400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f63400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f63c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f64000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f64800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f68000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f68800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f79000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f85000
+# instanceKlass java/lang/invoke/LambdaForm$BMH+0x0000000800f85c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f89000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f89800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f98c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f99000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f99800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800f9b800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800fa9400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800faa400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800fc0000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800fdfc00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800fe8400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800febc00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000800ff0400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008010f7000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080110c800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080111b000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080112c000
+instanceKlass  @bci org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem lambda$registerWatchableHierarchy$4 (Ljava/io/File;Lorg/gradle/internal/snapshot/SnapshotHierarchy;)Lorg/gradle/internal/snapshot/SnapshotHierarchy; 25 <appendix> member <vmtarget> ; # org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem$$Lambda$1326+0x00000008015624c0
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801152800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801153c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080119a000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080119ac00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080119f800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008011a0000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008011c5c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008011c9800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801210800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801211000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801230800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801231400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080124bc00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801251800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801259c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080125a000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801289800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008012b0000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008012b1c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801310000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801310c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801360000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801366000
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080136c400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008013dc400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x00000008013e0800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801514400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801520000
+instanceKlass org/gradle/cache/internal/locklistener/DefaultFileLockContentionHandler$ContendedAction$1
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot$1 handleAsDescendantOfChild (Lorg/gradle/internal/snapshot/VfsRelativePath;Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot;)Ljava/util/Optional; 75 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/DirectorySnapshot$1$$Lambda$1325+0x0000000801562088
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot$1 handleAsDescendantOfChild (Lorg/gradle/internal/snapshot/VfsRelativePath;Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot;)Ljava/util/Optional; 56 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/DirectorySnapshot$1$$Lambda$1324+0x0000000801561e48
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot$1 handleAsDescendantOfChild (Lorg/gradle/internal/snapshot/VfsRelativePath;Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot;)Ljava/util/Optional; 45 <appendix> argL0 ; # org/gradle/internal/snapshot/DirectorySnapshot$1$$Lambda$1323+0x0000000801561c20
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot$1 handleUnrelatedToAnyChild ()V 44 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/DirectorySnapshot$1$$Lambda$1322+0x0000000801561a00
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot$1 handleUnrelatedToAnyChild ()V 25 <appendix> argL0 ; # org/gradle/internal/snapshot/DirectorySnapshot$1$$Lambda$1321+0x00000008015617d8
+instanceKlass org/gradle/internal/snapshot/DirectorySnapshot$1$1
+instanceKlass org/gradle/internal/snapshot/DirectorySnapshot$1
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801564c00
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801564800
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801564400
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x0000000801564000
+instanceKlass org/gradle/internal/remote/internal/inet/SocketConnection$1
+instanceKlass java/util/Locale$1
+instanceKlass org/gradle/internal/work/DefaultWorkerLeaseService$1
+instanceKlass org/gradle/cache/internal/DefaultCleanupProgressMonitor
+instanceKlass org/gradle/cache/internal/VersionSpecificCacheCleanupAction
+instanceKlass  @bci org/gradle/internal/session/BuildSessionState close ()V 14 <appendix> member <vmtarget> ; # org/gradle/internal/session/BuildSessionState$$Lambda$1320+0x0000000801560868
+instanceKlass org/gradle/launcher/exec/BuildActionResult
+instanceKlass org/gradle/tooling/internal/provider/serialization/SerializedPayload
+instanceKlass  @bci org/gradle/workers/internal/WorkerDaemonClientsManager$StopSessionScopedWorkers beforeComplete ()V 17 <appendix> argL0 ; # org/gradle/workers/internal/WorkerDaemonClientsManager$StopSessionScopedWorkers$$Lambda$1319+0x000000080152f9b8
+instanceKlass org/gradle/execution/DefaultCancellableOperationManager
+# instanceKlass org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1317+0x0000000801560000
+# instanceKlass org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1318+0x000000080155dc00
+# instanceKlass org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1313+0x000000080155fdf0
+# instanceKlass org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1316+0x000000080155f9d0
+# instanceKlass org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1312+0x000000080155f5b0
+instanceKlass  @bci org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker run ()V 183 <appendix> member <vmtarget> ; # org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1315+0x000000080155fbe0
+# instanceKlass org/gradle/execution/plan/DefaultPlanExecutor$ExecutorWorker$$Lambda$1314+0x000000080155f7c0
+instanceKlass  @bci org/gradle/execution/plan/DefaultPlanExecutor$MergedQueues close ()V 5 <appendix> member <vmtarget> ; # org/gradle/execution/plan/DefaultPlanExecutor$MergedQueues$$Lambda$1311+0x000000080155f3a0
+instanceKlass  @bci org/gradle/cache/internal/DefaultMultiProcessSafePersistentIndexedCache finishWork ()V 12 <appendix> member <vmtarget> ; # org/gradle/cache/internal/DefaultMultiProcessSafePersistentIndexedCache$$Lambda$1310+0x000000080155f190
+instanceKlass org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem$2$1
+instanceKlass org/gradle/internal/watch/vfs/BuildFinishedFileSystemWatchingBuildOperationType$Result
+instanceKlass org/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics$VirtualFileSystemStatistics
+instanceKlass  @bci org/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics lambda$getStatistics$1 (Lcom/google/common/collect/EnumMultiset;Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot;)V 2 <appendix> member <vmtarget> ; # org/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics$$Lambda$1309+0x000000080155e930
+instanceKlass  @bci org/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics getStatistics (Lorg/gradle/internal/snapshot/SnapshotHierarchy;)Lorg/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics$VirtualFileSystemStatistics; 13 <appendix> member <vmtarget> ; # org/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics$$Lambda$1308+0x000000080155e710
+instanceKlass org/gradle/internal/watch/vfs/impl/DefaultFileSystemWatchingStatistics
+instanceKlass  @bci org/gradle/internal/watch/registry/impl/WatchableHierarchies removeUnwatchedSnapshots (Lorg/gradle/internal/snapshot/SnapshotHierarchy;Lorg/gradle/internal/watch/registry/impl/WatchableHierarchies$Invalidator;)Lorg/gradle/internal/snapshot/SnapshotHierarchy; 18 <appendix> member <vmtarget> ; # org/gradle/internal/watch/registry/impl/WatchableHierarchies$$Lambda$1307+0x000000080155bca8
+instanceKlass org/gradle/internal/watch/registry/impl/WatchableHierarchies$RemoveUnwatchedFiles
+instanceKlass  @bci org/gradle/internal/watch/registry/impl/WatchableHierarchies buildWatchableFilesFromHierarchies (Ljava/util/Collection;)Lorg/gradle/internal/file/FileHierarchySet; 9 <appendix> argL0 ; # org/gradle/internal/watch/registry/impl/WatchableHierarchies$$Lambda$1306+0x000000080155b850
+instanceKlass  @bci org/gradle/internal/watch/registry/impl/WatchableHierarchies removeWatchedHierarchiesOverLimit (Lorg/gradle/internal/snapshot/SnapshotHierarchy;Ljava/util/function/Predicate;ILorg/gradle/internal/watch/registry/impl/WatchableHierarchies$Invalidator;)Lorg/gradle/internal/snapshot/SnapshotHierarchy; 5 <appendix> member <vmtarget> ; # org/gradle/internal/watch/registry/impl/WatchableHierarchies$$Lambda$1305+0x000000080155b610
+instanceKlass  @bci org/gradle/internal/watch/registry/impl/AbstractFileWatcherUpdater updateVfsOnBuildFinished (Lorg/gradle/internal/snapshot/SnapshotHierarchy;Lorg/gradle/internal/watch/registry/WatchMode;ILjava/util/List;)Lorg/gradle/internal/snapshot/SnapshotHierarchy; 14 <appendix> member <vmtarget> ; # org/gradle/internal/watch/registry/impl/AbstractFileWatcherUpdater$$Lambda$1304+0x000000080155b3d0
+instanceKlass  @bci org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem$2 call (Lorg/gradle/internal/operations/BuildOperationContext;)Lorg/gradle/internal/snapshot/SnapshotHierarchy; 148 <appendix> member <vmtarget> ; # org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem$2$$Lambda$1303+0x000000080155b1c0
+instanceKlass org/gradle/internal/watch/registry/impl/DefaultFileWatcherRegistry$2
+instanceKlass  @bci org/gradle/internal/watch/registry/impl/DefaultFileWatcherRegistry getAndResetStatistics ()Lorg/gradle/internal/watch/registry/FileWatcherRegistry$FileWatchingStatistics; 36 <appendix> member <vmtarget> ; # org/gradle/internal/watch/registry/impl/DefaultFileWatcherRegistry$$Lambda$1302+0x000000080155ad68
+instanceKlass org/gradle/internal/watch/vfs/BuildFinishedFileSystemWatchingBuildOperationType$Details$1
+instanceKlass org/gradle/internal/watch/vfs/BuildFinishedFileSystemWatchingBuildOperationType$Details
+instanceKlass org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem$2
+instanceKlass  @bci org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem beforeBuildFinished (Lorg/gradle/internal/watch/registry/WatchMode;Lorg/gradle/internal/watch/vfs/VfsLogging;Lorg/gradle/internal/watch/vfs/WatchLogging;Lorg/gradle/internal/operations/BuildOperationRunner;I)V 11 <appendix> member <vmtarget> ; # org/gradle/internal/watch/vfs/impl/WatchingVirtualFileSystem$$Lambda$1301+0x000000080155a508
+instanceKlass org/gradle/api/internal/tasks/execution/statistics/TaskExecutionStatistics
+instanceKlass org/gradle/internal/buildevents/TaskExecutionStatisticsReporter
+instanceKlass org/gradle/internal/logging/text/AbstractStyledTextOutput$StyleOverrideTextOutput
+instanceKlass  @bci org/gradle/internal/buildtree/ProblemReportingBuildActionRunner reportProblems (Ljava/io/File;)Ljava/util/List; 10 <appendix> member <vmtarget> ; # org/gradle/internal/buildtree/ProblemReportingBuildActionRunner$$Lambda$1300+0x0000000801559be0
+instanceKlass  @bci org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices$1 buildFinished (Lorg/gradle/api/internal/GradleInternal;Z)V 7 <appendix> argL0 ; # org/gradle/api/internal/artifacts/DependencyManagementBuildScopeServices$1$$Lambda$1299+0x000000080152f780
+# instanceKlass java/lang/invoke/LambdaForm$MH+0x000000080155d800
+# instanceKlass java/lang/invoke/LambdaForm$DMH+0x000000080155c400
+# instanceKlass java/lang/invoke/LambdaForm$DMH+0x000000080155c000
+instanceKlass  @bci org/gradle/api/internal/artifacts/DependencyManagementGradleUserHomeScopeServices$2 buildFinished (Lorg/gradle/BuildResult;)V 7 <appendix> argL0 ; # org/gradle/api/internal/artifacts/DependencyManagementGradleUserHomeScopeServices$2$$Lambda$1298+0x000000080152f578
+instanceKlass  @bci org/gradle/internal/model/StateTransitionController finish (Lorg/gradle/internal/model/StateTransitionController$State;Ljava/util/function/Function;)Lorg/gradle/internal/building/ExecutionResult; 7 <appendix> member <vmtarget> ; # org/gradle/internal/model/StateTransitionController$$Lambda$1297+0x00000008015599d0
+instanceKlass  @bci org/gradle/internal/building/DefaultBuildLifecycleController finishBuild (Ljava/lang/Throwable;)Lorg/gradle/internal/building/ExecutionResult; 9 <appendix> member <vmtarget> ; # org/gradle/internal/building/DefaultBuildLifecycleController$$Lambda$1296+0x00000008015597a0
+instanceKlass  @bci org/gradle/composite/internal/DefaultIncludedBuildRegistry visitBuilds (Ljava/util/function/Consumer;)V 18 <appendix> argL0 ; # org/gradle/composite/internal/DefaultIncludedBuildRegistry$$Lambda$1295+0x000000080152f350
+instanceKlass  @bci org/gradle/internal/buildtree/DefaultBuildTreeFinishExecutor finishBuildTree (Ljava/util/List;)Ljava/lang/RuntimeException; 14 <appendix> member <vmtarget> ; # org/gradle/internal/buildtree/DefaultBuildTreeFinishExecutor$$Lambda$1294+0x0000000801559580
+instanceKlass  @bci org/gradle/execution/plan/DefaultExecutionPlan close ()V 14 <appendix> argL0 ; # org/gradle/execution/plan/DefaultExecutionPlan$$Lambda$1293+0x0000000801559368
+instanceKlass  @bci java/util/concurrent/ConcurrentLinkedQueue clear ()V 1 <appendix> argL0 ; # java/util/concurrent/ConcurrentLinkedQueue$$Lambda$1292+0x00000008014c79a8
+instanceKlass java/util/concurrent/ConcurrentLinkedQueue$Itr
+instanceKlass com/google/common/cache/LocalCache$WriteThroughEntry
+instanceKlass com/google/common/cache/LocalCache$HashIterator
+instanceKlass  @bci org/gradle/execution/plan/DefaultPlanExecutor$MergedQueues removeFinishedPlans ()V 13 <appendix> argL0 ; # org/gradle/execution/plan/DefaultPlanExecutor$MergedQueues$$Lambda$1291+0x00000008015586c8
+instanceKlass  @bci org/gradle/execution/plan/DefaultPlanExecutor awaitCompletion (Lorg/gradle/execution/plan/WorkSource;Lorg/gradle/internal/work/WorkerLeaseRegistry$WorkerLease;Ljava/util/Collection;)V 8 <appendix> member <vmtarget> ; # org/gradle/execution/plan/DefaultPlanExecutor$$Lambda$1290+0x00000008015584b8
+instanceKlass  @bci org/gradle/execution/plan/DefaultPlanExecutor assertHealthy ()V 13 <appendix> member <vmtarget> ; # org/gradle/execution/plan/DefaultPlanExecutor$$Lambda$1289+0x00000008015582a8
+instanceKlass  @bci java/util/Comparator comparingInt (Ljava/util/function/ToIntFunction;)Ljava/util/Comparator; 6 <appendix> member <vmtarget> ; # java/util/Comparator$$Lambda$1288+0x00000008014c74d8
+instanceKlass  @bci org/gradle/workers/internal/WorkerDaemonClientsManager selectIdleClientsToStop (Lorg/gradle/api/Transformer;)V 11 <appendix> argL0 ; # org/gradle/workers/internal/WorkerDaemonClientsManager$$Lambda$1287+0x000000080152f148
+instanceKlass org/gradle/workers/internal/WorkerDaemonClient
+instanceKlass org/gradle/workers/internal/WorkerDaemonExpiration$SimpleMemoryExpirationSelector
+instanceKlass org/gradle/launcher/daemon/server/DaemonRegistryUnavailableExpirationStrategy$1
+instanceKlass org/gradle/cache/internal/SimpleStateCache$1
+instanceKlass org/gradle/launcher/daemon/registry/PersistentDaemonRegistry$1
+instanceKlass org/gradle/launcher/daemon/server/CompatibleDaemonExpirationStrategy$1
+instanceKlass org/gradle/launcher/daemon/server/health/DaemonMemoryStatus$2
+instanceKlass org/gradle/launcher/daemon/server/health/DaemonMemoryStatus$1
+instanceKlass org/gradle/launcher/daemon/server/health/DaemonMemoryStatus$3
+instanceKlass org/gradle/launcher/daemon/server/health/gc/GarbageCollectionStats
+instanceKlass java/util/concurrent/LinkedBlockingDeque$AbstractItr
+instanceKlass org/gradle/process/internal/health/memory/JvmMemoryStatusSnapshot
+instanceKlass org/gradle/util/internal/DisconnectableInputStream$1
+instanceKlass org/gradle/util/internal/DisconnectableInputStream$ThreadExecuter
+instanceKlass java/util/stream/ReduceOps$2ReducingSink
+instanceKlass  @bci org/gradle/process/internal/util/LongCommandLineDetectionUtil hasCommandLineExceedMaxLength (Ljava/lang/String;Ljava/util/List;)Z 20 <appendix> argL0 ; # org/gradle/process/internal/util/LongCommandLineDetectionUtil$$Lambda$1286+0x0000000801552890
+instanceKlass  @bci org/gradle/process/internal/util/LongCommandLineDetectionUtil hasCommandLineExceedMaxLength (Ljava/lang/String;Ljava/util/List;)Z 10 <appendix> argL0 ; # org/gradle/process/internal/util/LongCommandLineDetectionUtil$$Lambda$1285+0x0000000801552668
+instanceKlass org/gradle/process/internal/util/LongCommandLineDetectionUtil
+instanceKlass org/gradle/process/internal/streams/ForwardStdinStreamsHandler
+instanceKlass  @bci org/gradle/internal/execution/steps/ResolveChangesStep lambda$execute$2 (Lorg/gradle/internal/execution/steps/CachingContext;)Lorg/gradle/internal/execution/steps/IncrementalChangesContext; 6 <appendix> argL0 ; # org/gradle/internal/execution/steps/ResolveChangesStep$$Lambda$1284+0x0000000801556b98
+instanceKlass java/nio/file/attribute/DosFileAttributeView
+instanceKlass  @bci org/apache/commons/io/file/PathUtils overrideReadOnly ([Lorg/apache/commons/io/file/DeleteOption;)Z 10 <appendix> argL0 ; # org/apache/commons/io/file/PathUtils$$Lambda$1283+0x0000000801556960
+instanceKlass org/apache/commons/io/file/Counters$LongCounter
+instanceKlass org/apache/commons/io/file/Counters$AbstractPathCounters
+instanceKlass org/apache/commons/io/file/Counters$Counter
+instanceKlass org/apache/commons/io/file/Counters$PathCounters
+instanceKlass org/apache/commons/io/file/Counters
+instanceKlass org/apache/commons/io/file/DeleteOption
+instanceKlass org/apache/commons/io/file/PathUtils
+instanceKlass org/gradle/process/internal/DefaultExecHandle$ExecResultImpl
+instanceKlass org/gradle/process/internal/streams/ExecOutputHandleRunner
+instanceKlass jdk/internal/event/Event
+instanceKlass java/lang/ProcessImpl$2
+instanceKlass  @bci java/lang/ProcessHandleImpl lambda$static$1 ()Ljava/util/concurrent/Executor; 70 <appendix> member <vmtarget> ; # java/lang/ProcessHandleImpl$$Lambda$1282+0x00000008014c5268
+instanceKlass  @cpi java/lang/ProcessHandleImpl 432 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801551000
+instanceKlass  @bci java/lang/ProcessHandleImpl <clinit> ()V 38 <appendix> argL0 ; # java/lang/ProcessHandleImpl$$Lambda$1281+0x00000008014c5060
+instanceKlass java/lang/ProcessHandleImpl
+instanceKlass  @bci java/lang/ProcessImpl <init> ([Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[JZZ)V 286 <appendix> form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801550800
+instanceKlass  @bci java/lang/ProcessImpl <init> ([Ljava/lang/String;Ljava/lang/String;Ljava/lang/String;[JZZ)V 286 <appendix> member <vmtarget> ; # java/lang/ProcessImpl$$Lambda$1280+0x00000008014c4bd0
+instanceKlass  @cpi java/lang/ProcessImpl 622 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801550400
+instanceKlass net/rubygrapefruit/platform/internal/jni/WindowsHandleFunctions
+instanceKlass org/gradle/internal/operations/CurrentBuildOperationPreservingRunnable
+instanceKlass org/gradle/process/internal/ProcessBuilderFactory
+instanceKlass org/gradle/process/internal/DefaultExecHandle$CompositeStreamsHandler
+instanceKlass org/gradle/process/internal/ExecHandleRunner
+instanceKlass org/gradle/process/internal/ExecHandleShutdownHookAction
+instanceKlass net/rubygrapefruit/platform/internal/DefaultProcessLauncher
+instanceKlass net/rubygrapefruit/platform/internal/WindowsProcessLauncher
+instanceKlass net/rubygrapefruit/platform/internal/WrapperProcessLauncher
+instanceKlass org/gradle/process/internal/DefaultExecHandle
+instanceKlass org/gradle/process/internal/ProcessSettings
+instanceKlass org/gradle/process/internal/streams/OutputStreamsForwarder
+instanceKlass org/gradle/process/internal/streams/SafeStreams
+instanceKlass org/gradle/process/internal/streams/EmptyStdInStreamsHandler
+instanceKlass org/gradle/process/internal/ExecHandle
+instanceKlass org/gradle/process/internal/StreamsHandler
+instanceKlass org/gradle/internal/ErroringAction
+instanceKlass  @bci org/gradle/internal/jvm/inspection/MetadataProbe <init> ()V 5 <appendix> argL0 ; # org/gradle/internal/jvm/inspection/MetadataProbe$$Lambda$1279+0x000000080154cd10
+instanceKlass org/gradle/internal/jvm/inspection/MetadataProbe
+instanceKlass org/gradle/internal/execution/history/changes/InputFileChanges$1
+instanceKlass org/gradle/internal/execution/steps/SkipUpToDateStep$1$1
+instanceKlass org/gradle/internal/execution/steps/SkipUpToDateStep$1
+instanceKlass org/gradle/internal/execution/history/changes/ClasspathCompareStrategy$ChangeState
+instanceKlass org/gradle/internal/execution/history/changes/ClasspathCompareStrategy$TrackingVisitor
+instanceKlass  @bci org/gradle/api/internal/changedetection/state/DefaultResourceSnapshotterCacheService hashFile (Lorg/gradle/internal/fingerprint/hashing/RegularFileSnapshotContext;Lorg/gradle/internal/fingerprint/hashing/RegularFileSnapshotContextHasher;Lorg/gradle/internal/hash/HashCode;)Lorg/gradle/internal/hash/HashCode; 9 <appendix> member <vmtarget> ; # org/gradle/api/internal/changedetection/state/DefaultResourceSnapshotterCacheService$$Lambda$1278+0x0000000801547d68
+instanceKlass  @bci org/gradle/internal/fingerprint/classpath/impl/ClasspathFingerprintingStrategy$ClasspathFingerprintingVisitor hashContent (Lorg/gradle/internal/snapshot/RegularFileSnapshot;Lorg/gradle/internal/RelativePathSupplier;)Lorg/gradle/internal/hash/HashCode; 5 <appendix> member <vmtarget> ; # org/gradle/internal/fingerprint/classpath/impl/ClasspathFingerprintingStrategy$ClasspathFingerprintingVisitor$$Lambda$1277+0x0000000801547b58
+instanceKlass org/gradle/api/internal/changedetection/state/DefaultRegularFileSnapshotContext
+instanceKlass org/gradle/internal/fingerprint/classpath/impl/ClasspathFingerprintingStrategy$ClasspathFingerprintingVisitor$1
+instanceKlass org/gradle/internal/fingerprint/hashing/RegularFileSnapshotContext
+instanceKlass org/gradle/internal/fingerprint/classpath/impl/ClasspathFingerprintingStrategy$ClasspathFingerprintingVisitor
+instanceKlass org/gradle/api/internal/artifacts/ivyservice/resolveengine/artifact/DefaultArtifactSet$SingleArtifactVariantIdentifier
+instanceKlass  @bci org/gradle/api/internal/artifacts/ivyservice/resolveengine/graph/builder/EdgeState getArtifacts (Lorg/gradle/internal/component/model/ConfigurationMetadata;)Ljava/util/List; 35 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/ivyservice/resolveengine/graph/builder/EdgeState$$Lambda$1276+0x000000080152e888
+instanceKlass  @bci org/gradle/api/internal/artifacts/publish/ArchivePublishArtifact getFile ()Ljava/io/File; 5 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/publish/ArchivePublishArtifact$$Lambda$1275+0x00000008015470c8
+instanceKlass org/apache/tools/zip/ZipEightByteInteger
+instanceKlass org/apache/tools/zip/JarMarker
+instanceKlass org/apache/tools/zip/AsiExtraField
+instanceKlass org/apache/tools/zip/UnixStat
+instanceKlass org/apache/tools/zip/ExtraFieldUtils
+instanceKlass  @bci org/apache/commons/io/IOUtils <clinit> ()V 47 <appendix> argL0 ; # org/apache/commons/io/IOUtils$$Lambda$1274+0x0000000801546ec0
+instanceKlass  @bci org/apache/commons/io/IOUtils <clinit> ()V 36 <appendix> argL0 ; # org/apache/commons/io/IOUtils$$Lambda$1273+0x0000000801546cb8
+instanceKlass org/apache/commons/io/IOUtils
+instanceKlass org/apache/tools/zip/AbstractUnicodeExtraField
+instanceKlass org/apache/tools/zip/ZipUtil
+instanceKlass org/apache/tools/zip/ZipShort
+instanceKlass org/apache/tools/zip/Zip64ExtendedInformationExtraField
+instanceKlass org/apache/tools/zip/CentralDirectoryParsingZipExtraField
+instanceKlass org/apache/tools/zip/ZipOutputStream$CurrentEntry
+instanceKlass org/apache/tools/zip/GeneralPurposeBit
+instanceKlass org/gradle/api/internal/file/copy/ChainingTransformer
+instanceKlass org/gradle/api/internal/file/copy/FilterChain
+instanceKlass org/gradle/api/internal/file/collections/FilteredMinimalFileTree$2
+instanceKlass org/gradle/api/internal/file/copy/CopyFileVisitorImpl
+instanceKlass org/gradle/api/internal/file/copy/CopySpecActionImpl
+instanceKlass  @bci org/gradle/api/internal/file/copy/DuplicateHandlingCopyActionDecorator lambda$execute$1 (Lorg/gradle/api/internal/file/copy/CopyActionProcessingStream;Ljava/util/Set;Lorg/gradle/api/internal/file/CopyActionProcessingStreamAction;)V 4 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/copy/DuplicateHandlingCopyActionDecorator$$Lambda$1272+0x00000008015432f8
+instanceKlass  @bci org/gradle/api/internal/file/copy/NormalizingCopyActionDecorator lambda$execute$1 (Lorg/gradle/api/internal/file/copy/CopyActionProcessingStream;Ljava/util/Set;Lcom/google/common/collect/ListMultimap;Lorg/gradle/api/internal/file/CopyActionProcessingStreamAction;)V 6 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/copy/NormalizingCopyActionDecorator$$Lambda$1271+0x00000008015430e8
+instanceKlass org/gradle/api/internal/file/archive/ZipCopyAction$StreamAction
+instanceKlass org/gradle/api/internal/file/archive/ZipCopyAction$1
+instanceKlass org/apache/tools/zip/ZipOutputStream$UnicodeExtraFieldPolicy
+instanceKlass java/util/zip/Deflater$DeflaterZStreamRef
+instanceKlass java/util/zip/Deflater
+instanceKlass org/apache/tools/zip/FallbackZipEncoding
+instanceKlass org/apache/tools/zip/ZipEncodingHelper$SimpleEncodingHolder
+instanceKlass org/apache/tools/zip/ZipEncoding
+instanceKlass org/apache/tools/zip/ZipEncodingHelper
+instanceKlass org/apache/tools/zip/ZipLong
+instanceKlass org/apache/tools/zip/ZipExtraField
+instanceKlass  @bci org/gradle/api/internal/file/copy/NormalizingCopyActionDecorator execute (Lorg/gradle/api/internal/file/copy/CopyActionProcessingStream;)Lorg/gradle/api/tasks/WorkResult; 20 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/copy/NormalizingCopyActionDecorator$$Lambda$1270+0x0000000801542aa0
+instanceKlass  @bci org/gradle/api/internal/file/copy/DuplicateHandlingCopyActionDecorator execute (Lorg/gradle/api/internal/file/copy/CopyActionProcessingStream;)Lorg/gradle/api/tasks/WorkResult; 15 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/copy/DuplicateHandlingCopyActionDecorator$$Lambda$1269+0x0000000801542890
+instanceKlass org/gradle/api/internal/file/CopyActionProcessingStreamAction
+instanceKlass org/gradle/api/internal/file/copy/CopySpecBackedCopyActionProcessingStream
+instanceKlass org/gradle/api/internal/file/copy/FileCopyDetailsInternal
+instanceKlass org/gradle/api/internal/file/copy/NormalizingCopyActionDecorator
+instanceKlass org/gradle/api/internal/file/copy/DuplicateHandlingCopyActionDecorator
+instanceKlass org/gradle/api/internal/file/copy/DefaultZipCompressor
+instanceKlass org/gradle/api/tasks/bundling/Zip$1
+instanceKlass org/gradle/api/internal/file/archive/ZipCopyAction
+instanceKlass org/gradle/api/internal/file/copy/CopyActionProcessingStream
+instanceKlass org/gradle/internal/execution/history/changes/ExecutionStateChanges$2
+instanceKlass org/gradle/internal/execution/history/changes/IncrementalInputProperties$2
+instanceKlass org/gradle/internal/execution/history/changes/IncrementalInputProperties$1
+instanceKlass  @bci org/gradle/execution/plan/LocalTaskNodeExecutor addHardSuccessorTasksToQueue (Lorg/gradle/execution/plan/Node;Ljava/util/Set;Ljava/util/Queue;)V 6 <appendix> member <vmtarget> ; # org/gradle/execution/plan/LocalTaskNodeExecutor$$Lambda$1268+0x0000000801540660
+instanceKlass  @bci org/gradle/execution/plan/ValuedVfsHierarchy visitAllChildren (Ljava/util/function/BiConsumer;)V 10 <appendix> member <vmtarget> ; # org/gradle/execution/plan/ValuedVfsHierarchy$$Lambda$1267+0x0000000801540440
+instanceKlass  @bci org/gradle/execution/plan/ValuedVfsHierarchy visitAllValues (Lorg/gradle/execution/plan/ValuedVfsHierarchy$ValueVisitor;)V 25 <appendix> member <vmtarget> ; # org/gradle/execution/plan/ValuedVfsHierarchy$$Lambda$1266+0x0000000801540220
+instanceKlass  @bci org/gradle/execution/plan/ValuedVfsHierarchy visitAllValues (Lorg/gradle/execution/plan/ValuedVfsHierarchy$ValueVisitor;)V 10 <appendix> member <vmtarget> ; # org/gradle/execution/plan/ValuedVfsHierarchy$$Lambda$1265+0x0000000801540000
+instanceKlass org/gradle/api/internal/file/collections/FilteredMinimalFileTree$1
+instanceKlass org/gradle/api/internal/file/collections/FilteredMinimalFileTree
+instanceKlass  @bci org/gradle/internal/vfs/impl/DefaultFileSystemAccess snapshot (Ljava/lang/String;Lorg/gradle/internal/snapshot/SnapshottingFilter;)Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot; 89 <appendix> member <vmtarget> ; # org/gradle/internal/vfs/impl/DefaultFileSystemAccess$$Lambda$1264+0x000000080153f810
+instanceKlass org/gradle/api/internal/tasks/TaskExecuterResult$1
+instanceKlass  @bci org/gradle/cache/internal/DefaultMultiProcessSafePersistentIndexedCache remove (Ljava/lang/Object;)V 11 <appendix> member <vmtarget> ; # org/gradle/cache/internal/DefaultMultiProcessSafePersistentIndexedCache$$Lambda$1263+0x000000080153f3c0
+instanceKlass org/gradle/internal/execution/steps/SkipEmptyWorkStep$2$1
+instanceKlass  @bci org/gradle/cache/internal/AsyncCacheAccessDecoratedCache removeLater (Ljava/lang/Object;Ljava/lang/Runnable;)V 7 <appendix> member <vmtarget> ; # org/gradle/cache/internal/AsyncCacheAccessDecoratedCache$$Lambda$1262+0x000000080153b848
+instanceKlass org/gradle/internal/execution/steps/SkipEmptyWorkStep$2
+instanceKlass  @bci org/gradle/internal/execution/steps/SkipEmptyWorkStep skipExecutionWithEmptySources (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/PreviousExecutionContext;)Lorg/gradle/internal/execution/steps/CachingResult; 6 <appendix> argL0 ; # org/gradle/internal/execution/steps/SkipEmptyWorkStep$$Lambda$1261+0x000000080153b350
+instanceKlass org/gradle/api/internal/file/collections/DirectoryTrees
+instanceKlass org/gradle/internal/fingerprint/impl/PatternSetSnapshottingFilter$LogicalFileTreeElement
+instanceKlass org/gradle/internal/snapshot/impl/FileSystemSnapshotFilter$FilteringVisitor$1
+instanceKlass org/gradle/internal/snapshot/FileSystemLocationSnapshot$FileSystemLocationSnapshotTransformer
+instanceKlass org/gradle/internal/snapshot/impl/FileSystemSnapshotFilter$FilteringVisitor
+instanceKlass org/gradle/internal/snapshot/impl/FileSystemSnapshotFilter
+instanceKlass  @bci org/gradle/internal/fingerprint/impl/PatternSetSnapshottingFilter getAsSnapshotPredicate ()Lorg/gradle/internal/snapshot/SnapshottingFilter$FileSystemSnapshotPredicate; 10 <appendix> member <vmtarget> ; # org/gradle/internal/fingerprint/impl/PatternSetSnapshottingFilter$$Lambda$1260+0x000000080153a418
+instanceKlass org/gradle/internal/snapshot/SnapshottingFilter$FileSystemSnapshotPredicate
+instanceKlass java/io/ObjectStreamClass$ExceptionInfo
+instanceKlass com/google/common/collect/ImmutableList$SerializedForm
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot getChildSnapshot (Lorg/gradle/internal/snapshot/VfsRelativePath;Lorg/gradle/internal/snapshot/CaseSensitivity;)Ljava/util/Optional; 15 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/DirectorySnapshot$$Lambda$1259+0x00000008015397b8
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot getChildSnapshot (Lorg/gradle/internal/snapshot/VfsRelativePath;Lorg/gradle/internal/snapshot/CaseSensitivity;)Ljava/util/Optional; 6 <appendix> argL0 ; # org/gradle/internal/snapshot/DirectorySnapshot$$Lambda$1258+0x00000008015395b0
+instanceKlass  @bci org/gradle/api/internal/artifacts/ivyservice/projectmodule/ProjectArtifactResolver$ResolvingCalculator calculateValue (Lorg/gradle/api/internal/tasks/NodeExecutionContext;)Ljava/io/File; 5 <appendix> member <vmtarget> ; # org/gradle/api/internal/artifacts/ivyservice/projectmodule/ProjectArtifactResolver$ResolvingCalculator$$Lambda$1257+0x000000080152e658
+instanceKlass org/gradle/api/internal/tasks/execution/statistics/TaskExecutionStatisticsEventAdapter$1
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$1 executedIncrementally ()Z 17 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$1$$Lambda$1256+0x0000000801538f30
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$1 executedIncrementally ()Z 9 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$1$$Lambda$1255+0x0000000801538d08
+instanceKlass  @bci org/gradle/internal/execution/steps/SkipUpToDateStep$2 getReusedOutputOriginMetadata ()Ljava/util/Optional; 17 <appendix> argL0 ; # org/gradle/internal/execution/steps/SkipUpToDateStep$2$$Lambda$1254+0x0000000801538ae0
+instanceKlass  @bci org/gradle/internal/execution/steps/SkipUpToDateStep$2 getReusedOutputOriginMetadata ()Ljava/util/Optional; 9 <appendix> argL0 ; # org/gradle/internal/execution/steps/SkipUpToDateStep$2$$Lambda$1253+0x00000008015388a8
+instanceKlass org/gradle/api/internal/tasks/execution/ExecuteTaskBuildOperationResult
+instanceKlass org/gradle/api/internal/tasks/execution/ExecuteTaskBuildOperationType$Result
+instanceKlass org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$1
+instanceKlass org/gradle/api/internal/tasks/TaskExecutionOutcome$1
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter executeIfValid (Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;Lorg/gradle/api/internal/tasks/execution/TaskExecution;)Lorg/gradle/api/internal/tasks/TaskExecuterResult; 74 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$$Lambda$1252+0x0000000801537860
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter executeIfValid (Lorg/gradle/api/internal/TaskInternal;Lorg/gradle/api/internal/tasks/TaskStateInternal;Lorg/gradle/api/internal/tasks/TaskExecutionContext;Lorg/gradle/api/internal/tasks/execution/TaskExecution;)Lorg/gradle/api/internal/tasks/TaskExecuterResult; 67 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/execution/ExecuteActionsTaskExecuter$$Lambda$1251+0x0000000801537640
+instanceKlass  @bci org/gradle/api/internal/tasks/execution/TaskExecution ensureLegacySnapshottingInputsClosed ()V 9 <appendix> argL0 ; # org/gradle/api/internal/tasks/execution/TaskExecution$$Lambda$1250+0x0000000801537428
+instanceKlass  @bci org/gradle/internal/execution/steps/RemoveUntrackedExecutionStateStep execute (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/WorkspaceContext;)Lorg/gradle/internal/execution/steps/AfterExecutionResult; 23 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/RemoveUntrackedExecutionStateStep$$Lambda$1249+0x0000000801537208
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot accept (Lorg/gradle/internal/snapshot/FileSystemSnapshotHierarchyVisitor;)Lorg/gradle/internal/snapshot/SnapshotVisitResult; 71 <appendix> member <vmtarget> ; # org/gradle/internal/snapshot/DirectorySnapshot$$Lambda$1248+0x0000000801536d18
+instanceKlass org/gradle/internal/execution/steps/ResolveCachingStateStep$2
+instanceKlass  @bci org/gradle/internal/snapshot/DirectorySnapshot accept (Lorg/gradle/internal/snapshot/FileSystemSnapshotHierarchyVisitor;)Lorg/gradle/internal/snapshot/SnapshotVisitResult; 60 <appendix> argL0 ; # org/gradle/internal/snapshot/DirectorySnapshot$$Lambda$1247+0x0000000801536af0
+instanceKlass org/gradle/internal/execution/steps/SkipUpToDateStep$2
+instanceKlass org/gradle/internal/execution/history/impl/FileSystemSnapshotSerializer$1$1
+instanceKlass org/gradle/internal/snapshot/RootTrackingFileSystemSnapshotHierarchyVisitor
+instanceKlass org/gradle/internal/execution/history/impl/DefaultOutputFilesRepository$1
+instanceKlass  @bci org/gradle/internal/execution/history/impl/DefaultOutputFilesRepository recordOutputs (Ljava/lang/Iterable;)V 28 <appendix> member <vmtarget> ; # org/gradle/internal/execution/history/impl/DefaultOutputFilesRepository$$Lambda$1246+0x00000008015358a0
+instanceKlass  @bci org/gradle/internal/execution/steps/RecordOutputsStep execute (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/Context;)Lorg/gradle/internal/execution/steps/AfterExecutionResult; 22 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/RecordOutputsStep$$Lambda$1245+0x0000000801535680
+instanceKlass  @bci org/gradle/internal/execution/history/impl/DefaultExecutionHistoryStore lambda$prepareForSerialization$0 (Lorg/gradle/internal/fingerprint/CurrentFileCollectionFingerprint;)Lorg/gradle/internal/fingerprint/FileCollectionFingerprint; 1 <appendix> argL0 ; # org/gradle/internal/execution/history/impl/DefaultExecutionHistoryStore$$Lambda$1244+0x0000000801535478
+instanceKlass org/gradle/internal/fingerprint/CurrentFileCollectionFingerprint$ArchivedFileCollectionFingerprintFactory
+instanceKlass com/google/common/collect/Maps$13
+instanceKlass com/google/common/collect/Maps$9
+instanceKlass  @bci org/gradle/internal/execution/history/impl/DefaultExecutionHistoryStore prepareForSerialization (Lcom/google/common/collect/ImmutableSortedMap;)Lcom/google/common/collect/ImmutableSortedMap; 1 <appendix> argL0 ; # org/gradle/internal/execution/history/impl/DefaultExecutionHistoryStore$$Lambda$1243+0x00000008015336e0
+instanceKlass  @bci org/gradle/internal/execution/steps/StoreExecutionStateStep lambda$execute$2 (Lorg/gradle/internal/execution/steps/AfterExecutionResult;Lorg/gradle/internal/execution/steps/PreviousExecutionContext;Lorg/gradle/internal/execution/history/ExecutionHistoryStore;)V 9 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/StoreExecutionStateStep$$Lambda$1242+0x00000008015334c0
+instanceKlass  @bci org/gradle/internal/execution/steps/StoreExecutionStateStep execute (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/PreviousExecutionContext;)Lorg/gradle/internal/execution/steps/AfterExecutionResult; 23 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/StoreExecutionStateStep$$Lambda$1241+0x00000008015332a0
+instanceKlass org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$1
+instanceKlass org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$Operation$Result$1
+instanceKlass org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$Operation$Result
+instanceKlass org/gradle/internal/execution/history/impl/DefaultAfterExecutionState
+instanceKlass org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$Operation$Details$1
+instanceKlass org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$Operation$Details
+instanceKlass  @bci org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep captureStateAfterExecution (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/BeforeExecutionContext;Lorg/gradle/internal/execution/history/BeforeExecutionState;Ljava/time/Duration;)Ljava/util/Optional; 7 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$$Lambda$1240+0x00000008015323d8
+instanceKlass  @bci org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep execute (Lorg/gradle/internal/execution/UnitOfWork;Lorg/gradle/internal/execution/steps/InputChangesContext;)Lorg/gradle/internal/execution/steps/AfterExecutionResult; 26 <appendix> member <vmtarget> ; # org/gradle/internal/execution/steps/CaptureStateAfterExecutionStep$$Lambda$1239+0x00000008015321a8
+instanceKlass org/gradle/internal/execution/steps/ExecuteStep$Operation$Result$1
+instanceKlass org/gradle/internal/execution/steps/ExecuteStep$Operation$Result
+instanceKlass org/gradle/internal/execution/steps/ExecuteStep$ResultImpl
+instanceKlass org/gradle/internal/execution/steps/ExecuteStep$ExecutionResultImpl
+instanceKlass  @bci org/gradle/internal/execution/steps/ExecuteStep determineOutcome (Lorg/gradle/internal/execution/steps/InputChangesContext;Lorg/gradle/internal/execution/UnitOfWork$WorkOutput;)Lorg/gradle/internal/execution/ExecutionOutcome; 53 <appendix> argL0 ; # org/gradle/internal/execution/steps/ExecuteStep$$Lambda$1238+0x0000000801531368
+instanceKlass org/gradle/internal/execution/steps/ExecuteStep$3
+instanceKlass org/gradle/api/internal/tasks/execution/TaskExecution$2
+instanceKlass org/gradle/api/internal/tasks/compile/CompileJavaBuildOperationReportingCompiler$Result
+instanceKlass it/unimi/dsi/fastutil/ints/IntOpenHashSet$SetIterator
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData$Serializer write (Lorg/gradle/internal/serialize/Encoder;Lorg/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData;)V 18 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData$Serializer$$Lambda$1237+0x000000080152e230
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData$Serializer write (Lorg/gradle/internal/serialize/Encoder;Lorg/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData;)V 13 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData$Serializer$$Lambda$1236+0x000000080152e020
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger updateClassToConstantsMapping (Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Ljava/util/Set;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping; 56 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger$$Lambda$1235+0x000000080152de00
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder addPrivateDependents (Ljava/lang/String;Ljava/util/Collection;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder; 3 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder$$Lambda$1234+0x000000080152dbe0
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger lambda$updateClassToConstantsMapping$1 (Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Ljava/util/Set;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder;Ljava/lang/String;)V 70 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger$$Lambda$1233+0x000000080152d9a0
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder addAccessibleDependents (Ljava/lang/String;Ljava/util/Collection;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder; 3 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder$$Lambda$1232+0x000000080152d780
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger lambda$updateClassToConstantsMapping$1 (Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Ljava/util/Set;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder;Ljava/lang/String;)V 29 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger$$Lambda$1231+0x000000080152d540
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger updateClassToConstantsMapping (Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Ljava/util/Set;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping; 34 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger$$Lambda$1230+0x000000080152d320
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger updateClassToConstantsMapping (Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping;Ljava/util/Set;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping; 20 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger$$Lambda$1229+0x000000080152d0e0
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingMerger
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/IncrementalResultStoringCompiler mergeSourceClassesMappings (Ljava/util/Map;Ljava/util/Map;Ljava/util/Set;)Ljava/util/Map; 71 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/IncrementalResultStoringCompiler$$Lambda$1228+0x000000080152ccc0
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/IncrementalResultStoringCompiler getCompilerApiData (Lorg/gradle/api/internal/tasks/compile/JavaCompileSpec;Lorg/gradle/api/tasks/WorkResult;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/CompilerApiData; 125 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/IncrementalResultStoringCompiler$$Lambda$1227+0x000000080152cab8
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/analyzer/CachingClassDependenciesAnalyzer getClassAnalysis (Lorg/gradle/internal/hash/HashCode;Lorg/gradle/api/file/FileTreeElement;)Lorg/gradle/api/internal/tasks/compile/incremental/deps/ClassAnalysis; 8 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/analyzer/CachingClassDependenciesAnalyzer$$Lambda$1226+0x000000080152c8a8
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/deps/ClassAnalysis
+instanceKlass  @bci org/gradle/api/internal/file/CompositeFileCollection getSourceCollections ()Ljava/util/List; 11 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/CompositeFileCollection$$Lambda$1225+0x00000008013f3c78
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/DefaultClassSetAnalyzer$EntryVisitor
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/deps/ClassDependentsAccumulator
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/RecompilationNotNecessary
+instanceKlass  @bci org/gradle/api/tasks/WorkResults <clinit> ()V 8 <appendix> argL0 ; # org/gradle/api/tasks/WorkResults$$Lambda$1224+0x00000008013f3a60
+instanceKlass  @bci org/gradle/api/tasks/WorkResults <clinit> ()V 0 <appendix> argL0 ; # org/gradle/api/tasks/WorkResults$$Lambda$1223+0x00000008013f3848
+instanceKlass org/gradle/api/tasks/WorkResults
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/IncrementalCompilationResult
+instanceKlass  @bci com/sun/tools/javac/file/Locations close ()V 13 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/Locations$$Lambda$1222+0x000000080152b420
+instanceKlass  @bci com/sun/tools/javac/code/Types$MembersClosureCache$MembersScope combine (Ljava/util/function/Predicate;)Ljava/util/function/Predicate; 1 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Types$MembersClosureCache$MembersScope$$Lambda$1221+0x000000080152abf0
+instanceKlass  @bci com/sun/tools/javac/tree/JCTree$JCCase getExpressions ()Lcom/sun/tools/javac/util/List; 17 <appendix> argL0 ; # com/sun/tools/javac/tree/JCTree$JCCase$$Lambda$1220+0x000000080152a3c0
+instanceKlass  @bci com/sun/tools/javac/tree/JCTree$JCCase getExpressions ()Lcom/sun/tools/javac/util/List; 7 <appendix> argL0 ; # com/sun/tools/javac/tree/JCTree$JCCase$$Lambda$1219+0x000000080152a188
+instanceKlass  @bci com/sun/tools/javac/comp/Flow$AliveAnalyzer visitSwitch (Lcom/sun/tools/javac/tree/JCTree$JCSwitch;)V 48 <appendix> argL0 ; # com/sun/tools/javac/comp/Flow$AliveAnalyzer$$Lambda$1218+0x0000000801529f50
+instanceKlass  @bci com/sun/tools/javac/comp/Flow$AliveAnalyzer visitSwitch (Lcom/sun/tools/javac/tree/JCTree$JCSwitch;)V 38 <appendix> argL0 ; # com/sun/tools/javac/comp/Flow$AliveAnalyzer$$Lambda$1217+0x0000000801529d28
+instanceKlass  @bci com/sun/tools/javac/comp/Attr handleSwitch (Lcom/sun/tools/javac/tree/JCTree;Lcom/sun/tools/javac/tree/JCTree$JCExpression;Lcom/sun/tools/javac/util/List;Ljava/util/function/BiConsumer;)V 167 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1216+0x0000000801529af0
+instanceKlass  @bci com/sun/tools/javac/comp/Attr handleSwitch (Lcom/sun/tools/javac/tree/JCTree;Lcom/sun/tools/javac/tree/JCTree$JCExpression;Lcom/sun/tools/javac/util/List;Ljava/util/function/BiConsumer;)V 157 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1215+0x00000008015298c8
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitSwitch (Lcom/sun/tools/javac/tree/JCTree$JCSwitch;)V 11 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Attr$$Lambda$1214+0x00000008015296a8
+instanceKlass com/sun/tools/javac/comp/ConstFold$1
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitWhileLoop (Lcom/sun/tools/javac/tree/JCTree$JCWhileLoop;)V 134 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1213+0x00000008015292a0
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitWhileLoop (Lcom/sun/tools/javac/tree/JCTree$JCWhileLoop;)V 122 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Attr$$Lambda$1212+0x0000000801529080
+instanceKlass  @bci com/sun/tools/javac/jvm/Items$ImmediateItem ldc ()V 29 <appendix> argL0 ; # com/sun/tools/javac/jvm/Items$ImmediateItem$$Lambda$1211+0x0000000801528e78
+instanceKlass  @bci com/sun/tools/javac/comp/Check checkRedundantCast (Lcom/sun/tools/javac/comp/Env;Lcom/sun/tools/javac/tree/JCTree$JCTypeCast;)V 58 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Check$$Lambda$1210+0x0000000801528c68
+instanceKlass com/sun/tools/javac/code/DeferredLintHandler$LintLogger
+instanceKlass  @bci com/sun/tools/javac/jvm/Items$MemberItem load ()Lcom/sun/tools/javac/jvm/Items$Item; 14 <appendix> argL0 ; # com/sun/tools/javac/jvm/Items$MemberItem$$Lambda$1209+0x0000000801528640
+instanceKlass  @bci com/sun/tools/javac/jvm/Gen visitTypeCast (Lcom/sun/tools/javac/tree/JCTree$JCTypeCast;)V 116 <appendix> argL0 ; # com/sun/tools/javac/jvm/Gen$$Lambda$1208+0x0000000801520df8
+instanceKlass com/sun/tools/javac/jvm/ClassWriter$StackMapTableFrame
+instanceKlass com/sun/tools/javac/jvm/Code$StackMapFrame
+instanceKlass com/sun/tools/javac/jvm/Code$Chain
+instanceKlass  @bci com/sun/tools/javac/jvm/Items$StaticItem store ()V 14 <appendix> argL0 ; # com/sun/tools/javac/jvm/Items$StaticItem$$Lambda$1207+0x0000000801523868
+instanceKlass  @bci com/sun/tools/javac/jvm/Gen visitNewClass (Lcom/sun/tools/javac/tree/JCTree$JCNewClass;)V 49 <appendix> argL0 ; # com/sun/tools/javac/jvm/Gen$$Lambda$1206+0x0000000801523660
+instanceKlass com/sun/tools/javac/jvm/PoolConstant$LoadableConstant$BasicConstant
+instanceKlass  @bci com/sun/tools/javac/code/Symtab getClassField (Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Types;)Lcom/sun/tools/javac/code/Symbol$VarSymbol; 16 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Symtab$$Lambda$1205+0x0000000801522c00
+instanceKlass  @bci org/gradle/internal/compiler/java/listeners/classnames/ClassNameCollector registerMapping (Ljava/lang/String;Ljava/lang/String;)V 5 <appendix> argL0 ; # org/gradle/internal/compiler/java/listeners/classnames/ClassNameCollector$$Lambda$1204+0x0000000801521680
+instanceKlass org/gradle/util/internal/RelativePathUtil
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/CompilationSourceDirs relativize (Ljava/io/File;)Ljava/util/Optional; 31 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/CompilationSourceDirs$$Lambda$1203+0x00000008013f7680
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/CompilationSourceDirs relativize (Ljava/io/File;)Ljava/util/Optional; 21 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/CompilationSourceDirs$$Lambda$1202+0x00000008013f7450
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/CompilationSourceDirs relativize (Ljava/io/File;)Ljava/util/Optional; 10 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/CompilationSourceDirs$$Lambda$1201+0x00000008013f7210
+instanceKlass com/sun/tools/javac/jvm/ClassWriter$1
+instanceKlass  @bci com/sun/tools/javac/jvm/Items$MemberItem store ()V 14 <appendix> argL0 ; # com/sun/tools/javac/jvm/Items$MemberItem$$Lambda$1200+0x0000000801522808
+instanceKlass  @bci com/sun/tools/javac/jvm/Items$StaticItem load ()Lcom/sun/tools/javac/jvm/Items$Item; 14 <appendix> argL0 ; # com/sun/tools/javac/jvm/Items$StaticItem$$Lambda$1199+0x0000000801522600
+instanceKlass java/util/function/ToIntBiFunction
+instanceKlass com/sun/tools/javac/jvm/PoolWriter$1
+instanceKlass com/sun/tools/javac/jvm/PoolConstant$NameAndType
+instanceKlass com/sun/tools/javac/code/Types$UniqueType
+instanceKlass  @bci com/sun/tools/javac/model/FilteredMemberList iterator ()Ljava/util/Iterator; 4 <appendix> argL0 ; # com/sun/tools/javac/model/FilteredMemberList$$Lambda$1198+0x0000000801527bf8
+instanceKlass com/sun/tools/javac/jvm/Code$LocalVar$Range
+instanceKlass com/sun/tools/javac/jvm/Items
+instanceKlass com/sun/tools/javac/jvm/Code$LocalVar
+instanceKlass com/sun/tools/javac/jvm/Code$State
+instanceKlass com/sun/tools/javac/jvm/Gen$GenContext
+instanceKlass com/sun/tools/javac/jvm/Gen$4
+instanceKlass com/sun/tools/javac/comp/Lower$2
+instanceKlass com/sun/tools/javac/comp/TransPatterns$BindingContext
+instanceKlass com/sun/tools/javac/tree/TreeMaker$2
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder addPrivateDependent (Ljava/lang/String;Ljava/lang/String;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder; 24 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder$$Lambda$1197+0x00000008013f6fe8
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder addPrivateDependent (Ljava/lang/String;Ljava/lang/String;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder; 5 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder$$Lambda$1196+0x00000008013f6dc0
+instanceKlass com/sun/tools/javac/util/Constants$1
+instanceKlass com/sun/tools/javac/comp/Flow$1
+instanceKlass com/sun/tools/javac/util/Constants
+instanceKlass  @bci org/gradle/internal/compiler/java/listeners/constants/ConstantsTreeVisitor visitClass (Lcom/sun/source/tree/ClassTree;Lorg/gradle/internal/compiler/java/listeners/constants/ConstantsVisitorContext;)Lorg/gradle/internal/compiler/java/listeners/constants/ConstantsVisitorContext; 39 <appendix> member <vmtarget> ; # org/gradle/internal/compiler/java/listeners/constants/ConstantsTreeVisitor$$Lambda$1195+0x00000008014a8438
+instanceKlass org/gradle/internal/compiler/java/listeners/constants/ConstantsVisitorContext
+instanceKlass java/text/BreakIterator
+instanceKlass com/sun/tools/javac/api/JavacScope
+instanceKlass com/sun/source/util/DocTreePath
+instanceKlass com/sun/tools/javac/util/Bits$1
+instanceKlass com/sun/tools/javac/util/Bits
+instanceKlass  @bci com/sun/tools/javac/comp/Check checkOverride (Lcom/sun/tools/javac/tree/JCTree;Lcom/sun/tools/javac/code/Symbol$MethodSymbol;Lcom/sun/tools/javac/code/Symbol$MethodSymbol;Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 798 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Check$$Lambda$1194+0x000000080151add0
+instanceKlass com/sun/tools/javac/comp/Resolve$MostSpecificCheck
+instanceKlass  @bci com/sun/tools/javac/code/Scope includes (Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Scope$LookupKind;)Z 6 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$$Lambda$1193+0x000000080151a2f8
+instanceKlass jdk/internal/access/foreign/MemorySegmentProxy
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitForLoop (Lcom/sun/tools/javac/tree/JCTree$JCForLoop;)V 249 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1192+0x0000000801519620
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitForLoop (Lcom/sun/tools/javac/tree/JCTree$JCForLoop;)V 237 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Attr$$Lambda$1191+0x0000000801519400
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitIf (Lcom/sun/tools/javac/tree/JCTree$JCIf;)V 296 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1190+0x0000000801518d50
+instanceKlass  @bci com/sun/tools/javac/comp/Attr visitIf (Lcom/sun/tools/javac/tree/JCTree$JCIf;)V 286 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Attr$$Lambda$1189+0x0000000801518b30
+instanceKlass com/sun/tools/javac/comp/Flow$BaseAnalyzer$PendingExit
+instanceKlass com/sun/tools/javac/comp/Resolve$MethodCheckContext
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$UnaryOperatorHelper doLookup (Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 3 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$UnaryOperatorHelper$$Lambda$1188+0x00000008015176d0
+instanceKlass  @bci com/sun/tools/javac/comp/Operators resolveUnary (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/tree/JCTree$Tag;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 22 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1187+0x00000008015174c0
+instanceKlass  @bci com/sun/tools/javac/comp/Operators resolveUnary (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/tree/JCTree$Tag;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 13 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1186+0x0000000801517290
+instanceKlass  @bci com/sun/tools/javac/comp/Operators resolveUnary (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/tree/JCTree$Tag;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 7 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1185+0x0000000801517050
+instanceKlass  @bci com/sun/tools/javac/comp/Operators makeOperator (Lcom/sun/tools/javac/util/Name;Lcom/sun/tools/javac/util/List;Lcom/sun/tools/javac/comp/Operators$OperatorType;[I)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 9 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1184+0x0000000801516e20
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorHelper initOperators ()[Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 17 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorHelper$$Lambda$1183+0x0000000801516c18
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorHelper initOperators ()[Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 7 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorHelper$$Lambda$1182+0x00000008015169f0
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorHelper doLookup (Ljava/util/function/Predicate;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 5 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$OperatorHelper$$Lambda$1181+0x00000008015167e0
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$BinaryOperatorHelper doLookup (Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 4 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$BinaryOperatorHelper$$Lambda$1180+0x0000000801516000
+instanceKlass com/sun/tools/javac/comp/Operators$1
+instanceKlass  @bci com/sun/tools/javac/comp/Operators resolveBinary (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/tree/JCTree$Tag;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 28 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1179+0x0000000801513a28
+instanceKlass  @bci com/sun/tools/javac/comp/Operators resolveBinary (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/tree/JCTree$Tag;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 17 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1178+0x00000008015137f8
+instanceKlass  @bci com/sun/tools/javac/comp/Operators resolveBinary (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/tree/JCTree$Tag;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type;)Lcom/sun/tools/javac/code/Symbol$OperatorSymbol; 9 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$$Lambda$1177+0x00000008015135b8
+instanceKlass com/sun/tools/javac/code/Types$ImplementationCache$Entry
+instanceKlass  @bci com/sun/tools/javac/comp/Attr bindingEnv (Lcom/sun/tools/javac/comp/Env;Lcom/sun/tools/javac/tree/JCTree;Lcom/sun/tools/javac/util/List;)Lcom/sun/tools/javac/comp/Env; 47 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Attr$$Lambda$1176+0x0000000801513198
+instanceKlass com/sun/tools/javac/code/Flags
+instanceKlass com/sun/tools/javac/comp/Infer$IncorporationBinaryOp
+instanceKlass java/util/EnumMap$EntryIterator$Entry
+instanceKlass java/util/EnumMap$EnumMapIterator
+instanceKlass  @bci com/sun/tools/javac/code/Type$UndetVar substBounds (Lcom/sun/tools/javac/util/List;Lcom/sun/tools/javac/util/List;Lcom/sun/tools/javac/code/Types;)V 19 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Type$UndetVar$$Lambda$1175+0x0000000801512300
+instanceKlass  @cpi com/sun/tools/javac/code/Type$UndetVar 445 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801514000
+instanceKlass  @bci com/sun/tools/javac/comp/Infer$CheckBounds <init> (Lcom/sun/tools/javac/comp/Infer;Lcom/sun/tools/javac/code/Type$UndetVar;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type$UndetVar$InferenceBound;)V 4 <appendix> argL0 ; # com/sun/tools/javac/comp/Infer$CheckBounds$$Lambda$1174+0x00000008015120e8
+instanceKlass com/sun/tools/javac/code/Type$5
+instanceKlass com/sun/tools/javac/code/Types$TypePair
+instanceKlass com/sun/tools/javac/comp/Infer$BoundFilter
+instanceKlass com/sun/tools/javac/comp/Resolve$19
+instanceKlass  @bci com/sun/tools/javac/comp/InferenceContext restvars ()Lcom/sun/tools/javac/util/List; 1 <appendix> argL0 ; # com/sun/tools/javac/comp/InferenceContext$$Lambda$1173+0x000000080150f960
+instanceKlass  @bci com/sun/tools/javac/comp/Infer$EqCheckLegacy <init> (Lcom/sun/tools/javac/comp/Infer;Lcom/sun/tools/javac/code/Type$UndetVar;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type$UndetVar$InferenceBound;)V 14 <appendix> argL0 ; # com/sun/tools/javac/comp/Infer$EqCheckLegacy$$Lambda$1172+0x000000080150f318
+instanceKlass  @bci com/sun/tools/javac/comp/Infer$EqCheckLegacy <init> (Lcom/sun/tools/javac/comp/Infer;Lcom/sun/tools/javac/code/Type$UndetVar;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Type$UndetVar$InferenceBound;)V 9 <appendix> argL0 ; # com/sun/tools/javac/comp/Infer$EqCheckLegacy$$Lambda$1171+0x000000080150f100
+instanceKlass com/sun/tools/javac/comp/Infer$IncorporationAction
+instanceKlass com/sun/tools/javac/comp/Resolve$MethodResolutionContext$Candidate
+instanceKlass com/sun/tools/javac/comp/Resolve$LookupFilter
+instanceKlass com/sun/tools/javac/comp/Resolve$6
+instanceKlass  @bci com/sun/tools/javac/comp/Resolve superclasses (Lcom/sun/tools/javac/code/Type;)Ljava/lang/Iterable; 2 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Resolve$$Lambda$1170+0x00000008015079b8
+instanceKlass com/sun/tools/javac/comp/Resolve$MethodResolutionContext
+instanceKlass  @bci com/sun/tools/javac/comp/Check checkOverrideClashes (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/code/Type;Lcom/sun/tools/javac/code/Symbol$MethodSymbol;)V 53 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Check$$Lambda$1169+0x0000000801506b10
+instanceKlass  @bci com/sun/tools/javac/code/Types membersClosure (Lcom/sun/tools/javac/code/Type;Z)Lcom/sun/tools/javac/code/Scope$CompoundScope; 15 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Types$$Lambda$1168+0x0000000801506900
+instanceKlass com/sun/tools/javac/comp/Check$ClashFilter
+instanceKlass  @bci com/sun/tools/javac/util/List collector ()Ljava/util/stream/Collector; 15 <appendix> argL0 ; # com/sun/tools/javac/util/List$$Lambda$1167+0x0000000801506050
+instanceKlass  @bci com/sun/tools/javac/util/List collector ()Ljava/util/stream/Collector; 10 <appendix> argL0 ; # com/sun/tools/javac/util/List$$Lambda$1166+0x0000000801505e20
+instanceKlass  @bci com/sun/tools/javac/util/List collector ()Ljava/util/stream/Collector; 5 <appendix> argL0 ; # com/sun/tools/javac/util/List$$Lambda$1165+0x0000000801505c08
+instanceKlass  @bci com/sun/tools/javac/util/List collector ()Ljava/util/stream/Collector; 0 <appendix> argL0 ; # com/sun/tools/javac/util/List$$Lambda$1164+0x0000000801505a00
+instanceKlass  @bci com/sun/tools/javac/comp/Attr attribClass (Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 749 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1163+0x00000008015057d8
+instanceKlass  @bci com/sun/tools/javac/comp/Attr attribClass (Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 739 <appendix> argL0 ; # com/sun/tools/javac/comp/Attr$$Lambda$1162+0x00000008015055a0
+instanceKlass com/sun/tools/javac/main/JavaCompiler$2
+instanceKlass com/sun/tools/javac/jvm/ClassReader$CompleterDeproxy
+instanceKlass  @bci com/sun/tools/javac/code/Scope$FilterImportScope lambda$getSymbols$1 (Lcom/sun/tools/javac/util/List;)Ljava/util/Iterator; 10 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$FilterImportScope$$Lambda$1161+0x0000000801504a78
+instanceKlass  @bci com/sun/tools/javac/code/Scope$FilterImportScope lambda$getSymbols$1 (Lcom/sun/tools/javac/util/List;)Ljava/util/Iterator; 1 <appendix> argL0 ; # com/sun/tools/javac/code/Scope$FilterImportScope$$Lambda$1160+0x0000000801504850
+instanceKlass  @bci com/sun/tools/javac/code/Scope$FilterImportScope getSymbols (Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/lang/Iterable; 58 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$FilterImportScope$$Lambda$1159+0x0000000801504620
+instanceKlass com/sun/tools/javac/code/Scope$ImportScope$1
+instanceKlass  @bci com/sun/tools/javac/comp/Check checkUniqueImport (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/code/Symbol;Z)Z 2 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Check$$Lambda$1158+0x00000008015041c0
+instanceKlass  @bci com/sun/tools/javac/comp/Check checkImportsUnique (Lcom/sun/tools/javac/tree/JCTree$JCCompilationUnit;)V 90 <appendix> argL0 ; # com/sun/tools/javac/comp/Check$$Lambda$1157+0x0000000801503f88
+instanceKlass  @bci com/sun/tools/javac/comp/TypeEnter complete (Lcom/sun/tools/javac/code/Symbol;)V 191 <appendix> argL0 ; # com/sun/tools/javac/comp/TypeEnter$$Lambda$1156+0x0000000801503d80
+instanceKlass  @bci com/sun/tools/javac/code/Types$TypeMapping visit (Lcom/sun/tools/javac/util/List;Ljava/lang/Object;)Lcom/sun/tools/javac/util/List; 3 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Types$TypeMapping$$Lambda$1155+0x0000000801503b50
+instanceKlass com/sun/tools/javac/code/Types$25
+instanceKlass  @bci com/sun/tools/javac/comp/Annotate annotateLater (Lcom/sun/tools/javac/util/List;Lcom/sun/tools/javac/comp/Env;Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;)V 32 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Annotate$$Lambda$1154+0x0000000801502ec8
+instanceKlass  @bci com/sun/tools/javac/comp/Annotate annotateLater (Lcom/sun/tools/javac/util/List;Lcom/sun/tools/javac/comp/Env;Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;)V 19 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Annotate$$Lambda$1153+0x0000000801502cb8
+instanceKlass com/sun/tools/javac/code/SymbolMetadata
+instanceKlass com/sun/tools/javac/util/Iterators$2
+instanceKlass  @bci com/sun/tools/javac/code/Scope$FilterImportScope lambda$getSymbolsByName$3 (Lcom/sun/tools/javac/util/List;)Ljava/util/Iterator; 10 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$FilterImportScope$$Lambda$1152+0x00000008015025a0
+instanceKlass  @bci com/sun/tools/javac/code/Scope$FilterImportScope lambda$getSymbolsByName$3 (Lcom/sun/tools/javac/util/List;)Ljava/util/Iterator; 1 <appendix> argL0 ; # com/sun/tools/javac/code/Scope$FilterImportScope$$Lambda$1151+0x0000000801502378
+instanceKlass  @bci com/sun/tools/javac/code/Scope$FilterImportScope getSymbolsByName (Lcom/sun/tools/javac/util/Name;Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/lang/Iterable; 62 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$FilterImportScope$$Lambda$1150+0x0000000801502148
+instanceKlass  @bci com/sun/tools/javac/code/Scope$CompoundScope lambda$getSymbolsByName$3 (Lcom/sun/tools/javac/util/Name;Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/util/Iterator; 7 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$CompoundScope$$Lambda$1149+0x0000000801501f18
+instanceKlass  @bci com/sun/tools/javac/code/Scope$CompoundScope getSymbolsByName (Lcom/sun/tools/javac/util/Name;Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/lang/Iterable; 4 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$CompoundScope$$Lambda$1148+0x0000000801501ce8
+instanceKlass  @bci com/sun/tools/javac/comp/TypeEnter defaultConstructor (Lcom/sun/tools/javac/tree/TreeMaker;Lcom/sun/tools/javac/comp/TypeEnter$DefaultConstructorHelper;)Lcom/sun/tools/javac/tree/JCTree; 144 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/TypeEnter$$Lambda$1147+0x0000000801501ab8
+instanceKlass com/sun/tools/javac/comp/TypeEnter$BasicConstructorHelper
+instanceKlass  @bci com/sun/tools/javac/comp/Annotate queueScanTreeAndTypeAnnotate (Lcom/sun/tools/javac/tree/JCTree;Lcom/sun/tools/javac/comp/Env;Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;)V 12 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Annotate$$Lambda$1146+0x0000000801501640
+instanceKlass com/sun/tools/javac/util/Iterators$CompoundIterator
+instanceKlass com/sun/tools/javac/util/Iterators$1
+instanceKlass com/sun/tools/javac/util/Iterators
+instanceKlass  @bci com/sun/tools/javac/code/Scope$NamedImportScope lambda$getSymbolsByName$1 ([Lcom/sun/tools/javac/code/Scope;Lcom/sun/tools/javac/util/Name;Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/util/Iterator; 7 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$NamedImportScope$$Lambda$1145+0x0000000801500d98
+instanceKlass  @bci com/sun/tools/javac/code/Scope$NamedImportScope getSymbolsByName (Lcom/sun/tools/javac/util/Name;Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/lang/Iterable; 29 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$NamedImportScope$$Lambda$1144+0x0000000801500b68
+instanceKlass  @bci com/sun/tools/javac/jvm/ClassReader$11 read (Lcom/sun/tools/javac/code/Symbol;I)V 74 <appendix> member <vmtarget> ; # com/sun/tools/javac/jvm/ClassReader$11$$Lambda$1143+0x0000000801500528
+instanceKlass com/sun/tools/javac/jvm/ClassReader$AnnotationDeproxy
+instanceKlass com/sun/tools/javac/jvm/ClassReader$ProxyVisitor
+instanceKlass com/sun/tools/javac/code/TypeTag$1
+instanceKlass com/sun/tools/javac/jvm/ClassReader$28
+instanceKlass  @bci com/sun/tools/javac/code/Scope$ScopeImpl remove (Lcom/sun/tools/javac/code/Symbol;)V 21 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$ScopeImpl$$Lambda$1142+0x00000008014bb260
+instanceKlass  @bci com/sun/tools/javac/jvm/ClassReader readInnerClasses (Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 67 <appendix> member <vmtarget> ; # com/sun/tools/javac/jvm/ClassReader$$Lambda$1141+0x00000008014bb050
+instanceKlass  @bci com/sun/tools/javac/jvm/ClassReader readInnerClasses (Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 41 <appendix> member <vmtarget> ; # com/sun/tools/javac/jvm/ClassReader$$Lambda$1140+0x00000008014bae40
+instanceKlass  @cpi com/sun/tools/javac/jvm/ClassReader 2125 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x00000008014b8c00
+instanceKlass com/sun/tools/javac/jvm/Code$1
+instanceKlass  @bci com/sun/tools/javac/jvm/PoolReader getType (I)Lcom/sun/tools/javac/code/Type; 14 <appendix> member <vmtarget> ; # com/sun/tools/javac/jvm/PoolReader$$Lambda$1139+0x00000008014ba000
+instanceKlass  @cpi com/sun/tools/javac/jvm/PoolReader 299 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x00000008014b8800
+instanceKlass  @bci com/sun/tools/javac/jvm/ClassReader readClass (Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 426 <appendix> member <vmtarget> ; # com/sun/tools/javac/jvm/ClassReader$$Lambda$1138+0x00000008014bfdd0
+instanceKlass com/sun/tools/javac/jvm/ClassReader$SourceFileObject
+instanceKlass  @bci com/sun/tools/javac/jvm/PoolReader resolve (Lcom/sun/tools/javac/util/ByteBuffer;II)Ljava/lang/Object; 137 <appendix> argL0 ; # com/sun/tools/javac/jvm/PoolReader$$Lambda$1137+0x00000008014bf8d8
+instanceKlass  @cpi com/sun/tools/javac/jvm/PoolReader 305 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x00000008014b8400
+instanceKlass com/sun/tools/javac/util/Name$NameMapper
+instanceKlass com/sun/tools/javac/jvm/PoolReader$ImmutablePoolHelper
+instanceKlass com/sun/tools/javac/jvm/PoolReader
+instanceKlass com/sun/tools/javac/util/ArrayUtils
+instanceKlass com/sun/tools/javac/code/Scope$ScopeImpl$2
+instanceKlass  @bci com/sun/tools/javac/code/Scope$ScopeImpl getSymbolsByName (Lcom/sun/tools/javac/util/Name;Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/lang/Iterable; 4 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$ScopeImpl$$Lambda$1136+0x00000008014be9c8
+instanceKlass com/sun/tools/javac/comp/TypeEnter$1
+instanceKlass  @bci com/sun/tools/javac/code/ClassFinder classFileNotFound (Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)Lcom/sun/tools/javac/code/Symbol$CompletionFailure; 4 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/ClassFinder$$Lambda$1135+0x00000008014be3e8
+instanceKlass  @bci com/sun/tools/javac/code/ClassFinder loadClass (Lcom/sun/tools/javac/code/Symbol$ModuleSymbol;Lcom/sun/tools/javac/util/Name;)Lcom/sun/tools/javac/code/Symbol$ClassSymbol; 28 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/ClassFinder$$Lambda$1134+0x00000008014be1d8
+instanceKlass com/sun/tools/javac/comp/MatchBindingsComputer$1
+instanceKlass  @bci com/sun/tools/javac/comp/Check checkDeprecated (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition;Lcom/sun/tools/javac/code/Symbol;Lcom/sun/tools/javac/code/Symbol;)V 2 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Check$$Lambda$1133+0x00000008014bddd8
+instanceKlass com/sun/tools/javac/comp/Attr$13
+instanceKlass com/sun/tools/javac/code/Scope$FilterImportScope$SymbolImporter
+instanceKlass  @bci com/sun/tools/javac/comp/TypeEnter$ImportsPhase resolveImports (Lcom/sun/tools/javac/tree/JCTree$JCCompilationUnit;Lcom/sun/tools/javac/comp/Env;)V 89 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/TypeEnter$ImportsPhase$$Lambda$1132+0x00000008014bcd48
+instanceKlass  @bci com/sun/tools/javac/comp/TypeEnter$ImportsPhase resolveImports (Lcom/sun/tools/javac/tree/JCTree$JCCompilationUnit;Lcom/sun/tools/javac/comp/Env;)V 77 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/TypeEnter$ImportsPhase$$Lambda$1131+0x00000008014bcb38
+instanceKlass com/sun/tools/javac/code/Scope$ImportFilter
+instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$WrappedFileObject
+instanceKlass com/sun/tools/javac/code/ClassFinder$2
+instanceKlass java/util/ImmutableCollections$Access$1
+instanceKlass jdk/internal/access/JavaUtilCollectionAccess
+instanceKlass java/util/ImmutableCollections$Access
+instanceKlass  @bci java/nio/file/Files asUncheckedRunnable (Ljava/io/Closeable;)Ljava/lang/Runnable; 1 <appendix> member <vmtarget> ; # java/nio/file/Files$$Lambda$1130+0x00000008014c1c20
+instanceKlass java/nio/file/Files$2
+instanceKlass com/sun/tools/javac/comp/Check$5
+instanceKlass com/sun/tools/javac/comp/AttrContext
+instanceKlass  @bci com/sun/tools/javac/comp/Enter visitTopLevel (Lcom/sun/tools/javac/tree/JCTree$JCCompilationUnit;)V 287 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Enter$$Lambda$1129+0x00000008014b6e08
+instanceKlass  @cpi com/sun/tools/javac/comp/Operators$BinaryOperatorHelper 128 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x00000008014b8000
+instanceKlass  @bci com/sun/tools/javac/comp/Enter visitTopLevel (Lcom/sun/tools/javac/tree/JCTree$JCCompilationUnit;)V 273 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Enter$$Lambda$1128+0x00000008014b6bc8
+instanceKlass com/sun/tools/javac/code/Scope$ScopeImpl$1
+instanceKlass  @bci com/sun/tools/javac/code/Scope$ScopeImpl getSymbols (Ljava/util/function/Predicate;Lcom/sun/tools/javac/code/Scope$LookupKind;)Ljava/lang/Iterable; 3 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Scope$ScopeImpl$$Lambda$1127+0x00000008014b6740
+instanceKlass  @bci com/sun/tools/javac/file/JavacFileManager indexPathsAndContainersByRelativeDirectory (Ljavax/tools/JavaFileManager$Location;)Ljava/util/Map; 167 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/JavacFileManager$$Lambda$1126+0x00000008014b6100
+instanceKlass com/sun/tools/javac/file/JavacFileManager$DirectoryContainer
+instanceKlass com/sun/tools/javac/file/JavacFileManager$ArchiveContainer
+instanceKlass com/sun/tools/javac/code/ClassFinder$1
+instanceKlass  @bci com/sun/tools/javac/code/ClassFinder list (Ljavax/tools/JavaFileManager$Location;Lcom/sun/tools/javac/code/Symbol$PackageSymbol;Ljava/lang/String;Ljava/util/Set;)Ljava/lang/Iterable; 26 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/ClassFinder$$Lambda$1125+0x00000008014b55d0
+instanceKlass com/sun/tools/javac/file/JRTIndex$CtSym
+instanceKlass com/sun/tools/javac/file/JRTIndex$Entry
+instanceKlass  @bci jdk/internal/jimage/ImageReader$SharedImageReader handlePackages (Ljava/lang/String;Ljdk/internal/jimage/ImageLocation;)Ljdk/internal/jimage/ImageReader$Node; 20 <appendix> member <vmtarget> ; # jdk/internal/jimage/ImageReader$SharedImageReader$$Lambda$1124+0x00000008014c1388
+instanceKlass com/sun/tools/javac/file/JRTIndex
+instanceKlass  @bci com/sun/tools/javac/file/JavacFileManager pathsAndContainers (Ljavax/tools/JavaFileManager$Location;Lcom/sun/tools/javac/file/RelativePath$RelativeDirectory;)Ljava/util/List; 22 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/JavacFileManager$$Lambda$1123+0x00000008014b4b60
+instanceKlass  @bci com/sun/tools/javac/file/JavacFileManager indexPathsAndContainersByRelativeDirectory (Ljavax/tools/JavaFileManager$Location;)Ljava/util/Map; 213 <appendix> argL0 ; # com/sun/tools/javac/file/JavacFileManager$$Lambda$1122+0x00000008014b4948
+instanceKlass com/sun/tools/javac/file/JavacFileManager$PathAndContainer
+instanceKlass com/sun/tools/javac/file/JavacFileManager$JRTImageContainer
+instanceKlass  @bci com/sun/tools/javac/file/JavacFileManager pathsAndContainers (Ljavax/tools/JavaFileManager$Location;Lcom/sun/tools/javac/file/RelativePath$RelativeDirectory;)Ljava/util/List; 6 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/JavacFileManager$$Lambda$1121+0x00000008014b42c8
+instanceKlass  @bci com/sun/tools/javac/code/ClassFinder fillIn (Lcom/sun/tools/javac/code/Symbol$PackageSymbol;)V 27 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/ClassFinder$$Lambda$1120+0x00000008014b3e68
+instanceKlass  @bci com/sun/tools/javac/comp/Modules initModules (Lcom/sun/tools/javac/util/List;)V 30 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Modules$$Lambda$1119+0x00000008014b3c48
+instanceKlass  @bci com/sun/tools/javac/parser/JavacParser switchBlockStatementGroup ()Lcom/sun/tools/javac/util/List; 220 <appendix> argL0 ; # com/sun/tools/javac/parser/JavacParser$$Lambda$1118+0x00000008014b3610
+instanceKlass com/sun/tools/javac/parser/JavadocTokenizer$OffsetMap
+instanceKlass com/sun/tools/javac/util/Position$LineMapImpl
+instanceKlass com/sun/tools/javac/util/Position$LineMap
+instanceKlass com/sun/tools/javac/util/Position
+instanceKlass  @bci com/sun/tools/javac/tree/TreeMaker TopLevel (Lcom/sun/tools/javac/util/List;)Lcom/sun/tools/javac/tree/JCTree$JCCompilationUnit; 96 <appendix> member <vmtarget> ; # com/sun/tools/javac/tree/TreeMaker$$Lambda$1117+0x00000008014b0c88
+instanceKlass com/sun/tools/javac/tree/TreeInfo$2
+instanceKlass com/sun/tools/javac/tree/TreeInfo
+instanceKlass com/sun/tools/javac/parser/JavacParser$1
+instanceKlass  @bci com/sun/tools/javac/parser/JavacParser accept (Lcom/sun/tools/javac/parser/Tokens$TokenKind;)V 2 <appendix> argL0 ; # com/sun/tools/javac/parser/JavacParser$$Lambda$1116+0x00000008014a98b0
+instanceKlass com/sun/tools/javac/resources/CompilerProperties$Errors
+instanceKlass com/sun/tools/javac/util/IntHashTable
+instanceKlass com/sun/tools/javac/parser/LazyDocCommentTable
+instanceKlass  @bci com/sun/tools/javac/parser/JavacParser <init> (Lcom/sun/tools/javac/parser/ParserFactory;Lcom/sun/tools/javac/parser/Lexer;ZZZZ)V 59 <appendix> argL0 ; # com/sun/tools/javac/parser/JavacParser$$Lambda$1115+0x00000008014a9000
+instanceKlass com/sun/tools/javac/parser/JavacParser$ErrorRecoveryAction
+instanceKlass com/sun/tools/javac/parser/JavacParser$AbstractEndPosTable
+instanceKlass com/sun/tools/javac/tree/EndPosTable
+instanceKlass com/sun/tools/javac/parser/JavacParser
+instanceKlass com/sun/tools/javac/parser/Scanner
+instanceKlass com/sun/source/tree/LineMap
+instanceKlass com/sun/tools/javac/file/BaseFileManager$ContentCacheEntry
+instanceKlass java/nio/channels/Channels
+instanceKlass com/sun/tools/javac/util/DiagnosticSource
+instanceKlass com/sun/source/util/TaskEvent
+instanceKlass com/sun/tools/javac/file/JavacFileManager$3
+instanceKlass  @bci com/sun/tools/javac/file/JavacFileManager asFiles (Ljava/lang/Iterable;)Ljava/lang/Iterable; 7 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/JavacFileManager$$Lambda$1114+0x00000008014ae910
+instanceKlass javax/tools/StandardLocation$2
+instanceKlass com/sun/tools/javac/model/JavacTypes
+instanceKlass com/sun/tools/javac/processing/JavacMessager
+instanceKlass com/sun/tools/javac/processing/JavacFiler
+instanceKlass  @bci java/util/regex/Pattern ALL ()Ljava/util/regex/Pattern$CharPredicate; 0 <appendix> argL0 ; # java/util/regex/Pattern$$Lambda$1113+0x00000008014c05c8
+instanceKlass javax/annotation/processing/RoundEnvironment
+instanceKlass javax/annotation/processing/Filer
+instanceKlass javax/annotation/processing/Messager
+instanceKlass com/sun/tools/javac/processing/JavacProcessingEnvironment
+instanceKlass javax/annotation/processing/ProcessingEnvironment
+instanceKlass  @bci com/sun/tools/javac/main/Arguments checkOptionAllowed (ZLcom/sun/tools/javac/main/Arguments$ErrorReporter;[Lcom/sun/tools/javac/main/Option;)V 33 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Arguments$$Lambda$1112+0x00000008014ad488
+instanceKlass  @bci com/sun/tools/javac/main/Arguments checkOptionAllowed (ZLcom/sun/tools/javac/main/Arguments$ErrorReporter;[Lcom/sun/tools/javac/main/Option;)V 17 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Arguments$$Lambda$1111+0x00000008014ad248
+instanceKlass  @bci com/sun/tools/javac/main/Arguments validate ()Z 1359 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Arguments$$Lambda$1110+0x00000008014ad038
+instanceKlass  @bci com/sun/tools/javac/main/Arguments validate ()Z 1269 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Arguments$$Lambda$1109+0x00000008014ace28
+instanceKlass org/gradle/internal/logging/events/StyledTextOutputEvent$Span
+instanceKlass org/gradle/internal/logging/events/operations/StyledTextBuildOperationProgressDetails$Span
+instanceKlass org/gradle/internal/operations/logging/StyledTextBuildOperationProgressDetails$Span
+instanceKlass com/sun/tools/javac/util/AbstractDiagnosticFormatter$2
+instanceKlass com/sun/tools/javac/util/RichDiagnosticFormatter$ClassNameSimplifier
+instanceKlass com/sun/tools/javac/util/Log$1
+instanceKlass com/sun/tools/javac/util/JCDiagnostic$1
+instanceKlass  @bci java/util/stream/ReferencePipeline toArray ()[Ljava/lang/Object; 1 <appendix> argL0 ; # java/util/stream/ReferencePipeline$$Lambda$1108+0x000000080137f600
+instanceKlass  @bci com/sun/tools/javac/util/JCDiagnostic$Factory normalize (Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticInfo;)Lcom/sun/tools/javac/util/JCDiagnostic$DiagnosticInfo; 20 <appendix> member <vmtarget> ; # com/sun/tools/javac/util/JCDiagnostic$Factory$$Lambda$1107+0x00000008014a7d78
+instanceKlass com/sun/tools/javac/resources/CompilerProperties$Warnings
+instanceKlass com/sun/tools/javac/code/Source$1
+instanceKlass com/sun/tools/javac/util/Pair
+instanceKlass  @bci com/sun/tools/javac/code/DeferredCompletionFailureHandler$1 uninstall ()V 9 <appendix> argL0 ; # com/sun/tools/javac/code/DeferredCompletionFailureHandler$1$$Lambda$1106+0x00000008014a7588
+instanceKlass  @bci com/sun/tools/javac/api/JavacTaskImpl doCall ()Lcom/sun/tools/javac/main/Main$Result; 2 <appendix> member <vmtarget> ; # com/sun/tools/javac/api/JavacTaskImpl$$Lambda$1105+0x00000008014a7378
+instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$WrappedTaskListener
+instanceKlass org/gradle/internal/compiler/java/listeners/constants/ConstantsCollector
+instanceKlass com/sun/tools/javac/platform/PlatformDescription
+instanceKlass com/sun/tools/javac/util/ForwardingDiagnosticFormatter$ForwardingConfiguration
+instanceKlass com/sun/tools/javac/code/Types$DefaultSymbolVisitor
+instanceKlass com/sun/tools/javac/util/ForwardingDiagnosticFormatter
+instanceKlass  @bci com/sun/tools/javac/main/JavaCompiler <init> (Lcom/sun/tools/javac/util/Context;)V 400 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/JavaCompiler$$Lambda$1104+0x00000008014a44a0
+instanceKlass com/sun/tools/javac/code/ModuleFinder$ModuleNameFromSourceReader
+instanceKlass  @bci com/sun/tools/javac/main/JavaCompiler <init> (Lcom/sun/tools/javac/util/Context;)V 387 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/JavaCompiler$$Lambda$1103+0x00000008014a40a8
+instanceKlass com/sun/tools/javac/comp/Modules$PackageNameFinder
+instanceKlass com/sun/tools/javac/api/MultiTaskListener
+instanceKlass com/sun/tools/javac/parser/UnicodeReader
+instanceKlass com/sun/tools/javac/parser/ScannerFactory
+instanceKlass com/sun/tools/javac/parser/Tokens$Token
+instanceKlass com/sun/tools/javac/parser/Tokens
+instanceKlass com/sun/tools/javac/parser/ReferenceParser
+instanceKlass com/sun/source/util/DocSourcePositions
+instanceKlass com/sun/tools/javac/tree/DocCommentTable
+instanceKlass com/sun/source/tree/Scope
+instanceKlass com/sun/source/doctree/DocTreeVisitor
+instanceKlass com/sun/source/util/SourcePositions
+instanceKlass com/sun/source/doctree/EndElementTree
+instanceKlass com/sun/source/doctree/EntityTree
+instanceKlass com/sun/source/doctree/HiddenTree
+instanceKlass com/sun/source/doctree/ErroneousTree
+instanceKlass com/sun/source/doctree/IdentifierTree
+instanceKlass com/sun/source/doctree/AttributeTree
+instanceKlass com/sun/source/doctree/DeprecatedTree
+instanceKlass com/sun/source/doctree/DocTypeTree
+instanceKlass com/sun/source/doctree/DocRootTree
+instanceKlass com/sun/source/doctree/InheritDocTree
+instanceKlass com/sun/source/doctree/IndexTree
+instanceKlass com/sun/source/doctree/AuthorTree
+instanceKlass com/sun/source/doctree/CommentTree
+instanceKlass com/sun/source/doctree/ReferenceTree
+instanceKlass com/sun/source/doctree/SinceTree
+instanceKlass com/sun/source/doctree/SerialFieldTree
+instanceKlass com/sun/source/doctree/SnippetTree
+instanceKlass com/sun/source/doctree/ParamTree
+instanceKlass com/sun/source/doctree/ProvidesTree
+instanceKlass com/sun/source/doctree/SerialDataTree
+instanceKlass com/sun/source/doctree/LinkTree
+instanceKlass com/sun/source/doctree/LiteralTree
+instanceKlass com/sun/source/doctree/SeeTree
+instanceKlass com/sun/source/doctree/SerialTree
+instanceKlass com/sun/source/doctree/UsesTree
+instanceKlass com/sun/source/doctree/SummaryTree
+instanceKlass com/sun/source/doctree/ValueTree
+instanceKlass com/sun/source/doctree/ThrowsTree
+instanceKlass com/sun/source/doctree/VersionTree
+instanceKlass com/sun/source/doctree/TextTree
+instanceKlass com/sun/source/doctree/ReturnTree
+instanceKlass com/sun/source/doctree/DocCommentTree
+instanceKlass com/sun/tools/javac/parser/Tokens$Comment
+instanceKlass com/sun/source/doctree/UnknownInlineTagTree
+instanceKlass com/sun/source/doctree/UnknownBlockTagTree
+instanceKlass com/sun/source/doctree/BlockTagTree
+instanceKlass com/sun/source/doctree/SystemPropertyTree
+instanceKlass com/sun/source/doctree/InlineTagTree
+instanceKlass com/sun/source/doctree/StartElementTree
+instanceKlass com/sun/source/doctree/DocTree
+instanceKlass com/sun/tools/javac/tree/DocTreeMaker
+instanceKlass com/sun/source/util/DocTreeFactory
+instanceKlass com/sun/tools/javac/parser/Lexer
+instanceKlass com/sun/tools/javac/parser/ParserFactory
+instanceKlass  @bci com/sun/tools/javac/code/ClassFinder <init> (Lcom/sun/tools/javac/util/Context;)V 366 <appendix> argL0 ; # com/sun/tools/javac/code/ClassFinder$$Lambda$1102+0x000000080149a440
+instanceKlass com/sun/tools/javac/main/DelegatingJavaFileManager
+instanceKlass javax/lang/model/element/RecordComponentElement
+instanceKlass com/sun/tools/javac/jvm/ClassReader$AttributeReader
+instanceKlass com/sun/tools/javac/code/Preview$1
+instanceKlass com/sun/tools/javac/comp/Analyzer$2
+instanceKlass com/sun/tools/javac/comp/Analyzer$1
+instanceKlass com/sun/tools/javac/comp/Analyzer$StatementAnalyzer
+instanceKlass com/sun/tools/javac/comp/Analyzer$DeferredAnalysisHelper
+instanceKlass com/sun/tools/javac/comp/Analyzer
+instanceKlass com/sun/tools/javac/code/Symtab$2
+instanceKlass com/sun/tools/javac/code/Symtab$1
+instanceKlass  @bci com/sun/tools/javac/code/Symtab doEnterClass (Lcom/sun/tools/javac/code/Symbol$ModuleSymbol;Lcom/sun/tools/javac/code/Symbol$ClassSymbol;)V 8 <appendix> argL0 ; # com/sun/tools/javac/code/Symtab$$Lambda$1101+0x0000000801491500
+instanceKlass  @bci com/sun/tools/javac/code/Symtab getClass (Lcom/sun/tools/javac/code/Symbol$ModuleSymbol;Lcom/sun/tools/javac/util/Name;)Lcom/sun/tools/javac/code/Symbol$ClassSymbol; 7 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Symtab$$Lambda$1100+0x00000008014912f0
+instanceKlass  @bci com/sun/tools/javac/code/Symtab enterPackage (Lcom/sun/tools/javac/code/Symbol$ModuleSymbol;Lcom/sun/tools/javac/util/Name;)Lcom/sun/tools/javac/code/Symbol$PackageSymbol; 29 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Symtab$$Lambda$1099+0x00000008014910e0
+instanceKlass com/sun/tools/javac/jvm/JNIWriter
+instanceKlass com/sun/tools/javac/jvm/Code
+instanceKlass com/sun/tools/javac/jvm/PoolWriter$WriteablePoolHelper
+instanceKlass com/sun/tools/javac/code/Types$SignatureGenerator
+instanceKlass com/sun/tools/javac/jvm/PoolWriter
+instanceKlass com/sun/tools/javac/comp/ConstFold
+instanceKlass  @bci com/sun/tools/javac/comp/Operators initBinaryOperators ()V 1049 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$$Lambda$1098+0x000000080148e680
+instanceKlass  @bci com/sun/tools/javac/comp/Operators initBinaryOperators ()V 951 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$$Lambda$1097+0x000000080148e448
+instanceKlass  @bci com/sun/tools/javac/comp/Operators initBinaryOperators ()V 855 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$$Lambda$1096+0x000000080148e210
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$BinaryNumericOperator <init> (Lcom/sun/tools/javac/comp/Operators;Lcom/sun/tools/javac/tree/JCTree$Tag;)V 3 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$BinaryNumericOperator$$Lambda$1095+0x000000080148dd78
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$BinaryOperatorHelper addBinaryOperator (Lcom/sun/tools/javac/comp/Operators$OperatorType;Lcom/sun/tools/javac/comp/Operators$OperatorType;Lcom/sun/tools/javac/comp/Operators$OperatorType;[I)Lcom/sun/tools/javac/comp/Operators$BinaryOperatorHelper; 11 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$BinaryOperatorHelper$$Lambda$1094+0x000000080148d908
+instanceKlass  @bci com/sun/tools/javac/comp/Operators initUnaryOperators ()V 180 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$$Lambda$1093+0x000000080148cb70
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$UnaryOperatorHelper addUnaryOperator (Lcom/sun/tools/javac/comp/Operators$OperatorType;Lcom/sun/tools/javac/comp/Operators$OperatorType;[I)Lcom/sun/tools/javac/comp/Operators$UnaryOperatorHelper; 9 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Operators$UnaryOperatorHelper$$Lambda$1092+0x000000080148c960
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 192 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1091+0x000000080148c558
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 173 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1090+0x000000080148c330
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 154 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1089+0x000000080148c108
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 135 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1088+0x000000080148bee0
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 116 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1087+0x000000080148bcb8
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 97 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1086+0x000000080148ba90
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 79 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1085+0x000000080148b868
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 61 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1084+0x000000080148b640
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 43 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1083+0x000000080148b418
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 25 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1082+0x000000080148b1f0
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$OperatorType <clinit> ()V 7 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$OperatorType$$Lambda$1081+0x000000080148afc8
+instanceKlass  @bci com/sun/tools/javac/comp/Operators$UnaryNumericOperator <init> (Lcom/sun/tools/javac/comp/Operators;Lcom/sun/tools/javac/tree/JCTree$Tag;)V 3 <appendix> argL0 ; # com/sun/tools/javac/comp/Operators$UnaryNumericOperator$$Lambda$1080+0x000000080148ab60
+instanceKlass  @bci com/sun/tools/javac/code/Symbol$MethodSymbol <clinit> ()V 0 <appendix> argL0 ; # com/sun/tools/javac/code/Symbol$MethodSymbol$$Lambda$1079+0x000000080148a308
+instanceKlass com/sun/tools/javac/comp/Operators$OperatorHelper
+instanceKlass com/sun/tools/javac/comp/Operators
+instanceKlass com/sun/tools/javac/jvm/PoolConstant$Dynamic
+instanceKlass com/sun/tools/javac/jvm/StringConcat
+instanceKlass com/sun/tools/javac/jvm/Gen$GenFinalizer
+instanceKlass com/sun/tools/javac/jvm/Items$Item
+instanceKlass com/sun/tools/javac/jvm/ClassWriter$AttributeWriter
+instanceKlass com/sun/tools/javac/jvm/ClassFile
+instanceKlass com/sun/tools/javac/code/ModuleFinder$ModuleLocationIterator
+instanceKlass com/sun/tools/javac/code/ModuleFinder
+instanceKlass com/sun/tools/javac/comp/Flow
+instanceKlass com/sun/tools/javac/comp/Infer$GraphStrategy
+instanceKlass com/sun/tools/javac/comp/InferenceContext
+instanceKlass javax/lang/model/element/TypeParameterElement
+instanceKlass com/sun/tools/javac/comp/Infer$AbstractIncorporationEngine
+instanceKlass com/sun/tools/javac/code/Type$UndetVar$UndetVarListener
+instanceKlass com/sun/tools/javac/comp/Infer
+instanceKlass com/sun/tools/javac/util/MandatoryWarningHandler
+instanceKlass com/sun/tools/javac/code/Preview
+instanceKlass com/sun/tools/javac/util/Dependencies
+instanceKlass com/sun/tools/javac/comp/TypeEnvs
+instanceKlass com/sun/tools/javac/code/Lint$AugmentVisitor
+instanceKlass com/sun/tools/javac/code/TypeAnnotations
+instanceKlass com/sun/tools/javac/code/DeferredLintHandler$1
+instanceKlass com/sun/tools/javac/code/DeferredLintHandler
+instanceKlass  @bci com/sun/tools/javac/comp/TypeEnter$ImportsPhase <init> (Lcom/sun/tools/javac/comp/TypeEnter;)V 23 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/TypeEnter$ImportsPhase$$Lambda$1078+0x000000080147e258
+instanceKlass com/sun/tools/javac/comp/TypeEnter$DefaultConstructorHelper
+instanceKlass com/sun/tools/javac/util/GraphUtils$DependencyKind
+instanceKlass com/sun/tools/javac/comp/TypeEnter$Phase
+instanceKlass com/sun/tools/javac/comp/TypeEnter
+instanceKlass  @bci com/sun/tools/javac/code/Types <init> (Lcom/sun/tools/javac/util/Context;)V 360 <appendix> argL0 ; # com/sun/tools/javac/code/Types$$Lambda$1077+0x000000080147bb48
+instanceKlass com/sun/tools/javac/code/Types$CandidatesCache
+instanceKlass com/sun/tools/javac/code/Types$ImplementationCache
+instanceKlass com/sun/tools/javac/code/Types$3
+instanceKlass com/sun/tools/javac/code/Types$DescriptorCache
+instanceKlass com/sun/tools/javac/code/Types
+instanceKlass com/sun/tools/javac/tree/TreeMaker$AnnotationBuilder
+instanceKlass com/sun/tools/javac/tree/TreeMaker
+instanceKlass com/sun/tools/javac/tree/JCTree$Factory
+instanceKlass com/sun/tools/javac/comp/DeferredAttr$4
+instanceKlass com/sun/tools/javac/tree/TreeCopier
+instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredAttrContext
+instanceKlass com/sun/tools/javac/comp/DeferredAttr$DeferredStuckPolicy
+instanceKlass com/sun/tools/javac/comp/AttrRecover
+instanceKlass com/sun/tools/javac/comp/Resolve$ReferenceLookupResult
+instanceKlass com/sun/tools/javac/api/Formattable$LocalizedString
+instanceKlass com/sun/tools/javac/comp/Resolve$10
+instanceKlass com/sun/tools/javac/comp/Resolve$9
+instanceKlass com/sun/tools/javac/comp/Resolve$8
+instanceKlass  @bci com/sun/tools/javac/comp/Resolve <init> (Lcom/sun/tools/javac/util/Context;)V 96 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Resolve$$Lambda$1076+0x000000080146cb08
+instanceKlass  @bci com/sun/tools/javac/comp/Resolve <init> (Lcom/sun/tools/javac/util/Context;)V 86 <appendix> member <vmtarget> ; # com/sun/tools/javac/comp/Resolve$$Lambda$1075+0x000000080146c8f8
+instanceKlass com/sun/tools/javac/comp/Resolve$7
+instanceKlass  @bci com/sun/tools/javac/comp/Resolve <init> (Lcom/sun/tools/javac/util/Context;)V 64 <appendix> argL0 ; # com/sun/tools/javac/comp/Resolve$$Lambda$1074+0x000000080146c4d8
+instanceKlass com/sun/tools/javac/comp/Env
+instanceKlass com/sun/tools/javac/comp/Resolve$AbstractMethodCheck
+instanceKlass com/sun/tools/javac/comp/Resolve$2
+instanceKlass com/sun/tools/javac/code/Scope$ScopeListener
+instanceKlass com/sun/tools/javac/comp/Resolve$LookupHelper
+instanceKlass com/sun/tools/javac/comp/Resolve$ReferenceChooser
+instanceKlass com/sun/tools/javac/comp/Resolve$LogResolveHelper
+instanceKlass com/sun/tools/javac/comp/Resolve$RecoveryLoadClass
+instanceKlass com/sun/tools/javac/comp/Resolve
+instanceKlass  @bci com/sun/tools/javac/comp/Check <init> (Lcom/sun/tools/javac/util/Context;)V 62 <appendix> argL0 ; # com/sun/tools/javac/comp/Check$$Lambda$1073+0x0000000801464140
+instanceKlass com/sun/tools/javac/comp/Check$1
+instanceKlass com/sun/tools/javac/util/Warner
+instanceKlass com/sun/tools/javac/comp/Check
+instanceKlass com/sun/tools/javac/comp/Modules$1
+instanceKlass  @bci com/sun/tools/javac/comp/Modules <clinit> ()V 0 <appendix> argL0 ; # com/sun/tools/javac/comp/Modules$$Lambda$1072+0x0000000801461c40
+instanceKlass com/sun/tools/javac/resources/CompilerProperties$Fragments
+instanceKlass com/sun/tools/javac/code/Directive
+instanceKlass javax/lang/model/element/ModuleElement$RequiresDirective
+instanceKlass javax/lang/model/element/ModuleElement$Directive
+instanceKlass  @bci com/sun/tools/javac/code/Symtab enterModule (Lcom/sun/tools/javac/util/Name;)Lcom/sun/tools/javac/code/Symbol$ModuleSymbol; 37 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Symtab$$Lambda$1071+0x000000080145f5f8
+instanceKlass  @bci com/sun/tools/javac/code/Symtab addRootPackageFor (Lcom/sun/tools/javac/code/Symbol$ModuleSymbol;)V 36 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/Symtab$$Lambda$1070+0x000000080145f3d8
+instanceKlass  @bci com/sun/tools/javac/code/Symtab doEnterPackage (Lcom/sun/tools/javac/code/Symbol$ModuleSymbol;Lcom/sun/tools/javac/code/Symbol$PackageSymbol;)V 8 <appendix> argL0 ; # com/sun/tools/javac/code/Symtab$$Lambda$1069+0x000000080145f1b0
+instanceKlass com/sun/tools/javac/code/Scope$ScopeListenerList
+instanceKlass com/sun/tools/javac/code/Scope$Entry
+instanceKlass com/sun/tools/javac/comp/Annotate$AnnotationTypeMetadata
+instanceKlass com/sun/tools/javac/api/Formattable
+instanceKlass com/sun/tools/javac/code/Kinds$KindSelector
+instanceKlass com/sun/tools/javac/code/MissingInfoHandler
+instanceKlass com/sun/tools/javac/code/TypeMetadata
+instanceKlass javax/lang/model/type/NullType
+instanceKlass com/sun/tools/javac/code/Symtab
+instanceKlass com/sun/tools/javac/comp/MatchBindingsComputer$MatchBindings
+instanceKlass com/sun/source/util/SimpleTreeVisitor
+instanceKlass javax/lang/model/type/UnionType
+instanceKlass com/sun/tools/javac/comp/Resolve$MethodCheck
+instanceKlass com/sun/tools/javac/comp/Check$NestedCheckContext
+instanceKlass javax/lang/model/type/IntersectionType
+instanceKlass com/sun/tools/javac/comp/Attr$ResultInfo
+instanceKlass com/sun/tools/javac/code/Types$DefaultTypeVisitor
+instanceKlass com/sun/source/tree/IntersectionTypeTree
+instanceKlass com/sun/source/tree/BindingPatternTree
+instanceKlass com/sun/source/tree/DefaultCaseLabelTree
+instanceKlass com/sun/source/tree/ParenthesizedPatternTree
+instanceKlass com/sun/source/tree/SwitchExpressionTree
+instanceKlass com/sun/source/tree/ModuleTree
+instanceKlass com/sun/source/tree/UnionTypeTree
+instanceKlass com/sun/source/tree/ParameterizedTypeTree
+instanceKlass com/sun/source/tree/ArrayAccessTree
+instanceKlass com/sun/source/tree/GuardedPatternTree
+instanceKlass com/sun/source/tree/PatternTree
+instanceKlass com/sun/source/tree/ArrayTypeTree
+instanceKlass com/sun/source/tree/MemberReferenceTree
+instanceKlass com/sun/source/tree/AssignmentTree
+instanceKlass com/sun/source/tree/CompoundAssignmentTree
+instanceKlass com/sun/source/tree/InstanceOfTree
+instanceKlass com/sun/source/tree/PrimitiveTypeTree
+instanceKlass com/sun/source/tree/EnhancedForLoopTree
+instanceKlass com/sun/source/tree/ExpressionStatementTree
+instanceKlass com/sun/source/tree/ParenthesizedTree
+instanceKlass com/sun/source/tree/LabeledStatementTree
+instanceKlass com/sun/source/tree/ConditionalExpressionTree
+instanceKlass com/sun/source/tree/LambdaExpressionTree
+instanceKlass com/sun/source/tree/MethodInvocationTree
+instanceKlass com/sun/source/tree/EmptyStatementTree
+instanceKlass com/sun/source/tree/MethodTree
+instanceKlass com/sun/source/tree/VariableTree
+instanceKlass com/sun/source/tree/DoWhileLoopTree
+instanceKlass com/sun/source/tree/PackageTree
+instanceKlass com/sun/source/tree/UsesTree
+instanceKlass com/sun/source/tree/YieldTree
+instanceKlass com/sun/source/tree/ErroneousTree
+instanceKlass com/sun/source/tree/RequiresTree
+instanceKlass com/sun/source/tree/ProvidesTree
+instanceKlass com/sun/source/tree/TypeParameterTree
+instanceKlass com/sun/source/tree/ExportsTree
+instanceKlass com/sun/source/tree/AnnotatedTypeTree
+instanceKlass com/sun/source/tree/ModifiersTree
+instanceKlass com/sun/source/tree/LiteralTree
+instanceKlass com/sun/source/tree/OpensTree
+instanceKlass com/sun/source/tree/DirectiveTree
+instanceKlass com/sun/source/tree/BinaryTree
+instanceKlass com/sun/source/tree/UnaryTree
+instanceKlass com/sun/source/tree/TypeCastTree
+instanceKlass com/sun/source/tree/BreakTree
+instanceKlass com/sun/source/tree/ContinueTree
+instanceKlass com/sun/source/tree/NewClassTree
+instanceKlass com/sun/source/tree/ThrowTree
+instanceKlass com/sun/source/tree/AssertTree
+instanceKlass com/sun/source/tree/TryTree
+instanceKlass com/sun/source/tree/IfTree
+instanceKlass com/sun/source/tree/ReturnTree
+instanceKlass com/sun/source/tree/CatchTree
+instanceKlass com/sun/source/tree/ImportTree
+instanceKlass com/sun/source/tree/SynchronizedTree
+instanceKlass com/sun/source/tree/CaseTree
+instanceKlass com/sun/source/tree/BlockTree
+instanceKlass com/sun/source/tree/WildcardTree
+instanceKlass com/sun/source/tree/SwitchTree
+instanceKlass com/sun/source/tree/ForLoopTree
+instanceKlass com/sun/source/tree/WhileLoopTree
+instanceKlass com/sun/tools/javac/comp/Annotate$2
+instanceKlass com/sun/tools/javac/comp/Check$CheckContext
+instanceKlass com/sun/tools/javac/code/TypeMetadata$Entry
+instanceKlass com/sun/source/tree/NewArrayTree
+instanceKlass com/sun/tools/javac/comp/Annotate
+instanceKlass com/sun/tools/javac/util/ByteBuffer
+instanceKlass com/sun/tools/javac/comp/Annotate$AnnotationTypeCompleter
+instanceKlass javax/lang/model/type/PrimitiveType
+instanceKlass com/sun/tools/javac/jvm/ClassReader
+instanceKlass  @bci com/sun/tools/javac/code/ClassFinder <init> (Lcom/sun/tools/javac/util/Context;)V 23 <appendix> member <vmtarget> ; # com/sun/tools/javac/code/ClassFinder$$Lambda$1068+0x0000000801431cb8
+instanceKlass com/sun/tools/javac/code/ClassFinder
+instanceKlass com/sun/tools/javac/util/Convert
+instanceKlass com/sun/tools/javac/util/Name
+instanceKlass com/sun/tools/javac/util/Name$Table
+instanceKlass com/sun/tools/javac/util/Names
+instanceKlass com/sun/tools/javac/code/Symbol$Completer$1
+instanceKlass  @bci com/sun/tools/javac/main/JavaCompiler <init> (Lcom/sun/tools/javac/util/Context;)V 6 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/JavaCompiler$$Lambda$1067+0x000000080142ba90
+instanceKlass com/sun/source/tree/MemberSelectTree
+instanceKlass com/sun/source/tree/IdentifierTree
+instanceKlass com/sun/source/tree/ClassTree
+instanceKlass com/sun/source/tree/StatementTree
+instanceKlass com/sun/tools/javac/main/JavaCompiler
+instanceKlass com/sun/tools/javac/code/Scope
+instanceKlass com/sun/tools/javac/code/Attribute$Visitor
+instanceKlass javax/lang/model/element/AnnotationMirror
+instanceKlass com/sun/tools/javac/code/Attribute
+instanceKlass javax/lang/model/element/AnnotationValue
+instanceKlass com/sun/source/tree/AnnotationTree
+instanceKlass com/sun/tools/javac/tree/JCTree$Visitor
+instanceKlass javax/lang/model/element/ModuleElement
+instanceKlass javax/lang/model/element/PackageElement
+instanceKlass javax/lang/model/element/TypeElement
+instanceKlass javax/lang/model/element/QualifiedNameable
+instanceKlass javax/lang/model/element/Name
+instanceKlass com/sun/tools/javac/model/JavacElements
+instanceKlass org/gradle/internal/compiler/java/listeners/classnames/ClassNameCollector
+instanceKlass org/gradle/api/internal/tasks/compile/filter/AnnotationProcessorFilter
+instanceKlass org/gradle/api/internal/tasks/compile/ResourceCleaningCompilationTask
+instanceKlass javax/annotation/processing/Processor
+instanceKlass org/gradle/api/internal/tasks/compile/AnnotationProcessingCompileTask
+instanceKlass org/gradle/internal/compiler/java/listeners/constants/ConstantDependentsConsumer
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler makeIncremental (Ljavax/tools/JavaCompiler$CompilationTask;Ljava/util/Map;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantsAnalysisResult;Lorg/gradle/api/internal/tasks/compile/CompilationSourceDirs;)Ljavax/tools/JavaCompiler$CompilationTask; 73 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler$$Lambda$1066+0x00000008013f64c8
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler makeIncremental (Ljavax/tools/JavaCompiler$CompilationTask;Ljava/util/Map;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantsAnalysisResult;Lorg/gradle/api/internal/tasks/compile/CompilationSourceDirs;)Ljavax/tools/JavaCompiler$CompilationTask; 59 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler$$Lambda$1065+0x00000008013f62a8
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler makeIncremental (Ljavax/tools/JavaCompiler$CompilationTask;Ljava/util/Map;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantsAnalysisResult;Lorg/gradle/api/internal/tasks/compile/CompilationSourceDirs;)Ljavax/tools/JavaCompiler$CompilationTask; 45 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler$$Lambda$1064+0x00000008013f6088
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler makeIncremental (Ljavax/tools/JavaCompiler$CompilationTask;Ljava/util/Map;Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantsAnalysisResult;Lorg/gradle/api/internal/tasks/compile/CompilationSourceDirs;)Ljavax/tools/JavaCompiler$CompilationTask; 31 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler$$Lambda$1063+0x00000008013f5e58
+instanceKlass org/gradle/internal/compiler/java/IncrementalCompileTask
+instanceKlass  @bci com/sun/tools/javac/code/DeferredCompletionFailureHandler$1 install ()V 9 <appendix> argL0 ; # com/sun/tools/javac/code/DeferredCompletionFailureHandler$1$$Lambda$1062+0x0000000801426c78
+instanceKlass com/sun/tools/javac/code/DeferredCompletionFailureHandler$FlipSymbolDescription
+instanceKlass com/sun/tools/javac/code/DeferredCompletionFailureHandler$3
+instanceKlass com/sun/tools/javac/code/DeferredCompletionFailureHandler$2
+instanceKlass com/sun/tools/javac/code/Symbol$Completer
+instanceKlass com/sun/tools/javac/code/DeferredCompletionFailureHandler$1
+instanceKlass com/sun/tools/javac/code/DeferredCompletionFailureHandler$Handler
+instanceKlass com/sun/tools/javac/code/DeferredCompletionFailureHandler
+instanceKlass com/sun/tools/javac/parser/Parser
+instanceKlass com/sun/tools/javac/api/JavacTaskImpl$Filter
+instanceKlass  @bci com/sun/tools/javac/main/Arguments handleReleaseOptions (Ljava/util/function/Predicate;)Z 22 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Arguments$$Lambda$1061+0x0000000801424c88
+instanceKlass com/sun/tools/javac/main/Arguments$ErrorReporter
+instanceKlass  @bci com/sun/tools/javac/main/Arguments processArgs (Ljava/lang/Iterable;Ljava/util/Set;Lcom/sun/tools/javac/main/OptionHelper;ZZ)Z 24 <adapter> ; # java/lang/invoke/LambdaForm$MH+0x0000000801428c00
+# instanceKlass java/lang/invoke/LambdaForm$DMH+0x0000000801428800
+instanceKlass  @bci com/sun/tools/javac/main/Arguments processArgs (Ljava/lang/Iterable;Ljava/util/Set;Lcom/sun/tools/javac/main/OptionHelper;ZZ)Z 24 <appendix> form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801428400
+instanceKlass  @bci com/sun/tools/javac/main/Arguments processArgs (Ljava/lang/Iterable;Ljava/util/Set;Lcom/sun/tools/javac/main/OptionHelper;ZZ)Z 24 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Arguments$$Lambda$1060+0x0000000801424860
+instanceKlass  @cpi com/sun/tools/javac/main/Arguments 1150 form vmentry <vmtarget> ; # java/lang/invoke/LambdaForm$DMH+0x0000000801428000
+instanceKlass com/sun/tools/javac/util/StringUtils
+instanceKlass  @bci com/sun/tools/javac/file/CacheFSInfo isFile (Ljava/nio/file/Path;)Z 5 <appendix> argL0 ; # com/sun/tools/javac/file/CacheFSInfo$$Lambda$1059+0x0000000801424448
+instanceKlass  @bci com/sun/tools/javac/file/CacheFSInfo getAttributes (Ljava/nio/file/Path;)Ljava/util/Optional; 6 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/CacheFSInfo$$Lambda$1058+0x000000080141fc70
+instanceKlass com/sun/tools/javac/file/BaseFileManager$3
+instanceKlass com/sun/tools/doclint/DocLint$1
+instanceKlass com/sun/source/tree/CompilationUnitTree
+instanceKlass com/sun/source/util/TreePath
+instanceKlass javax/lang/model/util/Types
+instanceKlass javax/lang/model/util/Elements
+instanceKlass com/sun/source/util/Trees
+instanceKlass com/sun/source/util/TreeScanner
+instanceKlass com/sun/source/tree/TreeVisitor
+instanceKlass  @bci com/sun/tools/doclint/DocLint newDocLint ()Lcom/sun/tools/doclint/DocLint; 17 <appendix> argL0 ; # com/sun/tools/doclint/DocLint$$Lambda$1057+0x000000080141bf38
+instanceKlass java/util/ServiceLoader$ProviderSpliterator
+instanceKlass com/sun/tools/doclint/DocLint
+instanceKlass com/sun/source/util/Plugin
+instanceKlass com/sun/tools/javac/util/ListBuffer$1
+instanceKlass com/sun/tools/javac/main/Arguments
+instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$WrappedJavaFileManager
+instanceKlass com/sun/tools/javac/api/ClientCodeWrapper$Trusted
+instanceKlass com/sun/source/util/TaskListener
+instanceKlass com/sun/tools/javac/api/ClientCodeWrapper
+instanceKlass javax/tools/ForwardingJavaFileManager
+instanceKlass com/sun/tools/javac/file/PathFileObject
+instanceKlass  @bci com/sun/tools/javac/file/CacheFSInfo getCanonicalFile (Ljava/nio/file/Path;)Ljava/nio/file/Path; 6 <appendix> member <vmtarget> ; # com/sun/tools/javac/file/CacheFSInfo$$Lambda$1056+0x0000000801418b60
+instanceKlass  @bci com/sun/tools/javac/util/Log <init> (Lcom/sun/tools/javac/util/Context;Ljava/util/Map;)V 124 <appendix> member <vmtarget> ; # com/sun/tools/javac/util/Log$$Lambda$1055+0x0000000801418950
+instanceKlass  @bci com/sun/tools/javac/util/JCDiagnostic$Factory <init> (Lcom/sun/tools/javac/util/Context;)V 31 <appendix> member <vmtarget> ; # com/sun/tools/javac/util/JCDiagnostic$Factory$$Lambda$1054+0x0000000801418740
+instanceKlass com/sun/tools/javac/util/JCDiagnostic
+instanceKlass javax/lang/model/element/ExecutableElement
+instanceKlass javax/lang/model/element/Parameterizable
+instanceKlass javax/lang/model/element/VariableElement
+instanceKlass javax/lang/model/type/NoType
+instanceKlass javax/lang/model/type/ArrayType
+instanceKlass javax/lang/model/type/ExecutableType
+instanceKlass com/sun/tools/javac/jvm/PoolConstant$LoadableConstant
+instanceKlass javax/lang/model/type/ErrorType
+instanceKlass javax/lang/model/type/DeclaredType
+instanceKlass javax/lang/model/type/TypeVariable
+instanceKlass javax/lang/model/type/ReferenceType
+instanceKlass javax/lang/model/type/WildcardType
+instanceKlass javax/lang/model/type/TypeMirror
+instanceKlass com/sun/tools/javac/code/AnnoConstruct
+instanceKlass javax/lang/model/element/Element
+instanceKlass javax/lang/model/AnnotatedConstruct
+instanceKlass com/sun/tools/javac/jvm/PoolConstant
+instanceKlass com/sun/tools/javac/util/AbstractDiagnosticFormatter$SimpleConfiguration
+instanceKlass com/sun/source/tree/ExpressionTree
+instanceKlass com/sun/source/tree/CaseLabelTree
+instanceKlass com/sun/tools/javac/tree/JCTree
+instanceKlass com/sun/source/tree/Tree
+instanceKlass com/sun/tools/javac/api/DiagnosticFormatter$Configuration
+instanceKlass com/sun/tools/javac/code/Printer
+instanceKlass com/sun/tools/javac/code/Symbol$Visitor
+instanceKlass com/sun/tools/javac/code/Type$Visitor
+instanceKlass com/sun/tools/javac/util/AbstractDiagnosticFormatter
+instanceKlass com/sun/tools/javac/util/Options
+instanceKlass  @bci java/util/ResourceBundle$ResourceBundleProviderHelper loadPropertyResourceBundle (Ljava/lang/Module;Ljava/lang/Module;Ljava/lang/String;Ljava/util/Locale;)Ljava/util/ResourceBundle; 14 <appendix> member <vmtarget> ; # java/util/ResourceBundle$ResourceBundleProviderHelper$$Lambda$1053+0x000000080137ef88
+instanceKlass  @bci java/util/ResourceBundle$ResourceBundleProviderHelper loadResourceBundle (Ljava/lang/Module;Ljava/lang/Module;Ljava/lang/String;Ljava/util/Locale;)Ljava/util/ResourceBundle; 13 <appendix> member <vmtarget> ; # java/util/ResourceBundle$ResourceBundleProviderHelper$$Lambda$1052+0x000000080137eb20
+instanceKlass java/util/ResourceBundle$3
+instanceKlass java/util/ResourceBundle$CacheKeyReference
+instanceKlass  @bci java/util/ResourceBundle getLoader (Ljava/lang/Module;)Ljava/lang/ClassLoader; 6 <appendix> member <vmtarget> ; # java/util/ResourceBundle$$Lambda$1051+0x000000080137e2b0
+instanceKlass com/sun/tools/javac/util/List$3
+instanceKlass  @bci com/sun/tools/javac/util/JavacMessages add (Ljava/lang/String;)V 2 <appendix> member <vmtarget> ; # com/sun/tools/javac/util/JavacMessages$$Lambda$1050+0x000000080140e020
+instanceKlass com/sun/tools/javac/util/JavacMessages$ResourceBundleHelper
+instanceKlass com/sun/tools/javac/util/List$2
+instanceKlass com/sun/tools/javac/util/JavacMessages
+instanceKlass com/sun/tools/javac/api/Messages
+instanceKlass com/sun/tools/javac/util/JCDiagnostic$DiagnosticInfo
+instanceKlass com/sun/tools/javac/util/JCDiagnostic$Factory
+instanceKlass  @bci com/sun/tools/javac/file/JavacFileManager <init> (Lcom/sun/tools/javac/util/Context;ZLjava/nio/charset/Charset;)V 6 <appendix> argL0 ; # com/sun/tools/javac/file/JavacFileManager$$Lambda$1049+0x000000080140b7e8
+instanceKlass java/util/JumboEnumSet$EnumSetIterator
+instanceKlass com/sun/tools/javac/file/Locations$ModuleTable
+instanceKlass  @bci com/sun/tools/javac/file/Locations$ModuleSourcePathLocationHandler <init> (Lcom/sun/tools/javac/file/Locations;)V 23 <appendix> argL0 ; # com/sun/tools/javac/file/Locations$ModuleSourcePathLocationHandler$$Lambda$1048+0x000000080140ae08
+instanceKlass  @bci com/sun/tools/javac/file/Locations <init> ()V 5 <appendix> argL0 ; # com/sun/tools/javac/file/Locations$$Lambda$1047+0x000000080140a018
+instanceKlass javax/tools/StandardJavaFileManager$PathFactory
+instanceKlass com/sun/tools/javac/file/Locations$LocationHandler
+instanceKlass com/sun/tools/javac/file/Locations
+instanceKlass com/sun/tools/javac/file/BaseFileManager$ByteBufferCache
+instanceKlass com/sun/tools/javac/file/JavacFileManager$1
+instanceKlass  @bci com/sun/tools/javac/main/Option getOptions (Lcom/sun/tools/javac/main/Option$OptionGroup;)Ljava/util/Set; 17 <appendix> argL0 ; # com/sun/tools/javac/main/Option$$Lambda$1046+0x0000000801408a50
+instanceKlass  @bci com/sun/tools/javac/main/Option getOptions (Lcom/sun/tools/javac/main/Option$OptionGroup;)Ljava/util/Set; 7 <appendix> member <vmtarget> ; # com/sun/tools/javac/main/Option$$Lambda$1045+0x0000000801408810
+instanceKlass com/sun/tools/javac/code/Lint
+instanceKlass com/sun/tools/javac/util/Assert
+instanceKlass com/sun/tools/javac/file/RelativePath
+instanceKlass javax/tools/JavaFileObject
+instanceKlass javax/tools/FileObject
+instanceKlass com/sun/tools/javac/file/JavacFileManager$Container
+instanceKlass com/sun/tools/javac/main/OptionHelper
+instanceKlass  @bci com/sun/tools/javac/file/CacheFSInfo preRegister (Lcom/sun/tools/javac/util/Context;)V 3 <appendix> argL0 ; # com/sun/tools/javac/file/CacheFSInfo$$Lambda$1044+0x00000008013ff070
+instanceKlass com/sun/tools/javac/file/FSInfo
+instanceKlass com/sun/tools/javac/util/Context$Factory
+instanceKlass com/sun/tools/javac/api/DiagnosticFormatter
+instanceKlass javax/tools/Diagnostic
+instanceKlass com/sun/tools/javac/util/Log$DiagnosticHandler
+instanceKlass com/sun/tools/javac/util/JCDiagnostic$DiagnosticPosition
+instanceKlass com/sun/tools/javac/util/AbstractLog
+instanceKlass com/sun/tools/javac/util/Context$Key
+instanceKlass  @bci javax/tools/ToolProvider matches (Ljava/lang/Object;Ljava/lang/String;)Z 2 <appendix> member <vmtarget> ; # javax/tools/ToolProvider$$Lambda$1043+0x00000008013f8bc0
+instanceKlass com/sun/tools/javac/file/BaseFileManager
+instanceKlass com/sun/tools/javac/util/Context
+instanceKlass javax/tools/DiagnosticListener
+instanceKlass javax/tools/StandardJavaFileManager
+instanceKlass com/sun/source/util/JavacTask
+instanceKlass javax/tools/JavaFileManager
+instanceKlass com/sun/tools/javac/api/JavacTool
+instanceKlass javax/tools/DocumentationTool
+instanceKlass javax/tools/ToolProvider
+instanceKlass org/gradle/api/internal/tasks/compile/JdkTools$DefaultIncrementalAwareCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/IncrementalCompilationAwareJavaCompiler
+instanceKlass javax/tools/JavaCompiler
+instanceKlass javax/tools/OptionChecker
+instanceKlass javax/tools/Tool
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/JavaHomeBasedJavaCompilerFactory create ()Ljavax/tools/JavaCompiler; 7 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/JavaHomeBasedJavaCompilerFactory$$Lambda$1042+0x00000008013f53a0
+instanceKlass org/gradle/api/internal/tasks/compile/JdkTools
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/JavaCompilerArgumentsBuilder building ()Ljava/util/List; 36 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/JavaCompilerArgumentsBuilder$$Lambda$1041+0x00000008013f4f78
+instanceKlass org/gradle/api/internal/tasks/compile/JavaCompilerArgumentsBuilder
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMappingBuilder
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantsAnalysisResult
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/processing/AnnotationProcessingResult
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/NormalizingJavaCompiler resolveAndFilterSourceFiles (Lorg/gradle/api/internal/tasks/compile/JavaCompileSpec;)V 6 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/NormalizingJavaCompiler$$Lambda$1040+0x00000008013f4220
+instanceKlass org/gradle/api/internal/tasks/compile/NormalizingJavaCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/AnnotationProcessorDiscoveringCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/ModuleApplicationNameWritingCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/JavaHomeBasedJavaCompilerFactory
+instanceKlass javax/tools/JavaCompiler$CompilationTask
+instanceKlass org/gradle/api/internal/tasks/compile/JdkJavaCompiler
+instanceKlass javax/tools/JavaFileManager$Location
+instanceKlass  @bci org/gradle/language/base/internal/tasks/StaleOutputCleaner lambda$cleanOutputs$1 (Ljava/util/Set;Ljava/io/File;)Z 17 <appendix> member <vmtarget> ; # org/gradle/language/base/internal/tasks/StaleOutputCleaner$$Lambda$1039+0x00000008013eaf30
+instanceKlass org/gradle/internal/execution/history/OutputsCleaner$1
+instanceKlass  @bci org/gradle/language/base/internal/tasks/StaleOutputCleaner cleanOutputs (Lorg/gradle/internal/file/Deleter;Ljava/lang/Iterable;Lcom/google/common/collect/ImmutableSet;)Z 38 <appendix> member <vmtarget> ; # org/gradle/language/base/internal/tasks/StaleOutputCleaner$$Lambda$1038+0x00000008013eacf0
+instanceKlass  @bci org/gradle/language/base/internal/tasks/StaleOutputCleaner cleanOutputs (Lorg/gradle/internal/file/Deleter;Ljava/lang/Iterable;Lcom/google/common/collect/ImmutableSet;)Z 32 <appendix> member <vmtarget> ; # org/gradle/language/base/internal/tasks/StaleOutputCleaner$$Lambda$1037+0x00000008013eaab0
+instanceKlass  @bci org/gradle/language/base/internal/tasks/StaleOutputCleaner cleanOutputs (Lorg/gradle/internal/file/Deleter;Ljava/lang/Iterable;Lcom/google/common/collect/ImmutableSet;)Z 4 <appendix> argL0 ; # org/gradle/language/base/internal/tasks/StaleOutputCleaner$$Lambda$1036+0x00000008013ea888
+instanceKlass org/gradle/language/base/internal/tasks/StaleOutputCleaner
+instanceKlass org/gradle/api/internal/file/AbstractFileTreeElement
+instanceKlass java/nio/file/FileTreeWalker$1
+instanceKlass org/gradle/api/internal/file/collections/DefaultDirectoryWalker$PathVisitor
+instanceKlass org/gradle/api/file/ReproducibleFileVisitor
+instanceKlass org/gradle/api/file/EmptyFileVisitor
+instanceKlass  @bci org/gradle/api/internal/file/CompositeFileTree visitContentsAsFileTrees (Ljava/util/function/Consumer;)V 2 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/CompositeFileTree$$Lambda$1035+0x00000008013efdc8
+instanceKlass  @bci org/gradle/api/internal/file/CompositeFileTree matching (Lorg/gradle/api/tasks/util/PatternFilterable;)Lorg/gradle/api/internal/file/FileTreeInternal; 11 <appendix> member <vmtarget> ; # org/gradle/api/internal/file/CompositeFileTree$$Lambda$1034+0x00000008013efbb8
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/RecompilationSpec addClassesToProcess (Ljava/util/Collection;)V 2 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/recomp/RecompilationSpec$$Lambda$1033+0x00000008013ea478
+instanceKlass it/unimi/dsi/fastutil/ints/IntCollections$UnmodifiableCollection
+instanceKlass it/unimi/dsi/fastutil/ints/IntArrays$ArrayHashStrategy
+instanceKlass it/unimi/dsi/fastutil/ints/IntArrays$Segment
+instanceKlass java/util/concurrent/ForkJoinTask
+instanceKlass it/unimi/dsi/fastutil/Hash$Strategy
+instanceKlass it/unimi/dsi/fastutil/ints/IntArrays
+instanceKlass it/unimi/dsi/fastutil/ints/IntBidirectionalIterator
+instanceKlass it/unimi/dsi/fastutil/objects/ObjectBidirectionalIterator
+instanceKlass it/unimi/dsi/fastutil/BidirectionalIterator
+instanceKlass it/unimi/dsi/fastutil/objects/ObjectIterator
+instanceKlass it/unimi/dsi/fastutil/ints/IntSets
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilation findDependentsOfSourceChanges (Ljava/util/Set;)Lorg/gradle/api/internal/tasks/compile/incremental/compilerapi/deps/DependentsSet; 23 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilation$$Lambda$1032+0x00000008013ea248
+instanceKlass org/gradle/internal/execution/history/changes/DefaultFileChange$1
+instanceKlass org/gradle/internal/execution/history/changes/CollectingChangeVisitor
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/SourceFileChangeProcessor
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysis$ClassSetDiff
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData merge (Ljava/util/List;)Lorg/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData; 178 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData$$Lambda$1031+0x00000008013e9a50
+instanceKlass com/google/common/collect/Lists$ReverseList$1
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess doSnapshot (Ljava/lang/Iterable;)Ljava/util/List; 20 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess$$Lambda$1030+0x00000008013e9818
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess doSnapshot (Ljava/lang/Iterable;)Ljava/util/List; 10 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess$$Lambda$1029+0x00000008013e95f0
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1026+0x00000008013e93c0
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1028+0x00000008013e9190
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1025+0x00000008013e8f60
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1027+0x00000008013e8d30
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1024+0x00000008013e8b00
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer lambda$analyzeClasspathEntry$1 (Ljava/io/File;Lorg/gradle/internal/snapshot/FileSystemLocationSnapshot;)Lorg/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData; 12 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1023+0x00000008013e88d0
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1021+0x00000008013e86a0
+# instanceKlass org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1022+0x00000008013e8470
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer analyzeClasspathEntry (Ljava/io/File;)Lorg/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData; 10 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/classpath/CachingClassSetAnalyzer$$Lambda$1020+0x00000008013e8240
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess$CreateSnapshot
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess snapshotAll (Ljava/lang/Iterable;)Ljava/util/List; 15 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess$$Lambda$1019+0x00000008013e7bd8
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/DefaultSourceFileClassNameConverter constructReverseMapping (Ljava/util/Map;)Ljava/util/Map; 82 <appendix> argL0 ; # org/gradle/api/internal/tasks/compile/incremental/recomp/DefaultSourceFileClassNameConverter$$Lambda$1018+0x00000008013e79b0
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/DefaultSourceFileClassNameConverter
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/FileNameDerivingClassNameConverter
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/RecompilationSpec
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysis
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilation
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/compilerapi/CompilerApiData
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/compilerapi/constants/ConstantToDependentsMapping
+instanceKlass it/unimi/dsi/fastutil/HashCommon
+instanceKlass it/unimi/dsi/fastutil/ints/IntSpliterator
+instanceKlass it/unimi/dsi/fastutil/ints/IntIterator
+instanceKlass java/util/PrimitiveIterator$OfInt
+instanceKlass java/util/PrimitiveIterator
+instanceKlass it/unimi/dsi/fastutil/Hash
+instanceKlass org/gradle/internal/serialize/IntSetSerializer
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/processing/AnnotationProcessingData
+instanceKlass it/unimi/dsi/fastutil/ints/IntSet
+instanceKlass it/unimi/dsi/fastutil/ints/IntCollection
+instanceKlass it/unimi/dsi/fastutil/ints/IntIterable
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/compilerapi/deps/DependentsSet
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData$Serializer read (Lorg/gradle/internal/serialize/Decoder;)Lorg/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData; 18 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/deps/ClassSetAnalysisData$Serializer$$Lambda$1017+0x00000008013e5510
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData$Serializer read (Lorg/gradle/internal/serialize/Decoder;)Lorg/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData; 13 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationData$Serializer$$Lambda$1016+0x00000008013e4c78
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilation
+instanceKlass org/gradle/api/internal/tasks/compile/CompileJavaBuildOperationReportingCompiler$2
+instanceKlass org/gradle/api/internal/tasks/compile/CompileJavaBuildOperationReportingCompiler$1
+instanceKlass org/gradle/api/internal/tasks/compile/CompileJavaBuildOperationType$Details
+instanceKlass org/gradle/api/internal/tasks/compile/CompileJavaBuildOperationReportingCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/IncrementalResultStoringCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/SelectiveCompiler
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/PreviousCompilationAccess
+instanceKlass org/gradle/api/internal/tasks/compile/incremental/recomp/CurrentCompilationAccess
+instanceKlass  @bci org/gradle/api/internal/tasks/compile/incremental/IncrementalCompilerFactory createRebuildAllCompiler (Lorg/gradle/api/internal/tasks/compile/CleaningJavaCompiler;Lorg/gradle/api/file/FileTree;)Lorg/gradle/language/base/internal/compile/Compiler; 2 <appendix> member <vmtarget> ; # org/gradle/api/internal/tasks/compile/incremental/IncrementalCompilerFactory$$Lambda$1015+0x00000008013df560
