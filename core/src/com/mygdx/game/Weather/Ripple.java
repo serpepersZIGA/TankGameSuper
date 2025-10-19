@@ -8,6 +8,7 @@ import com.mygdx.game.method.rand;
 import java.util.ArrayList;
 
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.method.Keyboard.*;
 
 public class Ripple {
     public static ArrayList<Ripple>RippleList = new ArrayList<>();
@@ -24,12 +25,13 @@ public class Ripple {
     public void render(){
         timer-=1;
         int[] xy = RC.render_objZoom(x,y);
-        Main.Batch.draw(texture,xy[0],xy[1],widthRender*Zoom,heightRender*Zoom);
+        Main.Batch.draw(texture,xy[0],xy[1],widthRender,heightRender);
         if(timer<0){RippleList.remove(this);}
     }
     public static void RippleSpawn(){
 
-        RippleList.add(new Ripple((int) rand.rand(screenWidth/ Zoom), (int) rand.rand(screenHeight/ Zoom)));
+        RippleList.add(new Ripple((int) rand.rand(ZoomSpawnRippleWidth), (int) rand.rand(ZoomSpawnRippleHeight)));
+
 
     }
 }

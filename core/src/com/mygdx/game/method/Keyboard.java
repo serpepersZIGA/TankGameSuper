@@ -4,6 +4,7 @@ import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Shader.LightingMainSystem;
+import com.mygdx.game.Weather.Ripple;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.bull.Bullet;
@@ -24,7 +25,9 @@ public class Keyboard extends InputAdapter{
     public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
-    private static float ZoomMax,ZoomMin;
+    public static float ZoomMax;
+    public static float ZoomMin;
+    public static float ZoomSpawnRippleWidth,ZoomSpawnRippleHeight;
     public static void ZoomMaxMin(){
         ZoomMax = 2;
         ZoomMin = (float) (0.4);
@@ -179,6 +182,9 @@ public class Keyboard extends InputAdapter{
         }
         ItemObject.widthRender = (int)(ItemObject.width* Main.Zoom);
         ItemObject.heightRender = (int)(ItemObject.height* Main.Zoom);
+
+        Ripple.widthRender = (int)(Ripple.width* Main.Zoom);
+        Ripple.heightRender = (int)(Ripple.height* Main.Zoom);
 
         RC.WidthRenderZoom = RC.WidthRender /Main.Zoom;
         RC.HeightRenderZoom = RC.HeightRender /Main.Zoom;

@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
+import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
 
@@ -294,6 +295,8 @@ public class Main extends ApplicationAdapter {
 		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
 		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
 		KeyboardObj.zoom_const();
+        Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
+        Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
 	}
 	public static BitmapFont TXTFont(int size,String fontPath){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));

@@ -20,16 +20,6 @@ varying vec4 v_color;
 varying vec2 v_texCoords;
 varying vec2 v_worldPos;
 
-const int NUM_RIPPLES = 5;
-vec2 rippleCenters[NUM_RIPPLES];
-
-void initRippleCenters() {
-    rippleCenters[0] = vec2(0.3, 0.3);
-    rippleCenters[1] = vec2(0.7, 0.3);
-    rippleCenters[2] = vec2(0.5, 0.5);
-    rippleCenters[3] = vec2(0.2, 0.8);
-    rippleCenters[4] = vec2(0.8, 0.8);
-}
 
 
 vec2 rotate(vec2 p,vec2 size, float a) {
@@ -83,42 +73,16 @@ void main() {
         bool conf = roundedRect(uv, center, size);
 
 
-//        vec2 uv2 = gl_FragCoord.xy / u_resolution.xy;
-//        uv2 = uv2 * 2.0 - 1.0; // Переводим в диапазон [-1, 1]
-//        uv2.x *= u_resolution.x / u_resolution.y; // Коррекция соотношения сторон
-//
-//        // Расстояние от центра
-//        float dist = length(uv2);
-//        if(dist<0.02){
-//
-//            // Волновая функция
-//            float ripple = sin(10.0 * dist - u_time * 4.0);
-//
-//            // Затухание волны
-//            float fade = 1.0 / (1.0 + 10.0 * dist*u_time);
-//
-//            // Цвет
-//            vec3 color = vec3(0.2, 0.2, 0.8) * ripple * fade;
-//            finalColor +=vec4(color,0.9);
-//        }
 
 
         if (conf) {
-            // Основной цвет прямоугольника
-            finalColor = vec4(0.2,0.2,0.8,0.3);
+            finalColor = vec4(0.2,0.2,0.8,0.5);
 
-            // Добавляем обводку
-//            if (dist > -0.01) {
-//                finalColor.rgb *= 0.7;
-//            }
         }
 
-        //finalColor = vec4(0.2,0.2,0.8,0.9);
 
     }
 
-
-    //vec2 uv = gl_FragCoord.xy / u_resolution.xy;
 
 
     gl_FragColor = finalColor;

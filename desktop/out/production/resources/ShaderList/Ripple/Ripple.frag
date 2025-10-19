@@ -5,12 +5,11 @@ precision mediump float;
 
 uniform vec2 u_resolution; // Разрешение экрана
 uniform float u_time; // Время для анимации
-uniform vec2 u_mouse; // Позиция мыши (опционально)
+
 uniform sampler2D u_texture; // Текстура для наложения
 
-varying vec4 v_color;
 varying vec2 v_texCoord;
-varying vec2 v_worldPos;// UV от вершинного шейдера
+// UV от вершинного шейдера
 
 float random(vec2 st) {
     return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -27,7 +26,7 @@ float noise(vec2 st) {
 void main() {
     vec2 uv = v_texCoord;// Используем UV-координаты
     vec4 color = vec4(0.0);
-    vec4 colorWave = vec4(0.0, 0.2, 0.5, 0.2);
+    vec4 colorWave = vec4(0.0, 0.2, 0.5, 0.35);
 
     // Параметры волны
     float waveSpeed = 2.0;// Скорость анимации волны
