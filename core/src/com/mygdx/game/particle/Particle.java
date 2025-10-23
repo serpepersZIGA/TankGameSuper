@@ -30,7 +30,7 @@ public abstract class Particle {
     public static final float g_m =(float)(3.0/255);
     public static final float b_m =(float)(1.0/255);
     protected int time_spawn,time_spawn_max;
-    public int x_rend,y_rend,size_render;
+    public int x_rend,y_rend,size_render,size_render2;
     public LightingMainSystem.Light light;
     public float[]rgb;
 

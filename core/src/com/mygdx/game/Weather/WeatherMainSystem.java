@@ -3,6 +3,7 @@ package com.mygdx.game.Weather;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.TextureAtlas;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
@@ -14,6 +15,7 @@ import com.mygdx.game.method.rand;
 
 import java.util.ArrayList;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.Weather.Rain.RainList;
 import static com.mygdx.game.Weather.Ripple.RippleList;
 import static com.mygdx.game.main.Main.*;
@@ -127,7 +129,7 @@ public class WeatherMainSystem {
         }
 
 
-        batch.draw(new Texture("buffer2.png"),0,0,screenWidth,screenHeight);
+        batch.draw(TextureAtl.createSprite("Buffer"),0,0,screenWidth,screenHeight);
         batch.end();
 
     }

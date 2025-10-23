@@ -1,29 +1,16 @@
-/**
- *  Fire Shader Copyright (C) 2018 Logan McCandless
- *  MIT License: https://opensource.org/licenses/MIT
- */
+attribute vec4 a_position;
+attribute vec4 a_color;
+attribute vec2 a_texCoord0;
 
-#ifdef GL_ES
-precision mediump float;
-precision mediump int;
-#endif
+uniform mat4 u_projTrans;
 
-#define PROCESSING_TEXTURE_SHADER
+varying vec4 v_color;
+varying vec2 v_texCoord;
+varying vec2 v_worldPos;
 
-uniform sampler2D texture;
-uniform vec2 texOffset;
-uniform vec2 resolution;
-uniform float time;
-
-varying vec4 vertColor;
-varying vec4 vertTexCoord;
-
-float decode(vec4 color) {
-    return (color.r + color.g + color.b)/3.0;
-}
-
-void main(void) {
-	float f =  decode(texture2D(texture, vertTexCoord.st));
-	vec3 col = vec3(1.6*f, 1.6*pow(f,3), pow(f,5));
-    gl_FragColor = vec4(col,1.0);
+void main() {
+    v_color = a_color;
+    v_texCoord = a_texCoord0;
+    v_worldPos = a_position.xy;
+    gl_Position = u_projTrans * a_position;
 }

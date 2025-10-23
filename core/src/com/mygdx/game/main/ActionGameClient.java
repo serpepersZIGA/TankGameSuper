@@ -4,6 +4,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
+import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.Network.DebrisPacket;
@@ -90,9 +91,12 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i = 0; i< Main.FlameParticleList.size(); i++){
             Main.FlameParticleList.get(i).all_action(i);}
 
+        FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
+        Batch.flush();
+        Batch.setShader(LightSystem.shader);
         for (i = 0; i< Main.BulletList.size(); i++){
             Bullet bullet = Main.BulletList.get(i);
             if(bullet != null) {

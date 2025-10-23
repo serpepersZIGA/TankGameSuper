@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
+import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
@@ -258,6 +259,7 @@ public class Main extends ApplicationAdapter {
 		RC = new RenderCenter(0,0);
 		Batch = new SpriteBatch();
         new WeatherMainSystem();
+        FlameShaderAdd();
 
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");

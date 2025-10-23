@@ -7,6 +7,7 @@ import com.mygdx.game.method.rand;
 
 import java.util.ArrayList;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.*;
 
@@ -14,7 +15,7 @@ public class Ripple {
     public static ArrayList<Ripple>RippleList = new ArrayList<>();
     public int x,y;
     public static int width = 70,height = 70;
-    public static Texture texture = new Texture("buffer2.png");
+    public static Texture texture = TextureAtl.createSprite("Buffer").getTexture();
     public static int widthRender = 70,heightRender = 70;
     public int timer;
     public Ripple(int x,int y){

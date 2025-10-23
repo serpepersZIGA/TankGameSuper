@@ -11,6 +11,7 @@ import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
 import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.Packet_client;
+import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Weather.WeatherMainSystem;
 import com.mygdx.game.block.Block;
@@ -85,9 +86,14 @@ public class ActionMenu extends ActionGame {
         }
 //        Render.end();
 //        Render.begin();
+
+        FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
+
+        Batch.flush();
+        Batch.setShader(LightSystem.shader);
 
         for(i = 0; i< Main.UnitList.size(); i++) {
             Main.UnitList.get(i).UpdateUnit();

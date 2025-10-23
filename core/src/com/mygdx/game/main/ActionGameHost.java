@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import com.mygdx.game.Network.BuildPacket;
+import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
@@ -96,9 +97,14 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action();
             }
         }
+
+        FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
+        Batch.flush();
+        Batch.setShader(LightSystem.shader);
+
         for (i = 0; i< Main.BulletList.size(); i++){
             if(Main.BulletList.get(i).height == 2) {
                 Main.BulletList.get(i).all_action();

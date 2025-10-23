@@ -1,5 +1,6 @@
 package com.mygdx.game.method;
 
+import Content.Particle.FlameSpawn;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.mygdx.game.Inventory.ItemObject;
@@ -250,6 +251,14 @@ public class Keyboard extends InputAdapter{
         }
         for(Particle particle : Main.BangList){
             particle.size_render = (int)(particle.size* Main.Zoom);
+        }
+
+        for(Particle particle : FlameList){
+            particle.size_render = (int)(particle.size* Main.Zoom);
+        }
+        for(Particle particle : FlameSpawnList){
+            particle.size_render = (int)(particle.size* Main.Zoom);
+            particle.size_render2 = particle.size_render/2;
         }
 
         for(Bullet bull : Main.BulletList){
