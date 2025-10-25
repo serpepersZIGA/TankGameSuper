@@ -67,7 +67,8 @@ public class ActionMenu extends ActionGame {
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
 
-        Render.begin();
+        Render.polyBatch.begin();
+        LightSystem.begin(Batch);
         Main.RC.render_block();
         RippleIteration(Batch);
 
@@ -79,11 +80,7 @@ public class ActionMenu extends ActionGame {
             Main.FlameList.get(i).all_action(i);}
         for (i = 0; i< Main.FlameParticleList.size(); i++){
             Main.FlameParticleList.get(i).all_action(i);}
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 1) {
-                Main.BulletList.get(i).update();
-            }
-        }
+        Render.polyBatch.flush();
 //        Render.end();
 //        Render.begin();
 
@@ -92,8 +89,13 @@ public class ActionMenu extends ActionGame {
             Main.FlameSpawnList.get(i).all_action(i);
         }
 
-        Batch.flush();
         Batch.setShader(LightSystem.shader);
+        for (i = 0; i< Main.BulletList.size(); i++){
+            if(Main.BulletList.get(i).height == 1) {
+                Main.BulletList.get(i).update();
+            }
+        }
+        Render.polyBatch.flush();
 
         for(i = 0; i< Main.UnitList.size(); i++) {
             Main.UnitList.get(i).UpdateUnit();
@@ -149,13 +151,12 @@ public class ActionMenu extends ActionGame {
 
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
 
-        Render.end();
+        Render.polyBatch.end();
 
         Batch.end();
         //Batch.setShader(null);
         //RainRippleShader.begin(Batch);
         WeatherIteration(Batch);
-        LightSystem.begin(Batch);
         if(GameStart) {
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();

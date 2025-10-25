@@ -102,7 +102,7 @@ public class LightingMainSystem implements Disposable {
     }
 
     public void begin(SpriteBatch batch) {
-        batch.begin();
+//        batch.begin();
         batch.setShader(shader);
 
         // Устанавливаем общие параметры освещения
@@ -142,8 +142,8 @@ public class LightingMainSystem implements Disposable {
             shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
 
         }
-        batch.draw(new Texture("buffer2.png"),0,0,screenWidth,screenHeight);
-        batch.end();
+//        batch.draw(new Texture("buffer2.png"),0,0,screenWidth,screenHeight);
+//        batch.end();
     }
 
     public Light addLight() {

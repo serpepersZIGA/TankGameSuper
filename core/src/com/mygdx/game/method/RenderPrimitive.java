@@ -15,11 +15,10 @@ import static com.mygdx.game.main.Main.*;
 
 public class RenderPrimitive implements Disposable {
     public final PolygonSpriteBatch polyBatch;
-    private final Texture whitePixel,background;
+    private final Texture whitePixel;
     //private final ShaderProgram shader;
 
     public RenderPrimitive() {
-        background = new Texture(Gdx.files.internal("buffer2.png"));
         whitePixel = createWhitePixel();
         indicesADD();
 
@@ -31,7 +30,7 @@ public class RenderPrimitive implements Disposable {
 //        );
 
         //batch = new SpriteBatch();
-        polyBatch = new PolygonSpriteBatch(1000, LightSystem.shader);
+        polyBatch = new PolygonSpriteBatch(32767, LightSystem.shader);
     }
     private Texture createWhitePixel() {
         Pixmap pixmap = new Pixmap(1, 1, Pixmap.Format.RGBA8888);
@@ -40,16 +39,6 @@ public class RenderPrimitive implements Disposable {
         Texture texture = new Texture(pixmap);
         pixmap.dispose();
         return texture;
-    }
-
-    public void begin() {
-        polyBatch.begin();
-        //polyBatchShader.begin();
-    }
-
-    public void end() {
-        polyBatch.end();
-        //polyBatchShader.end();
     }
 
     public void drawTriangle(float x1, float y1, float x2, float y2, float x3, float y3, Color color) {

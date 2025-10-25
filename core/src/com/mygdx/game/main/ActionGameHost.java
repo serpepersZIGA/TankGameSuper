@@ -81,7 +81,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
-        Render.begin();
+        Render.polyBatch.begin();
+        LightSystem.begin(Batch);
         Main.RC.render_block();
         RippleIteration(Batch);
         for (i= 0; i< Main.LiquidList.size(); i++){
@@ -92,28 +93,24 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Main.FlameList.get(i).all_action(i);}
         for (i = 0; i< Main.FlameParticleList.size(); i++){
             Main.FlameParticleList.get(i).all_action(i);}
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 1) {
-                Main.BulletList.get(i).all_action();
-            }
-        }
+        Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        Batch.flush();
         Batch.setShader(LightSystem.shader);
 
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 2) {
-                Main.BulletList.get(i).all_action();
-            }
-        }
-        //Batch.flush();
         for(int i = 0;i<ItemList.size();i++){
             ItemList.get(i).IterationItem();
         }
+
+        for (i = 0; i< Main.BulletList.size(); i++){
+            if(Main.BulletList.get(i).height == 1) {
+                Main.BulletList.get(i).all_action();
+            }
+        }
+        Render.polyBatch.flush();
         for(i = 0;i< DebrisList.size();i++) {
             Unit debris = DebrisList.get(i);
             packet_debris_server(debris);
@@ -160,7 +157,13 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             //unit.update();
 
         }
+        //Batch.flush();
         RC.BuildingIteration();
+        for (i = 0; i< Main.BulletList.size(); i++){
+            if(Main.BulletList.get(i).height == 2) {
+                Main.BulletList.get(i).all_action();
+            }
+        }
         inventoryMain.InventoryIteration();
         //System.out.println(inventoryMain.SlotInventory.length);
 
@@ -172,10 +175,9 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         Batch.flush();
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);}
-        Render.end();
+        Render.polyBatch.end();
         Batch.end();
         WeatherIteration(Batch);
-        LightSystem.begin(Batch);
         //LightSystem.end(Batch);
         server_packet();
         //System.out.println(UnitList.size());

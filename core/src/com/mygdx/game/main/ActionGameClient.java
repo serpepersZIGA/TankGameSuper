@@ -77,7 +77,8 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
 
 
         Batch.begin();
-        Render.begin();
+        Render.polyBatch.begin();
+        LightSystem.begin(Batch);
         Main.RC.render_block();
         RippleIteration(Batch);
 
@@ -91,12 +92,17 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         for (i = 0; i< Main.FlameParticleList.size(); i++){
             Main.FlameParticleList.get(i).all_action(i);}
 
+        Render.polyBatch.flush();
+
         FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action(i);
         }
-        Batch.flush();
         Batch.setShader(LightSystem.shader);
+        //Batch.flush();
+        for(int i = 0;i<ItemList.size();i++){
+            ItemList.get(i).IterationItemClient();
+        }
         for (i = 0; i< Main.BulletList.size(); i++){
             Bullet bullet = Main.BulletList.get(i);
             if(bullet != null) {
@@ -105,10 +111,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
-        //Batch.flush();
-        for(int i = 0;i<ItemList.size();i++){
-            ItemList.get(i).IterationItemClient();
-        }
+        Render.polyBatch.flush();
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             //Main_client.player_data(unit);
@@ -150,7 +153,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             //Main_client.debris_data(debris);
         }
         RC.BuildingIteration();
-        inventoryMain.InventoryIterationClient();
 
         for (i = 0; i< Main.BulletList.size(); i++){
             Bullet bullet = Main.BulletList.get(i);
@@ -160,14 +162,16 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
+
+        inventoryMain.InventoryIterationClient();
+
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action(i);
         }
         if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
-        Render.end();
+        Render.polyBatch.end();
         Batch.end();
         WeatherIteration(Batch);
-        LightSystem.begin(Batch);
         //PackUpdateUnit();
     }
     public static void PackUpdateUnit(){

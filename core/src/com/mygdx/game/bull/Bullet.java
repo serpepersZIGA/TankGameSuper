@@ -34,8 +34,6 @@ public abstract class Bullet implements Serializable,Cloneable {
     public int ID;
     public boolean BangSpawn;
     public boolean FlameSpawn;
-    public EventGame SpawnParticle;
-    public EffectBullet effectBullet = EffectBullet.Void;
     public byte type_team,height,clear_sost;
     public FunctionalList functionalList;
     public Bullet(float x, float y, float rotation, float damage, float penetration, float damage_fragment, float penetration_fragment, byte type_team, byte height) {
@@ -209,7 +207,6 @@ public abstract class Bullet implements Serializable,Cloneable {
         this.speed = -5;
         this.time = 65+rand.rand(15);
         speed_save();
-        effectBullet = EffectBullet.Flame;
     }
 //    public Bullet(float x, float y, float rotation, float damage, float penetration, byte type_time, byte height){
 //
