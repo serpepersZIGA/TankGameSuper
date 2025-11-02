@@ -1,14 +1,9 @@
 package Content.Particle;
 
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.particle.Particle;
-
-import java.text.Format;
 
 import static Data.DataColor.*;
 
@@ -25,7 +20,7 @@ public class FlameParticle extends Particle {
     }
     @Override final
 
-    public void all_action(int i){
+    public void all_action(){
         super.color_fire();
         super.move_particle();
         this.update();

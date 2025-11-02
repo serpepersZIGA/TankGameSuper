@@ -4,6 +4,5 @@ public class BullPacket {
     public float x,y;
     public byte height,team;
     public int ID;
-    public float speed,rotation;
-    public int time;
+    public float speed,rotation,time;
 }

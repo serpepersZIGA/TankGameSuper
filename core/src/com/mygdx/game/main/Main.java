@@ -50,6 +50,7 @@ import java.util.LinkedList;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
+import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
@@ -65,6 +66,8 @@ public class Main extends ApplicationAdapter {
 	public static LinkedList<Particle> BangList = new LinkedList<>();
 	public static LinkedList<Particle> FlameParticleList = new LinkedList<>();
 	public static LinkedList<Particle> LiquidList = new LinkedList<>();
+    public static LinkedList<Particle> BloodList = new LinkedList<>();
+
 	public static LinkedList<Particle> FlameSpawnList = new LinkedList<>();
 	public static ArrayList<Unit> DebrisList = new ArrayList<>();
 
@@ -87,7 +90,7 @@ public class Main extends ApplicationAdapter {
 	public static boolean GameHost;
 	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,height_block =70,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
 	public static int width_block_zoom= 70,height_block_zoom =70,width_block_render= 73,height_block_render =73;
-	public static float radius_air_max = 150,radius_air_max_zoom;
+	public static float radius_air_max = 150,radius_air_max_zoom,TimeGlobal,TimeGlobalBullet;
 	public static ServerMain serverMain;
 	public static ClientMain Main_client;
 	public static Option Option;
@@ -101,8 +104,7 @@ public class Main extends ApplicationAdapter {
 	public static InputWindow InputWindow;
 	public static int xMaxAir;
 	public static int yMaxAir;
-	public static int xMap ;
-	public static int yMap ;
+	public static int xMap,yMap,i;
 	public static EventRegister EventData;
 	public static int IDClient;
 	public static PlayerSpawnData SpawnPlayer;
@@ -146,11 +148,6 @@ public class Main extends ApplicationAdapter {
 //				RegisterControl.controllerBot,new Inventory(new Item[3][4]));
 
 		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
-		LiquidList.add(new Acid(200,200));
-		LiquidList.add(new Blood(200,200));
-		FlameSpawnList.add(new FlameSpawn(200,200));
-		FlameStaticList.add(new FlameStatic(200,200));
-		BangList.add(new Bang(200,200,10));
 	}
 	public void field(int width_field,int height_field){
 		quantity_width = width_field;
@@ -206,11 +203,7 @@ public class Main extends ApplicationAdapter {
 //			}
 //		}
 
-		LiquidList.add(new Acid(200,200));
-		LiquidList.add(new Blood(200,200));
-		FlameSpawnList.add(new FlameSpawn(200,200));
-		FlameStaticList.add(new FlameStatic(200,200));
-		BangList.add(new Bang(200,200,10));
+//
 	}
 
 	@Override final
@@ -245,7 +238,7 @@ public class Main extends ApplicationAdapter {
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(80,80,15,15,0.15f,0.80f);
+		CycleDayNight = new CycleTimeDay(10,10,10,10,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
 
 		Render = new RenderPrimitive();
@@ -260,6 +253,7 @@ public class Main extends ApplicationAdapter {
 		Batch = new SpriteBatch();
         new WeatherMainSystem();
         FlameShaderAdd();
+        LiquidShaderAdd();
 
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
@@ -311,7 +305,10 @@ public class Main extends ApplicationAdapter {
 	}
 	@Override final
 	public void render () {
+        TimeGlobal+= Gdx.graphics.getDeltaTime();
+        TimeGlobalBullet = TimeGlobal*50;
 		ActionGame.action();
+        TimeGlobal = 0;
 		//LightSystem.clearLights();
 	}
 	@Override final

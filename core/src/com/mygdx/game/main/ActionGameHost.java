@@ -6,6 +6,7 @@ import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.Shader.FlameShader;
+import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
@@ -17,8 +18,7 @@ import com.mygdx.game.Network.TransportPacket;
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
-import static com.mygdx.game.Weather.WeatherMainSystem.RippleIteration;
-import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
+import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
@@ -76,28 +76,33 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit.ai_sost-=1;
             Unit.AIScan = false;}
         else {
-            Unit.ai_sost=1000;
+            Unit.ai_sost=200;
             Unit.AIScan = true;
         }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
         Render.polyBatch.begin();
-        LightSystem.begin(Batch);
         Main.RC.render_block();
         RippleIteration(Batch);
+
+        LiquidShader.AcidShaderIteration();
         for (i= 0; i< Main.LiquidList.size(); i++){
-            Main.LiquidList.get(i).all_action(i);}
+            Main.LiquidList.get(i).all_action();}
+        LiquidShader.BloodShaderIteration();
+        for (i= 0; i< BloodList.size(); i++){
+            Main.BloodList.get(i).all_action();}
+        //liquidGlobal();
         for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action(i);}
+            Main.FlameStaticList.get(i).all_action();}
         for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action(i);}
+            Main.FlameList.get(i).all_action();}
         for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action(i);}
+            Main.FlameParticleList.get(i).all_action();}
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action(i);
+            Main.FlameSpawnList.get(i).all_action();
         }
         Batch.setShader(LightSystem.shader);
 
@@ -174,10 +179,11 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
 //        }
         Batch.flush();
         for (i= 0; i< Main.BangList.size(); i++){
-            Main.BangList.get(i).all_action(i);}
+            Main.BangList.get(i).all_action();}
         Render.polyBatch.end();
         Batch.end();
         WeatherIteration(Batch);
+        LightSystem.begin(Batch);
         //LightSystem.end(Batch);
         server_packet();
         //System.out.println(UnitList.size());

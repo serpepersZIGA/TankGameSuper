@@ -1,4 +1,5 @@
 package com.mygdx.game.build;
+import Content.Particle.FlameParticle;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
@@ -174,13 +175,13 @@ public class Building implements Serializable,Cloneable {
                 int z = rand.rand(4);
                     switch (z) {
                         case 0:{
-                            Main.FlameStaticList.add(new FlameStatic(this.x + rand.rand(this.width), this.y + this.height));break;}
+                            Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.width), this.y + this.height));break;}
                         case 1:{
-                            Main.FlameStaticList.add(new FlameStatic(this.x + rand.rand(this.width), this.y));break;}
+                            Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.width), this.y));break;}
                         case 2:{
-                            Main.FlameStaticList.add(new FlameStatic(this.x + this.width, this.y + rand.rand(height)));break;}
+                            Main.FlameParticleList.add(new FlameParticle(this.x + this.width, this.y + rand.rand(height)));break;}
                         case 3:{
-                            Main.FlameStaticList.add(new FlameStatic(this.x, this.y + rand.rand(height)));break;}
+                            Main.FlameParticleList.add(new FlameParticle(this.x, this.y + rand.rand(height)));break;}
                     }
             }
         }

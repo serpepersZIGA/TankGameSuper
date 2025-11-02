@@ -4,6 +4,8 @@
 
 #define MAX 100
 
+uniform vec2 u_resolution;
+
 uniform sampler2D u_texture;
 uniform vec4 u_ambientColor;
 uniform float u_minLightness;
@@ -25,6 +27,7 @@ varying vec2 v_worldPos;
 
 
 void main() {
+    vec4 color;
     vec4 texColor = texture2D(u_texture, v_texCoords) * v_color;
     float dist;
     float attenuation;
@@ -49,9 +52,9 @@ void main() {
     }
     finalColor = texColor;
     if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
-        finalColor.rgb += ((((accumulatedLight.r+texColor.r)/10) + (accumulatedLight.g+texColor.g)/2 + (accumulatedLight.b+texColor.b)/2) * 0.3333) * 0.025;
+        finalColor.rgb += ((((accumulatedLight.r+texColor.r)*0.1) + (accumulatedLight.g+texColor.g)*0.5 + (accumulatedLight.b+texColor.b)*0.5) * 0.3333) * 0.25;
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);
-    gl_FragColor = (finalColor+texColor)/2;
+    gl_FragColor = finalColor*texColor*1.5;
 }

@@ -26,7 +26,7 @@ public class Flame extends Particle {
 
     }
     @Override final
-    public void all_action(int i){
+    public void all_action(){
         //super.flame_physic(i, Main.flame_obj);
         create_flame_particle(Main.FlameParticleList);
         this.update();

@@ -2,8 +2,12 @@
 precision highp float;
 
 varying vec2 v_texCoord;
+varying vec4 v_color;
+varying vec2 v_worldPos;
 
 uniform float u_time;  // Время для анимации
+uniform sampler2D u_texture;
+//uniform vec2 u_resolution;
 
 // Простая функция шума
 float hash(vec2 p) {
@@ -41,34 +45,44 @@ float particleNoise(vec2 p) {
 }
 
 void main() {
+    vec4 texColor = texture2D(u_texture,v_texCoord)*v_color;
     vec2 st = v_texCoord;  // UV координаты
     vec2 center = vec2(0.5, 0.5);  // Центр пламени
     float dist = length(st - center);  // Радиальное расстояние от центра
 
     // Анимация основного огня
-    float time = u_time *6.0;  // Ускоряем для живости
+    float time = u_time *2.0;  // Ускоряем для живости
     //float s = sin(abs(u_time))/12.0;
-    vec2 noiseUV = st * 5.0+time;  // Масштаб шума
+    vec2 noiseUV = st * 5.0+ time;  // Масштаб шума
     //noiseUV += normalize((center)) + time;  // Движение наружу
     float n = fbm(noiseUV);
 
     // Интенсивность огня с радиальным градиентом
-    float intensity = n * (1.0 - dist * n*4.0) + 0.4;  // Мягче затухание
+    float intensity = n * (1.0 - dist*n) + 0.4;  // Мягче затухание
 
     // Цвета огня: добавляем синий у основания
     vec3 fireCol;
-    if (intensity < 0.3) {
-        fireCol = vec3(0.1, 0.1, 0.2);  // Синий у основания
-    } else if (intensity < 0.5) {
-        fireCol = mix(vec3(0.0, 0.0, 0.2), vec3(1.0, 0.3, 0.0), (intensity - 0.3) *5.0);  // Переход к оранжевому
-    } else if (intensity < 0.7) {
-        fireCol = mix(vec3(1.0, 0.3, 0.0), vec3(1.0, 0.6, 0.0), (intensity - 0.5) *5.0);  // Оранжевый
-    } else {
-        fireCol = mix(vec3(1.0, 0.6, 0.0), vec3(1.0, 1.0, 0.5), (intensity - 0.7) *3.3);  // Жёлтый/белый
+    float alpha;
+    if(dist < 0.5){
+
+        if (intensity < 0.3) {
+            fireCol = vec3(0.0, 0.2, 0.0);// Синий у основания
+        } else if (intensity < 0.5) {
+            fireCol = mix(vec3(0.1, 0.5, 0.2), vec3(0.1, 0.8, 0.4), (intensity - 0.3) *5.0);// Переход к оранжевому
+        } else if (intensity < 0.74) {
+            fireCol = mix(vec3(0.1, 0.3, 0.1), vec3(0.1, 0.9, 0.4), (intensity - 0.5)*5.0);// Оранжевый
+        } else {
+            fireCol = mix(vec3(0.1, 0.6, 0.3), vec3(0.1, 0.6, 0.5), (intensity - 0.7) *3.3);// Жёлтый/белый
+        }
+        //alpha = clamp(intensity, 0.0, 1.0) * (1.0 - dist * 1.8);
+    }
+    else{
+        gl_FragColor = vec4(0,0,0,0);
+        return;
     }
 
     // Альфа для основного огня
-    float alpha = clamp(intensity, 0.0, 1.0) * (1.0 - dist * 1.8);
+    //alpha = clamp(intensity, 0.0, 1.0) * (1.0 - dist * 1.8);
 
     // Частицы (искры)
     vec2 particleUV = center;  // Мелкий масштаб для частиц
@@ -77,11 +91,11 @@ void main() {
     float particle = particleNoise(particleUV);
     float particleIntensity = smoothstep(0.99, 1.0, particle) * (1.0 - dist);  // Искры только в центре
     vec3 particleCol = vec3(1.0, 0.9, 0.6) * particleIntensity;  // Яркие жёлтые искры
-//    float particleAlpha = particleIntensity;
+    //    float particleAlpha = particleIntensity;
 
     // Комбинируем огонь и частицы
     vec3 finalCol = mix(fireCol, particleCol, particleIntensity);
-    alpha = clamp(alpha + particleIntensity, 0.0, 1.0);
+    //alpha = clamp(alpha + particleIntensity, 0.0, 1.0);
 
-    gl_FragColor = vec4(finalCol, alpha*1.9);
+    gl_FragColor = vec4(finalCol.rgb, 0.3);
 }

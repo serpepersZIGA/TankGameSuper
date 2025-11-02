@@ -28,7 +28,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.Objects;
 
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
@@ -58,7 +57,7 @@ public abstract class Unit implements Cloneable{
     public Engine EngineUnit;
     public ArrayList<Cannon> CannonUnitList = new ArrayList<>();
     public Cannon CannonUnit;
-    public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, id_unit, x_tower,y_tower,
+    public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, x_tower,y_tower,
     time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect;
     public Sound sound_fire;
     public float fire_x;
@@ -273,7 +272,6 @@ public abstract class Unit implements Cloneable{
     protected final void data(){
         //tower_obj = new ArrayList<>();
         path = new ArrayList<>();
-        this.id_unit = 10000+rand.rand(89999);
         this.reload = this.reload_max;
         this.hp = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
@@ -304,7 +302,6 @@ public abstract class Unit implements Cloneable{
     protected final void dataSoldat(){
         classUnit = ClassUnit.Soldat;
         path = new ArrayList<>();
-        this.id_unit = 10000+rand.rand(89999);
         this.reload = this.reload_max;
         this.hp = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
@@ -464,15 +461,15 @@ public abstract class Unit implements Cloneable{
 
         if (this.press_a){
             for (Unit Tower : tower_obj){
-                Tower.rotation_tower += this.speed_rotation;
+                Tower.rotation_tower += this.speed_rotation*TimeGlobalBullet;
             }
-            this.rotation_corpus += this.speed_rotation;
+            this.rotation_corpus += this.speed_rotation*TimeGlobalBullet;
         }
         if (this.press_d){
             for (Unit Tower : tower_obj){
-                Tower.rotation_tower -= this.speed_rotation;
+                Tower.rotation_tower -= this.speed_rotation*TimeGlobalBullet;
             }
-            this.rotation_corpus -= this.speed_rotation;
+            this.rotation_corpus -= this.speed_rotation*TimeGlobalBullet;
         }
         if(!this.press_w && !this.press_s) {
             if (this.speed > 0.5) {
@@ -492,17 +489,19 @@ public abstract class Unit implements Cloneable{
         press_d = false;
     }
     public final void move_xy_transport(){
+        float speed = this.speed*TimeGlobalBullet;
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        this.x -= move.move_sin2(this.speed, rotation_corpus2);
-        this.y -= move.move_cos2(this.speed, rotation_corpus2);
+        this.x -= move.move_sin2(speed, rotation_corpus2);
+        this.y -= move.move_cos2(speed, rotation_corpus2);
     }
     public final void move_xy_transportInvert(){
+        float speed = this.speed*TimeGlobalBullet;
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        this.x += move.move_sin2(this.speed, rotation_corpus2);
-        this.y += move.move_cos2(this.speed, rotation_corpus2);
+        this.x += move.move_sin2(speed, rotation_corpus2);
+        this.y += move.move_cos2(speed, rotation_corpus2);
     }
     public void TowerControl() {
-        tower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower);
+        tower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void tower(float x, float y, float x_2, float y_2, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
@@ -606,7 +605,7 @@ public abstract class Unit implements Cloneable{
     }
     public boolean reload_bot(){
         if(this.reload > 0){
-            this.reload -= 1;
+            this.reload -= TimeGlobalBullet;
             return false;
         }
         return true;
@@ -705,7 +704,7 @@ public abstract class Unit implements Cloneable{
             switch (behavior) {
                 case 1:{
                     if (this.speed > this.min_speed) {
-                        this.speed -= this.acceleration;
+                        this.speed -= this.acceleration*TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -720,7 +719,7 @@ public abstract class Unit implements Cloneable{
                 }
                 case 2:{
                     if (g > distance_target && this.speed < this.max_speed) {
-                        this.speed += this.acceleration;
+                        this.speed += this.acceleration*TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -731,7 +730,7 @@ public abstract class Unit implements Cloneable{
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     } else if(this.speed > this.min_speed){
-                        this.speed -= this.acceleration;
+                        this.speed -= this.acceleration*TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -746,13 +745,13 @@ public abstract class Unit implements Cloneable{
                 }
                 case 3:{
                     if (g > distance_target && this.speed < this.max_speed) {
-                        this.speed += this.acceleration;
+                        this.speed += this.acceleration*TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
                     } else if (g > distance_target_2 && this.speed > this.min_speed) {
-                        this.speed -= this.acceleration;
+                        this.speed -= this.acceleration*TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
@@ -760,13 +759,13 @@ public abstract class Unit implements Cloneable{
 
                     } else {
                         if (this.speed < 0) {
-                            this.speed -= this.acceleration;
+                            this.speed -= this.acceleration*TimeGlobalBullet;
                             if (this.time_sound_motor < 0) {
                                 SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                                 this.time_sound_motor = this.time_max_sound_motor;
                             }
                         } else if (this.speed > 0) {
-                            this.speed += this.acceleration;
+                            this.speed += this.acceleration*TimeGlobalBullet;
                             if (this.time_sound_motor < 0) {
                                 SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                                 this.time_sound_motor = this.time_max_sound_motor;
@@ -935,7 +934,7 @@ public abstract class Unit implements Cloneable{
             this.speed = 0;
         }
     }
-    public void helicopter_ii(){
+    public void helicopterAi(){
         Object[]sp = detection_near_transport(this);
         if(sp[0] != null) {
             Unit unit = (Unit) sp[0];
@@ -1383,7 +1382,7 @@ public abstract class Unit implements Cloneable{
 
             }
             if (this.max_speed > this.speed) {
-                this.speed += this.acceleration;
+                this.speed += this.acceleration*TimeGlobalBullet;
             }
         }
         if (this.press_s) {
@@ -1391,22 +1390,22 @@ public abstract class Unit implements Cloneable{
                 this.time_sound_motor = this.time_max_sound_motor;
             }
             if(this.min_speed < this.speed) {
-                this.speed -= this.acceleration;
+                this.speed -= this.acceleration*TimeGlobalBullet;
             }
 
         }
         if (this.press_a){
-            this.rotation_corpus += this.speed_rotation;
+            this.rotation_corpus += this.speed_rotation*TimeGlobalBullet;
         }
         if (this.press_d){
-            this.rotation_corpus -= this.speed_rotation;
+            this.rotation_corpus -= this.speed_rotation*TimeGlobalBullet;
         }
 
         if (this.speed > 0 && !this.press_w && !this.press_s) {
-            this.speed -= this.slowing;
+            this.speed -= this.slowing*TimeGlobalBullet;
             if (this.speed< Unit.speed_minimum){this.speed = 0;}
         } else if (this.speed < 0 && !this.press_w && !this.press_s) {
-            this.speed += this.slowing;
+            this.speed += this.slowing*TimeGlobalBullet;
             if (this.speed> Unit.speed_minimum){this.speed = 0;}
         }
         move_xy_transport();
@@ -1458,7 +1457,7 @@ public abstract class Unit implements Cloneable{
     public void clearSoldat(){
         if(this.hp <0){
             for(int i1 =0;i1<12;i1++){
-                Main.LiquidList.add(new Blood(this.x+i1, this.y));}
+                BloodList.add(new Blood(this.x+i1, this.y));}
             packetUnitUpdate.ConfUnitList = true;
             ClearUnitList.add(this);
             //UnitList.remove(this);

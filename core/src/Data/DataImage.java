@@ -52,6 +52,7 @@ public class DataImage {
         LoadImage("image/build/Build2.png","Build2");
 
         LoadImage("buffer2.png","Buffer");
+        LoadImage("buffer.png","Buffer2");
     }
     private Texture LoadImage(String image){
         buff = new Texture(image);

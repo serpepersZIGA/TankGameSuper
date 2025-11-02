@@ -37,7 +37,7 @@ public class WeatherMainSystem {
         WeatherGlobal = rand.rand(2);
         ShaderProgram.pedantic = false;
 
-        String vertSrc = Gdx.files.internal("ShaderList/Rain/Rain.vert").readString();
+        String vertSrc = Gdx.files.internal("ShaderList/Rain/Rain2.vert").readString();
         String fragSrc = Gdx.files.internal("ShaderList/Rain/Rain.frag").readString();
 
         String vertSrcRipple = Gdx.files.internal("ShaderList/Ripple/Ripple.vert").readString();
@@ -82,7 +82,7 @@ public class WeatherMainSystem {
         batch.end();
         batch.begin();
         batch.setShader(shaderRipple);
-        time += Gdx.graphics.getDeltaTime();
+        time += TimeGlobal;
         shaderRipple.setUniformMatrix("u_projTrans",Batch.getProjectionMatrix());
         shaderRipple.setUniformf("u_resolution",screenWidth, screenHeight);
         shaderRipple.setUniformf("u_time", time);
@@ -122,14 +122,14 @@ public class WeatherMainSystem {
         for (int i = 0; i < RainList.size(); i++) {
             Rain rain = RainList.get(i);
             rain.RainIteration();
-            shader.setUniformMatrix("u_projTrans",Batch.getProjectionMatrix());
-            shader.setUniformf("u_rain["+i+"].position", new Vector2(rain.x,rain.y));
-            shader.setUniformf("u_rain["+i+"].width", rain.width);
-            shader.setUniformf("u_rain["+i+"].height", rain.height);
+//            shader.setUniformMatrix("u_projTrans",Batch.getProjectionMatrix());
+//            shader.setUniformf("u_rain["+i+"].position", new Vector2(rain.x,rain.y));
+//            shader.setUniformf("u_rain["+i+"].width", rain.width);
+//            shader.setUniformf("u_rain["+i+"].height", rain.height);
         }
 
 
-        batch.draw(TextureAtl.createSprite("Buffer"),0,0,screenWidth,screenHeight);
+        //batch.draw(TextureAtl.createSprite("Buffer"),0,0,screenWidth,screenHeight);
         batch.end();
 
     }

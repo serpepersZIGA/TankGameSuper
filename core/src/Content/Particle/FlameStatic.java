@@ -25,7 +25,7 @@ public class FlameStatic extends Particle {
         }
     }
     @Override final
-    public void all_action(int i){
+    public void all_action(){
         create_flame_particle(Main.FlameParticleList);
         this.update();
         timer(Main.FlameStaticList);

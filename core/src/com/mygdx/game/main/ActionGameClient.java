@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
 import com.mygdx.game.Shader.FlameShader;
+import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.Network.DebrisPacket;
@@ -78,25 +79,29 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
 
         Batch.begin();
         Render.polyBatch.begin();
-        LightSystem.begin(Batch);
         Main.RC.render_block();
         RippleIteration(Batch);
 
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
+        LiquidShader.AcidShaderIteration();
         for (i= 0; i< Main.LiquidList.size(); i++){
-            Main.LiquidList.get(i).all_action(i);}
+            Main.LiquidList.get(i).all_action();}
+        LiquidShader.BloodShaderIteration();
+        for (i= 0; i< BloodList.size(); i++){
+            Main.BloodList.get(i).all_action();}
+
         for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action(i);}
+            Main.FlameStaticList.get(i).all_action();}
         for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action(i);}
+            Main.FlameList.get(i).all_action();}
         for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action(i);}
+            Main.FlameParticleList.get(i).all_action();}
 
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action(i);
+            Main.FlameSpawnList.get(i).all_action();
         }
         Batch.setShader(LightSystem.shader);
         //Batch.flush();
@@ -166,12 +171,13 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         inventoryMain.InventoryIterationClient();
 
         for (i= 0; i< Main.BangList.size(); i++){
-            Main.BangList.get(i).all_action(i);
+            Main.BangList.get(i).all_action();
         }
         if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
         Render.polyBatch.end();
         Batch.end();
         WeatherIteration(Batch);
+        LightSystem.begin(Batch);
         //PackUpdateUnit();
     }
     public static void PackUpdateUnit(){

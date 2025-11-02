@@ -25,12 +25,15 @@ public class FlameShader {
         }
     }
     public static void FlameShaderIteration() {
-        Batch.flush();
+        //Batch.flush();
         Batch.setShader(shader);
-        time+=  Gdx.graphics.getDeltaTime();
+        time+=  TimeGlobal;
 
         shader.setUniformf("u_time", time);
         shader.setUniformf("u_resolution",screenWidth, screenHeight);
+        if(time > 1000.0){
+            time = 0;
+        }
 
     }
 }

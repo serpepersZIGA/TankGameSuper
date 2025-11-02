@@ -3,6 +3,7 @@ import com.badlogic.gdx.graphics.*;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.TextureRegion;
 import com.badlogic.gdx.graphics.glutils.FrameBuffer;
+import com.badlogic.gdx.math.Matrix4;
 import com.badlogic.gdx.math.Vector2;
 
 import com.badlogic.gdx.Gdx;
@@ -12,6 +13,7 @@ import com.mygdx.game.main.Main;
 
 import java.util.ArrayList;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.Main.screenHeight;
 import static com.mygdx.game.main.Main.screenWidth;
@@ -102,7 +104,8 @@ public class LightingMainSystem implements Disposable {
     }
 
     public void begin(SpriteBatch batch) {
-//        batch.begin();
+        batch.begin();
+        //batch.flush();
         batch.setShader(shader);
 
         // Устанавливаем общие параметры освещения
@@ -121,6 +124,7 @@ public class LightingMainSystem implements Disposable {
         shader.setUniformf("u_ambientColor", ambientColor.r, ambientColor.g, ambientColor.b
                 ,ambientColor.a);
         shader.setUniformf("u_minLightness", minLightness);
+        shader.setUniformf("u_resolution", screenWidth, screenHeight);
         shader.setUniformi("u_activeLights", lightsRender.size());
         for (Light light : lights) {
             float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
@@ -138,12 +142,14 @@ public class LightingMainSystem implements Disposable {
             shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
                     light.color.a);
             shader.setUniformf("u_lights[" + i + "].intensity", light.intensity);
-            shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom / 2 * lightTotal);
+            shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom *0.5f * lightTotal);
             shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
 
         }
-//        batch.draw(new Texture("buffer2.png"),0,0,screenWidth,screenHeight);
-//        batch.end();
+        batch.draw(TextureAtl.createSprite("Buffer"),0,0,screenWidth,screenHeight);
+        //batch.flush();
+        batch.end();
+        //batch.setShader(null);
     }
 
     public Light addLight() {

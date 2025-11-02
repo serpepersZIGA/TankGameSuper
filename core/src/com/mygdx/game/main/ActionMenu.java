@@ -3,24 +3,17 @@ package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
-import com.badlogic.gdx.graphics.Texture;
-import com.badlogic.gdx.scenes.scene2d.Group;
-import com.badlogic.gdx.scenes.scene2d.Stage;
 import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
 import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Shader.FlameShader;
-import com.mygdx.game.Shader.LightingMainSystem;
-import com.mygdx.game.Weather.WeatherMainSystem;
+import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.method.RenderPrimitive;
 import com.mygdx.game.unit.Unit;
-
-import java.util.Objects;
 
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
@@ -48,8 +41,9 @@ public class ActionMenu extends ActionGame {
             if(timer <= 0) {
 
                 if (Keyboard.LeftMouse) {
-                    Main.FlameSpawnList.add(new FlameSpawn((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
-                    timer = 60;
+                    //Main.FlameSpawnList.add(new FlameSpawn((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
+                    BloodList.add(new Blood((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
+                    //timer = 60;
 
 
                 }
@@ -68,25 +62,38 @@ public class ActionMenu extends ActionGame {
         Batch.begin();
 
         Render.polyBatch.begin();
-        LightSystem.begin(Batch);
         Main.RC.render_block();
         RippleIteration(Batch);
 
+        LiquidShader.AcidShaderIteration();
         for (i= 0; i< Main.LiquidList.size(); i++){
-            Main.LiquidList.get(i).all_action(i);}
+            Main.LiquidList.get(i).all_action();}
+        LiquidShader.BloodShaderIteration();
+        for (i= 0; i< BloodList.size(); i++){
+            Main.BloodList.get(i).all_action();}
+        //LightSystem.begin(Batch);
+        //Batch.setShader(LightSystem.shader);
+//        for (Particle part : LiquidList){
+//            part.update();
+//        }
+        //Batch.setShader(LightSystem.shader);
+        //liquidGlobal();
+        //liquidGlobal();
+
+
         for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action(i);}
+            Main.FlameStaticList.get(i).all_action();}
         for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action(i);}
+            Main.FlameList.get(i).all_action();}
         for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action(i);}
+            Main.FlameParticleList.get(i).all_action();}
         Render.polyBatch.flush();
 //        Render.end();
 //        Render.begin();
 
         FlameShader.FlameShaderIteration();
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action(i);
+            Main.FlameSpawnList.get(i).all_action();
         }
 
         Batch.setShader(LightSystem.shader);
@@ -123,7 +130,7 @@ public class ActionMenu extends ActionGame {
             Main.UnitList.get(i).update();
         }
         for (i= 0; i< Main.BangList.size(); i++){
-            Main.BangList.get(i).all_action(i);}
+            Main.BangList.get(i).all_action();}
 
         for (i = 0;i< ButtonList.size();i++){
             Button but = ButtonList.get(i);
@@ -153,10 +160,12 @@ public class ActionMenu extends ActionGame {
 
         Render.polyBatch.end();
 
+
         Batch.end();
         //Batch.setShader(null);
         //RainRippleShader.begin(Batch);
         WeatherIteration(Batch);
+        LightSystem.begin(Batch);
         if(GameStart) {
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();

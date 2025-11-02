@@ -1,9 +1,5 @@
 package Content.Particle;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.Texture;
-import com.mygdx.game.Shader.LightingMainSystem;
-import com.mygdx.game.block.Block;
-import com.mygdx.game.method.rand;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.particle.Particle;
 
@@ -27,7 +23,7 @@ public class FlameSpawn extends Particle {
 
     }
     @Override final
-    public void all_action(int i){
+    public void all_action(){
         //spawn_flame();
         sound_play();
         center_render();//Block.LightingAir(x_rend,y_rend,rgb);

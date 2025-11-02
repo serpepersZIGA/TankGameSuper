@@ -19,10 +19,10 @@ public class GameStart {
 //		config.title = "Title";
 //		config.useGL20 = true;
 //		config.height = 640;
-		config.setForegroundFPS(60);
+		config.setForegroundFPS(120);
 		config.setTitle("Game");
 		config.setWindowIcon("image/player/tower_player_1.png");
-		new Lwjgl3Application(new Main(WidthWindow,HeightWindow-80,60), config);
+		new Lwjgl3Application(new Main(WidthWindow,HeightWindow-80,120), config);
 
 	}
 	private static void WindowSize(String path){
