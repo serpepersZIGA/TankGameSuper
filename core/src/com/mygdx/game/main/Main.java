@@ -238,7 +238,7 @@ public class Main extends ApplicationAdapter {
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(10,10,10,10,0.15f,0.80f);
+		CycleDayNight = new CycleTimeDay(120,120,30,30,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
 
 		Render = new RenderPrimitive();

@@ -21,6 +21,10 @@ public class BulletPattern extends Bullet{
         super.all_action();
 
     }
+    public void all_action_client(){
+        super.all_action_client();
+
+    }
 
 
 }

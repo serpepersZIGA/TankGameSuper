@@ -118,7 +118,7 @@ public abstract class Bullet implements Serializable,Cloneable {
             bullet.penetration_fragment = penetration_fragment;
             bullet.type_team = type_team;
             bullet.height = height;
-            bullet.speed = speed*70;
+            bullet.speed = speed;
             bullet.AmountFragment = AmountFragment;
             bullet.t_damage = tDamage;
             bullet.time = time;
@@ -152,7 +152,7 @@ public abstract class Bullet implements Serializable,Cloneable {
             bullet.penetration_fragment = penetration_fragment;
             bullet.type_team = type_team;
             bullet.height = height;
-            bullet.speed = speed*70;
+            bullet.speed = speed;
             bullet.AmountFragment = AmountFragment;
             bullet.t_damage = tDamage;
             bullet.time = time;
@@ -180,8 +180,8 @@ public abstract class Bullet implements Serializable,Cloneable {
         this.speed_y = move.move_cos(this.speed,this.rotation);
     }
     protected final void bull_move_xy(){
-        this.x += this.speed_x* Gdx.graphics.getDeltaTime();
-        this.y += this.speed_y* Gdx.graphics.getDeltaTime();
+        this.x += this.speed_x * TimeGlobalBullet;
+        this.y += this.speed_y * TimeGlobalBullet;
     }
     protected final void color_fire(){
         if(this.b >0){this.b-= b_wane;}
