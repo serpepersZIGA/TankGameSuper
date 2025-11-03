@@ -108,8 +108,8 @@ public class LightingMainSystem implements Disposable {
         batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         batch.begin();
         //batch.flush();
-        //Batch.setShader(shader);
-        shader.bind();
+        Batch.setShader(shader);
+        //shader.bind();
 
         // Устанавливаем общие параметры освещения
         LightSystem.lightsRender.clear();
