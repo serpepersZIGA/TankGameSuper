@@ -46,25 +46,25 @@ void main() {
     float dist = length(st - center);  // Радиальное расстояние от центра
 
     // Анимация основного огня
-    float time = u_time *12.0;  // Ускоряем для живости
+    float time = u_time *6.0;  // Ускоряем для живости
     //float s = sin(abs(u_time))/12.0;
-    vec2 noiseUV = st * 5.0+ time;  // Масштаб шума
+    vec2 noiseUV = st * 5.0+time;  // Масштаб шума
     //noiseUV += normalize((center)) + time;  // Движение наружу
     float n = fbm(noiseUV);
 
     // Интенсивность огня с радиальным градиентом
-    float intensity = n * (1.0 - dist * 1.8) + 0.4;  // Мягче затухание
+    float intensity = n * (1.0 - dist * n*4.0) + 0.4;  // Мягче затухание
 
     // Цвета огня: добавляем синий у основания
     vec3 fireCol;
     if (intensity < 0.3) {
-        fireCol = vec3(0.0, 0.0, 0.2);  // Синий у основания
+        fireCol = vec3(0.1, 0.1, 0.2);  // Синий у основания
     } else if (intensity < 0.5) {
-        fireCol = mix(vec3(0.0, 0.0, 0.2), vec3(1.0, 0.3, 0.0), (intensity - 0.3) / 0.2);  // Переход к оранжевому
+        fireCol = mix(vec3(0.0, 0.0, 0.2), vec3(1.0, 0.3, 0.0), (intensity - 0.3) *5.0);  // Переход к оранжевому
     } else if (intensity < 0.7) {
-        fireCol = mix(vec3(1.0, 0.3, 0.0), vec3(1.0, 0.6, 0.0), (intensity - 0.5) / 0.2);  // Оранжевый
+        fireCol = mix(vec3(1.0, 0.3, 0.0), vec3(1.0, 0.6, 0.0), (intensity - 0.5) *5.0);  // Оранжевый
     } else {
-        fireCol = mix(vec3(1.0, 0.6, 0.0), vec3(1.0, 1.0, 0.5), (intensity - 0.7) / 0.3);  // Жёлтый/белый
+        fireCol = mix(vec3(1.0, 0.6, 0.0), vec3(1.0, 1.0, 0.5), (intensity - 0.7) *3.3);  // Жёлтый/белый
     }
 
     // Альфа для основного огня

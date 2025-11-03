@@ -56,5 +56,5 @@ void main() {
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);
-    gl_FragColor = finalColor*texColor*1.5;
+    gl_FragColor = finalColor*texColor*2.0;
 }

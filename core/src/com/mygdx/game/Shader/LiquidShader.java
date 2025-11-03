@@ -1,6 +1,7 @@
 package com.mygdx.game.Shader;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
@@ -38,6 +39,8 @@ public class LiquidShader {
     public static void AcidShaderIteration() {
         //Batch.flush();
         Batch.setShader(shaderAcid);
+        Batch.enableBlending();
+        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         time+=  TimeGlobal;
 
         shaderAcid.setUniformf("u_time", time);
@@ -52,6 +55,8 @@ public class LiquidShader {
     public static void BloodShaderIteration() {
         //Batch.flush();
         Batch.setShader(shaderBlood);
+        Batch.enableBlending();
+        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         time +=  TimeGlobal;
 
         shaderBlood.setUniformf("u_time", time);
