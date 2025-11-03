@@ -104,8 +104,12 @@ public class LightingMainSystem implements Disposable {
     }
 
     public void begin(SpriteBatch batch) {
+        batch.enableBlending();
+        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         batch.begin();
         //batch.flush();
+        //Batch.setShader(shader);
+        shader.bind();
 
         // Устанавливаем общие параметры освещения
         LightSystem.lightsRender.clear();
@@ -145,11 +149,6 @@ public class LightingMainSystem implements Disposable {
             shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
 
         }
-        Batch.setShader(shader);
-        //shader.bind();
-        batch.enableBlending();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
-
         batch.draw(TextureAtl.createSprite("Buffer2"),0,0,screenWidth,screenHeight);
         //batch.flush();
         batch.end();
