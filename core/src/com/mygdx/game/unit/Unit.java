@@ -57,10 +57,10 @@ public abstract class Unit implements Cloneable{
     public Engine EngineUnit;
     public ArrayList<Cannon> CannonUnitList = new ArrayList<>();
     public Cannon CannonUnit;
-    public int  difference,difference_2,hp,max_hp,time_spawn_soldat,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, x_tower,y_tower,
+    public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, x_tower,y_tower,
     time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect;
     public Sound sound_fire;
-    public float fire_x;
+    public float fire_x,time_spawn_soldat;
     public float fire_y;
     public float max_speed=4, min_speed=-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max,acceleration=0.2f,speed, SpeedInert, RotationInert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
@@ -1321,7 +1321,7 @@ public abstract class Unit implements Cloneable{
         }
     }
     public void spawn_soldat(){
-        this.time_spawn_soldat -= 1;
+        this.time_spawn_soldat -= TimeGlobalBullet;
         if(this.time_spawn_soldat <= 0){
             this.time_spawn_soldat = this.time_spawn_soldat_max;
             packetUnitUpdate.ConfUnitList = true;

@@ -19,6 +19,9 @@ public class Rain {
     public float x,y,width,height;
     public static float speed;
     public float speedX = 3.5f,speedY = -15;
+    public static int WidthRand = (int) (Gdx.graphics.getWidth()+Gdx.graphics.getWidth()*0.3f),
+    LeftSpawnRain = (int) (Gdx.graphics.getWidth()*0.3f);
+
     public Rain(){
         x = rand.rand(Gdx.graphics.getWidth());
         y = Gdx.graphics.getHeight()+rand.rand(Gdx.graphics.getHeight());
@@ -31,10 +34,10 @@ public class Rain {
         this.x+=speedX*TimeGlobalBullet;
         update();
         if(y <0){
-            speed = (-10f + rand.rand(-7f));
-            speedY = (float) (speed*cos(25));
-            speedX = (float) (speed*sin(25));
-            x = -100+rand.rand(Gdx.graphics.getWidth()+100);
+            speed = (10f + rand.rand(7f));
+            speedY = (float) (speed*cos(185));
+            speedX = (float) (speed*sin(185));
+            x = -LeftSpawnRain+rand.rand(WidthRand);
             y = Gdx.graphics.getHeight();
         }
     }

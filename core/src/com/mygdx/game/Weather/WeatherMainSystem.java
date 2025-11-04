@@ -25,19 +25,15 @@ public class WeatherMainSystem {
     public static ShaderProgram shader,shaderRipple;
     public static int WeatherGlobal;
     public static float time;
-    public static FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth()
-            , Gdx.graphics.getHeight(), false);// Have to flip on Y axis
-    public static Texture texture;
-// Have to flip on Y axis
 
 
 
-    public WeatherMainSystem(){
+    public static void WeatherMainSystemAdd(){
 
         WeatherGlobal = rand.rand(2);
         ShaderProgram.pedantic = false;
 
-        String vertSrc = Gdx.files.internal("ShaderList/Rain/Rain2.vert").readString();
+        String vertSrc = Gdx.files.internal("ShaderList/Rain/Rain.vert").readString();
         String fragSrc = Gdx.files.internal("ShaderList/Rain/Rain.frag").readString();
 
         String vertSrcRipple = Gdx.files.internal("ShaderList/Ripple/Ripple.vert").readString();
@@ -50,12 +46,12 @@ public class WeatherMainSystem {
         for(int i = 0; i < 100; i++) {
             RainList.add(new Rain());
         }
+        ShaderProgram.pedantic = false;
 
         shader = new ShaderProgram(vertSrc, fragSrc);
         if (!shader.isCompiled()) {
             throw new GdxRuntimeException("Rain shader compile error: " + shader.getLog());
         }
-        texture = new Texture(Gdx.files.internal("buffer2.png"));
     }
     public static void  WeatherCycle(){
         WeatherGlobal = rand.rand(2);

@@ -251,7 +251,7 @@ public class Main extends ApplicationAdapter {
 
 		RC = new RenderCenter(0,0);
 		Batch = new SpriteBatch();
-        new WeatherMainSystem();
+        WeatherMainSystem.WeatherMainSystemAdd();
         FlameShaderAdd();
         LiquidShaderAdd();
 

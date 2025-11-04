@@ -13,8 +13,9 @@ public class GameStart {
 	public static int WidthWindow,HeightWindow;
 	public static void main (String[] arg) {
 		config = new Lwjgl3ApplicationConfiguration();
+        config.setOpenGLEmulation(Lwjgl3ApplicationConfiguration.GLEmulation.GL30, 3, 0);
 		WindowSize("WindowSize/SizeWindow.txt");
-		config.setWindowedMode(WidthWindow,HeightWindow-80);
+		config.setWindowedMode(WidthWindow,HeightWindow-100);
 		config.useVsync(true);
 //		config.title = "Title";
 //		config.useGL20 = true;
@@ -22,7 +23,7 @@ public class GameStart {
 		config.setForegroundFPS(120);
 		config.setTitle("Game");
 		config.setWindowIcon("image/player/tower_player_1.png");
-		new Lwjgl3Application(new Main(WidthWindow,HeightWindow-80,120), config);
+		new Lwjgl3Application(new Main(WidthWindow,HeightWindow-100,120), config);
 
 	}
 	private static void WindowSize(String path){

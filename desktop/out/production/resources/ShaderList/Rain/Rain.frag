@@ -1,4 +1,7 @@
+#version 300 es
+#ifdef GL_ES
 precision mediump float;
+#endif
 
 uniform vec2 u_resolution;  // Разрешение экрана (width, height)
 const vec2 u_rectSize =vec2(0.35,0.85);
