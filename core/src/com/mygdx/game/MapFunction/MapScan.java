@@ -2,6 +2,7 @@ package com.mygdx.game.MapFunction;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
+import com.mygdx.game.Parsing.Parser;
 import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.main.Main;
@@ -23,15 +24,9 @@ public class MapScan {
     public static void MapInput(String Map) {
         LightSystem.lightsRender.clear();
         LightSystem.lights.clear();
-        Main.BuildingList.clear();
+        BuildingList.clear();
         BlockDelete();
-        int conf = 0;
-        String TxT = "";
-        boolean confS = false;
-        boolean StructConf = false;
-        boolean confAsphalt = false;
-        boolean confAsphaltX = false;
-        boolean confAsphaltY = false;
+        String TxT;
         StringBuilder result = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader(Map))) {
             result.append(br.readLine());
@@ -48,86 +43,84 @@ public class MapScan {
         FileHandle file = Gdx.files.internal(Map);
         TxT = file.readString();
         String TotalTxT = "";
-        String Build = "";
-        String X = "";
-        String Y = "";
-        String Z = "";
-        int x = 0;
-        int y = 0;
-        int z = 0;
+        int[] xy;
+        char c;
+        int i;
 
 
-        for (int i = 0; i < TxT.length(); i++) {
-            char c = TxT.charAt(i);
-            if (c == '\n' || c == ',' || c == ' ') {
-                TotalTxT = "";
+        for (i = 0; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            if (c == ',' || c == ' '|| c == '/') {
             }
-            else if (c == ':' & !confS) {
-                if (conf == 0) {
-                    Build = TotalTxT;
-                    TotalTxT = "";
-                } else if (conf == 1) {
-                    X = TotalTxT;
-                    TotalTxT = "";
-                    x = Integer.parseInt(X);
-                } else if (conf == 2) {
-                    Y = TotalTxT;
-                    TotalTxT = "";
-                    y = Integer.parseInt(Y);
-                }
-                conf += 1;
-            } else if (c == '^') {
-                confS = true;
-            } else if (c == '>' & !confS) {
-                confAsphalt = true;
-            } else if (c == 'X' & !confS & confAsphalt) {
-                confAsphaltX = true;
-            } else if (c == 'Y' & !confS & confAsphalt) {
-                confAsphaltY = true;
-            } else if (c == ';' & !confS) {
-                if (!confAsphalt) {
-                    MapSpawn(Build, x, y,StructConf);
-                    StructConf = false;
-                } else {
-                    if (confAsphaltX) {
-                        Z = TotalTxT;
-                        z = Integer.parseInt(Z);
-                        MapSpawnBlock(Build, x, y, z, 1);
-                        confAsphaltX = false;
-                    } else if (confAsphaltY) {
-                        Z = TotalTxT;
-                        z = Integer.parseInt(Z);
-                        MapSpawnBlock(Build, x, y, z, 2);
-                        confAsphaltY = false;
-                    } else {
-                        MapSpawnBlock(Build, x, y, z, 0);
-                    }
-                    confAsphalt = false;
-                    Z = "";
-                    z = 0;
+            else if (c == ':') {
+                switch (TotalTxT){
+                    case "MapObject":
+
+                        //i = xy[2]+1;
+                        i =ObjSpawn(i,TxT,0,0);
+                        break;
+                    case "BuildAdd":
+
+                        //i = xy[2]+1;
+                        i = BuildSpawn(i,TxT,0,0);
+                        break;
+                    case "Asphalt":
+                        //i = xy[2]+1;
+                        i = AsphaltSpawn(i,TxT,0,0);
+                        break;
+                    case "(str)":
+                        xy= XYObject(TxT,i);
+                        Object[]obj = Parser.TextPars2(TxT,i);
+                        //i = xy[2]+1;
+                        SpawnStructures((String) obj[0],xy[0],xy[1]);
+                        for(;i<TxT.length();i++){
+                            c = TxT.charAt(i);
+                            if(c == ';'){
+                                break;
+                            }
+                        }
+                        break;
                 }
                 TotalTxT = "";
-                x = 0;
-                y = 0;
-                Build = "";
-                conf = 0;
-
-            } else if (c == ';' & confS) {
-                confS = false;
-
-            }else if (Objects.equals(TotalTxT, "str{")) {
-                StructConf = true;
+            } else if (c== ';'||c== '\n') {
                 TotalTxT = "";
-                TotalTxT = TotalTxT + c;
-            }
-            else if (c == '}'& StructConf) {
-                Build = TotalTxT;
-                //StructConf = false;
-            } else if (!confS) {
+            } else{
                 TotalTxT = TotalTxT + c;
             }
         }
 
+
+    }
+
+    public static int[] XYObject(String TxT,int i){
+        int x = 0,y = 0;
+        char c;
+        for (; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            if (c == '\n' || c == ',' || c == ' '|| c == '/') {
+            }
+            switch(c){
+                case 'x':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    x = (int)obj[0];
+                    i =  (int)obj[1];
+
+                }
+                break;
+                case 'y':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    y = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case';':{
+                    return new int[]{x,y,i};
+                }
+            }
+
+
+        }
+        return new int[]{x,y,i};
 
     }
 
@@ -163,23 +156,6 @@ public class MapScan {
             for (int i2 = 0; i2 < BlockList2D.get(i).size(); i2++) {
                 BlockList2D.get(i).get(i2).render_block = UpdateRegister.GrassUpdate;
                 BlockList2D.get(i).get(i2).objMap = VoidObj;
-            }
-        }
-    }
-
-    private static void MapSpawn(String Build, int x, int y,boolean Structure) {
-        if(Structure){
-            SpawnStructure("Map/Structure/"+Build+".str",x, y);
-        }
-        else {
-            //System.out.println(Build);
-            for(Object[] obj :BuildingID){
-                //System.out.println(Build+" "+obj[1]);
-                if(Objects.equals(obj[1],Build)){
-
-                    Building build = (Building)obj[0];
-                    BuildingList.add(build.BuildingCreate(x * Main.width_block,y * Main.width_block));
-                }
             }
         }
     }
@@ -227,21 +203,18 @@ public class MapScan {
         BlockList2D.get(y).get(x).render_block = UpdateRegister.UpdateAsphalt1;
     }
 
-    private static void SpawnStructure(String Struct, int xStr, int yStr) {
-        int conf = 0;
-        String TxT = "";
-        boolean confAsphalt = false;
-        boolean confAsphaltX = false;
-        boolean confAsphaltY = false;
-        boolean ObjConf = false;
-        ArrayList<Object>dataObj = new ArrayList<>();
+
+
+
+    private static void SpawnStructures(String Struct, int xStr, int yStr) {
+        String TxT;
         StringBuilder result = new StringBuilder();
+        Struct = "Map/Structure/"+Struct+".str";
         try (BufferedReader br = new BufferedReader(new FileReader(Struct))) {
             result.append(br.readLine());
 
         } catch (IOException e) {
             e.printStackTrace();
-            MapBaseAdd.AddMap();
             try {
                 BufferedReader br = new BufferedReader(new FileReader(Struct));
                 result.append(br.readLine());
@@ -251,91 +224,36 @@ public class MapScan {
         FileHandle file = Gdx.files.internal(Struct);
         TxT = file.readString();
         String TotalTxT = "";
-        String Build = "";
-        String X = "";
-        String Y = "";
-        String Z = "";
-        int x = 0;
-        int y = 0;
-        int z = 0;
+        int i;
+        char c;
 
 
-        for (int i = 0; i < TxT.length(); i++) {
-            char c = TxT.charAt(i);
+        for (i = 0; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
             if (c == '\n' || c == ',' || c == ' '|| c == '/') {
-                TotalTxT = "";
             }
             else if (c == ':') {
-                if (conf == 0) {
-                    Build = TotalTxT;
-                    TotalTxT = "";
-                    conf += 1;
-                }
-                else if (conf == 1) {
-                    X = TotalTxT;
-                    TotalTxT = "";
-                    x = Integer.parseInt(X);
-                    conf += 1;
-                } else if (conf == 2) {
-                    conf += 1;
-                    Y = TotalTxT;
-                    TotalTxT = "";
-                    y = Integer.parseInt(Y);
-                }
-                else{
-                    conf += 1;
-                    dataObj.add(dataIntilization(TotalTxT));
-                    TotalTxT = "";
-                }
-            }  else if (c == '>') {
-                confAsphalt = true;
-            } else if (c == 'X' & confAsphalt) {
-                confAsphaltX = true;
-            } else if (c == 'Y' & confAsphalt) {
-                confAsphaltY = true;
-            } else if (c == ';') {
-                if(ObjConf){
-                    SpawnObjectBlock((String) dataObj.get(0),x+xStr,y+yStr);
-                    ObjConf = false;
-                }
-                else if (!confAsphalt) {
-                    if(conf <4) {
-                        MapSpawn(Build, xStr + x, yStr + y, false);
+                switch (TotalTxT){
+                    case "MapObject":i =ObjSpawn(i,TxT,xStr,yStr)+1;
+                        break;
+                    case "BuildAdd":i = BuildSpawn(i,TxT,xStr,yStr)+1;
+                        break;
+                    case "Asphalt":i = AsphaltSpawn(i,TxT,xStr,yStr)+1;
+                        break;
+                    case "(str)":
+                        int[]xy= XYObject(TxT,i);
+                        Object[]obj = Parser.TextPars2(TxT,i);
+                        String str = obj[0].toString();
+                        SpawnStructures(str,xStr+xy[0],yStr+xy[1]);
+                    for(;i<TxT.length();i++){
+                        c = TxT.charAt(i);
+                        if(c == ';'||c=='\n'){
+                            break;
+                        }
                     }
-                } else {
-                    if (confAsphaltX) {
-                        Z = TotalTxT;
-                        z = Integer.parseInt(Z);
-                        MapSpawnBlock(Build, xStr+ x, yStr+y, z, 1);
-                        confAsphaltX = false;
-                    } else if (confAsphaltY) {
-                        Z = TotalTxT;
-                        z = Integer.parseInt(Z);
-                        MapSpawnBlock(Build, xStr+ x, yStr+y, z, 2);
-                        confAsphaltY = false;
-                    } else {
-                        MapSpawnBlock(Build, xStr+ x, yStr+y, z, 0);
-                    }
-                    confAsphalt = false;
-                    Z = "";
-                    z = 0;
+                    break;
                 }
                 TotalTxT = "";
-                x = 0;
-                y = 0;
-                dataObj.clear();
-                Build = "";
-                conf = 0;
-
-            }
-            else if (Objects.equals(TotalTxT, "(obj)")) {
-                ObjConf = true;
-                TotalTxT = "";
-                TotalTxT = TotalTxT + c;
-            }
-
-            else if (Objects.equals(TotalTxT, "ObjectMap")) {
-
             }
             else{
                 TotalTxT = TotalTxT + c;
@@ -343,31 +261,139 @@ public class MapScan {
         }
 
     }
-    public static void IncilizationObject(){
 
+    private static int ObjSpawn(int i,String TxT,int xStr, int yStr){
+        char c;
+        int x = 0;
+        int y = 0;
+        String Build = "";
+        for (; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            switch (c){
+                case'x':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    x = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'y':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    y = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'o':{
+                    Object[]obj = Parser.TextPars2(TxT,i);
+                    Build = (String) obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case';':{
+                    SpawnObjectBlock(Build,x+xStr,y+yStr);
+                    return i;
+                }
+            }
+            //else if (c == ':') {
+            //}
+        }
+        return i;
     }
-    public static Object dataIntilization(String str){
-        String TotalTxT = "";
-        boolean g = false;
-        for (int i = 0; i < str.length(); i++) {
-            char c = str.charAt(i);
-            if (Objects.equals(TotalTxT, "(int)")) {
-                g = true;
-                TotalTxT = "";
-                TotalTxT = TotalTxT+c;
-            }
-            else if(c == ' '){
+    private static int BuildSpawn(int i,String TxT,int xStr, int yStr){
+        char c;
+        int x = 0;
+        int y = 0;
+        String Build = "";
+        int rotation = 0;
+        for (; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            switch (c){
+                case'x':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    x = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'y':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    y = (int)obj[0];
+                    i = (int)obj[1];
+                }
+                break;
+                case'r':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    rotation = (int)obj[0];
+                    i = (int)obj[1];
+                }
+                break;
+                case'B':{
+                    Object[]obj = Parser.TextPars2(TxT,i);
+                    Build = (String) obj[0];
+                    Build = Build.trim();
+                    i =  (int)obj[1];
+                }
+                break;
+                case';':{
+                    for(Object[] obj :BuildingID){
+                        //System.out.println(Build+" "+obj[1]);
+                        if(Objects.equals(obj[1],Build)){
 
+                            Building build = (Building)obj[0];
+                            BuildingList.add(build.BuildingCreate((x+xStr) * width_block,(y+yStr) * width_block,rotation));
+                        }
+                    }
+                    return i;
+
+                }
             }
-            else{
-                TotalTxT = TotalTxT + c;
+            //else if (c == ':') {
+            //}
+        }
+        return i;
+    }
+    private static int AsphaltSpawn(int i,String TxT,int xStr, int yStr){
+        char c;
+        int x = 0;
+        int y = 0;
+        byte xy = 0;
+        int XY = 0;
+        byte conf = 0;
+        for (; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            switch (c){
+                case'x':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    x = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'y':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    y = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'X':{
+                    xy = 1;
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    XY = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'Y':{
+                    xy = 2;
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    XY = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case';':{
+                    MapSpawnBlock("Asphalt", xStr+ x, yStr+y, XY,xy);
+                    return i;
+                }
             }
+            //else if (c == ':') {
+            //}
         }
-        if(g) {
-            return Integer.parseInt(TotalTxT);
-        }
-        else{
-            return TotalTxT;
-        }
+        return i;
     }
 }

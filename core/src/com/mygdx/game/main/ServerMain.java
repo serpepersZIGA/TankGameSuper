@@ -122,6 +122,7 @@ public class ServerMain extends Listener {
         PacketBuildingServer.BuildPack.get(i).ID = BuildingList.get(i).ID;
         PacketBuildingServer.BuildPack.get(i).x = BuildingList.get(i).x;
         PacketBuildingServer.BuildPack.get(i).y = BuildingList.get(i).y;
+        PacketBuildingServer.BuildPack.get(i).rotation = BuildingList.get(i).rotate;
     }
 
     //Используется когда клиент отправляет пакет серверу

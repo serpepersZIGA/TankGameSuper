@@ -1,6 +1,8 @@
 package com.mygdx.game.build;
 import Content.Particle.FlameParticle;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.Shader.LightingMainSystem;
@@ -17,12 +19,12 @@ import java.util.ArrayList;
 
 import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FlameBuild;
-import static com.mygdx.game.main.Main.LightSystem;
-import static com.mygdx.game.main.Main.width_block_render;
+import static com.mygdx.game.main.Main.*;
 
 
 public class Building implements Serializable,Cloneable {
-    public int width,height,x,y,time_flame,width_2,height_2,x_rend,y_rend,width_render,height_render,brightness_max = 240,brightness;
+    public int width,height,x,y,time_flame,width_2,height_2,x_rend,y_rend,width_render,height_render,brightness_max = 240,brightness,
+    rotate,width_render2,height_render2;
     public String build_image;
     public int density_light_x,density_light_y;
     public static int distance_light = width_block_render*2;
@@ -69,14 +71,40 @@ public class Building implements Serializable,Cloneable {
         ConstructBuilding = new boolean[][]{{false}};
 
     }
-    public Building BuildingCreate(int x,int y) {
+    public Building BuildingCreate(int x,int y,int rotation) {
         Building building = this.clone();
         building.Lighting = new ArrayList<>();
 //        building.Lighting.addAll(this.Lighting);
-
         building.x = x;
         building.y = y;
+        building.DataBuilding();
+        switch(rotation) {
+            case 0:{
+                break;
+            }
+            case 1:{
+                building.Rotate90();
+                building.rotate = 90;
+                break;
+            }
+            case 2:{
+                building.Rotate90();
+                building.Rotate90();
+                building.rotate =180;
+                break;
+
+            }
+            case 3:{
+                building.Rotate90();
+                building.Rotate90();
+                building.Rotate90();
+                building.rotate =270;
+                break;
+            }
+        }
         building.Data();
+        //building.rotate = 90;
+
 //        for(LightingMainSystem.Light light : Lighting){
 //            light.work = false;
 //        }
@@ -91,18 +119,21 @@ public class Building implements Serializable,Cloneable {
         for (FunctionalComponent comp : ListFunc.functional){
             comp.FunctionalCreateBuildData(this);
         }
-        //distance_light = width_block_render*2;
-//        density_light_y=(int)((double)height/distance_light);
-//        density_light_x=(int)((double)width/distance_light);
-//        size_light();
+
+    }
+    public void DataBuilding(){
+        int ConstructX = ConstructBuilding[0].length;
+        int ConstructY =ConstructBuilding.length;
+        this.width = width_block*ConstructX;
+        this.height = width_block*ConstructY;
     }
     private void DataCollision(){
         int ConstructX = ConstructBuilding[0].length;
         int ConstructY =ConstructBuilding.length;
-        this.width = Main.width_block*ConstructX;
-        this.height = Main.height_block*ConstructY;
-        xMatrix = this.x/Main.width_block;
-        yMatrix = this.y/Main.height_block;
+//        this.width = Main.width_block*ConstructX;
+//        this.height = Main.width_block*ConstructY;
+        xMatrix = this.x/ width_block;
+        yMatrix = this.y/ width_block;
         this.x = Main.BlockList2D.get(yMatrix).get(xMatrix).x;
         this.y = Main.BlockList2D.get(yMatrix).get(xMatrix).y;
         RightTopPointX = xMatrix +ConstructX;
@@ -111,8 +142,10 @@ public class Building implements Serializable,Cloneable {
         this.height_2 = this.height/2;
     }
     public void size_light(){
-        density_light_y=(int)((double)height/distance_light);
-        density_light_x=(int)((double)width/distance_light);
+        int ConstructX = ConstructBuilding[0].length;
+        int ConstructY =ConstructBuilding.length;
+        density_light_y=(int)((double)ConstructY*width_block/distance_light);
+        density_light_x=(int)((double)ConstructX*width_block/distance_light);
         int x_light = x;
         int y_light = y;
         for(int i = 0;i<density_light_x;i++){
@@ -136,6 +169,21 @@ public class Building implements Serializable,Cloneable {
         update();
         ListFunc.FunctionalIterationAnHost(this);
     }
+    public void Rotate90(){
+        //this.rotate = 90;
+//        int width = this.width;
+//        int height = this.height;
+//        this.width = height;
+//        this.height = width;
+        boolean[][]ConstructBuildingBuffer = new boolean[ConstructBuilding[0].length][ConstructBuilding.length];
+        for(int i = 0 ;i<ConstructBuilding.length;i++) {
+            for (int i2 = 0; i2 < ConstructBuilding[0].length; i2++) {
+                ConstructBuildingBuffer[i2][i] = ConstructBuilding[i][i2];
+            }
+        }
+        ConstructBuilding = ConstructBuildingBuffer;
+    }
+
     public void SpawnUnit(){
 
 
@@ -147,8 +195,34 @@ public class Building implements Serializable,Cloneable {
     }
     public void update(){
         int[] xy = Building.center_render(x,y);
-        RenderMethod.transorm_img((int) (xy[0]* Main.Zoom),(int) (xy[1]* Main.Zoom)
-                ,width_render,height_render,TextureAtl.createSprite(build_image));
+//        Sprite spr = TextureAtl.createSprite(build_image);
+//        spr.setRotation(rotate);
+        switch(rotate) {
+            case 0:{
+                RenderMethod.transorm_img((int) ((xy[0])* Main.Zoom),(int) (xy[1]* Main.Zoom)
+                        ,width_render,height_render,rotate,TextureAtl.createSprite(build_image));
+                break;
+            }
+            case 90:{
+                RenderMethod.transorm_img((int) ((xy[0])* Main.Zoom),(int) (xy[1]* Main.Zoom)
+                        ,width_render,height_render,rotate,TextureAtl.createSprite(build_image),height_render2,height_render2);
+                break;
+            }
+            case 180:{
+                RenderMethod.transorm_img((int) ((xy[0])* Main.Zoom),(int) (xy[1]* Main.Zoom)
+                        ,width_render,height_render,rotate,TextureAtl.createSprite(build_image),width_render2,height_render2);
+                break;
+
+            }
+            case 270:{
+                RenderMethod.transorm_img((int) ((xy[0])* Main.Zoom),(int) (xy[1]* Main.Zoom)
+                        ,width_render,height_render,rotate,TextureAtl.createSprite(build_image),width_render2,width_render2);
+                break;
+            }
+        }
+
+
+
     }
     public void center_render(){
         int[]xy = Main.RC.render_objZoom(this.x,this.y);

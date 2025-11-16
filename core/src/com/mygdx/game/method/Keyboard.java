@@ -189,8 +189,8 @@ public class Keyboard extends InputAdapter{
 
         RC.WidthRenderZoom = RC.WidthRender /Main.Zoom;
         RC.HeightRenderZoom = RC.HeightRender /Main.Zoom;
-        RC.WidthRenderZoom2 = RC.WidthRenderZoom /2;
-        RC.HeightRenderZoom2 = RC.HeightRenderZoom /2;
+        RC.WidthRenderZoom2 = RC.WidthRenderZoom *0.5f;
+        RC.HeightRenderZoom2 = RC.HeightRenderZoom *0.5f;
         RC.width_2_zoom = RC.width_2/Main.Zoom;
         RC.height_2_zoom = RC.height_2/Main.Zoom;
         RC.CameraMapConf();
@@ -233,6 +233,8 @@ public class Keyboard extends InputAdapter{
         for(Building building : Main.BuildingList){
             building.width_render = (int)(building.width* Main.Zoom);
             building.height_render = (int)(building.height* Main.Zoom);
+            building.width_render2 = (int) (building.width_render*0.5f);
+            building.height_render2 = (int) (building.height_render*0.5f);
         }
         for(Particle particle : Main.FlameList){
            particle.size_render = (int)(particle.size* Main.Zoom);
@@ -258,7 +260,7 @@ public class Keyboard extends InputAdapter{
         }
         for(Particle particle : FlameSpawnList){
             particle.size_render = (int)(particle.size* Main.Zoom);
-            particle.size_render2 = particle.size_render/2;
+            particle.size_render2 = (int) (particle.size_render*0.5f);
         }
 
         for(Bullet bull : Main.BulletList){

@@ -226,7 +226,8 @@ public class ClientMain extends Listener {
 
             //LightSystem.lightsRender.clear();
             for (int i = 0; i < PacketBuilding.size(); i++) {
-                Building_create(i, PacketBuilding.get(i).x - width_block, PacketBuilding.get(i).y - height_block);
+                Building_create(i, PacketBuilding.get(i).x - width_block,
+                        PacketBuilding.get(i).y - height_block,PacketBuilding.get(i).rotation);
             }
             ArrayList<ArrayList<PacketMapObject>> objMapList;
             objMapList = ((PacketBuildingServer) p).ObjectMapPack;
@@ -320,14 +321,14 @@ public class ClientMain extends Listener {
     }
 
 
-    public void Building_create(int i, int x, int y) {
+    public void Building_create(int i, int x, int y,int rotation) {
         if (PacketBuilding.get(i).ID != null) {
             for(Object[] obj :BuildingID){
                 if(Objects.equals(obj[1], PacketBuilding.get(i).ID)){
                     Building build = (Building)obj[0];
 //                    build.x = x;
 //                    build.y = y;
-                    BuildingList.add(build.BuildingCreate(x,y));
+                    BuildingList.add(build.BuildingCreate(x,y,rotation));
                 }
             }
         }

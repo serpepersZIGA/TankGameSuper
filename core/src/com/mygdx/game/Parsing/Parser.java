@@ -67,6 +67,24 @@ public class Parser {
         }
         throw new RuntimeException();
     }
+    public static Object[] IntegerPars2(String TxT,int u){
+        String TotalTxT = "";
+        boolean Conf;
+        //int XMax = xy[0];
+        //int YMax = xy[1];
+
+        for (int i = u+1;i < TxT.length(); i++) {
+            char c = TxT.charAt(i);
+            if(c ==':'){
+                return new Object[]{Integer.valueOf(TotalTxT.trim()),i};
+            }
+            else if (c != '\n' &  c != ' '& c !='{'& c !='}'& c !='='){
+                TotalTxT = TotalTxT + c;
+            }
+
+        }
+        throw new RuntimeException();
+    }
     public static Object[] TextPars(String TxT,int u){
         String TotalTxT = "";
         boolean Conf;
@@ -85,6 +103,25 @@ public class Parser {
         }
         throw new RuntimeException();
     }
+    public static Object[] TextPars2(String TxT,int u){
+        String TotalTxT = "";
+        boolean Conf;
+        //int XMax = xy[0];
+        //int YMax = xy[1];
+
+        for (int i = u+1;i < TxT.length(); i++) {
+            char c = TxT.charAt(i);
+            if(c ==':'){
+                return new Object[]{TotalTxT.trim(),i};
+            }
+            else if (c != '\n' &  c != ' '& c !='{'& c !='}'& c !='='){
+                TotalTxT = TotalTxT + c;
+            }
+
+        }
+        throw new RuntimeException();
+    }
+
     public static Object[] ComponentParsing(String TxT,int u){
         Object[]n = TextPars(TxT,u);
 

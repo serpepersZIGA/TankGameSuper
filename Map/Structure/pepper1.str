@@ -1,4 +1,3 @@
-(obj)ObjectMap:14:5:pepper:;
-(obj)ObjectMap:22:10:pepper:;
-(obj)ObjectMap:14:10:pepper:;
-
+MapObject:x14:y5:o pepper:;
+MapObject:x22:y10:o pepper:;
+MapObject:x14:y10:o pepper:;

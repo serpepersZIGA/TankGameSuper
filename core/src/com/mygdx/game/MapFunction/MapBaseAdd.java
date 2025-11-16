@@ -22,14 +22,14 @@ public class MapBaseAdd {
         } catch (IOException ignored) {
         }
         String dataMap = "^MapLite;\n" +
-                "\n" +
-                "str{street1}:23:23:;\n" +
-                "str{street1}:23:40:;\n" +
-                "str{street1}:69:23:;\n" +
-                "str{street1}:69:40:;\n" +
-                "str{streetPoselok}:70:60:;\n" +
-                "Asphalt:70:53:>Y7;\n" +
-                "str{pepper1}:12:12:;\n";
+                "BuildAdd:B BigBuildingWood1:x7:y10:r1:;\n" +
+                "(str):street1:x 23:y23:;\n" +
+                "(str):street1:x23:y40:;\n" +
+                "(str):street1:x69:y23:;\n" +
+                "(str):street1:x69:y40:;\n" +
+                "(str):streetPoselok:x70:y60:;\n" +
+                "Asphalt:x70:y53:Y7:;\n" +
+                "(str):pepper1:x12:y12:;";
         try {
             PrintWriter out = new PrintWriter("Map/maps/MapBase.mapt");
             out.println(dataMap);
@@ -37,25 +37,26 @@ public class MapBaseAdd {
         } catch (IOException ignored) {
         }
         String dataStr =
-                "BigBuildingWood1:0:1:;\n" +
-                        "BigBuildingWood1:12:1:;\n" +
-                        "BigBuildingWood1:24:1:;\n" +
-                        "BigBuildingWood1:36:1:;\n" +
-                        "BigBuildingWood1:0:10:;\n" +
-                        "BigBuildingWood1:12:10:;\n" +
-                        "BigBuildingWood1:24:10:;\n" +
-                        "BigBuildingWood1:36:10:;\n" +
-                        "Asphalt:0:8:>X46;\n" +
-                        "Asphalt:0:9:>X46;\n" +
-                        "Asphalt:0:7:>X46;\n" +
-                        "Asphalt:0:16:>X46;\n" +
-                        "Asphalt:0:0:>X46;\n" +
-                        "Asphalt:10:1:>Y15;\n" +
-                        "Asphalt:11:1:>Y15;\n" +
-                        "Asphalt:22:1:>Y15;\n" +
-                        "Asphalt:23:1:>Y15;\n" +
-                        "Asphalt:34:1:>Y15;\n" +
-                        "Asphalt:35:1:>Y15;";
+                "BuildAdd:B BigBuildingWood1:x0:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x12:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x24:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x36:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x0:y10:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x12:y10:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x24:y10:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x36:y10:r0:;\n" +
+                        "Asphalt:x0:y8:X46:;\n" +
+                        "Asphalt:x0:y9:X46:;\n" +
+                        "Asphalt:x0:y7:X46:;\n" +
+                        "Asphalt:x0:y16:X46:;\n" +
+                        "Asphalt:x0:y0:X46:;\n" +
+                        "Asphalt:x10:y1:Y15:;\n" +
+                        "Asphalt:x11:y1:Y15:;\n" +
+                        "Asphalt:x22:y1:Y15:;\n" +
+                        "Asphalt:x23:y1:Y15:;\n" +
+                        "Asphalt:x34:y1:Y15:;\n" +
+                        "Asphalt:x35:y1:Y15:;\n";
+
         try {
             PrintWriter out = new PrintWriter("Map/Structure/street1.str");
             out.println(dataStr);
@@ -64,17 +65,17 @@ public class MapBaseAdd {
         }
 
         dataStr =
-                "Building2:1:1:;\n" +
-                        "Building2:8:1:;\n" +
-                        "Building2:15:1:;\n" +
-                        "Building2:22:1:;\n" +
-                        "Asphalt:0:0:>X29;\n" +
-                        "Asphalt:0:7:>X29;\n" +
-                        "Asphalt:7:0:>Y7;\n" +
-                        "Asphalt:14:0:>Y7;\n" +
-                        "Asphalt:21:0:>Y7;\n" +
-                        "Asphalt:0:0:>Y7;\n" +
-                        "Asphalt:28:0:>Y7;";
+                "BuildAdd:B Building2:x1:y1:;\n" +
+                        "BuildAdd:B Building2:x8:y1:;\n" +
+                        "BuildAdd:B Building2:x15:y1:;\n" +
+                        "BuildAdd:B Building2:x22:y1:;\n" +
+                        "Asphalt:x0:y0:X29:;\n" +
+                        "Asphalt:x0:y7:X29:;\n" +
+                        "Asphalt:x7:y0:Y7:;\n" +
+                        "Asphalt:x14:y0:Y7:;\n" +
+                        "Asphalt:x21:y0:Y7:;\n" +
+                        "Asphalt:x0:y0:Y7:;\n" +
+                        "Asphalt:x28:y0:Y7:;";
         try {
             PrintWriter out = new PrintWriter("Map/Structure/streetPoselok.str");
             out.println(dataStr);
@@ -91,9 +92,9 @@ public class MapBaseAdd {
         } catch (IOException ignored) {
         }
         dataStr =
-                "(obj)ObjectMap:14:5:pepper:;\n" +
-                        "(obj)ObjectMap:22:10:pepper:;\n" +
-                        "(obj)ObjectMap:14:10:pepper:;\n";
+                "MapObject:x14:y5:o pepper:;\n" +
+                        "MapObject:x22:y10:o pepper:;\n" +
+                        "MapObject:x14:y10:o pepper:;";
         try {
             PrintWriter out = new PrintWriter("Map/Structure/pepper1.str");
             out.println(dataStr);

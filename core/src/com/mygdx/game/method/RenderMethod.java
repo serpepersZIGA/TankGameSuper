@@ -23,8 +23,8 @@ public class RenderMethod {
         //image = new Texture("badlogic.jpg");
         sprite.setPosition((float)x, (float) y);
         sprite.setOrigin(x_const,y_const);
-        sprite.setSize( width,height);
         sprite.setRotation(rotation);
+        sprite.setSize( width,height);
         sprite.draw(Main.Batch);
     }
 
