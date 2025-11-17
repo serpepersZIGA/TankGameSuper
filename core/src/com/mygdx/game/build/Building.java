@@ -124,8 +124,8 @@ public class Building implements Serializable,Cloneable {
     public void DataBuilding(){
         int ConstructX = ConstructBuilding[0].length;
         int ConstructY =ConstructBuilding.length;
-        this.width = width_block*ConstructX;
-        this.height = width_block*ConstructY;
+        this.width = width_block*ConstructX+2;
+        this.height = width_block*ConstructY+2;
     }
     private void DataCollision(){
         int ConstructX = ConstructBuilding[0].length;
