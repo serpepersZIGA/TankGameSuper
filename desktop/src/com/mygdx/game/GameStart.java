@@ -66,7 +66,7 @@ public class GameStart {
 			else{
 				TotalTxT = TotalTxT + c;
 			}
-			System.out.println(TotalTxT);
+
 
 		}
 

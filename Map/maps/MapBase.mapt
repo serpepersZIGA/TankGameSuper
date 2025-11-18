@@ -1,4 +1,5 @@
 ^MapLite;
+/x 120:y 120:;
 BuildAdd:B BigBuildingWood1:x7:y10:r1:;
 (str):street1:x 23:y23:;
 (str):street1:x23:y40:;

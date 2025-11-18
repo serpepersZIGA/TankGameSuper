@@ -49,6 +49,7 @@ import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
+import static com.mygdx.game.MapFunction.MapScan.MapSize;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
@@ -149,7 +150,8 @@ public class Main extends ApplicationAdapter {
 
 		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 	}
-	public void field(int width_field,int height_field){
+	public static void field(int width_field,int height_field){
+        BlockList2D.clear();
 		quantity_width = width_field;
 		quantity_height = height_field;
 		width_block_2 = width_block/2;
@@ -270,7 +272,8 @@ public class Main extends ApplicationAdapter {
 		TransportRegister.Create();
 		BuildRegister.Create();
         ObjectPars.Pars();
-		field(120, 120);
+		//field(120, 120);
+        MapSize("Map/maps/MapBase.mapt");
 		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));

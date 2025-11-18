@@ -68,7 +68,7 @@ public class UnitsParser {
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "  \"MedicConf\": 0\n" +
                 "}";
         Create(Pz2A,data);
@@ -76,7 +76,7 @@ public class UnitsParser {
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "  \"MedicConf\": 0\n" +
                 "}";
         Create(Pz2AC,data);
@@ -84,7 +84,7 @@ public class UnitsParser {
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"]," +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "  \"MedicConf\": 0\n" +
                 "}";
         Create(Pz2F,data);
@@ -92,7 +92,7 @@ public class UnitsParser {
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"]," +
-                "  \"TowerXY\": [[-12,52],[12,52],[1,18]],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "  \"MedicConf\": 0\n" +
                 "}";
         Create(Pz2M,data);

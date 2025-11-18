@@ -32,6 +32,7 @@ public class MapLoad extends Button {
 
     protected void ActionButton() {
         if (condition) {
+            MapScan.MapSize(path);
             MapScan.MapInput(path);
             KeyboardObj.zoom_const();
 

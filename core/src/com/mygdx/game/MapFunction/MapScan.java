@@ -151,6 +151,41 @@ public class MapScan {
         return name;
     }
 
+    public static void MapSize(String Map) {
+        String TxT;
+        try {
+            TxT = String.valueOf(readAllLines(Paths.get(Map), StandardCharsets.UTF_8));
+        } catch (IOException e) {
+            throw new RuntimeException(e);
+        }
+        int x = 0,y = 0;
+        for (int i = 0; i < TxT.length(); i++) {
+            char c = TxT.charAt(i);
+            if (c == '/') {
+                for (; i < TxT.length(); i++) {
+                    c = TxT.charAt(i);
+                    switch (c){
+                        case 'x':{
+                            Object[]xi = Parser.IntegerPars2(TxT,i);
+                            x = (int)xi[0];
+                            i =  (int)xi[1];
+                        }break;
+                        case 'y':{
+                            Object[]yi = Parser.IntegerPars2(TxT,i);
+                            y = (int)yi[0];
+                            i =  (int)yi[1];
+                        }break;
+                        case ';':{
+                            field(x,y);
+                            return;
+                        }
+                    }
+                }
+            }
+        }
+        return;
+    }
+
     private static void BlockDelete() {
         for (int i = 0; i < BlockList2D.size(); i++) {
             for (int i2 = 0; i2 < BlockList2D.get(i).size(); i2++) {

@@ -372,40 +372,6 @@ public abstract class Unit implements Cloneable{
 
 
     }
-    private void peaceful_behavior(){
-        this.time_relocation-= 1;
-        if(this.time_relocation<0){
-            if(rand.rand(2)== 1) {
-                this.x_relocation = this.x + (200.0f+rand.rand(300.0f));
-            }
-            else{this.x_relocation = this.x + (-500f+rand.rand(300f));}
-            if(rand.rand(2)== 1) {
-                this.y_relocation = this.y + (200.0f+rand.rand(300f));
-            }
-            else{this.y_relocation = this.y + -500f+rand.rand(300f);}
-            for (i = 0; i< Main.BuildingList.size(); i++){
-                if(Main.BuildingList.get(i).x- Main.BuildingList.get(i).width_2>this.x_relocation & Main.BuildingList.get(i).x+ Main.BuildingList.get(i).width<this.x_relocation){
-                    if(Main.BuildingList.get(i).y- Main.BuildingList.get(i).height_2>this.y_relocation & Main.BuildingList.get(i).y+ Main.BuildingList.get(i).height<this.y_relocation) {
-                        if(rand.rand(2)== 1) {
-                            this.x_relocation = this.x + (200.0f+rand.rand(300f));
-                        }
-                        else{this.x_relocation = this.x + (-500f+rand.rand(300f));}
-                        if(rand.rand(2)== 1) {
-                            this.y_relocation = this.y + (200.0f+rand.rand(300f));
-                        }
-                        else{this.y_relocation = this.y + (-500f+rand.rand(300f));}
-                    }
-                }
-            }
-        }
-            //this.rotation_relocation = atan2(this.y-this.y_relocation,this.x-this.x_relocation)*3.1415926535/180;
-        this.time_relocation = this.time_max_relocation;
-        this.rotation_relocation = (float) ((atan2(this.y-this.y_relocation,this.x-this.x_relocation)/3.1415926535f*180f)-90f);
-        //rotation_bot(rotation_relocation,g_left,g_right);
-        //g = sqrt(pow(this.x-this.x_relocation,2)+pow(this.y-this.y_relocation,2));
-        //bypass_build(Main.build,this.x_relocation,this.y_relocation,this.rotation_relocation,g_right,g_left,i);
-
-    }
     public final void TowerAI() {
         if (this.trigger_attack) {
             Unit unit = detection_near_transport_i(this);

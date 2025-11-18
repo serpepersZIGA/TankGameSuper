@@ -95,15 +95,15 @@ public class RenderCenter {
 
     }
     public void CameraMapConf(){
-        render_x_max = (int)((x2+ WidthRenderZoom)/Main.width_block+1);
-        render_x_min = (int)(((x2)/Main.width_block-1));
+        render_x_max = (int)((x2+ WidthRenderZoom)/Main.width_block+2);
+        render_x_min = (int)((x2/Main.width_block-2));
 
         render_x = (int)(x2/Main.width_block);
-        render_y = (int)(y2/Main.height_block);
+        render_y = (int)(y2/Main.width_block);
         if(render_x_min <0){render_x_min =0;}
         else if(render_x_max >block_i_x_max){render_x_max = block_i_x_max;}
-        render_y_max = (int)((y2+ HeightRenderZoom)/Main.height_block+1);
-        render_y_min = (int)((y2)/Main.height_block-1);
+        render_y_max = (int)((y2+ HeightRenderZoom)/Main.width_block+2);
+        render_y_min = (int)(y2/Main.width_block-2);
         if(render_y_min <0){render_y_min = 0;}
         else if(render_y_max >block_i_y_max){render_y_max = block_i_y_max;}
         BuildingConst();
@@ -123,10 +123,12 @@ public class RenderCenter {
     public void BuildingConst(){
         IndBuilding.clear();
         for (int i = 0; i< Main.BuildingList.size(); i++){
-            if((((render_x_max>Main.BuildingList.get(i).RightTopPointX &render_x_min<Main.BuildingList.get(i).RightTopPointX)||
-            (render_x_max>Main.BuildingList.get(i).xMatrix &render_x_min<Main.BuildingList.get(i).xMatrix))&
-            ((render_y_max>Main.BuildingList.get(i).RightTopPointY &render_y_min<Main.BuildingList.get(i).RightTopPointY)||
-            (render_y_max>Main.BuildingList.get(i).yMatrix &render_y_min<Main.BuildingList.get(i).yMatrix)))&
+            if((((render_x_max>Main.BuildingList.get(i).RightTopPointX)||
+            (render_x_min<Main.BuildingList.get(i).xMatrix))&
+
+            ((render_y_max>Main.BuildingList.get(i).RightTopPointY)||
+            (render_y_min<Main.BuildingList.get(i).yMatrix)))&
+
             (render_x_min<Main.BuildingList.get(i).RightTopPointX &render_y_min<Main.BuildingList.get(i).RightTopPointY)&
             (render_x_max>Main.BuildingList.get(i).xMatrix &render_y_max>Main.BuildingList.get(i).yMatrix)
             ) {

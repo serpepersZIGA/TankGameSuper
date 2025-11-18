@@ -124,8 +124,8 @@ public class Building implements Serializable,Cloneable {
     public void DataBuilding(){
         int ConstructX = ConstructBuilding[0].length;
         int ConstructY =ConstructBuilding.length;
-        this.width = width_block*ConstructX+2;
-        this.height = width_block*ConstructY+2;
+        this.width = width_block*ConstructX;
+        this.height = width_block*ConstructY;
     }
     private void DataCollision(){
         int ConstructX = ConstructBuilding[0].length;
@@ -134,12 +134,12 @@ public class Building implements Serializable,Cloneable {
 //        this.height = Main.width_block*ConstructY;
         xMatrix = this.x/ width_block;
         yMatrix = this.y/ width_block;
+
         this.x = Main.BlockList2D.get(yMatrix).get(xMatrix).x;
         this.y = Main.BlockList2D.get(yMatrix).get(xMatrix).y;
         RightTopPointX = xMatrix +ConstructX;
         RightTopPointY = yMatrix +ConstructY;
-        this.width_2 = this.width/2;
-        this.height_2 = this.height/2;
+        //System.out.println(xMatrix+" eee "+yMatrix+"  "+RightTopPointX+"  "+RightTopPointY);
     }
     public void size_light(){
         int ConstructX = ConstructBuilding[0].length;
