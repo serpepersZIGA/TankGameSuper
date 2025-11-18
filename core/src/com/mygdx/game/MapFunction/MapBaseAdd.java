@@ -22,6 +22,7 @@ public class MapBaseAdd {
         } catch (IOException ignored) {
         }
         String dataMap = "^MapLite;\n" +
+                "/x 120:y 120:;\n" +
                 "BuildAdd:B BigBuildingWood1:x7:y10:r1:;\n" +
                 "(str):street1:x 23:y23:;\n" +
                 "(str):street1:x23:y40:;\n" +
