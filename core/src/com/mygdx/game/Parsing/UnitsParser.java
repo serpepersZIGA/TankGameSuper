@@ -18,13 +18,11 @@ public class UnitsParser {
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Unit").list();
-        System.out.println(files.length);
         if (files.length == 0) {
             AddBuilding();
             files = Gdx.files.internal("ContentGlobal/Unit").list();
         }
         for (FileHandle file : files) {
-            System.out.println(file.name());
             //System.out.println(file.path());
             try {
                 JSON(file.path());

@@ -125,13 +125,18 @@ public class MapScan {
     }
 
     public static String MapName(String Map) {
-        String TxT;
+        String TxT = "";
         String name = "";
         boolean conf = false;
         try {
             TxT = String.valueOf(readAllLines(Paths.get(Map), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            MapBaseAdd.AddMap();
+            try {
+                TxT = String.valueOf(readAllLines(Paths.get(Map), StandardCharsets.UTF_8));
+            }catch (IOException ignored) {
+
+            }
         }
         String TotalTxT = "";
         for (int i = 0; i < TxT.length(); i++) {
@@ -152,11 +157,16 @@ public class MapScan {
     }
 
     public static void MapSize(String Map) {
-        String TxT;
+        String TxT = "";
         try {
             TxT = String.valueOf(readAllLines(Paths.get(Map), StandardCharsets.UTF_8));
         } catch (IOException e) {
-            throw new RuntimeException(e);
+            MapBaseAdd.AddMap();
+            try {
+                TxT = String.valueOf(readAllLines(Paths.get(Map), StandardCharsets.UTF_8));
+            }catch (IOException ignored) {
+
+            }
         }
         int x = 0,y = 0;
         for (int i = 0; i < TxT.length(); i++) {
