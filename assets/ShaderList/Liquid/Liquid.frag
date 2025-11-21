@@ -77,7 +77,7 @@ void main() {
         //alpha = clamp(intensity, 0.0, 1.0) * (1.0 - dist * 1.8);
     }
     else{
-        gl_FragColor = vec4(0,0,0,0);
+        //gl_FragColor = vec4(0,0,0,0);
         return;
     }
 
@@ -97,5 +97,5 @@ void main() {
     vec3 finalCol = mix(fireCol, particleCol, particleIntensity);
     //alpha = clamp(alpha + particleIntensity, 0.0, 1.0);
 
-    gl_FragColor = vec4(finalCol.rgb, 0.3);
+    gl_FragColor = (vec4(finalCol.rgb, 0.3)+texColor)*0.5;
 }
