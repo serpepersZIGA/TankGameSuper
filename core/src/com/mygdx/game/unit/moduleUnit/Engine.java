@@ -10,20 +10,20 @@ import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
 
 public class Engine extends moduleUnit implements Cloneable{
     public float Acceleration;
-    public float MaxSpeed,MinSpeed;
+    public float SpeedUp, SpeedDown;
     public FunctionalList functional;
     public float SpeedRotation;
     public float Speed;
     public float slowing = 0.05f;
     public static float speedMinimum = 0.5f;
-    public Engine(String ID,float MaxSpeed, float MinSpeed, float Acceleration,float SpeedRotation, boolean ConfControl){
+    public Engine(String ID, float SpeedUp, float SpeedDown, float Acceleration, float SpeedRotation, boolean ConfControl){
         EngineListID.add(new Object[]{this,ID});
         this.functional = new FunctionalList();
         if(ConfControl){
             this.functional.Add(RegisterFunctionalComponent.MotorControl);
         }
-        this.MaxSpeed = MaxSpeed;
-        this.MinSpeed = MinSpeed;
+        this.SpeedUp = SpeedUp;
+        this.SpeedDown = SpeedDown;
         this.Acceleration = Acceleration;
         this.SpeedRotation = SpeedRotation;
         this.functional = functional.clone();
@@ -49,9 +49,13 @@ public class Engine extends moduleUnit implements Cloneable{
         throw new RuntimeException();
     }
     public void EngineLoad(Unit unit){
-        unit.max_speed = MaxSpeed;
-        unit.min_speed = MinSpeed;
-        unit.acceleration = Acceleration;
+        unit.SpeedUp = SpeedUp;
+        unit.SpeedDown = SpeedDown;
+        unit.Acceleration = Acceleration;
+        unit.SpeedUpBase = SpeedUp;
+        unit.SpeedDownBase = SpeedDown;
+        unit.AccelerationBase = Acceleration;
+
         unit.speed_rotation = SpeedRotation;
         for(int i = 0;i<functional.functional.size();i++){
             unit.functional.Add(functional.functional.get(i));

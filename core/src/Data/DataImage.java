@@ -51,6 +51,8 @@ public class DataImage {
         LoadImage("image/other/blade_helicopter.png","helicopter_blade");
         LoadImage("image/build/Build2.png","Build2");
 
+        LoadImage("image/item/armorB1.png","armorB1");
+
         LoadImage("buffer2.png","Buffer");
         LoadImage("buffer.png","Buffer2");
     }

@@ -175,14 +175,15 @@ public class ServerMain extends Listener {
 //            }
         }
         else if(p instanceof EventUseClient){
-            for(Object[] item :IDListItem) {
-                if(Objects.equals(item[1], ((EventUseClient) p).str)) {
-                    UnitList.get(((EventUseClient) p).ID).inventory.ItemUse((Item)item[0],UnitList.get(((EventUseClient) p).ID));
 
 
-                    return;
-                }
-            }
+            UnitList.get(((EventUseClient) p).ID).inventory.ItemUse(IDListItem.get(((EventUseClient) p).str)
+                    ,UnitList.get(((EventUseClient) p).ID));
+
+
+            return;
+
+
         }
         else if(p instanceof EventDeleteItemClient){
             EventDeleteItemClient pack = (EventDeleteItemClient) p;

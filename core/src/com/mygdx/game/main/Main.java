@@ -14,6 +14,7 @@ import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Parsing.ObjectPars;
+import com.mygdx.game.Parsing.ParserItem;
 import com.mygdx.game.Parsing.UnitsParser;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
@@ -99,7 +100,7 @@ public class Main extends ApplicationAdapter {
 	public static MapObject VoidObj;
 	public static com.mygdx.game.Network.PacketBuildingServer PacketBuildingServer;
 	public static Packet_client PacketClient;
-	public static int TickBlock,TickBlockMax = 600;
+	public static float TickBlock,TickBlockMax = 600;
 	public static BitmapFont font,font2;
 	public static byte ConfigMenu;
 	public static InputWindow InputWindow;
@@ -182,6 +183,8 @@ public class Main extends ApplicationAdapter {
 			BlockList2D.get(i).get(0).passability= true;
 			BlockList2D.get(i).get(quantity_width-3).passability= true;
 		}
+        xMap = width_field;
+        yMap = height_field;
 		//for()
 		//width_block-= 1;
 		//height_block-= 1;
@@ -237,10 +240,11 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleEngine.Create();
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();
+        ParserItem.Pars();
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(120,120,30,30,0.15f,0.80f);
+		CycleDayNight = new CycleTimeDay(30,30,25,25,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
 
 		Render = new RenderPrimitive();
@@ -284,7 +288,6 @@ public class Main extends ApplicationAdapter {
 		ButtonList.add(new Cancel(100,400,400,120,"CANCEL",(byte)3));
 		PlayerAllLoad.PlayerCount();
 		ActionGame = com.mygdx.game.main.ActionGame.ActionMenu;
-		RC.const_xy_block();
 		xMap = Main.BlockList2D.get(0).size();
 		yMap = Main.BlockList2D.size();
 		SpawnPlayer = PlayerSpawnCannonVoid;

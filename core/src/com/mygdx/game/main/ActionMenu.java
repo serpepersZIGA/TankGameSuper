@@ -15,6 +15,7 @@ import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.unit.Unit.IDList;
@@ -210,6 +211,7 @@ public class ActionMenu extends ActionGame {
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
+    UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
 //    unit.inventory.ItemAdd(ItemRegister.MedicineT1);
 //    unit.inventory.ItemAdd(ItemRegister.MedicineT1);
 //    unit.inventory.ItemAdd(ItemRegister.MedicineT1);

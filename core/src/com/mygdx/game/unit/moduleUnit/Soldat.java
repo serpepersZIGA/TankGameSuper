@@ -21,6 +21,7 @@ public class Soldat extends moduleUnit implements Cloneable{
     public Soldat(int max_hp, int armor, int corpus_width, int corpus_height, String image,
                   FunctionalList func){
         this.max_hp = max_hp;
+        this.hp = max_hp;
         this.armor = armor;
         this.corpus_width = corpus_width;
         this.corpus_height = corpus_height;
@@ -44,6 +45,7 @@ public class Soldat extends moduleUnit implements Cloneable{
     public void SoldatLoad(Unit unit){
         unit.max_hp = max_hp;
         unit.hp = hp;
+        unit.HpBase = max_hp;
         unit.armor = armor;
         unit.corpus_width = corpus_width;
         unit.corpus_height = corpus_height;

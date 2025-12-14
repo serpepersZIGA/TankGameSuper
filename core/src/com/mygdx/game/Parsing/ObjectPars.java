@@ -12,7 +12,7 @@ import java.util.ArrayList;
 
 public class ObjectPars {
     public static String Image, Collision;
-    public static int X,Y,width,height,HP;
+    public static int X,Y,width,height,HP,MoveUPPercent,MoveDownPercent, AccelerationPercent;
     public static boolean LightingConf,SpawnUnit;
     public static int Lighting;
     public static int medic_help;

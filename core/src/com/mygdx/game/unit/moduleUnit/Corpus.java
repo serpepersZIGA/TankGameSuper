@@ -78,8 +78,10 @@ public class Corpus extends moduleUnit implements Cloneable{
     }
     public void CorpusLoad(Unit unit){
         unit.max_hp = max_hp;
+        unit.HpBase = max_hp;
         unit.hp = hp;
         unit.armor = armor;
+        unit.ArmorBase = armor;
         unit.corpus_width = corpus_width;
         unit.corpus_height = corpus_height;
 

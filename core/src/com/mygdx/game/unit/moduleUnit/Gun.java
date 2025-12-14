@@ -50,8 +50,11 @@ public class Gun {
     }
     public void GunLoad(Unit unit){
         unit.damage = damage;
+        unit.DamageBase = damage;
         unit.t_damage = TemperatureDamage;
         unit.damage_fragment = damage_fragment;
+        unit.PenetrationBase = (int) penetration;
+        unit.penetration = (int) penetration;
         unit.penetration_fragment = penetration_fragment;
         unit.SpeedBullet = SpeedBullet;
         unit.reload_max = ReloadMax;

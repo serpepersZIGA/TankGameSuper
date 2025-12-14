@@ -23,11 +23,7 @@ public class Inventory implements Cloneable{
     }
     public void ItemAdd(int x,int y,String item){
         if(item != null) {
-            for(Object[] obj : Item.IDListItem) {
-                if(item.equals(obj[1])) {
-                    InventorySlots[x][y] = (Item) obj[0];
-                }
-            }
+            Item.IDListItem.get(item);
             return;
         }
         InventorySlots[x][y] = null;

@@ -17,16 +17,12 @@ public class RenderCenter {
             ,height_2_zoom = Main.screenHeight/2f;
     public float WidthRender = Main.screenWidth, HeightRender = Main.screenHeight;
     public int render_x_max,render_x_min,render_y_max,render_y_min;
-    public int block_i_x_max,block_i_y_max,render_x,render_y,cam_x_width,cam_y_height;
+    public int render_x,render_y,cam_x_width,cam_y_height;
     public float WidthRenderZoom,HeightRenderZoom,WidthRenderZoom2,HeightRenderZoom2;
     public RenderCenter(float x, float y){
         this.x = x;
         this.y = y;
         IndBuilding = new ArrayList<>();
-    }
-    public void const_xy_block(){
-        block_i_x_max = Main.BlockList2D.get(0).size()-2;
-        block_i_y_max = Main.BlockList2D.size()-2;
     }
     public void method(){
         this.x2 = this.x -this.width_2_zoom;
@@ -55,7 +51,7 @@ public class RenderCenter {
         return new float[]{x_obj*Main.Zoom,y_obj*Main.Zoom};
     }
     public void render_block(){
-        Main.TickBlock +=1;
+        Main.TickBlock +=Main.TimeGlobalBullet;
         if(ixCam!= ixCamBuff||iyCam!= iyCamBuff) {
             CameraMapConf();
             ixCam = ixCamBuff;
@@ -101,11 +97,11 @@ public class RenderCenter {
         render_x = (int)(x2/Main.width_block);
         render_y = (int)(y2/Main.width_block);
         if(render_x_min <0){render_x_min =0;}
-        else if(render_x_max >block_i_x_max){render_x_max = block_i_x_max;}
+        else if(render_x_max >Main.xMap){render_x_max = Main.xMap;}
         render_y_max = (int)((y2+ HeightRenderZoom)/Main.width_block+2);
         render_y_min = (int)(y2/Main.width_block-2);
         if(render_y_min <0){render_y_min = 0;}
-        else if(render_y_max >block_i_y_max){render_y_max = block_i_y_max;}
+        else if(render_y_max >Main.yMap){render_y_max = Main.yMap;}
         BuildingConst();
         LightSystem.lightsRender.clear();
         for(LightingMainSystem.Light light : LightSystem.lights){

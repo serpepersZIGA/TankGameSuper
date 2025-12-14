@@ -164,13 +164,7 @@ public class ClientMain extends Listener {
                     for (int ix = 0; ix < InventoryPack.get(i).Inventory.length; ix++) {
                         for (int iy = 0; iy < InventoryPack.get(i).Inventory[ix].length; iy++) {
                             if (InventoryPack.get(i).Inventory[ix][iy] != null) {
-                                for (Object[] obj : IDListItem) {
-                                    if(InventoryPack.get(i).Inventory[ix][iy] != null) {
-                                        if (Objects.equals(obj[1], InventoryPack.get(i).Inventory[ix][iy])) {
-                                            UnitList.get(i).inventory.ItemAdd(ix, iy, (Item) obj[0]);
-                                        }
-                                    }
-                                }
+                                UnitList.get(i).inventory.ItemAdd(ix, iy,IDListItem.get(InventoryPack.get(i).Inventory[ix][iy]));
                             }
                             else {
                                 UnitList.get(i).inventory.InventorySlots[ix][iy] = null;
@@ -358,13 +352,7 @@ public class ClientMain extends Listener {
     public void ItemCreate() {
         ItemList.clear();
         for (ItemPacket pack : ItemPackList) {
-            for(Object[] obj : IDListItem) {
-                if(Objects.equals(obj[1], pack.ID)){
-
-                    ItemList.add(new ItemObject((Item) obj[0],pack.x,pack.y));
-                    break;
-                }
-            }
+            ItemList.add(new ItemObject(IDListItem.get(pack.ID),pack.x,pack.y));
         }
         KeyboardObj.ZoomConstTransport();
     }

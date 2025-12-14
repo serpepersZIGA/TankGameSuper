@@ -58,14 +58,15 @@ public abstract class Unit implements Cloneable{
     public ArrayList<Cannon> CannonUnitList = new ArrayList<>();
     public Cannon CannonUnit;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, x_tower,y_tower,
-    time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect;
+    time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect,HpBase,PenetrationBase;
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
     public float fire_y;
-    public float max_speed=4, min_speed=-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max,acceleration=0.2f,speed, SpeedInert, RotationInert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
+    public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max, Acceleration =0.2f,speed, SpeedInert, RotationInert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
-            hill, width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3;
+            hill, width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
+    ArmorBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase;
     protected float slowing = 0.05f;
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0;
@@ -274,6 +275,7 @@ public abstract class Unit implements Cloneable{
         path = new ArrayList<>();
         this.reload = this.reload_max;
         this.hp = this.max_hp;
+        this.HpBase = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width/2;
@@ -405,8 +407,8 @@ public abstract class Unit implements Cloneable{
                 this.time_sound_motor = this.time_max_sound_motor;
 
             }
-            if (this.max_speed > this.speed) {
-                this.speed += this.acceleration;
+            if (this.SpeedUp > this.speed) {
+                this.speed += this.Acceleration;
             }
         }
         if (this.press_s) {
@@ -419,8 +421,8 @@ public abstract class Unit implements Cloneable{
                 SoundPack.add(soundPacket);
                 this.time_sound_motor = this.time_max_sound_motor;
             }
-            if(this.min_speed < this.speed) {
-                this.speed -= this.acceleration;
+            if(this.SpeedDown < this.speed) {
+                this.speed -= this.Acceleration;
             }
 
         }
@@ -636,7 +638,7 @@ public abstract class Unit implements Cloneable{
         if (this.trigger_drive == 1 && !this.crite_life) {
             switch (behavior) {
                 case 1:{
-                    if (this.speed > this.min_speed) {
+                    if (this.speed > this.SpeedDown) {
                         press_w = true;
                     }
                     break;
@@ -669,8 +671,8 @@ public abstract class Unit implements Cloneable{
         if (this.trigger_drive == 1 && !this.crite_life) {
             switch (behavior) {
                 case 1:{
-                    if (this.speed > this.min_speed) {
-                        this.speed -= this.acceleration*TimeGlobalBullet;
+                    if (this.speed > this.SpeedDown) {
+                        this.speed -= this.Acceleration *TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -684,8 +686,8 @@ public abstract class Unit implements Cloneable{
                     break;
                 }
                 case 2:{
-                    if (g > distance_target && this.speed < this.max_speed) {
-                        this.speed += this.acceleration*TimeGlobalBullet;
+                    if (g > distance_target && this.speed < this.SpeedUp) {
+                        this.speed += this.Acceleration *TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -695,8 +697,8 @@ public abstract class Unit implements Cloneable{
                             SoundPack.add(soundPacket);
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
-                    } else if(this.speed > this.min_speed){
-                        this.speed -= this.acceleration*TimeGlobalBullet;
+                    } else if(this.speed > this.SpeedDown){
+                        this.speed -= this.Acceleration *TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -710,14 +712,14 @@ public abstract class Unit implements Cloneable{
                     break;
                 }
                 case 3:{
-                    if (g > distance_target && this.speed < this.max_speed) {
-                        this.speed += this.acceleration*TimeGlobalBullet;
+                    if (g > distance_target && this.speed < this.SpeedUp) {
+                        this.speed += this.Acceleration *TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
                         }
-                    } else if (g > distance_target_2 && this.speed > this.min_speed) {
-                        this.speed -= this.acceleration*TimeGlobalBullet;
+                    } else if (g > distance_target_2 && this.speed > this.SpeedDown) {
+                        this.speed -= this.Acceleration *TimeGlobalBullet;
                         if (this.time_sound_motor < 0) {
                             SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                             this.time_sound_motor = this.time_max_sound_motor;
@@ -725,13 +727,13 @@ public abstract class Unit implements Cloneable{
 
                     } else {
                         if (this.speed < 0) {
-                            this.speed -= this.acceleration*TimeGlobalBullet;
+                            this.speed -= this.Acceleration *TimeGlobalBullet;
                             if (this.time_sound_motor < 0) {
                                 SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                                 this.time_sound_motor = this.time_max_sound_motor;
                             }
                         } else if (this.speed > 0) {
-                            this.speed += this.acceleration*TimeGlobalBullet;
+                            this.speed += this.Acceleration *TimeGlobalBullet;
                             if (this.time_sound_motor < 0) {
                                 SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
                                 this.time_sound_motor = this.time_max_sound_motor;
@@ -896,7 +898,7 @@ public abstract class Unit implements Cloneable{
 
 
     private void speed_balance(){
-        if(this.speed<this.acceleration && this.speed>-this.acceleration){
+        if(this.speed<this.Acceleration && this.speed>-this.Acceleration){
             this.speed = 0;
         }
     }
@@ -1158,16 +1160,16 @@ public abstract class Unit implements Cloneable{
         if (render_x_min < 0) {
             render_x_min = 0;
         }
-        if (render_x_max > RC.block_i_x_max) {
-            render_x_max = RC.block_i_x_max;
+        if (render_x_max > xMap) {
+            render_x_max = xMap;
         }
         render_y_max = (int) ((y + BorderDetected) / Main.height_block);
         render_y_min = (int) ((y - BorderDetected) / Main.height_block);
         if (render_y_min < 0) {
             render_y_min = 0;
         }
-        if (render_y_max > RC.block_i_y_max) {
-            render_y_max = RC.block_i_y_max;
+        if (render_y_max > yMap) {
+            render_y_max = yMap;
         }
 
         for (int iy = render_y_min; iy < render_y_max; iy++) {
@@ -1245,9 +1247,9 @@ public abstract class Unit implements Cloneable{
             this.y -= move.move_cos(this.speed, -this.rotation_corpus);
 
             if (this.speed < -0.5) {
-                this.speed += this.acceleration;
+                this.speed += this.Acceleration;
             } else if (this.speed > 0.5) {
-                this.speed -= acceleration;
+                this.speed -= Acceleration;
             } else {
                 speed = 0;
             }
@@ -1258,9 +1260,9 @@ public abstract class Unit implements Cloneable{
             this.x -= move.move_sin(this.SpeedInert, -this.RotationInert);
             this.y -= move.move_cos(this.SpeedInert, -this.RotationInert);
             if (this.SpeedInert > 0.5) {
-                this.SpeedInert -= this.acceleration;
+                this.SpeedInert -= this.Acceleration;
             } else if (this.SpeedInert < -0.5) {
-                this.SpeedInert += this.acceleration;
+                this.SpeedInert += this.Acceleration;
             } else {
                 SpeedInert = 0;
             }
@@ -1347,16 +1349,16 @@ public abstract class Unit implements Cloneable{
                 this.time_sound_motor = this.time_max_sound_motor;
 
             }
-            if (this.max_speed > this.speed) {
-                this.speed += this.acceleration*TimeGlobalBullet;
+            if (this.SpeedUp > this.speed) {
+                this.speed += this.Acceleration *TimeGlobalBullet;
             }
         }
         if (this.press_s) {
             if (this.time_sound_motor < 0) {
                 this.time_sound_motor = this.time_max_sound_motor;
             }
-            if(this.min_speed < this.speed) {
-                this.speed -= this.acceleration*TimeGlobalBullet;
+            if(this.SpeedDown < this.speed) {
+                this.speed -= this.Acceleration *TimeGlobalBullet;
             }
 
         }

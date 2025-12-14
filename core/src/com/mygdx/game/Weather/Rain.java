@@ -20,7 +20,8 @@ public class Rain {
     public static float speed;
     public float speedX = 3.5f,speedY = -15;
     public static int WidthRand = (int) (Gdx.graphics.getWidth()+Gdx.graphics.getWidth()*0.3f),
-    LeftSpawnRain = (int) (Gdx.graphics.getWidth()*0.3f);
+    LeftSpawnRain = (int) (Gdx.graphics.getWidth()*0.3f)
+            ,HeightSpawnRain = (int) (Gdx.graphics.getHeight()+25f);
 
     public Rain(){
         x = rand.rand(Gdx.graphics.getWidth());
@@ -38,7 +39,7 @@ public class Rain {
             speedY = (float) (speed*cos(185));
             speedX = (float) (speed*sin(185));
             x = -LeftSpawnRain+rand.rand(WidthRand);
-            y = Gdx.graphics.getHeight();
+            y = HeightSpawnRain;
         }
     }
     public void update(){
