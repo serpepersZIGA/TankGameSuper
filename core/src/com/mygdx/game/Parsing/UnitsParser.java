@@ -74,7 +74,7 @@ public class UnitsParser {
                 "}";
 
         Create(Helicopter2Z,data);
-        String data = "{\n" +
+        data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
