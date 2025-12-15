@@ -35,14 +35,14 @@ public class Method {
     public static float difference_rotation_cos(float x,float difference,float rotation){
         return (float) (x - (difference * cos(rotation * 3.1415926535f / 180.0f)));
     }
-    public static float[]tower_xy(float x,float y,float fire_x,float fire_y,float difference,float rotation){
-        float tower_x = difference_rotation_sin(x+fire_x,difference,rotation);
-        float tower_y = difference_rotation_cos(y+fire_y,difference,rotation);
+    public static float[]tower_xy(float x,float y,float difference,float rotation){
+        float tower_x = difference_rotation_sin(x,difference,rotation);
+        float tower_y = difference_rotation_cos(y,difference,rotation);
         return new float[]{tower_x,tower_y};
     }
-    public static float[]tower_xy_2(float x,float y,float fire_x,float fire_y,float difference,float difference_2,float rotation){
-        float tower_x = difference_rotation_sin(x+fire_x,difference,rotation);
-        float tower_y = difference_rotation_cos(y+fire_y,difference,rotation);
+    public static float[]tower_xy_2(float x,float y,float difference,float difference_2,float rotation){
+        float tower_x = difference_rotation_sin(x,difference,rotation);
+        float tower_y = difference_rotation_cos(y,difference,rotation);
         float rotationX = rotation-90;
         tower_x = difference_rotation_sin(tower_x,difference_2,rotationX);
         tower_y = difference_rotation_cos(tower_y,difference_2,rotationX);

@@ -3,5 +3,6 @@
   "Corpus": "Panzer1",
   "Cannon": ["Flk4CL","Flk4CL","Flk4C"],
   "TowerXY": [[-10,50],[10,50],[1,18]],
-  "MedicConf": 0
+  "MedicConf": 0,
+  "Height": 1
 }

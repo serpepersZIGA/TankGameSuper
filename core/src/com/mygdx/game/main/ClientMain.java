@@ -330,7 +330,7 @@ public class ClientMain extends Listener {
 
     public void debris_create(DebrisPacket debris){
         Unit unit = Unit.IDList.get(debris.UnitID);
-        DebrisList.add(new UnitPattern(unit.CorpusUnit, debris.UnitID,debris.x,debris.y,debris.rotation,0,0,0));
+        DebrisList.add(new UnitPattern(unit.CorpusUnit, debris.UnitID,debris.x,debris.y,debris.rotation,0,0,0,1));
     }
 
     public void UnitCreate() {

@@ -141,16 +141,6 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
-        for(i = 0;i< UnitList.size();i++) {
-            Unit unit = UnitList.get(i);
-            if(unit.height == 2) {
-                unit.UpdateUnit();
-                unit.update();
-                for (Unit tower : unit.tower_obj){
-                    tower.updateTower();
-                }
-            }
-        }
         for(i = 0;i< DebrisList.size();i++) {
             DebrisList.get(i).UpdateUnit();
 
@@ -167,6 +157,16 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
             if(bullet != null) {
                 if (bullet.height == 2) {
                     bullet.all_action_client();
+                }
+            }
+        }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 2) {
+                unit.UpdateUnit();
+                unit.update();
+                for (Unit tower : unit.tower_obj){
+                    tower.updateTower();
                 }
             }
         }

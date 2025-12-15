@@ -258,6 +258,10 @@ public class CannonParser {
         File Kwk12AL = new File("ContentGlobal/Module/Cannon/Kwk12AL.Cannon");
         File Kwk12M = new File("ContentGlobal/Module/Cannon/Kwk12M.Cannon");
         File Kwk12ML = new File("ContentGlobal/Module/Cannon/Kwk12ML.Cannon");
+
+        File Blade = new File("ContentGlobal/Module/Cannon/Blade.Cannon");
+        File DP27 = new File("ContentGlobal/Module/Cannon/DP-27.Cannon");
+
         String data = "WidthTower = 55;\n" +
                 "HeightTower = 35;\n" +
                 "ConstTowerX = 34;\n" +
@@ -284,6 +288,61 @@ public class CannonParser {
                 "Sound = 2;\n" +
                 "AmountFragment = 0;";
         Create(Ack2A,data);
+
+        data = "WidthTower = 120;\n" +
+                "HeightTower = 120;\n" +
+                "ConstTowerX = 60;\n" +
+                "ConstTowerY = 60;\n" +
+                "SpeedRotationTower = 6;\n" +
+                "Damage = 0;\n" +
+                "Penetration = 0;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 0;\n" +
+                "ReloadMax = 0;\n" +
+                "SpeedBullet = 0;\n" +
+                "TimeBullet = 0;\n" +
+                "TowerX = 0;\n" +
+                "TowerY = 0;\n" +
+                "Fire = Flame;\n" +
+                "Image = helicopter_blade;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentWorkBlade;\n" +
+                "\n" +
+                "\n" +
+                "Sound = 5;\n" +
+                "AmountFragment = 0;";
+        Create(Blade,data);
+
+        data = "WidthTower = 20;\n" +
+                "HeightTower = 15;\n" +
+                "ConstTowerX = 14;\n" +
+                "ConstTowerY = 7;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 12;\n" +
+                "Penetration = 4;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 3;\n" +
+                "SpeedBullet = 12;\n" +
+                "TimeBullet = 270;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Bullet;\n" +
+                "Image = machinegun;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 9;\n" +
+                "AmountFragment = 0;";
+        Create(DP27,data);
+
         data = "WidthTower = 20;\n" +
                 "HeightTower = 15;\n" +
                 "ConstTowerX = 12;\n" +

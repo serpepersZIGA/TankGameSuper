@@ -35,14 +35,15 @@ public class CorpusParser {
 
             CorpusListID.add(new Object[]{
                     new Corpus(file.name().replace(".Corpus","")
-                            ,MaxHP,Armor,CorpusWidth,CorpusHeight,Difference,Image,List)
+                            ,MaxHP,Armor,CorpusWidth,CorpusHeight,Difference
+                            ,Image,List)
                     ,file.name().replace(".Corpus","")});
             List = new FunctionalList();
             //List.Clear();
             //System.out.println(BuildRegister.BuildingID.size());
 
         }
-        System.out.println(CorpusListID.size());
+        //System.out.println(CorpusListID.size());
 
 
     }
@@ -102,6 +103,7 @@ public class CorpusParser {
                     i = (int) obj[1];
                     TotalTxT = "";
                     break;
+
                 case "Difference":
                     obj = Parser.IntegerPars(TxT,i);
                     Difference = (int) obj[0];
@@ -134,7 +136,18 @@ public class CorpusParser {
         new File("ContentGlobal/Module").mkdirs();
         new File("ContentGlobal/Module/Corpus").mkdirs();
         File Panzer1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
-        String data = "MaxHP = 1200;\n" +
+        File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
+        String data = "MaxHP = 700;\n" +
+                "Armor = 20;\n" +
+                "CorpusWidth = 76;\n" +
+                "CorpusHeight = 220;\n" +
+                "Difference = 18;\n" +
+                "Image = helicopter_enemy_t1;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(HelicopterCorpus1,data);
+        data = "MaxHP = 1200;\n" +
                 "Armor = 35;\n" +
                 "CorpusWidth = 50;\n" +
                 "CorpusHeight = 130;\n" +

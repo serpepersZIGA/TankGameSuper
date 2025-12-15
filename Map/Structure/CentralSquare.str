@@ -23,7 +23,7 @@ BuildAdd:B BigBuildingWood1:x20:y57:r0:;
 BuildAdd:B BigBuildingWood1:x32:y57:r0:;
 BuildAdd:B BigBuildingWood1:x44:y57:r0:;
 Asphalt:x31:y7:Y50:;
-Asphalt:x30d:y7:Y50:;
+Asphalt:x30:y7:Y50:;
 BuildAdd:B BigBuildingWood1:x8:y49:r0:;
 BuildAdd:B BigBuildingWood1:x20:y49:r0:;
 BuildAdd:B BigBuildingWood1:x32:y49:r0:;

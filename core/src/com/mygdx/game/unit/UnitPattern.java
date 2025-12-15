@@ -15,8 +15,8 @@ import static com.mygdx.game.main.Main.EventData;
 import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class UnitPattern extends Unit {
-    public UnitPattern(String str,Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit,int medic_help){
-        super(corpus,engine,cannon,TowerXY,classUnit,medic_help);
+    public UnitPattern(String str,Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit,int medic_help,int Height){
+        super(corpus,engine,cannon,TowerXY,classUnit,medic_help,Height);
         tower_obj = new ArrayList<>();
         behavior = 3;
         this.collision = TypeCollision.rect;
@@ -26,8 +26,8 @@ public class UnitPattern extends Unit {
         data();
         IDList.put(str,this);
     }
-    public UnitPattern(String str,String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,ClassUnit classUnit,int medic_help){
-        super(corpus,engine,cannon,TowerXY,classUnit,medic_help);
+    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY, ClassUnit classUnit, int medic_help, int Height){
+        super(corpus,engine,cannon,TowerXY,classUnit,medic_help,Height);
         tower_obj = new ArrayList<>();
         behavior = 3;
         this.collision = TypeCollision.rect;
@@ -38,15 +38,15 @@ public class UnitPattern extends Unit {
         IDList.put(str,this);
     }
     public UnitPattern(Cannon cannon,Unit unit){
-        super(cannon,unit);
+        super(cannon);
         cannon.XTower = (int) unit.CorpusUnit.CenterCorpusX;
         cannon.YTower = (int) unit.CorpusUnit.CenterCorpusY;
         cannon.CannonLoad(this);
         data_tower();
 
     }
-    public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert){
-        super(corpus,x,y,rotation,speed,SpeedInert,RotationInert);
+    public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert,int Height){
+        super(corpus,x,y,rotation,speed,SpeedInert,RotationInert,Height);
         corpus.functional = new FunctionalList();
         corpus.functional.Add(RegisterFunctionalComponent.MoveDebris);
         corpus.functional.Add(RegisterFunctionalComponent.BuildCollision);

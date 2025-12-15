@@ -120,9 +120,10 @@ public abstract class Unit implements Cloneable{
 
     }
     public Unit(Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit
-    ,int medic_help){
+    ,int medic_help,int Height){
 
         this.medic_help = (byte) medic_help;
+        this.height = (byte) Height;
         this.CorpusUnit = corpus.CorpusAdd();
         this.EngineUnit = engine.EngineAdd();
         this.CannonUnitList = cannon;
@@ -133,7 +134,8 @@ public abstract class Unit implements Cloneable{
 //        }
     }
     public Unit(String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,ClassUnit classUnit
-            ,int medic_help){
+            ,int medic_help,int Height){
+        this.height = (byte) Height;
         this.medic_help = (byte) medic_help;
         this.CorpusUnit = Corpus.CorpusAdd(corpus);
         this.EngineUnit = Engine.EngineAdd(engine);
@@ -154,26 +156,27 @@ public abstract class Unit implements Cloneable{
         this.speed_rotation = 1.2F;
         soldat.SoldatLoad(this);
     }
-    public Unit(Corpus corpus,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert){
+    public Unit(Corpus corpus,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert,int Height){
         this.x = x;
         this.y = y;
         this.rotation_corpus = rotation;
         this.speed = speed;
         this.SpeedInert = SpeedInert;
         this.RotationInert = RotationInert;
+        this.height = (byte) Height;
         this.CorpusUnit = corpus.CorpusAdd();
+
 
 
     }
     public void UnitDelete(){
-
-                Unit unit = IDList.get(this.ID);
-                DebrisList.add(new UnitPattern(unit.CorpusUnit,this.ID,x,y,rotation_corpus,speed,SpeedInert,RotationInert));
-                DebrisList.get(DebrisList.size()-1).EventClear = EventData.eventDeadDebris;
+        Unit unit = IDList.get(this.ID);
+        DebrisList.add(new UnitPattern(unit.CorpusUnit,this.ID,x,y,rotation_corpus,speed,SpeedInert,RotationInert,1));
+        DebrisList.get(DebrisList.size()-1).EventClear = EventData.eventDeadDebris;
 
 
     }
-    public Unit(Cannon cannon,Unit unit){
+    public Unit(Cannon cannon){
         classUnit = ClassUnit.Tower;
         this.CannonUnit = cannon;
     }
@@ -278,8 +281,8 @@ public abstract class Unit implements Cloneable{
         this.HpBase = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
         this.time_spawn_soldat = this.time_spawn_soldat_max;
-        this.corpus_width_2 = this.corpus_width/2;
-        this.corpus_height_2 = this.corpus_height/2;
+        //this.corpus_width_2 = this.corpus_width/2;
+        //this.corpus_height_2 = this.corpus_height/2;
         corpus_height_3 = (float) (corpus_height_2/1.5);
         corpus_width_3 = (float)(corpus_width_2*1.2);
         if(tower_img != null){
@@ -295,8 +298,11 @@ public abstract class Unit implements Cloneable{
             this.const_y_tower = (int)(const_tower_y*Main.Zoom);}
         this.corpus_width_zoom = (int)(corpus_width*Main.Zoom);
         this.corpus_height_zoom = (int)(corpus_height*Main.Zoom);
-        this.width_tower_zoom = (int)(width_tower *Main.Zoom);
-        this.height_tower_zoom = (int)(height_tower *Main.Zoom);
+        for (Unit cannon : tower_obj){
+            cannon.tower_x_const = tower_x_const;
+            cannon.tower_y_const = tower_y_const;
+        }
+
         this.const_x_corpus = (int)(corpus_width_2*Main.Zoom);
         this.const_y_corpus = (int)(corpus_height_2*Main.Zoom);
         green_len = ((float)this.hp/this.max_hp)* Option.size_x_indicator;
@@ -609,10 +615,10 @@ public abstract class Unit implements Cloneable{
     }
 
     public void TowerXY(){
-    float []xy = Method.tower_xy(this.x,this.y,this.tower_x_const,this.tower_y_const,this.difference,-this.rotation_corpus);
+    float []xy = Method.tower_xy(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     public void TowerXY2(){
-        float []xy = Method.tower_xy_2(this.x,this.y,this.tower_x_const,this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
+        float []xy = Method.tower_xy_2(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     protected boolean fire_bot(float obj_x,float obj_y){
         g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
@@ -659,86 +665,6 @@ public abstract class Unit implements Cloneable{
                     }if (g < distance_target_2) {
                         press_s = true;
 
-                    }
-                    break;
-                }
-            }
-        }
-    }
-    private void motor_bot_base(int g,byte behavior){
-        this.time_sound_motor -=1;
-
-        if (this.trigger_drive == 1 && !this.crite_life) {
-            switch (behavior) {
-                case 1:{
-                    if (this.speed > this.SpeedDown) {
-                        this.speed -= this.Acceleration *TimeGlobalBullet;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            SoundPacket soundPacket = new SoundPacket();
-                            soundPacket.ix = (int) this.x;
-                            soundPacket.iy = (int) this.y;
-                            soundPacket.ID = 0;
-                            SoundPack.add(soundPacket);
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
-                    }
-                    break;
-                }
-                case 2:{
-                    if (g > distance_target && this.speed < this.SpeedUp) {
-                        this.speed += this.Acceleration *TimeGlobalBullet;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            SoundPacket soundPacket = new SoundPacket();
-                            soundPacket.ix = (int) this.x;
-                            soundPacket.iy = (int) this.y;
-                            soundPacket.ID = 1;
-                            SoundPack.add(soundPacket);
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
-                    } else if(this.speed > this.SpeedDown){
-                        this.speed -= this.Acceleration *TimeGlobalBullet;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            SoundPacket soundPacket = new SoundPacket();
-                            soundPacket.ix = (int) this.x;
-                            soundPacket.iy = (int) this.y;
-                            soundPacket.ID = 0;
-                            SoundPack.add(soundPacket);
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
-                    }
-                    break;
-                }
-                case 3:{
-                    if (g > distance_target && this.speed < this.SpeedUp) {
-                        this.speed += this.Acceleration *TimeGlobalBullet;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
-                    } else if (g > distance_target_2 && this.speed > this.SpeedDown) {
-                        this.speed -= this.Acceleration *TimeGlobalBullet;
-                        if (this.time_sound_motor < 0) {
-                            SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                            this.time_sound_motor = this.time_max_sound_motor;
-                        }
-
-                    } else {
-                        if (this.speed < 0) {
-                            this.speed -= this.Acceleration *TimeGlobalBullet;
-                            if (this.time_sound_motor < 0) {
-                                SoundPlay.sound(Main.ContentSound.motor, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                                this.time_sound_motor = this.time_max_sound_motor;
-                            }
-                        } else if (this.speed > 0) {
-                            this.speed += this.Acceleration *TimeGlobalBullet;
-                            if (this.time_sound_motor < 0) {
-                                SoundPlay.sound(Main.ContentSound.motor_back, 1f-((float) sqrt(pow2(this.x_rend) + pow2((float)this.y_rend))/SoundConst));
-                                this.time_sound_motor = this.time_max_sound_motor;
-                            }
-                        }
                     }
                     break;
                 }
@@ -794,7 +720,7 @@ public abstract class Unit implements Cloneable{
             }
         }
         if(path.size() > 0) {
-                float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,0,0,-this.rotation_corpus);
+                float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
                 this.g = (float) sqrt(pow2((xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
                 float gr = (float) ((atan2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
                 rotation_bot(gr);
@@ -902,6 +828,17 @@ public abstract class Unit implements Cloneable{
             this.speed = 0;
         }
     }
+    public final void BotHelicopter(){
+        review_field();
+        if (!this.trigger_attack) {
+            if (this.time_trigger_bull_bot > 0) {
+                motor_bot_bypass();
+                this.time_trigger_bull_bot -= 1;
+            }
+        } else {
+            motor_bot_bypass();
+        }
+    }
     public void helicopterAi(){
         Object[]sp = detection_near_transport(this);
         if(sp[0] != null) {
@@ -972,23 +909,23 @@ public abstract class Unit implements Cloneable{
         float v = 4;
         float x_2 = unit.x+ unit.corpus_width_2;
         float y_2 = unit.y+ unit.corpus_height_2;
-        xy = Method.tower_xy(x,y,0,0,-corpus_height_2,-rotation_corpus);
+        xy = Method.tower_xy(x,y,-corpus_height_2,-rotation_corpus);
         float x_1_2 = xy[0];
         float y_1_2 = xy[1];
-        xy = Method.tower_xy(x_2,y_2,0,0,-unit.corpus_height_2,-unit.rotation_corpus);
+        xy = Method.tower_xy(x_2,y_2,-unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_2 = xy[0];
         float y_2_2 = xy[1];
         if(sqrt(pow2(x_1_2 - x_2_2) + pow2(y_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_2 = xy[0];
             float y_2_2_2 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,-corpus_height_3,corpus_width_3,-rotation_corpus);
+            xy = Method.tower_xy_2(x,y,-corpus_height_3,corpus_width_3,-rotation_corpus);
             float x_1_2_1 = xy[0];
             float y_1_2_1 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,-corpus_height_3,-corpus_width_3,-rotation_corpus);
+            xy = Method.tower_xy_2(x,y,-corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
@@ -1005,23 +942,23 @@ public abstract class Unit implements Cloneable{
             }
             return;
         }
-        xy = Method.tower_xy(x,y,0,0,corpus_height_2,-rotation_corpus);
+        xy = Method.tower_xy(x,y,corpus_height_2,-rotation_corpus);
         float x_1_1 = xy[0];
         float y_1_1 = xy[1];
-        xy = Method.tower_xy(x_2,y_2,0,0, unit.corpus_height_2,-unit.rotation_corpus);
+        xy = Method.tower_xy(x_2,y_2, unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_1 = xy[0];
         float y_2_1 = xy[1];
         if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*1.2){
-            xy = Method.tower_xy_2(x_2,y_2,0f,0f, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_1 = xy[0];
             float y_2_1_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_2 = xy[0];
             float y_2_1_2 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,corpus_width_3,-rotation_corpus);
+            xy = Method.tower_xy_2(x,y,corpus_height_3,corpus_width_3,-rotation_corpus);
             float x_1_1_1 = xy[0];
             float y_1_1_1 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,-corpus_width_3,-rotation_corpus);
+            xy = Method.tower_xy_2(x,y,corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
@@ -1039,16 +976,16 @@ public abstract class Unit implements Cloneable{
             return;
         }
         if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.2){
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_2 = xy[0];
             float y_2_2_2 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,corpus_width_3,-rotation_corpus);
+            xy = Method.tower_xy_2(x,y,corpus_height_3,corpus_width_3,-rotation_corpus);
             float x_1_1_1 = xy[0];
             float y_1_1_1 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,corpus_height_3,-corpus_width_3,-rotation_corpus);
+            xy = Method.tower_xy_2(x,y,corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {

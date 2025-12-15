@@ -10,7 +10,7 @@ import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
 
 public class Corpus extends moduleUnit implements Cloneable{
-    public int max_hp,hp;
+    public int max_hp;
     public FunctionalList functional;
     public int armor;
     public int corpus_width,corpus_width_2;
@@ -58,8 +58,8 @@ public class Corpus extends moduleUnit implements Cloneable{
         //System.out.println(string);
         throw new RuntimeException();
     }
-    public Corpus(String ID,int max_hp, int armor, int corpus_width, int corpus_height,int Difference, String image,
-                  FunctionalList func){
+    public Corpus(String ID,int max_hp, int armor, int corpus_width, int corpus_height,
+                  int Difference, String image,FunctionalList func){
         this.ID = ID;
         CorpusListID.add(new Object[]{this,ID});
         this.max_hp = max_hp;
@@ -70,8 +70,8 @@ public class Corpus extends moduleUnit implements Cloneable{
 
         this.corpus_width_2 = corpus_width/2;
         this.corpus_height_2 = corpus_height/2;
-        CenterCorpusX = corpus_width_2;
-        CenterCorpusY = corpus_height_2;
+        this.CenterCorpusX = corpus_width_2;
+        this.CenterCorpusY = corpus_height_2;
 
         this.image = image;
         this.functional = func.clone();
@@ -79,7 +79,7 @@ public class Corpus extends moduleUnit implements Cloneable{
     public void CorpusLoad(Unit unit){
         unit.max_hp = max_hp;
         unit.HpBase = max_hp;
-        unit.hp = hp;
+        unit.hp = max_hp;
         unit.armor = armor;
         unit.ArmorBase = armor;
         unit.corpus_width = corpus_width;

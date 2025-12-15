@@ -15,23 +15,23 @@ public abstract class CollisionFunctional{
         float v = 4;
         float x_2 = unit.x+ unit.corpus_width_2;
         float y_2 = unit.y+ unit.corpus_height_2;
-        xy = Method.tower_xy(x,y,0,0,-unit2.corpus_height_2,-unit2.rotation_corpus);
+        xy = Method.tower_xy(x,y,-unit2.corpus_height_2,-unit2.rotation_corpus);
         float x_1_2 = xy[0];
         float y_1_2 = xy[1];
-        xy = Method.tower_xy(x_2,y_2,0,0,-unit.corpus_height_2,-unit.rotation_corpus);
+        xy = Method.tower_xy(x_2,y_2,-unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_2 = xy[0];
         float y_2_2 = xy[1];
         if(sqrt(pow2(x_1_2 - x_2_2) + pow2(y_1_2 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)*1.4){
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_2 = xy[0];
             float y_2_2_2 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,-unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
+            xy = Method.tower_xy_2(x,y,-unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
             float x_1_2_1 = xy[0];
             float y_1_2_1 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,-unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
+            xy = Method.tower_xy_2(x,y,-unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
@@ -49,23 +49,23 @@ public abstract class CollisionFunctional{
             }
             return;
         }
-        xy = Method.tower_xy(x,y,0,0,unit2.corpus_height_2,-unit2.rotation_corpus);
+        xy = Method.tower_xy(x,y,unit2.corpus_height_2,-unit2.rotation_corpus);
         float x_1_1 = xy[0];
         float y_1_1 = xy[1];
-        xy = Method.tower_xy(x_2,y_2,0,0, unit.corpus_height_2,-unit.rotation_corpus);
+        xy = Method.tower_xy(x_2,y_2, unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_1 = xy[0];
         float y_2_1 = xy[1];
         if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)*1.2){
-            xy = Method.tower_xy_2(x_2,y_2,0f,0f, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_1 = xy[0];
             float y_2_1_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_2 = xy[0];
             float y_2_1_2 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
+            xy = Method.tower_xy_2(x,y,unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
             float x_1_1_1 = xy[0];
             float y_1_1_1 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
+            xy = Method.tower_xy_2(x,y,unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
@@ -83,16 +83,16 @@ public abstract class CollisionFunctional{
             return;
         }
         if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)*1.2){
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
-            xy = Method.tower_xy_2(x_2,y_2,0,0,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            xy = Method.tower_xy_2(x_2,y_2,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_2 = xy[0];
             float y_2_2_2 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
+            xy = Method.tower_xy_2(x,y,unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
             float x_1_1_1 = xy[0];
             float y_1_1_1 = xy[1];
-            xy = Method.tower_xy_2(x,y,0,0,unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
+            xy = Method.tower_xy_2(x,y,unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {

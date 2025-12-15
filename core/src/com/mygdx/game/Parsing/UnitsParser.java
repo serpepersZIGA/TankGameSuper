@@ -14,7 +14,7 @@ public class UnitsParser {
     public static ArrayList<String> Cannon;
     public static int [][] TowerXY;
     public static ClassUnit classUnit;
-    public static int medic_help;
+    public static int medic_help,height;
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Unit").list();
@@ -32,7 +32,7 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon, TowerXY, classUnit, medic_help);
+                    Corpus, Engine, Cannon, TowerXY, classUnit, medic_help,height);
 
 
         }
@@ -54,6 +54,7 @@ public class UnitsParser {
         Corpus = obj.Corpus;
         TowerXY = obj.TowerXY;
         medic_help = obj.MedicConf;
+        height = obj.Height;
     }
     public static void AddBuilding(){
         new File("ContentGlobal").mkdirs();
@@ -62,6 +63,17 @@ public class UnitsParser {
         File Pz2AC = new File("ContentGlobal/Unit/Pz-2AC.json");
         File Pz2F = new File("ContentGlobal/Unit/Pz-2F.json");
         File Pz2M = new File("ContentGlobal/Unit/Pz-2M.json");
+        File Helicopter2Z = new File("ContentGlobal/Unit/Helicopter-2Z.json");
+        String data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"HelicopterCorpus1\",\n" +
+                "  \"Cannon\": [\"Blade\",\"DP-27\",\"DP-27\"],\n" +
+                "  \"TowerXY\": [[0,50],[25,50],[-25,50]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 2\n" +
+                "}";
+
+        Create(Helicopter2Z,data);
         String data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
@@ -69,6 +81,7 @@ public class UnitsParser {
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "  \"MedicConf\": 0\n" +
                 "}";
+
         Create(Pz2A,data);
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +

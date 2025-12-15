@@ -1,0 +1,8 @@
+{
+  "Engine": "V2A",
+  "Corpus": "HelicopterCorpus1",
+  "Cannon": ["Blade","DP-27","DP-27"],
+  "TowerXY": [[0,50],[25,50],[-25,50]],
+  "MedicConf": 0,
+  "Height": 2
+}

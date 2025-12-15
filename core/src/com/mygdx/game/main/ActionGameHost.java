@@ -152,16 +152,6 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
-        for(i = 0;i< UnitList.size();i++) {
-            Unit unit = UnitList.get(i);
-            if(unit.height == 2) {
-                unit.UpdateUnit();
-                unit.update();
-                for (Unit tower : unit.tower_obj){
-                    tower.updateTower();
-                }
-            }
-        }
         for(i = 0;i< DebrisList.size();i++) {
             Unit unit = DebrisList.get(i);
             unit.UpdateUnit();
@@ -175,6 +165,17 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 Main.BulletList.get(i).all_action();
             }
         }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 2) {
+                unit.UpdateUnit();
+                unit.update();
+                for (Unit tower : unit.tower_obj){
+                    tower.updateTower();
+                }
+            }
+        }
+
         inventoryMain.InventoryIteration();
         //System.out.println(inventoryMain.SlotInventory.length);
 

@@ -43,6 +43,7 @@ public class DataImage {
         LoadImage("image/other/dirt_256_2.png","dirt_3");
         LoadImage("image/other/dirt_2.png","dirt_4");
         LoadImage("image/other/asphalt1.png","asphalt1");
+        LoadImage("image/other/machinegun.png","machinegun");
         LoadImage("image/player/tower_auxiliart_player_1.png","tower_player_auxiliary_1");
         LoadImage("image/enemy/tower_auxiliart_enemy_1.png","tower_enemy_auxiliary_1");
         LoadImage("image/infantry/soldat_enemy.png","soldat_1");

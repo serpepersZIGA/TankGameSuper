@@ -156,7 +156,7 @@ public class Cannon extends moduleUnit implements Cloneable{
             cannon.differenceX = differenceX;
             cannon.differenceY = differenceY;
 
-            cannon.CenterX = unit.CorpusUnit.corpus_width_2-cannon.WidthTower2-6;
+            cannon.CenterX = unit.CorpusUnit.corpus_width_2-cannon.WidthTower2;
             cannon.CenterY = unit.CorpusUnit.corpus_height_2-cannon.HeightTower2;
             //CannonAdd.ConstTowerX = unit.const_tower_x;
             //CannonAdd.ConstTowerY = unit.const_tower_y;
