@@ -136,7 +136,7 @@ public class CorpusParser {
         new File("ContentGlobal/Module").mkdirs();
         new File("ContentGlobal/Module/Corpus").mkdirs();
         File Panzer1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
-        File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
+        File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus");
         String data = "MaxHP = 700;\n" +
                 "Armor = 20;\n" +
                 "CorpusWidth = 76;\n" +
