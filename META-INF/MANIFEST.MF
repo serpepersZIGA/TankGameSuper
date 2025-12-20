@@ -1,3 +1,2 @@
-Main-Class: com.mygdx.game.GameStart
 Manifest-Version: 1.0
 
