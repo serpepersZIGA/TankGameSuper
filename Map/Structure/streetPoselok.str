@@ -1,0 +1,11 @@
+BuildAdd:B Building2:x1:y1:;
+BuildAdd:B Building2:x8:y1:;
+BuildAdd:B Building2:x15:y1:;
+BuildAdd:B Building2:x22:y1:;
+Asphalt:x0:y0:X29:;
+Asphalt:x0:y7:X29:;
+Asphalt:x7:y0:Y7:;
+Asphalt:x14:y0:Y7:;
+Asphalt:x21:y0:Y7:;
+Asphalt:x0:y0:Y7:;
+Asphalt:x28:y0:Y7:;

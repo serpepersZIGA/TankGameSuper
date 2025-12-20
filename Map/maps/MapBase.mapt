@@ -1,0 +1,10 @@
+^MapLite;
+/x 120:y 120:;
+BuildAdd:B BigBuildingWood1:x7:y10:r1:;
+(str):street1:x 23:y23:;
+(str):street1:x23:y40:;
+(str):street1:x69:y23:;
+(str):street1:x69:y40:;
+(str):streetPoselok:x70:y60:;
+Asphalt:x70:y53:Y7:;
+(str):pepper1:x12:y12:;
