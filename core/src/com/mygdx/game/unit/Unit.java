@@ -832,21 +832,22 @@ public abstract class Unit implements Cloneable{
         review_field();
         if (!this.trigger_attack) {
             if (this.time_trigger_bull_bot > 0) {
-                motor_bot_bypass();
+                helicopterAi();
                 this.time_trigger_bull_bot -= 1;
             }
         } else {
-            motor_bot_bypass();
+            helicopterAi();
         }
     }
     public void helicopterAi(){
-        Object[]sp = detection_near_transport(this);
+        Object[]sp = less_hp_bot();
         if(sp[0] != null) {
             Unit unit = (Unit) sp[0];
             g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
             g -= 90;
+            trigger_fire = true;
             rotation_bot(g);
-            motor_bot_base((int) sp[1], this.behavior);
+            motor_bot_base((float) sp[1], this.behavior);
         }
         speed_balance();
 
@@ -1319,19 +1320,6 @@ public abstract class Unit implements Cloneable{
         press_s = false;
         press_d = false;
     }
-    public void hustle(){
-        for (Unit value : UnitList) {
-            if(rect_bull((int) value.x, (int) value.y, (int) value.corpus_width, (int) value.corpus_height,
-                    (int) this.x, (int) this.y, (int) this.corpus_width, value.rotation_corpus)) {
-                this.hp = 0;
-            }
-        }
-    }
-    public void AiSoldat(Unit unit){
-        //Unit obj = detection_near_transport_i(this);
-        AISoldatPath(unit);
-
-    }
     public void AISoldatPath(Unit iEnemy){
         if (AIScan) {
             if (null != findIntersection(x,y, iEnemy.tower_x, iEnemy.tower_y)) {
@@ -1405,22 +1393,6 @@ public abstract class Unit implements Cloneable{
         move_xy_transport();
         functional.FunctionalIterationAnClient(this);
     }
-    public void tower_action_client(float x,float y,float rotation,boolean sost_fire_bot){
-
-    }
-    public void tower_action_client(float x,float y,float rotation,boolean sost_fire_bot,boolean sost_fire_bot_2){
-
-    }
-    public void tower_action_client_1(float x,float y,float rotation,boolean sost_fire_bot){
-
-    }
-    public void tower_action_client_2(float x,float y,float rotation,boolean sost_fire_bot){
-
-    }
-    public void tower_action(){
-
-    }
-
     public void update(){
 
     }
@@ -1432,17 +1404,6 @@ public abstract class Unit implements Cloneable{
         this.x_rend = (int)xy[0];
         this.y_rend = (int)xy[1];
         xy = Main.RC.render_objZoom(this.tower_x,this.tower_y);
-        this.x_tower_rend = (int)xy[0];
-        this.y_tower_rend = (int)xy[1];
-
-    }
-    protected void center_corpus_render(){
-        float[]xy = Main.RC.render_objZoom(this.x,this.y);
-        this.x_rend = (int)xy[0];
-        this.y_rend = (int)xy[1];
-    }
-    public void center_render_tower(){
-        float[]xy = Main.RC.render_objZoom(this.tower_x,this.tower_y);
         this.x_tower_rend = (int)xy[0];
         this.y_tower_rend = (int)xy[1];
 
