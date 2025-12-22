@@ -213,8 +213,8 @@ public class ActionMenu extends ActionGame {
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
 
-    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
-            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));
+//    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
+//            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));
 //    unit.inventory.ItemAdd(ItemRegister.MedicineT1);
 //    unit.inventory.ItemAdd(ItemRegister.MedicineT1);
 //    unit.inventory.ItemAdd(ItemRegister.MedicineT1);

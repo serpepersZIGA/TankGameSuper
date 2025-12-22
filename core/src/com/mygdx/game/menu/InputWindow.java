@@ -3,11 +3,16 @@ package com.mygdx.game.menu;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.utils.GdxRuntimeException;
+import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.main.ClientMain;
+import com.mygdx.game.main.ServerMain;
 
 import javax.swing.*;
 import java.awt.*;
 import java.io.*;
+
+import static com.mygdx.game.main.Main.tcpPort;
+import static com.mygdx.game.main.Main.udpPort;
 
 public class InputWindow{
     public static JButton Button;
@@ -59,6 +64,10 @@ public class InputWindow{
         ClientMain.IP = result.toString();
         JTextField textField = new JTextField(ClientMain.IP,40);
 
+        //JLabel label = new JLabel(tcpPort+"/"+udpPort);
+        //label.setLocation(1,700);
+        //frame.add(label);
+        //label.setFont(new Font("Arial",Font.PLAIN,20));
         frame.getContentPane().add(textField, "North");
         frame.getContentPane().add(Button, "South");
 

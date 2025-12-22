@@ -77,7 +77,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit.ai_sost-=1;
             Unit.AIScan = false;}
         else {
-            Unit.ai_sost=200;
+            Unit.ai_sost=700;
             Unit.AIScan = true;
         }
         if(flame_spawn_time > 0){flame_spawn_time-=1;}

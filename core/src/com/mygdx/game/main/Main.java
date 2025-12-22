@@ -53,6 +53,7 @@ import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalCo
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
+import static com.mygdx.game.menu.InputWindow.frame;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
@@ -74,7 +75,6 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<Unit> DebrisList = new ArrayList<>();
 
 	public static DataSound ContentSound;
-	public static ArrayList<ArrayList<Block>> AirList = new ArrayList<>();
 	public static ArrayList<ArrayList<Block>> BlockList2D = new ArrayList<>();
 
 	public static RenderCenter RC;
@@ -104,8 +104,6 @@ public class Main extends ApplicationAdapter {
 	public static BitmapFont font,font2;
 	public static byte ConfigMenu;
 	public static InputWindow InputWindow;
-	public static int xMaxAir;
-	public static int yMaxAir;
 	public static int xMap,yMap,i;
 	public static EventRegister EventData;
 	public static int IDClient;
@@ -123,6 +121,7 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
+    public static int udpPort = 27950, tcpPort = 27950;
 
 
 
@@ -322,7 +321,6 @@ public class Main extends ApplicationAdapter {
 		ContentSound.dispose();
 		BlockList2D.clear();
 		BuildingList.clear();
-		AirList.clear();
 		FlameList.clear();
 		FlameSpawnList.clear();
 		LiquidList.clear();
@@ -344,15 +342,15 @@ public class Main extends ApplicationAdapter {
 				throw new RuntimeException(e);
 			}
 		}
-		else if(ClientMain.Client != null) {
+		if(ClientMain.Client != null) {
 			try {
 				ClientMain.Client.dispose();
 			} catch (IOException e) {
 				throw new RuntimeException(e);
 			}
 		}
+        super.dispose();
 		Gdx.app.exit();
-		System.exit(0);
-		super.dispose();
+		//System.exit(0);
 	}
 }

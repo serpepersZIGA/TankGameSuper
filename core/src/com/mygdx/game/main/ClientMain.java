@@ -47,7 +47,6 @@ import static java.lang.StrictMath.sqrt;
 
 public class ClientMain extends Listener {
     public static Client Client;
-    static int udpPort = 27950, tcpPort = 27950;
     public static String IP = "127.0.0.1";
     private int i;
 
@@ -94,14 +93,18 @@ public class ClientMain extends Listener {
         //Клиент начинает подключатся к серверу
 
         //Клиент подключается к серверу
-        try {
-            Client.connect(5000, IP, tcpPort, udpPort);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        SearchPort(tcpPort,udpPort);
         packetUnitUpdate.ConfUnitList = true;
         packetUnitUpdate.ConfDebrisList = true;
         Client.addListener(Main.Main_client);
+    }
+    private void SearchPort(int tcpPort, int udpPort){
+        System.out.println(tcpPort);
+        try {
+            Client.connect(5000, IP, tcpPort, udpPort);
+        } catch (IOException e) {
+            SearchPort(tcpPort+1, udpPort+1);
+        }
     }
 
     @Override

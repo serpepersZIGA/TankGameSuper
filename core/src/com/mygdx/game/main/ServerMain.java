@@ -19,6 +19,7 @@ import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import java.io.IOException;
+import java.net.InetSocketAddress;
 import java.util.ArrayList;
 import java.util.Objects;
 
@@ -29,9 +30,7 @@ import static com.mygdx.game.unit.Unit.IDList;
 
 public class ServerMain extends Listener {
     public static Server Server;
-    static final int udpPort = 27950, tcpPort = 27950;
     public static int nConnect = 0;
-
     public void create(){
         System.out.println("Создаем сервер");
         //Создаем сервер
@@ -62,27 +61,27 @@ public class ServerMain extends Listener {
         Server.getKryo().register(FlameStatic.class);
         Server.getKryo().register(BuildPacket.class);
         Server.getKryo().register(PacketBuildingServer.class);
-
         Server.getKryo().register(SoundPacket.class);
-
         Server.getKryo().register(PacketMapObject.class);
         Server.getKryo().register(ObjectMapAssets.class);
-
         Server.getKryo().register(PacketUnitUpdate.class);
         Server.getKryo().register(SpawnPlayerPack.class);
 
         //Регистрируем порт
-        try {
-            Server.bind(tcpPort, udpPort);
-        } catch (IOException e) {
-            throw new RuntimeException(e);
-        }
+        SearchPort(tcpPort, udpPort);
 
         //Запускаем сервер
         Server.start();
 
         Server.addListener(Main.serverMain);
-
+    }
+    private void SearchPort(int tcpPort, int udpPort){
+        System.out.println(tcpPort);
+        try {
+            Server.bind(tcpPort,udpPort);
+        } catch (IOException e) {
+            SearchPort(tcpPort+1,udpPort+1);
+        }
     }
     public void connected(Connection c){
         System.out.println("На сервер подключился " + c.getRemoteAddressTCP().getHostString());

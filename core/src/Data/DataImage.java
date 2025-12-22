@@ -7,15 +7,6 @@ import com.badlogic.gdx.graphics.g2d.TextureRegion;
 
 public class DataImage {
     public static TextureAtlas TextureAtl;
-    public Sprite tower_player, tower_player_auxiliary_1,tower_enemy, tower_enemy_auxiliary_1;
-    public Sprite corpus_player,corpus_track_remount_enemy,corpus_track_soldat_enemy,corpus_enemy,helicopter_enemy_t1,
-            helicopter_blade,pepper_object_map;
-    public Sprite build_1, big_build_wood_1;
-    public Sprite track_enemy_1lvl;
-    public Sprite grass,dirt_2,dirt_3,dirt_4;
-    public Sprite asphalt1;
-    public Sprite soldat_1,ExpBuild,frameInventory,InventoryBackground;
-    public Sprite AK74,FlameGun,BottleFlame,BottleAcid,BulletPenetration,BulletFragmentation,Medicine;
     public Texture buff;
     public DataImage(){
         TextureAtl = new TextureAtlas();

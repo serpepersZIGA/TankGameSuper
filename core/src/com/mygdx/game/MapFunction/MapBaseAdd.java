@@ -13,14 +13,10 @@ public class MapBaseAdd {
         File MapFile = new File("Map/maps/MapBase.mapt");
         File Str2File = new File("Map/Structure/streetPoselok.str");
         File StrFile = new File("Map/Structure/street1.str");
-        try {
-            StrFile.createNewFile();
-        } catch (IOException ignored) {
-        }
-        try {
-            MapFile.createNewFile();
-        } catch (IOException ignored) {
-        }
+
+        File pepper1 = new File("Map/Structure/pepper1.str");
+        File CentralSquare = new File("Map/Structure/CentralSquare.str");
+        File MapCentral = new File("Map/maps/MapCentral.mapt");
         String dataMap = "^MapLite;\n" +
                 "/x 120:y 120:;\n" +
                 "BuildAdd:B BigBuildingWood1:x7:y10:r1:;\n" +
@@ -31,12 +27,7 @@ public class MapBaseAdd {
                 "(str):streetPoselok:x70:y60:;\n" +
                 "Asphalt:x70:y53:Y7:;\n" +
                 "(str):pepper1:x12:y12:;";
-        try {
-            PrintWriter out = new PrintWriter("Map/maps/MapBase.mapt");
-            out.println(dataMap);
-            out.close();
-        } catch (IOException ignored) {
-        }
+        Create(MapFile,dataMap);
         String dataStr =
                 "BuildAdd:B BigBuildingWood1:x0:y1:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x12:y1:r0:;\n" +
@@ -58,12 +49,7 @@ public class MapBaseAdd {
                         "Asphalt:x34:y1:Y15:;\n" +
                         "Asphalt:x35:y1:Y15:;\n";
 
-        try {
-            PrintWriter out = new PrintWriter("Map/Structure/street1.str");
-            out.println(dataStr);
-            out.close();
-        } catch (IOException ignored) {
-        }
+        Create(StrFile,dataStr);
 
         dataStr =
                 "BuildAdd:B Building2:x1:y1:;\n" +
@@ -77,28 +63,69 @@ public class MapBaseAdd {
                         "Asphalt:x21:y0:Y7:;\n" +
                         "Asphalt:x0:y0:Y7:;\n" +
                         "Asphalt:x28:y0:Y7:;";
-        try {
-            PrintWriter out = new PrintWriter("Map/Structure/streetPoselok.str");
-            out.println(dataStr);
-            out.close();
-        } catch (IOException ignored) {
-        }
-
-        dataStr =
-                "ObjectMap:0:0:(int)2:(int)2:pepper_object_map:(int)20:(int)20:(int)120:CollisionBreak:true:(int)600:;\n";
-        try {
-            PrintWriter out = new PrintWriter("Map/ObjectMap/pepper.objM");
-            out.println(dataStr);
-            out.close();
-        } catch (IOException ignored) {
-        }
+        Create(Str2File,dataStr);
         dataStr =
                 "MapObject:x14:y5:o pepper:;\n" +
                         "MapObject:x22:y10:o pepper:;\n" +
                         "MapObject:x14:y10:o pepper:;";
+        Create(pepper1,dataStr);
+
+
+        dataStr =
+                "BuildAdd:B BigBuildingWood1:x8:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x20:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x32:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x44:y1:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x0:y9:r1:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x0:y21:r1:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x0:y33:r1:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x0:y45:r1:;\n" +
+                        "Asphalt:x0:y7:X62:;\n" +
+                        "Asphalt:x0:y8:X62:;\n" +
+                        "Asphalt:x6:y7:Y50:;\n" +
+                        "Asphalt:x7:y7:Y50:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x56:y9:r1:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x56:y21:r1:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x56:y33:r1:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x56:y45:r1:;\n" +
+                        "Asphalt:x54:y7:Y50:;\n" +
+                        "Asphalt:x55:y7:Y50:;\n" +
+                        "Asphalt:x0:y56:X62:;\n" +
+                        "Asphalt:x0:y55:X62:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x8:y57:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x20:y57:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x32:y57:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x44:y57:r0:;\n" +
+                        "Asphalt:x31:y7:Y50:;\n" +
+                        "Asphalt:x30:y7:Y50:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x8:y49:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x20:y49:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x32:y49:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x44:y49:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x8:y9:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x20:y9:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x32:y9:r0:;\n" +
+                        "BuildAdd:B BigBuildingWood1:x44:y9:r0:;";
+        Create(CentralSquare,dataStr);
+
+
+
+        dataStr =
+                "^MapCentral;\n" +
+                        "/x 100:y 100:;\n" +
+                        "\n" +
+                        "(str):CentralSquare:x 23:y23:;";
+        Create(MapCentral,dataStr);
+
+    }
+    private static void Create(File file, String str){
         try {
-            PrintWriter out = new PrintWriter("Map/Structure/pepper1.str");
-            out.println(dataStr);
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
             out.close();
         } catch (IOException ignored) {
         }

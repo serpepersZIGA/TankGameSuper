@@ -79,7 +79,8 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
                 "}";
 
         Create(Pz2A,data);
@@ -88,7 +89,8 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
                 "}";
         Create(Pz2AC,data);
         data = "{\n" +
@@ -96,7 +98,8 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"]," +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
                 "}";
         Create(Pz2F,data);
         data = "{\n" +
@@ -104,7 +107,8 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"]," +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
-                "  \"MedicConf\": 0\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
                 "}";
         Create(Pz2M,data);
 
