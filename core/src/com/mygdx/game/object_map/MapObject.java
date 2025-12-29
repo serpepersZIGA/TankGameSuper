@@ -6,8 +6,6 @@ import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Network.PacketMapObject;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.block.Block;
-import com.mygdx.game.main.ActionGameClient;
-import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
@@ -17,9 +15,7 @@ import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
 import com.mygdx.game.object_map.component_collision_system.ComponentCollisionSystem;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.HashMap;
-import java.util.Objects;
 
 import static Data.DataColor.RGBFlame;
 import static Data.DataImage.TextureAtl;
@@ -70,7 +66,7 @@ public class MapObject implements Cloneable{
             BlockList2D.get(y).get(x).objMap = obj;
 
             obj.x = x*Main.width_block+ix;
-            obj.y = y*Main.height_block+iy;
+            obj.y = y*Main.width_block +iy;
 
             if(this.lighting){
                 obj.lighting = true;

@@ -1,5 +1,4 @@
 package com.mygdx.game.main;
-import Content.Particle.*;
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
@@ -53,7 +52,6 @@ import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalCo
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
-import static com.mygdx.game.menu.InputWindow.frame;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
@@ -90,7 +88,7 @@ public class Main extends ApplicationAdapter {
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
-	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,height_block =70,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
+	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
 	public static int width_block_zoom= 70,height_block_zoom =70,width_block_render= 73,height_block_render =73;
 	public static float radius_air_max = 150,radius_air_max_zoom,TimeGlobal,TimeGlobalBullet;
 	public static ServerMain serverMain;
@@ -145,8 +143,8 @@ public class Main extends ApplicationAdapter {
 		MapAllLoad.MapCount();
 //		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
-//		PlayerCannonFlameA2.UnitAdd(1200,1200,true, (byte) 2,
-//				RegisterControl.controllerBot,new Inventory(new Item[3][4]));
+        TrackSoldatT1.UnitAdd(1200,1200,true, (byte) 2,
+				RegisterControl.controllerSoldatTransport,new Inventory(new Item[3][4]));
 
 		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 	}
@@ -155,7 +153,7 @@ public class Main extends ApplicationAdapter {
 		quantity_width = width_field;
 		quantity_height = height_field;
 		width_block_2 = width_block/2;
-		height_block_2 = height_block/2;
+		height_block_2 = width_block /2;
 		//width_block*=1.24;
 		//height_block*=1.24;
 
@@ -163,7 +161,7 @@ public class Main extends ApplicationAdapter {
 		y_block = 0;
 		for(int i = 0;i<quantity_height;i++){
 			BlockList2D.add(new ArrayList<>());
-			y_block += height_block;
+			y_block += width_block;
 			x_block = 0;
 			for(int i2 = 0;i2<quantity_width;i2++){
 				x_block += width_block;
@@ -243,7 +241,7 @@ public class Main extends ApplicationAdapter {
 		GunRegister.Create();
 		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(30,30,25,25,0.15f,0.80f);
+		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
 
 		Render = new RenderPrimitive();

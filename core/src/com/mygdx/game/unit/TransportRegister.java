@@ -29,7 +29,8 @@ public class TransportRegister {
         list = new ArrayList<>();
         TrackSoldatT1 = new UnitPattern("TrSolS1",RegisterModuleCorpus.CorpusSoldatTrackS1,
                 RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.SupportTransport,0,1);
-        TrackSoldatT1.time_spawn_soldat_max = 200;
+
+        //TrackSoldatT1.time_spawn_soldat_max = 200;
 
         TrackRemountT1 = new UnitPattern("TrRemR1",RegisterModuleCorpus.CorpusRemountTrackR1,
                 RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.SupportTransport,1,1);

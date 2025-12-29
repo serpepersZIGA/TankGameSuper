@@ -1,6 +1,4 @@
 package com.mygdx.game.bull;
-import com.badlogic.gdx.Gdx;
-import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.bull.Updater.UpdaterBullet;
@@ -20,7 +18,6 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 
-import static Data.DataColor.*;
 import static com.mygdx.game.bull.BulletRegister.*;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.pow2.pow2;
@@ -258,7 +255,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         if(time<=0){this.clear_sost = 1;}
     }
     protected void BuildBulletCollision(){
-        int yM = (int) (y/height_block)-1;
+        int yM = (int) (y/ Main.width_block)-1;
         int xM = (int) (x/width_block)-1;
         if(xM>-1&yM>-1&xM< xMap&yM<yMap) {
             if (BlockList2D.get(yM).get(xM).passability & height == 1){this.clear_sost = 1;

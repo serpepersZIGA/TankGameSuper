@@ -8,7 +8,6 @@ import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 
-import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.main.Main.*;
@@ -65,7 +64,7 @@ public abstract class Particle {
     }
     protected final void grass_delete(){
         int ix = (int) (x/Main.width_block)-1;
-        int iy = (int) (y/Main.height_block)-1;
+        int iy = (int) (y/Main.width_block)-1;
         try {
             if(Main.BlockList2D.get(iy).get(ix).render_block == UpdateRegister.GrassUpdate) {
                 Main.BlockList2D.get(iy).get(ix).render_block = UpdateRegister.DirtUpdate;

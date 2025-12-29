@@ -31,7 +31,7 @@ public class Corpus extends moduleUnit implements Cloneable{
 
         this.corpus_width_2 = corpus_width/2;
         this.corpus_height_2 = corpus_height/2;
-        CenterCorpusX = corpus_width_2;
+        CenterCorpusX = corpus_width_2-6;
         CenterCorpusY = corpus_height_2;
 
         this.image = image;

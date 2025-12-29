@@ -7,6 +7,8 @@ import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
+import com.mygdx.game.block.Block;
+import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
@@ -274,6 +276,8 @@ public abstract class Unit implements Cloneable{
         return unitAdd;
     }
     protected final void data(){
+
+
         //tower_obj = new ArrayList<>();
         path = new ArrayList<>();
         this.reload = this.reload_max;
@@ -281,8 +285,8 @@ public abstract class Unit implements Cloneable{
         this.HpBase = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
         this.time_spawn_soldat = this.time_spawn_soldat_max;
-        //this.corpus_width_2 = this.corpus_width/2;
-        //this.corpus_height_2 = this.corpus_height/2;
+        this.corpus_width_2 = this.corpus_width/2;
+        this.corpus_height_2 = this.corpus_height/2;
         corpus_height_3 = (float) (corpus_height_2/1.5);
         corpus_width_3 = (float)(corpus_width_2*1.2);
         if(tower_img != null){
@@ -298,11 +302,16 @@ public abstract class Unit implements Cloneable{
             this.const_y_tower = (int)(const_tower_y*Main.Zoom);}
         this.corpus_width_zoom = (int)(corpus_width*Main.Zoom);
         this.corpus_height_zoom = (int)(corpus_height*Main.Zoom);
+
         for (Unit cannon : tower_obj){
             cannon.tower_x_const = tower_x_const;
             cannon.tower_y_const = tower_y_const;
         }
 
+//        this.corpus_width_zoom = (int)(corpus_width*Main.Zoom);
+//        this.corpus_height_zoom = (int)(corpus_height*Main.Zoom);
+        this.width_tower_zoom = (int)(width_tower *Main.Zoom);
+        this.height_tower_zoom = (int)(height_tower *Main.Zoom);
         this.const_x_corpus = (int)(corpus_width_2*Main.Zoom);
         this.const_y_corpus = (int)(corpus_height_2*Main.Zoom);
         green_len = ((float)this.hp/this.max_hp)* Option.size_x_indicator;
@@ -312,6 +321,7 @@ public abstract class Unit implements Cloneable{
         path = new ArrayList<>();
         this.reload = this.reload_max;
         this.hp = this.max_hp;
+        this.HpBase = this.max_hp;
         this.HPTriggerHill = this.max_hp/3;
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width/2;
@@ -496,6 +506,8 @@ public abstract class Unit implements Cloneable{
             left_mouse = true;
         }
 
+        //left_mouse = abs(rotation_tower - gh) < 20 & trigger_fire;
+
     }
     public void SoldatRotate(float x, float y, float x_2, float y_2, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
@@ -572,9 +584,7 @@ public abstract class Unit implements Cloneable{
         Object[]ObjList = less_hp_bot();
         if(ObjList[0] != null) {
             Unit unit = (Unit) ObjList[0];
-            g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535f * 180f);
-            g -= 90;
-            AITransport(g,unit, (Float) ObjList[1]);
+            AITransport(unit, (Float) ObjList[1]);
         }
     }
     public boolean reload_bot(){
@@ -671,32 +681,45 @@ public abstract class Unit implements Cloneable{
             }
         }
     }
-    private void rotation_bot(float g) {
 
-        if (g > 20 && this.rotation_corpus < -180) {
-            g = -272;
+
+    private void rotation_bot() {
+//        if(AngleTarget>50 && rotation_corpus<-50){
+//            AngleTarget= -180;
+//        }
+//        if(AngleTarget<-50 && rotation_corpus>50){
+//            AngleTarget= 180;
+//        }
+//        if (rotation_corpus > 179){rotation_corpus = -179;}
+//        else if (rotation_corpus < -179){rotation_corpus = 179;}
+
+
+        if (AngleTarget > 20 && this.rotation_corpus < -180) {
+            AngleTarget = -300;
             //if (this.rotation_corpus <= g) {
-                //this.rotation_corpus = 91;
+            //this.rotation_corpus = 91;
             //}
         }
-        else if (g < -160 && this.rotation_corpus > 0) {
-            g = 92;
+        else if (AngleTarget < -160 && this.rotation_corpus > 0) {
+            AngleTarget = 120;
             //if (this.rotation_corpus >= g) {
-                //this.rotation_corpus = -271;
+            //this.rotation_corpus = -271;
             //}
         }
-        if (this.rotation_corpus > 91) {
-            this.rotation_corpus = -269;
+        if (this.rotation_corpus > 90) {
+            this.rotation_corpus = -268;
         }
-        else if (this.rotation_corpus < -271) {
-            this.rotation_corpus = 89;
+        else if (this.rotation_corpus < -270) {
+            this.rotation_corpus = 88;
         }
-        if (g > this.rotation_corpus) {
+
+        if (AngleTarget > this.rotation_corpus) {
             press_a = true;
-        } else if (g < this.rotation_corpus) {
+        } else if (AngleTarget < this.rotation_corpus) {
             press_d = true;
         }
-        if (abs(g-rotation_corpus)<20 && !this.crite_life){
+        System.out.println(rotation_corpus+"||"+AngleTarget +"||" + abs(AngleTarget-rotation_corpus));
+        if (abs(AngleTarget-(rotation_corpus))<25f && !this.crite_life){
             this.trigger_drive = 1;
         }
         else{
@@ -710,36 +733,51 @@ public abstract class Unit implements Cloneable{
         }
     }
 
-    private void AITransport(float g, Unit Target,float rad) {
+    private void AITransport(Unit Target,float rad) {
         if (AIScan) {
             if (null != findIntersection(this.tower_x, this.tower_y, Target.tower_x, Target.tower_y)) {
+                trigger_fire = false;
                 Ai.pathAIAStar(this,Target,this.tower_x,this.tower_y);
+
+//                for (ArrayList<Block> i2:Main.BlockList2D){
+//                    for (Block i3:i2){
+//                        i3.render_block = UpdateRegister.GrassUpdate;
+//                    }
+//                }
+//                for(int[]i: path){
+//                    Main.BlockList2D.get(i[1]).get(i[0]).render_block = UpdateRegister.Update3;
+//                }
+
             } else {
                 path.clear();
                 trigger_fire = true;
             }
         }
-        if(path.size() > 0) {
-                float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
-                this.g = (float) sqrt(pow2((xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
-                float gr = (float) ((atan2(xy[1] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,xy[0] - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
-                rotation_bot(gr);
+        else if(path.size() > 0) {
+            //System.out.println(path.size());
+                //float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
+                RadiusTarget = (float) sqrt(pow2((tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
+                AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
+                rotation_bot();
+                //System.out.println(trigger_drive);
                 motor_bot_base();
-                if(this.g< 70){
+                if(RadiusTarget< 40){
                     path.remove(0);
                 }
-            }
-            else{
-                //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
-                rotation_bot(g);
-                motor_bot_base(rad, this.behavior);
-            }
+        }
+        else{
+            AngleTarget = (float) ((atan2(tower_y - Target.tower_y,
+                    tower_x - Target.tower_x)/3.1415926535*180)-90);
+            //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
+            rotation_bot();
+            motor_bot_base(rad, this.behavior);
+        }
     }
     protected float[] findIntersection(float x0, float y0, float dx, float dy) {
         float x = dx/width_block-1;
-        float y = dy/height_block-1;
+        float y = dy/ Main.width_block -1;
         dx = x0/width_block-1;
-        dy = y0/height_block-1;
+        dy = y0/ Main.width_block -1;
         float xy_r = (float)(atan2(y-dy, x-dx));
         float speed_x = (float) cos(xy_r);
         float speed_y = (float) sin(xy_r);
@@ -843,10 +881,9 @@ public abstract class Unit implements Cloneable{
         Object[]sp = less_hp_bot();
         if(sp[0] != null) {
             Unit unit = (Unit) sp[0];
-            g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
-            g -= 90;
+            AngleTarget = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
             trigger_fire = true;
-            rotation_bot(g);
+            rotation_bot();
             motor_bot_base((float) sp[1], this.behavior);
         }
         speed_balance();
@@ -1090,7 +1127,6 @@ public abstract class Unit implements Cloneable{
         //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
         return !area1.isEmpty();
     }
-    private static boolean z = false;
     private static int render_x_max,render_x_min,render_y_max,render_y_min;
     public void build_corpus(){
         render_x_max = (int) ((x + BorderDetected) / Main.width_block);
@@ -1101,8 +1137,8 @@ public abstract class Unit implements Cloneable{
         if (render_x_max > xMap) {
             render_x_max = xMap;
         }
-        render_y_max = (int) ((y + BorderDetected) / Main.height_block);
-        render_y_min = (int) ((y - BorderDetected) / Main.height_block);
+        render_y_max = (int) ((y + BorderDetected) / Main.width_block);
+        render_y_min = (int) ((y - BorderDetected) / Main.width_block);
         if (render_y_min < 0) {
             render_y_min = 0;
         }
@@ -1114,7 +1150,7 @@ public abstract class Unit implements Cloneable{
             for (int ix = render_x_min; ix < render_x_max; ix++) {
                 if (BlockList2D.get(iy).get(ix).passability) {
                     if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
-                            width_block, height_block, 0)) {
+                            width_block, Main.width_block, 0)) {
                         if (this.speed > 2 || this.speed < -2) {
                             SoundPlay.sound(Main.ContentSound.break_wooden, 1 - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
                             SoundPacket soundPacket = new SoundPacket();
@@ -1133,50 +1169,50 @@ public abstract class Unit implements Cloneable{
     }
     private void MethodCollision(Unit unit){
         if(this.x< unit.x) {
-            this.x -= 2;
-            unit.x += 2;
-            this.SpeedInert += unit.speed*0.5;
-            unit.SpeedInert += this.speed*0.5;
-            this.speed *= -0.8;
-            unit.speed *= -0.8;
+            this.x -= 2f;
+            unit.x += 2f;
+            this.SpeedInert += unit.speed*0.5f;
+            unit.SpeedInert += this.speed*0.5f;
+            this.speed *= -0.8f;
+            unit.speed *= -0.8f;
             this.RotationInert = unit.rotation_corpus;
             unit.RotationInert = this.rotation_corpus;
         }
         else if(this.x> unit.x) {
             this.x += 2;
             unit.x -= 2;
-            this.SpeedInert += unit.speed*0.5;
-            unit.SpeedInert += this.speed*0.5;
-            this.speed *= -0.5;
-            unit.speed *= -0.7;
+            this.SpeedInert += unit.speed*0.5f;
+            unit.SpeedInert += this.speed*0.5f;
+            this.speed *= -0.5f;
+            unit.speed *= -0.7f;
             this.RotationInert = unit.rotation_corpus;
             unit.RotationInert = this.rotation_corpus;
         }
         if(this.y< unit.y) {
-            this.y -= 2;
-            unit.y += 2;
+            this.y -= 2f;
+            unit.y += 2f;
         }
         else if(this.y> unit.y) {
-            this.y += 2;
-            unit.y -= 2;
+            this.y += 2f;
+            unit.y -= 2f;
         }
     }
     private void MethodCollision(int x, int y){
         if(this.x<x) {
-            this.x -= 2;
-            this.speed *= -0.8;
-            this.SpeedInert *= -0.8;
+            this.x -= 2f;
+            this.speed *= -0.8f;
+            this.SpeedInert *= -0.8f;
         }
         else if(this.x>x) {
-            this.x += 2;
-            this.speed *= -0.8;
-            this.SpeedInert *= -0.8;
+            this.x += 2f;
+            this.speed *= -0.8f;
+            this.SpeedInert *= -0.8f;
         }
         if(this.y<y) {
-            this.y -= 2;
+            this.y -= 2f;
         }
         else if(this.y>y) {
-            this.y += 2;
+            this.y += 2f;
         }
     }
     public void move_debris(){
@@ -1184,9 +1220,9 @@ public abstract class Unit implements Cloneable{
             this.x -= move.move_sin(this.speed, -this.rotation_corpus);
             this.y -= move.move_cos(this.speed, -this.rotation_corpus);
 
-            if (this.speed < -0.5) {
+            if (this.speed < -0.5f) {
                 this.speed += this.Acceleration;
-            } else if (this.speed > 0.5) {
+            } else if (this.speed > 0.5f) {
                 this.speed -= Acceleration;
             } else {
                 speed = 0;
@@ -1221,9 +1257,7 @@ public abstract class Unit implements Cloneable{
         Object[] sp = Method.detectionNearSupportTransport(this);
         Unit unit = (Unit) sp[0];
         if(unit != null) {
-            g = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
-            g -= 90;
-            AITransport(g, unit, (Float)sp[1]);
+            AITransport( unit, (Float)sp[1]);
         }
     }
     public void spawn_soldat(){

@@ -224,7 +224,7 @@ public class ClientMain extends Listener {
             //LightSystem.lightsRender.clear();
             for (int i = 0; i < PacketBuilding.size(); i++) {
                 Building_create(i, PacketBuilding.get(i).x - width_block,
-                        PacketBuilding.get(i).y - height_block,PacketBuilding.get(i).rotation);
+                        PacketBuilding.get(i).y - Main.width_block,PacketBuilding.get(i).rotation);
             }
             ArrayList<ArrayList<PacketMapObject>> objMapList;
             objMapList = ((PacketBuildingServer) p).ObjectMapPack;

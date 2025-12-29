@@ -1,6 +1,5 @@
 package com.mygdx.game.method;
 
-import Content.Particle.FlameSpawn;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.mygdx.game.Inventory.ItemObject;
@@ -195,7 +194,7 @@ public class Keyboard extends InputAdapter{
         RC.height_2_zoom = RC.height_2/Main.Zoom;
         RC.CameraMapConf();
         RC.cam_x_width = (int) (RC.WidthRenderZoom/Main.width_block);
-        RC.cam_y_height= (int) (RC.HeightRenderZoom/Main.height_block);
+        RC.cam_y_height= (int) (RC.HeightRenderZoom/Main.width_block);
 
         LightSystem.lightsRender.clear();
         for(LightingMainSystem.Light light : LightSystem.lights){

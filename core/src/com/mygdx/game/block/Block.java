@@ -1,6 +1,5 @@
 package com.mygdx.game.block;
 
-import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.object_map.MapObject;
 
@@ -9,10 +8,7 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
 import static com.mygdx.game.block.UpdateRegister.VoidUpdate;
-import static com.mygdx.game.method.CycleTimeDay.*;
 import static com.mygdx.game.method.pow2.pow2;
-import static java.lang.StrictMath.sqrt;
-import static java.sql.Types.NULL;
 
 public abstract class Block {
     public int x,y;
@@ -39,8 +35,8 @@ public abstract class Block {
         }
     }
     protected final void block_xy(){
-        this.x_center = this.x +Main.width_block/2;
-        this.y_center = this.y +Main.height_block/2;
+        this.x_center = (int) (this.x +Main.width_block *0.5);
+        this.y_center = (int) (this.y +Main.width_block *0.5);
     }
     private boolean rect_collision(int x1,int y1,int width,int height,
                                   int x2,int y2,int width2,int height2,double rotation_2){

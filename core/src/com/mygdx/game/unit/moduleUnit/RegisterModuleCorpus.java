@@ -25,7 +25,7 @@ public class RegisterModuleCorpus {
         func.Add(TowerXY);
         CorpusRemountTrackR1 = new Corpus(850,25,50,130,18
                 ,"corpus_track_remount_enemy",func);
-        func.Add(SoldatSpawn);
+        //func.Add(SoldatSpawn);
         CorpusSoldatTrackS1 = new Corpus(520,15,50,130,18
                 ,"corpus_track_soldat_enemy",func);
 

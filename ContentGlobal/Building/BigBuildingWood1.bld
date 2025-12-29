@@ -1,8 +1,8 @@
 Asset = big_build_wood_1;
-Struct = true,true,true,true,false,false,true,true,true,true:
-         true,true,true,true,false,false,true,true,true,true:
-         true,true,true,true,false,false,true,true,true,true:
-         true,true,true,true,false,false,true,true,true,true:
-         true,true,true,true,false,false,true,true,true,true:
-         true,true,true,true,false,false,true,true,true,true;
+Struct = true,true,true,true,true,false,true,true,true,true:
+         true,true,true,false,false,false,false,true,true,true:
+         true,true,true,false,false,false,false,true,true,true:
+         true,true,true,false,false,true,false,true,true,true:
+         true,true,true,true,true,true,true,true,true,true:
+         true,true,true,true,true,true,true,true,true,true;
 FlameStatus = true;

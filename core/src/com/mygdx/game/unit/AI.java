@@ -1,6 +1,4 @@
 package com.mygdx.game.unit;
-import com.mygdx.game.block.Block;
-import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.main.Main;
 import java.util.ArrayList;
 
@@ -21,6 +19,68 @@ public class AI {
 
     // Метод для обновления позиции ИИ
     public void pathAIAStar(Unit ai, Unit target, float x_ai, float y_ai){
+        ai.path.clear();
+        OpenBlockList.clear();
+        CloseBlockList.clear();
+        int[] target_xy = block_detected_2(target);
+        int[] ai_xy = block_detected_3(x_ai, y_ai);
+        x = ai_xy[0];
+        y = ai_xy[1];
+        ai.path.add(new int[]{(int)x, (int)y});
+        //IterationPath.add(new ArrayList<>());
+        //IterationPath.get(0).add(new int[]{(int)x,(int)y});
+        CloseBlockList.add(new int[]{(int)x,(int)y});
+        ArrayList<int[]> List;
+        while (y != target_xy[1] || x != target_xy[0]) {
+            //CloseBlockList.add(new int[]{(int)x,(int)y});
+            OpenBlockList.clear();
+            xTotal = x + 1;
+            if (!BlockList2D.get((int) y).get((int) xTotal).passability & !BlockList2D.get((int) y).get((int) xTotal).AiClose) {
+                TargetLine = (float) sqrt(pow2(target_xy[0]-xTotal)+pow2(target_xy[1]-y));
+                OpenBlockList.add(new float[]{xTotal, y, TargetLine});
+            }
+            xTotal = x - 1;
+            if (!BlockList2D.get((int) y).get((int) xTotal).passability & !BlockList2D.get((int) y).get((int) xTotal).AiClose) {
+                TargetLine = (float) sqrt(pow2(target_xy[0]-xTotal)+pow2(target_xy[1]-y));
+                    OpenBlockList.add(new float[]{xTotal, y, TargetLine});
+            }
+            yTotal = y + 1;
+            if (!BlockList2D.get((int) yTotal).get((int) x).passability & !BlockList2D.get((int) yTotal).get((int) x).AiClose) {
+                TargetLine = (float) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-yTotal));
+                OpenBlockList.add(new float[]{x, yTotal, TargetLine});
+            }
+            yTotal = y - 1;
+            if (!BlockList2D.get((int) yTotal).get((int) x).passability & !BlockList2D.get((int) yTotal).get((int) x).AiClose) {
+                TargetLine = (float) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-yTotal));
+                OpenBlockList.add(new float[]{x, yTotal, TargetLine});
+            }
+            if (OpenBlockList.size() == 0) {
+                ai.path.remove(ai.path.size()-1);
+                x = ai.path.get(ai.path.size()-1)[0];
+                y = ai.path.get(ai.path.size()-1)[1];
+            } else {
+                TargetLineMinBuffer = -1;
+                for(int i = 0; i < OpenBlockList.size(); i++){
+                    if ((TargetLineMinBuffer == -1)||(OpenBlockList.get(i)[2] < TargetLineMinBuffer)) {
+                        TargetLineMinBuffer = OpenBlockList.get(i)[2];
+                        x =  OpenBlockList.get(i)[0];
+                        y = OpenBlockList.get(i)[1];
+                    }
+                }
+                ai.path.add(new int[]{(int)x, (int)y});
+                BlockList2D.get((int) y).get((int) x).AiClose = true;
+                CloseBlockList.add(new int[]{(int)x, (int)y});
+                OpenBlockList.clear();
+            }
+
+        }
+        for(int[] block:CloseBlockList){
+            BlockList2D.get(block[1]).get(block[0]).AiClose = false;
+        }
+        CloseBlockList.clear();
+        OpenBlockList.clear();
+    }
+    public void pathAI(Unit ai, Unit target, float x_ai, float y_ai){
         ai.path.clear();
         IterationPath.clear();
         OpenBlockList.clear();
@@ -47,7 +107,7 @@ public class AI {
                 }
                 xTotal = x - 1;
                 if (!BlockList2D.get((int) y).get((int) xTotal).passability & !BlockList2D.get((int) y).get((int) xTotal).AiClose) {
-                        OpenBlockList.add(new float[]{xTotal, y, TargetLine});
+                    OpenBlockList.add(new float[]{xTotal, y, TargetLine});
                 }
                 yTotal = y + 1;
                 if (!BlockList2D.get((int) yTotal).get((int) x).passability & !BlockList2D.get((int) yTotal).get((int) x).AiClose) {
@@ -90,7 +150,7 @@ public class AI {
     }
     public int[] block_detected_2(Unit tr){
         //System.out.println(tr.ID);
-        int i = (int)(tr.tower_y/Main.height_block)-1;
+        int i = (int)(tr.tower_y/Main.width_block)-1;
         int i2 = (int)(tr.tower_x/Main.width_block)-1;
         //Main.BlockList2D.get(i).get(i2).render_block = UpdateRegister.Update3;
         //System.out.println(tr.ID);
@@ -114,7 +174,7 @@ public class AI {
         return new int[]{i2, i};
     }
     public int[] block_detected_3(float x,float y){
-        int i = (int)(y/Main.height_block)-1;
+        int i = (int)(y/Main.width_block)-1;
         int i2 = (int)(x/Main.width_block)-1;
         if(!BlockList2D.get(i).get(i2).passability) {
             return new int[]{i2, i};
@@ -134,28 +194,5 @@ public class AI {
             }
         }
         return new int[]{i2, i};
-    }
-    public int[] block_detected_2Soldat(Unit tr){
-        int i = (int)(tr.tower_y/Main.height_block)-1;
-        int i2 = (int)(tr.tower_x/Main.width_block)-1;
-        try {
-            if (!BlockList2D.get(i).get(i2).passability) {
-                return new int[]{i2, i};
-            } else {
-                if (!BlockList2D.get(i + 1).get(i2).passability) {
-                    return new int[]{i2, i - 1};
-                } else if (!BlockList2D.get(i - 1).get(i2).passability) {
-                    return new int[]{i2, i + 1};
-                } else if (!BlockList2D.get(i).get(i2 + 1).passability) {
-                    return new int[]{i2 - 1, i};
-                } else if (!BlockList2D.get(i).get(i2 - 1).passability) {
-                    return new int[]{i2 + 1, i};
-                }
-            }
-            return new int[]{i2, i};
-        }
-        catch (IndexOutOfBoundsException e){
-            return new int[]{2, 2};
-        }
     }
 }

@@ -28,7 +28,7 @@ public class RenderCenter {
         this.x2 = this.x -this.width_2_zoom;
         this.y2 = this.y -this.height_2_zoom;
         ixCamBuff = (int) (x2/Main.width_block);
-        iyCamBuff = (int) (y2/Main.height_block);
+        iyCamBuff = (int) (y2/Main.width_block);
     }
     public float[] WindowSynchronization(float x_obj, float y_obj){
         x_obj -= this.x2;
