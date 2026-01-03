@@ -16,7 +16,7 @@ public class InventoryInterface {
     public static boolean InventoryConfMoving = false;
     public int XCol,YCol,XColUs,YColUs,XCol2,YCol2;
     public int XInterface,YInterface,XSlots,YSlots,WidthWindow,HeightWindow,x,y;
-    public String frame = "frameInventory";
+    public String frame = "frameSlot";
     public String frameInventory = "InventoryBackground";
     public Slot[][]SlotInventory;
     public SlotBuffer SlotBuffer;

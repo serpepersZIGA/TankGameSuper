@@ -100,7 +100,6 @@ public class LightingMainSystem implements Disposable {
                 -0.5f, 0.5f, 0, 1, 1, 1, 1, 0, 0
         });
         mesh.setIndices(new short[] {0, 1, 2, 2, 3, 0});
-        texture = new Texture(Gdx.files.internal("buffer2.png"));
     }
 
     public void begin(SpriteBatch batch) {

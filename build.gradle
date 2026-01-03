@@ -13,6 +13,23 @@ buildscript {
 
     }
 }
+task writeAllAssetsToFile {
+    doLast {
+        // projectfolder/assets
+        def assetsFolder = new File("${project.rootDir}/assets/")
+        // projectfolder/assets/assets.txt
+        def assetsFile = new File(assetsFolder, "assets.txt")
+        // delete that file in case we've already created it
+        assetsFile.delete()
+
+        // iterate through all files inside that folder
+        // convert it to a relative path
+        // and append it to assets.txt the file
+        fileTree(assetsFolder).collect {assetsFolder.relativePath(it) }.each {
+            assetsFile.append(it + "\n")
+        }
+    }
+}
 
 
 allprojects {
@@ -58,7 +75,6 @@ project(":desktop") {
 project(":core") {
     apply plugin: "java-library"
 
-
     dependencies {
         api "com.esotericsoftware:kryonet:2.22.0-RC1"
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
@@ -72,4 +88,5 @@ project(":core") {
 
 
     }
+    compileJava.dependsOn writeAllAssetsToFile
 }

@@ -718,7 +718,6 @@ public abstract class Unit implements Cloneable{
         } else if (AngleTarget < this.rotation_corpus) {
             press_d = true;
         }
-        System.out.println(rotation_corpus+"||"+AngleTarget +"||" + abs(AngleTarget-rotation_corpus));
         if (abs(AngleTarget-(rotation_corpus))<25f && !this.crite_life){
             this.trigger_drive = 1;
         }
