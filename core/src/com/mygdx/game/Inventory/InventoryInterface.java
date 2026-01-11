@@ -22,7 +22,9 @@ public class InventoryInterface {
     public SlotBuffer SlotBuffer;
     public Slot slotBuf;
     public Inventory inventory;
+    public WindowName WindowName;
     public InventoryInterface(Inventory inventory,int x,int y,int width,int height){
+        WindowName = new WindowName();
         XInterface = inventory.InventorySlots.length;
         YInterface = inventory.InventorySlots[0].length;
         this.inventory = inventory;
@@ -65,6 +67,9 @@ public class InventoryInterface {
                         RenderMethod.transorm_img(slot.x + x, slot.y + y, slot.width, slot.height,
                                 TextureAtl.createSprite(inventory.InventorySlots[ix][iy].image));
                     }
+                    if(slot.item != null) {
+                        WindowName.MouseCursorHover(slot.x + this.x, slot.y + this.y, slot);
+                    }
                     iy++;
                 }
                 ix++;
@@ -79,6 +84,10 @@ public class InventoryInterface {
                 SlotBuffer.SlotRender();
                 SlotBuffer.SlotPaste();
             }
+            if(WindowName.conf){
+                WindowName.RenderWindow();
+            }
+            WindowName.conf = false;
         }
     }
     public void InventoryIterationClient(){
@@ -95,6 +104,10 @@ public class InventoryInterface {
                         RenderMethod.transorm_img(slot.x + x, slot.y + y,
                                 slot.width, slot.height, TextureAtl.createSprite(inventory.InventorySlots[ix][iy].image));
                     }
+                    if(slot.item != null) {
+                        WindowName.MouseCursorHover(slot.x + this.x, slot.y + this.y, slot);
+                    }
+
                     iy++;
                 }
                 ix++;
@@ -109,6 +122,10 @@ public class InventoryInterface {
                 SlotBuffer.SlotRender();
                 SlotBuffer.SlotPasteClient();
             }
+            if(WindowName.conf){
+                WindowName.RenderWindow();
+            }
+            WindowName.conf = false;
         }
     }
     public boolean CollisionMouseInvert(){

@@ -767,7 +767,6 @@ public abstract class Unit implements Cloneable{
         else{
             AngleTarget = (float) ((atan2(tower_y - Target.tower_y,
                     tower_x - Target.tower_x)/3.1415926535*180)-90);
-            //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
             rotation_bot();
             motor_bot_base(rad, this.behavior);
         }
