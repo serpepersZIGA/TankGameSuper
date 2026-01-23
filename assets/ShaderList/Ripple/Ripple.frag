@@ -8,7 +8,7 @@ uniform float u_time; // Время для анимации
 
 uniform sampler2D u_texture; // Текстура для наложения
 
-varying vec2 v_texCoord;
+in vec2 v_texCoord;
 // UV от вершинного шейдера
 
 float random(vec2 st) {

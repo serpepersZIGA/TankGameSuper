@@ -22,9 +22,9 @@ struct Light {
 uniform int u_activeLights;
 uniform Light u_lights[MAX];
 
-varying vec4 v_color;
-varying vec2 v_texCoords;
-varying vec2 v_worldPos;
+in vec4 v_color;
+in vec2 v_texCoords;
+in vec2 v_worldPos;
 
 
 void main() {

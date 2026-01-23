@@ -1,36 +1,74 @@
 package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
+import com.badlogic.gdx.graphics.Pixmap;
+import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.Inventory.PacketInventory;
+import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
 
+import java.util.ArrayList;
+import java.util.LinkedList;
+import java.util.concurrent.*;
+
+import static com.badlogic.gdx.graphics.Pixmap.*;
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
-import static com.mygdx.game.Shader.LiquidShader.shaderAcid;
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
+import static com.mygdx.game.bull.Bullet.BulletListDown;
+import static com.mygdx.game.bull.Bullet.BulletListUp;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
 import static com.mygdx.game.unit.TransportRegister.*;
 
-public class ActionGameHost extends com.mygdx.game.main.ActionGame {
+public class ActionGameHost extends ActionGame{
+
+    private static Callable<ArrayList<Bullet>> BulletThreadIteration;
+    private static Callable<ArrayList<Unit>> UnitThreadIteration;
+    private static Callable<ArrayList<Unit>> DebrisThreadIteration;
+
+    //private static IterationBullet IterationBullet = new IterationBullet();
+
     private int i;
     private static int timer = 0;
+    public void ThreadAllAdd(){
+        BulletThreadIteration = IterationBullet(BulletList);
+
+        UnitThreadIteration = IterationUnit(UnitList);
+
+        DebrisThreadIteration = IterationDebris(UnitList);
+
+
+    }
     @Override final
-    public void action() {
+    public void action() throws ExecutionException, InterruptedException {
+        //executor = Executors.newFixedThreadPool(1);
+        //ThreadAllAddHost();
+        Future<ArrayList<Bullet>>BulletFutureIteration = executor.submit(BulletThreadIteration);
+        BulletFutureIteration.get();
+        Future<ArrayList<Unit>>UnitFutureIteration = executor.submit(UnitThreadIteration);
+        UnitFutureIteration.get();
+        Future<ArrayList<Unit>>DebrisFutureIteration = executor.submit(DebrisThreadIteration);
+        DebrisFutureIteration.get();
+
+
+
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
         if(Main.UnitList.size()==0){
@@ -48,8 +86,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             }
             try {
                 if(timer <= 0) {
-
                     if (Keyboard.LeftMouse) {
+
                         Main.FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
                         timer = 30;
 
@@ -80,6 +118,8 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             Unit.ai_sost=700;
             Unit.AIScan = true;
         }
+
+
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
         Render.polyBatch.begin();
@@ -116,33 +156,41 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             ItemList.get(i).IterationItem();
         }
 
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 1) {
-                Main.BulletList.get(i).all_action();
-            }
-        }
         Render.polyBatch.flush();
-        for(i = 0;i< DebrisList.size();i++) {
-            Unit debris = DebrisList.get(i);
-            packet_debris_server(debris);
-            debris.all_action();
-            debris.corpus_corpus(Main.UnitList);
-            debris.corpus_corpus(Main.DebrisList);
+
+//        for(i = 0;i< DebrisList.size();i++) {
+//            Unit debris = DebrisList.get(i);
+//            packet_debris_server(debris,i);
+//            debris.all_action();
+//            debris.corpus_corpus(Main.UnitList);
+//            debris.corpus_corpus(Main.DebrisList);
+//        }
+//        for(i = 0;i< UnitList.size();i++) {
+//            Unit unit = UnitList.get(i);
+//            packet_player_server(unit);
+//            if (unit.host || unit.control == RegisterControl.controllerBot
+//                    || unit.control == RegisterControl.controllerBotSupport
+//                    || unit.control == RegisterControl.controllerSoldatTransport
+//                    || unit.control == RegisterControl.controllerSoldatBot
+//                    || unit.control == RegisterControl.controllerHelicopter) {
+//                unit.all_action();
+//            } else {
+//                unit.all_action_client();
+//            }
+//        }
+
+
+
+        //IterationBullet.start();
+
+//        IterationBullet.start();
+        for (int i = 0;i< BulletListDown.size();i++){
+            BulletListDown.get(i).update();
+
         }
-        for(i = 0;i< UnitList.size();i++) {
-            Unit unit = UnitList.get(i);
-            packet_player_server(unit);
-            if (unit.host || unit.control == RegisterControl.controllerBot
-                    || unit.control == RegisterControl.controllerBotSupport
-                    || unit.control == RegisterControl.controllerSoldatTransport
-                    || unit.control == RegisterControl.controllerSoldatBot
-                    || unit.control == RegisterControl.controllerHelicopter) {
-                unit.all_action();
-            } else {
-                unit.all_action_client();
-            }
-        }
-        for(i = 0;i< UnitList.size();i++) {
+
+
+        for(int i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             if(unit.height == 1) {
                 unit.UpdateUnit();
@@ -152,19 +200,24 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
-        for(i = 0;i< DebrisList.size();i++) {
-            Unit unit = DebrisList.get(i);
-            unit.UpdateUnit();
-            //unit.update();
+        for(Unit u: DebrisList){
+            u.UpdateUnit();
+        }
+
+        //Batch.flush();
+
+        RC.BuildingUpdate();
+
+        for (i = 0;i< BulletListUp.size();i++){
+            BulletListUp.get(i).update();
 
         }
-        //Batch.flush();
-        RC.BuildingIteration();
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 2) {
-                Main.BulletList.get(i).all_action();
-            }
-        }
+//        for (i = 0; i< Main.BulletList.size(); i++){
+//            if(Main.BulletList.get(i).height == 2) {
+//                Main.BulletList.get(i).all_action();
+//            }
+//        }
+
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             if(unit.height == 2) {
@@ -177,6 +230,12 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         }
 
         inventoryMain.InventoryIteration();
+//        Map<Thread,StackTraceElement[]> threads = Thread.getAllStackTraces();
+//        for (Map.Entry<Thread, StackTraceElement[]> entry : threads.entrySet()) {
+//            System.out.println(entry.getKey());
+//        }
+
+
         //System.out.println(inventoryMain.SlotInventory.length);
 
 //        for (i = 0; i< Main.BulletList.size(); i++){
@@ -184,7 +243,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
 //                Main.BulletList.get(i).all_action();
 //            }
 //        }
-        Batch.flush();
+        //Batch.flush();
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action();}
         Render.polyBatch.end();
@@ -199,6 +258,13 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
         Collision.CollisionIterationGlobal();
+        BulletFutureIteration.cancel(true);
+        UnitFutureIteration.cancel(true);
+        DebrisFutureIteration.cancel(true);
+
+
+        //executor.shutdown();
+        //executor.close();
     }
     private void server_packet() {
         if(packetUnitUpdate.ConfUnitList || packetUnitUpdate.ConfDebrisList){
@@ -244,7 +310,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketDebris.clear();
         PacketBuilding.clear();
     }
-    private void packet_player_server(Unit unit){
+    public static void packet_player_server(Unit unit,int i){
         PacketUnit.add(new TransportPacket());
         TransportPacket pack = PacketUnit.get(i);
         pack.name = unit.TypeUnit;
@@ -283,7 +349,7 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
             PacketServer.inventory.add(pack);
         }
     }
-    private void packet_debris_server(Unit unit){
+    public static void packet_debris_server(Unit unit,int i){
         PacketDebris.add(new DebrisPacket());
         DebrisPacket pack = PacketDebris.get(i);
         pack.UnitID = unit.ID;
@@ -297,4 +363,55 @@ public class ActionGameHost extends com.mygdx.game.main.ActionGame {
         PacketBuilding.get(i).x = BuildingList.get(i).x;
         PacketBuilding.get(i).y = BuildingList.get(i).y;
     }
+    private static Callable<ArrayList<Unit>> IterationDebris(ArrayList<Unit> debrisList) {
+        return () -> {
+            for(int i = 0;i< DebrisList.size();i++) {
+                Unit debris = DebrisList.get(i);
+                packet_debris_server(debris,i);
+                debris.all_action();
+                debris.corpus_corpus(Main.UnitList);
+                debris.corpus_corpus(Main.DebrisList);
+            }
+            return debrisList; // результат
+        };
+    }
+    private static Callable<ArrayList<Bullet>> IterationBullet(ArrayList<Bullet> bullet) {
+        return () -> {
+            for (int i = 0; i < bullet.size(); i++) {
+                bullet.get(i).all_action();
+
+            } // имитация длительной задачи
+            return bullet; // результат
+        };
+    }
+    private static Callable<ArrayList<Unit>> IterationUnit(ArrayList<Unit> unitList) {
+        return () -> {
+            for(int i = 0;i< unitList.size();i++) {
+                Unit unit = unitList.get(i);
+                ActionGameHost.packet_player_server(unit,i);
+                if (unit.host || unit.control == RegisterControl.controllerBot
+                        || unit.control == RegisterControl.controllerBotSupport
+                        || unit.control == RegisterControl.controllerSoldatTransport
+                        || unit.control == RegisterControl.controllerSoldatBot
+                        || unit.control == RegisterControl.controllerHelicopter) {
+                    unit.all_action();
+                } else {
+                    unit.all_action_client();
+                }
+            }
+
+            return unitList; // результат
+        };
+    }
+    private static Callable<LinkedList<Particle>> IterationParticle(LinkedList<Particle> particleList) {
+        return () -> {
+            for(int i = 0;i< particleList.size();i++) {
+               particleList.get(i).all_action();
+
+            }
+
+            return particleList; // результат
+        };
+    }
 }
+

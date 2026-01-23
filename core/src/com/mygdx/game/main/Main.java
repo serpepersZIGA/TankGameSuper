@@ -47,11 +47,13 @@ import com.mygdx.game.unit.moduleUnit.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.concurrent.ExecutionException;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
+import static com.mygdx.game.main.ActionGame.executor;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
@@ -84,7 +86,7 @@ public class Main extends ApplicationAdapter {
 	public static float Zoom = 1,ZoomWindowX,ZoomWindowY;
 	public static AI Ai;
 	public static boolean EnumerationList;
-	public static ActionGame ActionGame;
+	public static ActionGame ActionGameMain;
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
@@ -284,7 +286,7 @@ public class Main extends ApplicationAdapter {
 		ButtonList.add(new Exit(100,200,400,120,"Exit",(byte)0));
 		ButtonList.add(new Cancel(100,400,400,120,"CANCEL",(byte)3));
 		PlayerAllLoad.PlayerCount();
-		ActionGame = com.mygdx.game.main.ActionGame.ActionMenu;
+		ActionGameMain = com.mygdx.game.main.ActionGame.ActionMenu;
 		xMap = Main.BlockList2D.get(0).size();
 		yMap = Main.BlockList2D.size();
 		SpawnPlayer = PlayerSpawnCannonVoid;
@@ -310,7 +312,11 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         TimeGlobal+= Gdx.graphics.getDeltaTime();
         TimeGlobalBullet = TimeGlobal*50;
-		ActionGame.action();
+        try {
+            ActionGameMain.action();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
         TimeGlobal = 0;
 		//LightSystem.clearLights();
 	}
@@ -329,6 +335,7 @@ public class Main extends ApplicationAdapter {
 		ButtonList.clear();
 		KeyboardObj = null;
 		RC= null;
+        executor.shutdown();
 		Batch.dispose();
 		Render.dispose();
 		font.dispose();

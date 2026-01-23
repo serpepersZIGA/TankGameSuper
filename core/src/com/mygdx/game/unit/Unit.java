@@ -1125,24 +1125,31 @@ public abstract class Unit implements Cloneable{
         //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
         return !area1.isEmpty();
     }
-    private static int render_x_max,render_x_min,render_y_max,render_y_min;
-    public void build_corpus(){
-        render_x_max = (int) ((x + BorderDetected) / Main.width_block);
-        render_x_min = (int) (((x - BorderDetected) / Main.width_block));
+    protected void XYMapCord(){
+        XMap = (int) (x/Main.width_block);
+        YMap = (int) (y/Main.width_block);
+        render_x_max = XMap + 3;
+        render_x_min = XMap - 3;
+        render_y_max = YMap + 3;
+        render_y_min = YMap - 3;
+
         if (render_x_min < 0) {
             render_x_min = 0;
         }
         if (render_x_max > xMap) {
             render_x_max = xMap;
         }
-        render_y_max = (int) ((y + BorderDetected) / Main.width_block);
-        render_y_min = (int) ((y - BorderDetected) / Main.width_block);
         if (render_y_min < 0) {
             render_y_min = 0;
         }
         if (render_y_max > yMap) {
             render_y_max = yMap;
         }
+
+    }
+    public int render_x_max,render_x_min,render_y_max,render_y_min;
+    public int XMap,YMap;
+    public void build_corpus(){
 
         for (int iy = render_y_min; iy < render_y_max; iy++) {
             for (int ix = render_x_min; ix < render_x_max; ix++) {

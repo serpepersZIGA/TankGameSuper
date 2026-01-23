@@ -1,13 +1,11 @@
 package com.mygdx.game.method;
 
 import com.badlogic.gdx.graphics.Color;
-import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 
 import java.util.Objects;
 
 import static com.mygdx.game.Weather.WeatherMainSystem.WeatherCycle;
-import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
 import static com.mygdx.game.main.ActionGame.ActionGameH;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.object_map.MapObject.SpawnWave;
@@ -77,7 +75,7 @@ public class CycleTimeDay {
                     MaxTime = timeTransitionNight;
                     lightPurpose = lightDay;
                     WeatherCycle();
-                    if(Objects.equals(ActionGame, ActionGameH)) {
+                    if(Objects.equals(ActionGameMain, ActionGameH)) {
                         SpawnWave();
                     }
                     break;

@@ -11,7 +11,7 @@ uniform float u_minLightness;
 
 uniform int u_activeLights;
 
-varying vec2 v_worldPos;
+in vec2 v_worldPos;
 
 struct Light {
     vec2 position;

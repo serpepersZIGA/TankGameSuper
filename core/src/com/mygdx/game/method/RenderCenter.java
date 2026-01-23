@@ -1,6 +1,7 @@
 package com.mygdx.game.method;
 
 import com.mygdx.game.Shader.LightingMainSystem;
+import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 
 import java.util.ArrayList;
@@ -11,7 +12,9 @@ import static java.lang.StrictMath.abs;
 
 public class RenderCenter {
     public float x,y,x2,y2;
-    public ArrayList<Integer>IndBuilding;
+    public static ArrayList<Integer>IndBuilding;
+
+
     public int ixCam,iyCam,ixCamBuff,iyCamBuff;
     public float width_2 = Main.screenWidth/2f,height_2 = Main.screenHeight/2f,width_2_zoom = Main.screenWidth/2f
             ,height_2_zoom = Main.screenHeight/2f;
@@ -20,6 +23,7 @@ public class RenderCenter {
     public int render_x,render_y,cam_x_width,cam_y_height;
     public float WidthRenderZoom,HeightRenderZoom,WidthRenderZoom2,HeightRenderZoom2;
     public RenderCenter(float x, float y){
+
         this.x = x;
         this.y = y;
         IndBuilding = new ArrayList<>();
@@ -133,12 +137,12 @@ public class RenderCenter {
 
         }
     }
-    public void BuildingIteration(){
+    public void BuildingUpdate(){
         for (Integer integer : IndBuilding) {
             Main.BuildingList.get(integer).all_action();
+            Main.BuildingList.get(integer).update();
             Main.BuildingList.get(integer).xy_light_render.clear();
         }
-
     }
 }
 

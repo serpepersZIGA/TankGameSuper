@@ -1,12 +1,16 @@
 #version 300 es
+#ifdef GL_ES
+precision mediump float;
+#endif
 precision highp float;
 
-varying vec2 v_texCoord;
-varying vec4 v_color;
-varying vec2 v_worldPos;
+in vec2 v_texCoord;
+in vec4 v_color;
+in vec2 v_worldPos;
 
 uniform float u_time;  // Время для анимации
 uniform sampler2D u_texture;
+uniform float lightTotal;
 //uniform vec2 u_resolution;
 
 // Простая функция шума
@@ -45,11 +49,11 @@ float particleNoise(vec2 p) {
 }
 
 void main() {
-    vec4 texColor = texture2D(u_texture,v_texCoord)*v_color;
+    //vec4 texColor = texture2D(u_texture,v_texCoord)*v_color;
     vec2 st = v_texCoord;  // UV координаты
     vec2 center = vec2(0.5, 0.5);  // Центр пламени
-    float dist = length(st - center);  // Радиальное расстояние от центра
-
+    float dist = length(st - center);// Радиальное расстояние от центра
+    float distInvert = 1.0-dist;
     // Анимация основного огня
     float time = u_time *2.0;  // Ускоряем для живости
     //float s = sin(abs(u_time))/12.0;
@@ -58,13 +62,12 @@ void main() {
     float n = fbm(noiseUV);
 
     // Интенсивность огня с радиальным градиентом
-    float intensity = n * (1.0 - dist*n) + 0.4;  // Мягче затухание
+    float intensity = n * distInvert + 0.35;  // Мягче затухание
 
     // Цвета огня: добавляем синий у основания
     vec3 fireCol;
     float alpha;
     if(dist < 0.5){
-
         if (intensity < 0.3) {
             fireCol = vec3(0.0, 0.2, 0.0);// Синий у основания
         } else if (intensity < 0.5) {
@@ -89,13 +92,12 @@ void main() {
     //particleUV.y*=s;
     // Быстрое движение вверх
     float particle = particleNoise(particleUV);
-    float particleIntensity = smoothstep(0.99, 1.0, particle) * (1.0 - dist);  // Искры только в центре
+    float particleIntensity = smoothstep(0.99, 1.0, particle) * distInvert;  // Искры только в центре
     vec3 particleCol = vec3(1.0, 0.9, 0.6) * particleIntensity;  // Яркие жёлтые искры
     //    float particleAlpha = particleIntensity;
 
     // Комбинируем огонь и частицы
     vec3 finalCol = mix(fireCol, particleCol, particleIntensity);
     //alpha = clamp(alpha + particleIntensity, 0.0, 1.0);
-
-    gl_FragColor = (vec4(finalCol.rgb, 0.3)+texColor)*0.5;
+    gl_FragColor = (vec4(finalCol.rgb*lightTotal, 0.4* distInvert));
 }

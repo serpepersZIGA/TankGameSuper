@@ -5,9 +5,9 @@ attribute vec2 a_texCoord0;
 
 uniform mat4 u_projTrans;
 
-varying vec4 v_color;
-varying vec2 v_texCoords;
-varying vec2 v_worldPos;
+out vec4 v_color;
+out vec2 v_texCoords;
+out vec2 v_worldPos;
 
 void main() {
     v_color = a_color;

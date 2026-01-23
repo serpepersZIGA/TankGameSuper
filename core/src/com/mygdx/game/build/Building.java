@@ -165,7 +165,6 @@ public class Building implements Serializable,Cloneable {
         }
     }
     public void all_action(){
-        update();
         ListFunc.FunctionalIterationAnHost(this);
     }
     public void Rotate90(){

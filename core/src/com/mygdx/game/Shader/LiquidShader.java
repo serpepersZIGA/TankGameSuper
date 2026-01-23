@@ -6,6 +6,8 @@ import com.badlogic.gdx.graphics.glutils.ShaderProgram;
 import com.badlogic.gdx.utils.GdxRuntimeException;
 
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.method.CycleTimeDay.lightGlobal;
+import static com.mygdx.game.method.CycleTimeDay.lightTotal;
 
 public class LiquidShader {
     public static ShaderProgram shaderAcid,shaderBlood;
@@ -45,6 +47,7 @@ public class LiquidShader {
 
         shaderAcid.setUniformf("u_time", time);
         shaderAcid.setUniformf("u_resolution",screenWidth, screenHeight);
+        shaderAcid.setUniformf("lightTotal",lightTotal);
 //        for (i= 0; i< Main.LiquidList.size(); i++){
 //            Particle particle = Main.LiquidList.get(i);
 //            LiquidShader.shader.setUniformf("ColorList["+i+"]",particle.r,particle.g,particle.b);}
@@ -61,6 +64,7 @@ public class LiquidShader {
 
         shaderBlood.setUniformf("u_time", time);
         shaderBlood.setUniformf("u_resolution",screenWidth, screenHeight);
+        shaderBlood.setUniformf("lightTotal",lightTotal);
 //        for (i= 0; i< Main.LiquidList.size(); i++){
 //            Particle particle = Main.LiquidList.get(i);
 //            LiquidShader.shader.setUniformf("ColorList["+i+"]",particle.r,particle.g,particle.b);}

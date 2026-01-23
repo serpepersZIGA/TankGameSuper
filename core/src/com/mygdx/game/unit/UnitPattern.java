@@ -66,18 +66,22 @@ public class UnitPattern extends Unit {
     }
     @Override
     public void all_action() {
+        super.XYMapCord();
         super.all_action();
     }
     @Override
     public void all_action_client() {
+        super.XYMapCord();
         super.all_action_client();
     }
     @Override
     public void all_action_client_1() {
+        super.XYMapCord();
         super.all_action_client_1();
     }
     @Override
     public void all_action_client_2() {
+        super.XYMapCord();
         super.all_action_client_2();
     }
     public void UpdateUnit(){

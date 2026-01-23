@@ -119,7 +119,11 @@ public class ActionMenu extends ActionGame {
         for(Unit unit : UnitList) {
             unit.all_action_client();
         }
-        RC.BuildingIteration();
+
+
+        RC.BuildingUpdate();
+
+
         //Batch.draw(TextureAtl.createSprite("BottleFlame"),20,20,10,10);
 //        Render.end();
 //        Render.begin();
@@ -176,7 +180,7 @@ public class ActionMenu extends ActionGame {
                 try {
                     serverMain = new ServerMain();
                     serverMain.create();
-                    ActionGame = ActionGameH;
+                    ActionGameMain = ActionGameH;
                     Block.passability_detected();
                     SpawnPlayer();
                     KeyboardObj.zoom_const();
@@ -190,14 +194,14 @@ public class ActionMenu extends ActionGame {
                     LightSystem.lights.clear();
                     Main_client = new ClientMain();
                     Main_client.create();
-                    ActionGame = ActionGameCl;
+                    ActionGameMain = ActionGameCl;
                     ActionGameClient.ActionGameClientIteration();
                     KeyboardObj.zoom_const();
-                    //return;
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
+            ActionGameMain.ThreadAllAdd();
         }
         Keyboard.LeftMouseClick = false;
         CycleDayNight.WorkTime();
