@@ -7,6 +7,9 @@ uniform vec2 u_resolution;  // Разрешение экрана (width, height)
 const vec2 u_rectSize =vec2(0.35,0.85);
 const vec4 u_color = vec4(0.07,0.3,0.5,0.45);
 const vec2 u_rectPos = vec2(0.5,0.5);
+
+out vec4 fragColor;
+
 void main() {
     // Нормализуем координаты: от (0,0) в левом-нижнем углу до (1,1) в правом-верхнем
     vec2 uv = gl_FragCoord.xy / u_resolution;
@@ -27,5 +30,5 @@ void main() {
 
     // Вывод цвета
     //vec3 finalColor = u_color.rgb;
-    gl_FragColor = vec4(u_color);
+    fragColor = vec4(u_color);
 }

@@ -1,7 +1,9 @@
 #version 300 es
 precision highp float;
 
-varying vec2 v_texCoord;
+in vec2 v_texCoord;
+
+out vec4 fragColor;
 
 uniform float u_time;  // Время для анимации
 
@@ -83,5 +85,5 @@ void main() {
     vec3 finalCol = mix(fireCol, particleCol, particleIntensity);
     alpha = clamp(alpha + particleIntensity, 0.0, 1.0);
 
-    gl_FragColor = vec4(finalCol, alpha*1.9);
+    fragColor = vec4(finalCol, alpha*1.9);
 }

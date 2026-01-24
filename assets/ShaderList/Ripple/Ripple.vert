@@ -1,7 +1,7 @@
 #version 300 es
-attribute vec4 a_position;
-attribute vec4 a_color;
-attribute vec2 a_texCoord0;
+in vec4 a_position;
+in vec4 a_color;
+in vec2 a_texCoord0;
 
 uniform mat4 u_projTrans;
 

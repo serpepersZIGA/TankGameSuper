@@ -6,9 +6,11 @@ precision mediump float;
 uniform vec2 u_resolution; // Разрешение экрана
 uniform float u_time; // Время для анимации
 
+out vec4 fragColor;
+
 uniform sampler2D u_texture; // Текстура для наложения
 
-varying vec2 v_texCoord;
+in vec2 v_texCoord;
 // UV от вершинного шейдера
 
 float random(vec2 st) {
@@ -58,5 +60,5 @@ void main() {
     color = textureColor + wave*colorWave;// Добавляем волну к текстуре
 
     // Вывод
-    gl_FragColor = color;
+    fragColor = color;
 }

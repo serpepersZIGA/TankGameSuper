@@ -2,8 +2,10 @@
 precision mediump float;
 #endif
 
-varying vec2 v_texCoord;
-varying vec2 v_pos;
+in vec2 v_texCoord;
+in vec2 v_pos;
+
+out vec4 fragColor;
 
 uniform float u_time;
 uniform vec2 u_resolution;
@@ -52,5 +54,5 @@ void main() {
     // Прозрачность
     float alpha = edge * 0.7; // полупрозрачная
 
-    gl_FragColor = vec4(color, alpha);
+    fragColor = vec4(color, alpha);
 }

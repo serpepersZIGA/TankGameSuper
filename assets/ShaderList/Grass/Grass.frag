@@ -12,7 +12,8 @@ uniform float u_grassHeight; // Высота травы (влияет на ин�
 uniform float u_windSpeed; // Скорость ветра
 uniform float u_windStrength; // Сила ветра
 
-varying vec2 v_texCoord; // UV от вершинного шейдера
+out vec4 fragColor;
+in vec2 v_texCoord; // UV от вершинного шейдера
 
 float random(vec2 st) {
     return fract(sin(dot(st, vec2(12.9898, 78.233))) * 43758.5453123);
@@ -58,5 +59,5 @@ void main() {
     color = mix(baseColor, grassFinalColor, grassAlpha); // Смешивание с базовой текстурой
 
     // Вывод
-    gl_FragColor = vec4(color, 1.0);
+    fragColor = vec4(color, 1.0);
 }

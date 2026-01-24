@@ -48,11 +48,11 @@ public class ActionGameHost extends ActionGame{
     private int i;
     private static int timer = 0;
     public void ThreadAllAdd(){
-        BulletThreadIteration = IterationBullet(BulletList);
+        BulletThreadIteration = IterationBullet();
 
-        UnitThreadIteration = IterationUnit(UnitList);
+        UnitThreadIteration = IterationUnit();
 
-        DebrisThreadIteration = IterationDebris(UnitList);
+        DebrisThreadIteration = IterationDebris();
 
 
     }
@@ -66,6 +66,7 @@ public class ActionGameHost extends ActionGame{
         UnitFutureIteration.get();
         Future<ArrayList<Unit>>DebrisFutureIteration = executor.submit(DebrisThreadIteration);
         DebrisFutureIteration.get();
+
 
 
 
@@ -257,7 +258,6 @@ public class ActionGameHost extends ActionGame{
 //            Unit.AIScan = false;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
-        Collision.CollisionIterationGlobal();
         BulletFutureIteration.cancel(true);
         UnitFutureIteration.cancel(true);
         DebrisFutureIteration.cancel(true);
@@ -363,7 +363,7 @@ public class ActionGameHost extends ActionGame{
         PacketBuilding.get(i).x = BuildingList.get(i).x;
         PacketBuilding.get(i).y = BuildingList.get(i).y;
     }
-    private static Callable<ArrayList<Unit>> IterationDebris(ArrayList<Unit> debrisList) {
+    private static Callable<ArrayList<Unit>> IterationDebris() {
         return () -> {
             for(int i = 0;i< DebrisList.size();i++) {
                 Unit debris = DebrisList.get(i);
@@ -372,22 +372,22 @@ public class ActionGameHost extends ActionGame{
                 debris.corpus_corpus(Main.UnitList);
                 debris.corpus_corpus(Main.DebrisList);
             }
-            return debrisList; // результат
+            return DebrisList; // результат
         };
     }
-    private static Callable<ArrayList<Bullet>> IterationBullet(ArrayList<Bullet> bullet) {
+    private static Callable<ArrayList<Bullet>> IterationBullet() {
         return () -> {
-            for (int i = 0; i < bullet.size(); i++) {
-                bullet.get(i).all_action();
+            for (int i = 0; i < BulletList.size(); i++) {
+                BulletList.get(i).all_action();
 
             } // имитация длительной задачи
-            return bullet; // результат
+            return BulletList; // результат
         };
     }
-    private static Callable<ArrayList<Unit>> IterationUnit(ArrayList<Unit> unitList) {
+    private static Callable<ArrayList<Unit>> IterationUnit() {
         return () -> {
-            for(int i = 0;i< unitList.size();i++) {
-                Unit unit = unitList.get(i);
+            for(int i = 0;i< UnitList.size();i++) {
+                Unit unit = UnitList.get(i);
                 ActionGameHost.packet_player_server(unit,i);
                 if (unit.host || unit.control == RegisterControl.controllerBot
                         || unit.control == RegisterControl.controllerBotSupport
@@ -399,8 +399,9 @@ public class ActionGameHost extends ActionGame{
                     unit.all_action_client();
                 }
             }
+            Collision.CollisionIterationGlobal();
 
-            return unitList; // результат
+            return UnitList; // результат
         };
     }
     private static Callable<LinkedList<Particle>> IterationParticle(LinkedList<Particle> particleList) {

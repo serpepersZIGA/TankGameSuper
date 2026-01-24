@@ -8,6 +8,8 @@ in vec2 v_texCoord;
 in vec4 v_color;
 in vec2 v_worldPos;
 
+out vec4 fragColor;
+
 uniform float u_time;  // Время для анимации
 uniform sampler2D u_texture;
 uniform float lightTotal;
@@ -49,7 +51,6 @@ float particleNoise(vec2 p) {
 }
 
 void main() {
-    //vec4 texColor = texture2D(u_texture,v_texCoord)*v_color;
     vec2 st = v_texCoord;  // UV координаты
     vec2 center = vec2(0.5, 0.5);  // Центр пламени
     float dist = length(st - center);// Радиальное расстояние от центра
@@ -99,5 +100,5 @@ void main() {
     // Комбинируем огонь и частицы
     vec3 finalCol = mix(fireCol, particleCol, particleIntensity);
     //alpha = clamp(alpha + particleIntensity, 0.0, 1.0);
-    gl_FragColor = (vec4(finalCol.rgb*lightTotal, 0.4* distInvert));
+    fragColor = (vec4(finalCol.rgb*lightTotal, 0.4* distInvert));
 }

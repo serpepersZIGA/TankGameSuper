@@ -9,9 +9,11 @@ uniform vec2 u_resolution;
 uniform vec4 u_ambientColor;
 uniform float u_minLightness;
 
+out vec4 fragColor;
+
 uniform int u_activeLights;
 
-varying vec2 v_worldPos;
+in vec2 v_worldPos;
 
 struct Light {
     vec2 position;
@@ -46,5 +48,5 @@ void main() {
     // Только свет! Без текстуры!
 
     vec3 finalLight = max(accumulatedLight.rgb, vec3(u_minLightness));
-    gl_FragColor = vec4(finalLight, accumulatedLight.a);
+    fragColor = vec4(finalLight, accumulatedLight.a);
 }

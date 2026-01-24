@@ -7,6 +7,8 @@
 
 uniform vec2 u_resolution;
 
+out vec4 fragColor;
+
 uniform sampler2D u_texture;
 uniform vec4 u_ambientColor;
 uniform float u_minLightness;
@@ -22,14 +24,14 @@ struct Light {
 uniform int u_activeLights;
 uniform Light u_lights[MAX];
 
-varying vec4 v_color;
-varying vec2 v_texCoords;
-varying vec2 v_worldPos;
+in vec4 v_color;
+in vec2 v_texCoords;
+in vec2 v_worldPos;
 
 
 void main() {
     vec4 color;
-    vec4 texColor = texture2D(u_texture, v_texCoords) * v_color;
+    vec4 texColor = texture(u_texture, v_texCoords) * v_color;
     float dist;
     float attenuation;
     vec4 lightEffect;
@@ -57,5 +59,5 @@ void main() {
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);
-    gl_FragColor = finalColor*texColor*2.0;
+    fragColor = finalColor*texColor*2.0;
 }
