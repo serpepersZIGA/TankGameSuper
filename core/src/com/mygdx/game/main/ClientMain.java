@@ -1,6 +1,7 @@
 package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.audio.Sound;
+import com.badlogic.gdx.graphics.Color;
 import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
@@ -30,12 +31,14 @@ import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.Sound.SoundRegister.IDSound;
+import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.build.BuildRegister.BuildingID;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.IDBullet;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.CycleTimeDay.lightGlobal;
+import static com.mygdx.game.method.CycleTimeDay.lightTotal;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.object_map.MapObject.ObjectMapIDList;
@@ -123,10 +126,13 @@ public class ClientMain extends Listener {
             }
             PacketBull.clear();
 
-            CycleTimeDay.lightTotal = ((PackerServer) p).TotalLight;
-            lightGlobal = (CycleTimeDay.lightTotal-CycleTimeDay.lightFlame);
-            CycleTimeDay.lightRealGlobal = lightGlobal*1.2f;
-            CycleTimeDay.lightColorGlobal = lightGlobal*10f;
+            lightTotal = ((PackerServer) p).TotalLight;
+            lightGlobal = (lightTotal-CycleTimeDay.lightFlame);
+            CycleTimeDay.lightRealGlobal = lightGlobal*1.5f;
+            CycleTimeDay.lightColorGlobal = lightGlobal*8f;
+
+            LightSystem.setAmbientColor(new Color(0,0,0,lightTotal));
+            LightSystem.setMinLightness(lightTotal);
             PacketUnit = ((PackerServer) p).player;
             i = 0;
             if(PacketUnit.size()== UnitList.size()) {
@@ -207,11 +213,9 @@ public class ClientMain extends Listener {
                         = new VoidObject();
                 //KeyboardObj.zoom_const();
             }
-            SoundRegister.SoundPack = ((PackerServer) p).sound;
-            for (SoundPacket pack : SoundRegister.SoundPack) {
-                SoundPlay.sound((Sound) IDSound.get(pack.ID)[0],
-                        1f-((float) sqrt(pow2(RC.x-pack.ix) + pow2(RC.y-pack.iy)) / SoundConst));
-            }
+            SoundPack.addAll(((PackerServer) p).sound);
+
+
             ItemPackList.clear();
             PacketMapObjects.clear();
             PacketBull.clear();

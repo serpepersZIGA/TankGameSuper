@@ -1,11 +1,15 @@
 package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
+import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
+import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.Network.DebrisPacket;
@@ -20,16 +24,20 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
+import static com.mygdx.game.Sound.SoundRegister.IDSound;
 import static com.mygdx.game.Weather.WeatherMainSystem.RippleIteration;
 import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
 import static com.mygdx.game.bull.Bullet.BulletListDown;
 import static com.mygdx.game.bull.Bullet.BulletListUp;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
+import static com.mygdx.game.method.Option.SoundConst;
+import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.TransportRegister.*;
+import static java.lang.StrictMath.sqrt;
 
 
-public class ActionGameClient extends com.mygdx.game.main.ActionGame {
+public class ActionGameClient extends ActionGame {
     private static Callable<ArrayList<Bullet>> BulletThreadIteration;
     private static Callable<ArrayList<Unit>> UnitThreadIteration;
     private static Callable<ArrayList<Unit>> DebrisThreadIteration;
@@ -60,32 +68,32 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
         DebrisFutureIteration.get();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
-        Main.RC.method();
-        if(Main.UnitList.size()==0){
+        RC.method();
+        if(RC.UnitCamera==null){
             if(Keyboard.PressW){
-                Main.RC.y += 10;
+                RC.y += 10;
             }
             if(Keyboard.PressS){
-                Main.RC.y -= 10;
+                RC.y -= 10;
             }
             if(Keyboard.PressA){
-                Main.RC.x -= 10;
+                RC.x -= 10;
             }
             if(Keyboard.PressD){
-                Main.RC.x += 10;
+                RC.x += 10;
             }
             try {
                 if(timer <= 0) {
 
                     if (Keyboard.LeftMouse) {
-                        Main.FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
+                        FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
                         timer = 60;
 
 
                     }
                     if (Keyboard.RightMouse) {
                         //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
-                        Main.LiquidList.add(new Acid(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
+                        LiquidList.add(new Acid(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
                         //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
                         //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
                         //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
@@ -104,32 +112,32 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
 
         Batch.begin();
         Render.polyBatch.begin();
-        Main.RC.render_block();
+        RC.render_block();
         RippleIteration(Batch);
 
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         LiquidShader.AcidShaderIteration();
-        for (i= 0; i< Main.LiquidList.size(); i++){
-            Main.LiquidList.get(i).all_action();}
+        for (i= 0; i< LiquidList.size(); i++){
+            LiquidList.get(i).all_action();}
         Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         LiquidShader.BloodShaderIteration();
         for (i= 0; i< BloodList.size(); i++){
-            Main.BloodList.get(i).all_action();}
+            BloodList.get(i).all_action();}
         Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
-        for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action();}
-        for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action();}
-        for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action();}
+        for (i = 0; i< FlameStaticList.size(); i++){
+            FlameStaticList.get(i).all_action();}
+        for (i = 0; i< FlameList.size(); i++){
+            FlameList.get(i).all_action();}
+        for (i = 0; i< FlameParticleList.size(); i++){
+            FlameParticleList.get(i).all_action();}
 
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
-        for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action();
+        for (i= 0; i< FlameSpawnList.size(); i++){
+            FlameSpawnList.get(i).all_action();
         }
         Batch.setShader(LightSystem.shader);
         //Batch.flush();
@@ -152,10 +160,20 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
                 }
             }
         }
-        for(Unit unit : Main.DebrisList) {
+        for(Unit unit : DebrisList) {
             unit.UpdateUnit();
 
         }
+
+        SoundPacket pack;
+        while (!SoundRegister.SoundPack.isEmpty()) {
+            pack =  SoundRegister.SoundPack.get(0);
+            SoundPlay.sound((Sound) IDSound.get(pack.ID)[0],
+                    1f - ((float) sqrt(pow2(RC.x - pack.ix) + pow2(RC.y - pack.iy)) / SoundConst));
+            SoundRegister.SoundPack.remove(pack);
+        }
+
+
 
         RC.BuildingUpdate();
 
@@ -177,8 +195,8 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
 
         inventoryMain.InventoryIterationClient();
 
-        for (i= 0; i< Main.BangList.size(); i++){
-            Main.BangList.get(i).all_action();
+        for (i= 0; i< BangList.size(); i++){
+            BangList.get(i).all_action();
         }
         if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
         Render.polyBatch.end();
@@ -214,7 +232,7 @@ public class ActionGameClient extends com.mygdx.game.main.ActionGame {
     private static Callable<ArrayList<Bullet>> IterationBullet(ArrayList<Bullet> bullets) {
         return () -> {
             for (int i = 0; i< bullets.size(); i++){
-                Bullet bullet = Main.BulletList.get(i);
+                Bullet bullet = BulletList.get(i);
                 if(bullet != null) {
                     bullet.all_action_client();
 

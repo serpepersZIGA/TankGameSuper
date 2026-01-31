@@ -72,7 +72,7 @@ public class ActionGameHost extends ActionGame{
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
-        if(Main.UnitList.size()==0){
+        if(RC.UnitCamera==null){
             if(Keyboard.PressW){
                 Main.RC.y += 10;
             }

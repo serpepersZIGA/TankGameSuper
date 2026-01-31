@@ -90,7 +90,7 @@ public class Main extends ApplicationAdapter {
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
-	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,width_block_air= 12,height_block_air =12,quantity_width,quantity_height;
+	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,quantity_width,quantity_height;
 	public static int width_block_zoom= 70,height_block_zoom =70,width_block_render= 73,height_block_render =73;
 	public static float radius_air_max = 150,radius_air_max_zoom,TimeGlobal,TimeGlobalBullet;
 	public static ServerMain serverMain;
@@ -356,6 +356,6 @@ public class Main extends ApplicationAdapter {
 		}
         super.dispose();
 		Gdx.app.exit();
-		//System.exit(0);
+		System.exit(0);
 	}
 }

@@ -374,13 +374,13 @@ public abstract class Bullet implements Serializable,Cloneable {
         }
         for(int i = 0;i< DebrisList.size();i++) {
             Unit unit = DebrisList.get(i);
-            if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
+            //if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
                 if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
                         this.size, -unit.rotation_corpus)) {
                     this.clear_sost = true;
                     return;
                 }
-            }
+            //}
         }
     }
     protected final void armor_damage(Unit unit){
