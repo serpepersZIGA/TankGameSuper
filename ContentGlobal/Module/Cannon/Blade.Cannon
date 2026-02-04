@@ -1,0 +1,25 @@
+WidthTower = 120;
+HeightTower = 120;
+ConstTowerX = 60;
+ConstTowerY = 60;
+SpeedRotationTower = 6;
+Damage = 0;
+Penetration = 0;
+DamageFragment = 0;
+PenetrationFragment = 0;
+TemperatureDamage = 0;
+SizeBullet = 0;
+ReloadMax = 0;
+SpeedBullet = 0;
+TimeBullet = 0;
+TowerX = 0;
+TowerY = 0;
+Fire = Flame;
+Image = helicopter_blade;
+
+func.Add = ComponentTowerXY;
+func.Add = ComponentWorkBlade;
+
+
+Sound = 5;
+AmountFragment = 0;

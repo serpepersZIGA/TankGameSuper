@@ -1,0 +1,63 @@
+#version 300 es
+#ifdef GL_ES
+    precision mediump float;
+#endif
+
+#define MAX 100
+
+uniform vec2 u_resolution;
+
+out vec4 fragColor;
+
+uniform sampler2D u_texture;
+uniform vec4 u_ambientColor;
+uniform float u_minLightness;
+
+struct Light {
+    vec2 position;
+    vec4 color;
+    float intensity;
+    float radius;
+    float transparency;
+};
+
+uniform int u_activeLights;
+uniform Light u_lights[MAX];
+
+in vec4 v_color;
+in vec2 v_texCoords;
+in vec2 v_worldPos;
+
+
+void main() {
+    vec4 color;
+    vec4 texColor = texture(u_texture, v_texCoords) * v_color;
+    float dist;
+    float attenuation;
+    vec4 lightEffect;
+    vec4 finalColor;
+    int i;
+    if (texColor.a <= 0.0) discard;
+    vec4 accumulatedLight = u_ambientColor;
+    for (i = 0; i < MAX; i++) {
+        if (i >= u_activeLights) break;
+        Light light = u_lights[i];
+        dist = distance(v_worldPos, light.position);
+        if (dist > light.radius) continue;
+
+        attenuation = 1.0 - smoothstep(light.radius
+       * 0.15 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
+        attenuation *= (1.0 - light.transparency);
+        attenuation = pow(attenuation, 1.5);
+        lightEffect = (light.color * light.intensity * attenuation) + ((light.radius / dist) * 0.05);
+        accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
+        accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
+    }
+    finalColor = texColor;
+    if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
+        finalColor.rgb += ((((accumulatedLight.r+texColor.r)*0.1) + (accumulatedLight.g+texColor.g)*0.5 + (accumulatedLight.b+texColor.b)*0.5) * 0.3333) * 0.25;
+    finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
+    finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
+    finalColor.a = clamp(finalColor.a, 0.0, 1.0);
+    fragColor = finalColor*texColor*2.0;
+}

@@ -1,0 +1,12 @@
+{
+  "Armor": 20,
+  "Hp": 500,
+  "ArmorPercent": 10,
+  "HPPercent": 0,
+  "DamagePercent": 0,
+  "Image": "armorB1",
+  "MoveUPPercent": 200,
+  "MoveDownPercent": 0,
+  "AccelerationPercent": 0
+
+}
