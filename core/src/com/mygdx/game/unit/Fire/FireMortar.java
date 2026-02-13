@@ -17,13 +17,7 @@ import static java.lang.StrictMath.*;
 public class FireMortar extends Fire {
     public void FireIteration(Unit unit){
         rotationTower = -unit.rotation_tower-90;
-        SoundPlay.sound( unit.sound_fire,1-((float) sqrt(pow2(unit.x_rend) + pow2(unit.y_rend))/SoundConst));
-
-        SoundPacket soundPacket = new SoundPacket();
-        soundPacket.ix = (int) unit.x;
-        soundPacket.iy = (int) unit.y;
-        soundPacket.ID = 4;
-        SoundPack.add(soundPacket);
+        SoundPlay.soundPlay(unit.x_rend,unit.y_rend, (int) unit.x, (int) unit.y,4, unit.sound_fire);
 
         unit.fire_x = (float) (unit.tower_x+unit.tower_width_2+((unit.tower_height_2+unit.y_tower) *sin(rotationTower*3.1415926535/180)));
         unit.fire_y = (float) (unit.tower_y+unit.tower_height_2+((unit.tower_height_2+unit.y_tower) *cos(rotationTower*3.1415926535/180)));

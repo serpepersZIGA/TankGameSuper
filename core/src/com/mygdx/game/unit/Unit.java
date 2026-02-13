@@ -36,6 +36,7 @@ import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.Option.SoundConst;
+import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
 import static com.mygdx.game.unit.Fire.FireRegister.FireVoid;
@@ -414,12 +415,7 @@ public abstract class Unit implements Cloneable{
         this.time_sound_motor -= 1;
         if (this.press_w) {
             if (this.time_sound_motor < 0) {
-                SoundPlay.sound(Main.ContentSound.motor_back, 1);
-                SoundPacket soundPacket = new SoundPacket();
-                soundPacket.ix = (int) this.x;
-                soundPacket.iy = (int) this.y;
-                soundPacket.ID = 1;
-                SoundPack.add(soundPacket);
+                SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,1,Main.ContentSound.motor_back);
                 this.time_sound_motor = this.time_max_sound_motor;
 
             }
@@ -429,12 +425,7 @@ public abstract class Unit implements Cloneable{
         }
         if (this.press_s) {
             if (this.time_sound_motor < 0) {
-                SoundPlay.sound(Main.ContentSound.motor, 1);
-                SoundPacket soundPacket = new SoundPacket();
-                soundPacket.ix = (int) this.x;
-                soundPacket.iy = (int) this.y;
-                soundPacket.ID = 0;
-                SoundPack.add(soundPacket);
+                SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,0,Main.ContentSound.motor);
                 this.time_sound_motor = this.time_max_sound_motor;
             }
             if(this.SpeedDown < this.speed) {
@@ -925,12 +916,8 @@ public abstract class Unit implements Cloneable{
                 if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height,this.rotation_corpus,
                         (int) unit.x,(int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus)
                         && unit.priority_paint == this.priority_paint) {
-                    SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
-                    SoundPacket soundPacket = new SoundPacket();
-                    soundPacket.ix = (int) this.x;
-                    soundPacket.iy = (int) this.y;
-                    soundPacket.ID = 7;
-                    SoundPack.add(soundPacket);
+                    SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7,Main.ContentSound.hit);
+
                     MethodCollision(unit);
                     physicCollision(unit);
 
@@ -1090,13 +1077,7 @@ public abstract class Unit implements Cloneable{
                 this.y+corpus_height_2 +-20+rand.rand(40),5));}
         for(int i = 0;i<5;i++){
             Main.FlameSpawnList.add(new FlameSpawn(this.x + -5+rand.rand(50),this.y + -5+rand.rand(50)));}
-        SoundPlay.sound(Main.ContentSound.kill,1-((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend))/SoundConst));
-
-        SoundPacket soundPacket = new SoundPacket();
-        soundPacket.ix = (int) this.x;
-        soundPacket.iy = (int) this.y;
-        soundPacket.ID = 9;
-        SoundPack.add(soundPacket);
+        SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,9,Main.ContentSound.kill);
 
     }
     private boolean rectCollision(int x1, int y1, int width, int height, double rotation,
@@ -1157,12 +1138,8 @@ public abstract class Unit implements Cloneable{
                     if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
                             width_block, Main.width_block, 0)) {
                         if (this.speed > 2 || this.speed < -2) {
-                            SoundPlay.sound(Main.ContentSound.break_wooden, 1 - ((float) sqrt(pow2(this.x_rend) + pow2(this.y_rend)) / SoundConst));
-                            SoundPacket soundPacket = new SoundPacket();
-                            soundPacket.ix = (int) this.x;
-                            soundPacket.iy = (int) this.y;
-                            soundPacket.ID = 3;
-                            SoundPack.add(soundPacket);
+                            SoundPlay.soundPlay(x_rend,y_rend, BlockList2D.get(iy).get(ix).x_center,
+                                    BlockList2D.get(iy).get(ix).y_center,3,Main.ContentSound.break_wooden);
                         }
                         MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
                     }

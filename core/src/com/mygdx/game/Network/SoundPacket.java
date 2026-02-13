@@ -1,6 +1,7 @@
 package com.mygdx.game.Network;
 
 public class SoundPacket {
-    public int ix,iy;
+    public int x,y;
     public int ID;
+    public float volume;
 }

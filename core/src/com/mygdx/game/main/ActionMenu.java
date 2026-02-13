@@ -12,17 +12,20 @@ import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.menu.button.Button;
+import com.mygdx.game.menu.slider.Slider;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.unit.Unit.IDList;
 
 public class ActionMenu extends ActionGame {
     private int i;
     private int timer = 0;
+    private static Slider SliderSound = new Slider(1200,500,(byte) 0,"Sound");
     @Override final
     public void action() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -39,25 +42,20 @@ public class ActionMenu extends ActionGame {
         if(Keyboard.PressD){
             Main.RC.x += 10;
         }
-            if(timer <= 0) {
-
-                if (Keyboard.LeftMouse) {
-                    //Main.FlameSpawnList.add(new FlameSpawn((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
-                    BloodList.add(new Blood((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
-                    //timer = 60;
-
-
-                }
-                if (Keyboard.RightMouse) {
-                    //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
-                    Main.LiquidList.add(new Acid((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
-
-                    //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
-                    //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
-
-                }
+        if(timer <= 0) {
+            if (Keyboard.LeftMouse) {
+                //Main.FlameSpawnList.add(new FlameSpawn((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
+                BloodList.add(new Blood((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
+                //timer = 60;
             }
-            else{timer-= 1;}
+            if (Keyboard.RightMouse) {
+                //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
+                Main.LiquidList.add(new Acid((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
+                //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+                //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+            }
+        }
+        else{timer-= 1;}
 
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         Batch.begin();
@@ -150,6 +148,10 @@ public class ActionMenu extends ActionGame {
                 }
                 but.render(i);
             }
+        }
+        if(SliderSound.ConfigMenu == ConfigMenu) {
+            SliderSound.AllAction();
+            SoundProcent = SliderSound.PercentageGet();
         }
 //        for (i = 0;i< ButtonList.size();i++){
 //            Button but = ButtonList.get(i);

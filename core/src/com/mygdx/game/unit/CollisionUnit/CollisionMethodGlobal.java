@@ -38,14 +38,8 @@ public class CollisionMethodGlobal {
     public void CollisionMethod(Unit unit1,Unit unit2){
         if(unit1.height == unit2.height) {
             if (CollisionRectRect(unit1, unit2)) {
-                SoundPlay.sound(Main.ContentSound.hit, 1f - ((float) sqrt(pow2(unit1.x_rend) + pow2(unit1.y_rend)) / SoundConst));
+                SoundPlay.soundPlay(unit1.x_rend,unit1.y_rend, (int) unit1.x, (int) unit1.y,7,Main.ContentSound.hit);
                 if(unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
-                    SoundPacket soundPacket = new SoundPacket();
-                    soundPacket.ix = (int) unit1.x;
-                    soundPacket.iy = (int) unit1.y;
-                    soundPacket.ID = 7;
-                    SoundPack.add(soundPacket);
-
                     CollisionFunctional.physicCollision(unit1, unit2);
                     CollisionFunctional.MethodCollisionTransport(unit1, unit2);
                 }

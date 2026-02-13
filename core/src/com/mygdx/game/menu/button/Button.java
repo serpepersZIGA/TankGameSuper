@@ -21,6 +21,8 @@ public abstract class Button {
     public boolean TypeFont;
     public boolean TipOff;
     public int widthXY,heightXY,radiusX,radiusY;
+    public float HeightSlider;
+    public float PercentageSound;
     public void render(int i){
     }
     protected void ActionButton(){

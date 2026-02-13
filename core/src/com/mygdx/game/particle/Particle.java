@@ -12,6 +12,7 @@ import java.util.LinkedList;
 
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Option.SoundConst;
+import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.*;
 
@@ -55,7 +56,7 @@ public abstract class Particle {
         sound_time +=1;
         if(sound_time_max == sound_time) {
             float[]xy = Main.RC.WindowSynchronization(this.x,this.y);
-            rad = 1-((float) sqrt(pow2(xy[0]) + pow2(xy[1]))/SoundConst);
+            rad = (1-((float) sqrt(pow2(xy[0]) + pow2(xy[1]))*SoundConst))*SoundProcent;
             sound_time = 0;
             if(rad>0) {
                 SoundPlay.sound(Main.ContentSound.flame_sound,rad);

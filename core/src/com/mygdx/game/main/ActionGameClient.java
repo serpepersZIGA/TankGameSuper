@@ -24,6 +24,7 @@ import java.util.concurrent.ExecutionException;
 import java.util.concurrent.Future;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
+import static com.mygdx.game.Sound.SoundPlay.soundPlayClient;
 import static com.mygdx.game.Sound.SoundRegister.IDSound;
 import static com.mygdx.game.Weather.WeatherMainSystem.RippleIteration;
 import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
@@ -165,13 +166,7 @@ public class ActionGameClient extends ActionGame {
 
         }
 
-        SoundPacket pack;
-        while (!SoundRegister.SoundPack.isEmpty()) {
-            pack =  SoundRegister.SoundPack.get(0);
-            SoundPlay.sound((Sound) IDSound.get(pack.ID)[0],
-                    1f - ((float) sqrt(pow2(RC.x - pack.ix) + pow2(RC.y - pack.iy)) / SoundConst));
-            SoundRegister.SoundPack.remove(pack);
-        }
+        soundPlayClient();
 
 
 
