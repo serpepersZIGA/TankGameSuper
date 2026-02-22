@@ -1,28 +1,29 @@
 package com.mygdx.game.menu.button.ButtonTank;
 
-import com.mygdx.game.Inventory.Inventory;
-import com.mygdx.game.Inventory.Item;
-import com.mygdx.game.main.Main;
-import com.mygdx.game.menu.button.Button;
-import com.mygdx.game.unit.Unit;
 
-import java.util.Objects;
+import com.mygdx.game.menu.button.Button;
+
+
+import java.util.ArrayList;
+
 
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.*;
-import static com.mygdx.game.unit.Unit.IDList;
+
 
 public class TankChoice extends Button {
+    public static ArrayList<Button>TankChoiceList = new ArrayList<>();
     public TankChoice(int x, int y, int width, int height, String TankName) {
         this.x = x;
         this.y = y;
         this.width = width;
         this.height = height;
         //this.txt = txt;
-        DataRect();
         this.txt = TankName;
         this.TankName = TankName;
+        DataRect();
         this.ConfigMenu = 1;
+        YTxTConst = YTXT;
+        yConst = this.y;
         XTXT -= 40;
         TypeFont = true;
 

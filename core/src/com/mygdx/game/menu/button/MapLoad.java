@@ -2,9 +2,12 @@ package com.mygdx.game.menu.button;
 
 import com.mygdx.game.MapFunction.MapScan;
 
+import java.util.ArrayList;
+
 import static com.mygdx.game.main.Main.KeyboardObj;
 
 public class MapLoad extends Button {
+    public static ArrayList<Button> MapChoiceList = new ArrayList<>();
     public MapLoad(int x, int y, int width, int height, String path) {
         this.x = x;
         this.y = y;
@@ -13,10 +16,13 @@ public class MapLoad extends Button {
         this.width = width;
         this.height = height;
         //this.txt = txt;
-        DataRect();
         this.txt = MapScan.MapName(path);
-        this.ConfigMenu = 3;
+        DataRect();
+        YTxTConst = YTXT;
+        yConst = this.y;
         XTXT -= 40;
+
+        this.ConfigMenu = 3;
         TypeFont = true;
 
     }

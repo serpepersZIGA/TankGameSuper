@@ -72,7 +72,7 @@ public class ActionGameHost extends ActionGame{
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
-        if(RC.UnitCamera==null){
+        //if(RC.UnitCamera==null){
             if(Keyboard.PressW){
                 Main.RC.y += 10;
             }
@@ -85,30 +85,30 @@ public class ActionGameHost extends ActionGame{
             if(Keyboard.PressD){
                 Main.RC.x += 10;
             }
-            try {
-                if(timer <= 0) {
-                    if (Keyboard.LeftMouse) {
-
-                        Main.FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
-                        timer = 30;
-
-
-                    }
-                    if (Keyboard.RightMouse) {
-                        //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
-                        Main.LiquidList.add(new Acid(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
-                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
-                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
-                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
-
-                    }
-                }
-                else{timer-= 1;}
-            }
-            catch(Exception ignored){
-
-            }
-        }
+//            try {
+//                if(timer <= 0) {
+//                    if (Keyboard.LeftMouse) {
+//
+//                        Main.FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
+//                        timer = 30;
+//
+//
+//                    }
+//                    if (Keyboard.RightMouse) {
+//                        //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
+//                        Main.LiquidList.add(new Acid(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
+//                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+//                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+//                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+//
+//                    }
+//                }
+//                else{timer-= 1;}
+//            }
+//            catch(Exception ignored){
+//
+//            }
+        //}
         //boolean[]mouse_e = new metod.mouse_control().mouse_event();
         //Main.player_obj.get(1).all_action_client(Main.left_mouse_client, Main.right_mouse_client, Main.mouse_x_client,
                 //Main.mouse_y_client, Main.press_w_client, Main.press_a_client, Main.press_s_client, Main.press_d_client);

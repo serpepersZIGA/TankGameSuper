@@ -23,6 +23,7 @@ public abstract class Button {
     public int widthXY,heightXY,radiusX,radiusY;
     public float HeightSlider;
     public float PercentageSound;
+    public int yConst,YTxTConst;
     public void render(int i){
     }
     protected void ActionButton(){

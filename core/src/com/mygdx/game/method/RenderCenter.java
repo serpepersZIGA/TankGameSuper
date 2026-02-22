@@ -14,7 +14,6 @@ import static java.lang.StrictMath.abs;
 public class RenderCenter {
     public float x,y,x2,y2;
     public static ArrayList<Integer>IndBuilding;
-    public Unit UnitCamera;
 
     public int ixCam,iyCam,ixCamBuff,iyCamBuff;
     public float width_2 = Main.screenWidth/2f,height_2 = Main.screenHeight/2f,width_2_zoom = Main.screenWidth/2f

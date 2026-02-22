@@ -15,7 +15,7 @@ public class Option {
     public float const_hp_x_zoom,const_hp_y_zoom,const_reload_x_zoom,const_reload_y_zoom;
     public static float SoundConst,SoundProcent;
     public Option(){
-        SoundConst = 0.00005f;
+        SoundConst = 0.0005f;
         Button.RGBButton1 = new float[]{0f,(float) 1 /255*180,0};
         Button.RGBButton2 = new float[]{(float) 1 /255*180,(float) 1 /255*180,0};
         Button.RGBButton3 = new float[]{(float) 1 /255*180,0,0};

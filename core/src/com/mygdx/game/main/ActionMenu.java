@@ -19,13 +19,19 @@ import com.mygdx.game.unit.Unit;
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.menu.button.ButtonTank.TankChoice.TankChoiceList;
+import static com.mygdx.game.menu.button.MapLoad.MapChoiceList;
 import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.unit.Unit.IDList;
 
 public class ActionMenu extends ActionGame {
     private int i;
     private int timer = 0;
-    private static Slider SliderSound = new Slider(1200,500,(byte) 0,"Sound");
+    private static final Slider SliderSound = new Slider(1200,500,300,35,(byte) 0,"Sound",true);
+    private static final Slider SliderListTank = new Slider(1460,0,35,980,(byte) 1,"",false);
+    private static final Slider SliderListMap = new Slider(1460,0,35,980,(byte) 3,"",false);
+    public static int LenghtListTank,LenghtListMap;
+    public static int TotalPointListTank,TotalPointListMap;
     @Override final
     public void action() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -149,9 +155,30 @@ public class ActionMenu extends ActionGame {
                 but.render(i);
             }
         }
-        if(SliderSound.ConfigMenu == ConfigMenu) {
-            SliderSound.AllAction();
-            SoundProcent = SliderSound.PercentageGet();
+        switch (ConfigMenu) {
+            case 0:{
+                SliderSound.AllAction();
+                SoundProcent = SliderSound.PercentageGet() * 0.2f;
+            }
+            break;
+            case 1:{
+                SliderListTank.AllAction2();
+                TotalPointListTank = (int) (LenghtListTank * SliderListTank.PercentageGet() * 0.5F);
+                for (Button button : TankChoiceList) {
+                    button.YTXT = button.YTxTConst - TotalPointListTank;
+                    button.y = button.yConst - TotalPointListTank;
+                    button.heightXY = button.yConst + button.height - TotalPointListTank;
+                }
+            }break;
+            case 3:{
+                SliderListMap.AllAction2();
+                TotalPointListMap = (int) (LenghtListMap * SliderListMap.PercentageGet() * 0.5F);
+                for (Button button : MapChoiceList) {
+                    button.YTXT = button.YTxTConst - TotalPointListMap;
+                    button.y = button.yConst - TotalPointListMap;
+                    button.heightXY = button.yConst + button.height - TotalPointListMap;
+                }
+            }break;
         }
 //        for (i = 0;i< ButtonList.size();i++){
 //            Button but = ButtonList.get(i);
@@ -176,6 +203,7 @@ public class ActionMenu extends ActionGame {
         WeatherIteration(Batch);
         LightSystem.begin(Batch);
         if(GameStart) {
+            GameStart = false;
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();
             if (GameHost) {

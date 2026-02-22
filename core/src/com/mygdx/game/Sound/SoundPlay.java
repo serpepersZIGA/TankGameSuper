@@ -16,7 +16,6 @@ public class SoundPlay {
     public static void sound(Sound audioFile, float volume){
         try {
             if(volume>0) {
-
                 audioFile.play(volume); // Установите желаемый уровень громкости в диапазоне -80.0 (тишина) до 6.0206 (макс.)
             }
 
@@ -26,8 +25,7 @@ public class SoundPlay {
 
     }
     public static void soundPlay(int x,int y,int X,int Y,int ID,Sound sound){
-        float volume = 1-((float) sqrt(pow2(x) + pow2(y)) * SoundConst);
-        SoundPlay.sound(sound, volume*SoundProcent);
+        SoundPlay.sound(sound, (1f-((float) sqrt(pow2(x) + pow2(y)) * SoundConst))*SoundProcent);
         SoundPacket soundPacket = new SoundPacket();
         soundPacket.x = X;
         soundPacket.y = Y;
@@ -39,7 +37,7 @@ public class SoundPlay {
         while (!SoundRegister.SoundPack.isEmpty()) {
             pack =  SoundRegister.SoundPack.get(0);
             SoundPlay.sound((Sound) IDSound.get(pack.ID)[0], (float)
-                    (1-sqrt(pow2(RC.x2-pack.x)+pow2(RC.y2-pack.y))* SoundConst)*SoundProcent);
+                    (1f-sqrt(pow2(RC.x2-pack.x)+pow2(RC.y2-pack.y))* SoundConst)*SoundProcent);
             SoundRegister.SoundPack.remove(pack);
         }
 

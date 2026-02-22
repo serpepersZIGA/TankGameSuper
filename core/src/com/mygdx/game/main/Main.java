@@ -131,13 +131,7 @@ public class Main extends ApplicationAdapter {
 		Main.FPS = FPS;
 		ZoomWindowX = (float) screenWidth /1920;
 		ZoomWindowY = (float) screenHeight /1080;
-
-
 	}
-
-
-
-
 	public static void spawn_object(){
 		//PlayerList.add(new PlayerCannonFlame(200,200, PlayerList,true));
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
@@ -245,6 +239,7 @@ public class Main extends ApplicationAdapter {
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
+
 
 		Render = new RenderPrimitive();
 //		Render = new ShapeRenderer(128,LightSystem.shader);
