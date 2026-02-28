@@ -18,6 +18,8 @@ import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
+import static com.mygdx.game.bull.Bullet.BulletListDown;
+import static com.mygdx.game.bull.Bullet.BulletListUp;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.menu.button.ButtonTank.TankChoice.TankChoiceList;
 import static com.mygdx.game.menu.button.MapLoad.MapChoiceList;
@@ -32,6 +34,7 @@ public class ActionMenu extends ActionGame {
     private static final Slider SliderListMap = new Slider(1460,0,35,980,(byte) 3,"",false);
     public static int LenghtListTank,LenghtListMap;
     public static int TotalPointListTank,TotalPointListMap;
+    public static boolean ActionGameChoiceConf;
     @Override final
     public void action() {
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
@@ -102,27 +105,32 @@ public class ActionMenu extends ActionGame {
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
             Main.FlameSpawnList.get(i).all_action();
         }
-
         Batch.setShader(LightSystem.shader);
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 1) {
-                Main.BulletList.get(i).update();
+        if(ActionGameTotal != ActionGameH) {
+            for (i = 0; i < Main.BulletList.size(); i++) {
+                Main.BulletList.get(i).all_action();
             }
         }
-        Render.polyBatch.flush();
 
         for(i = 0; i< Main.UnitList.size(); i++) {
             Main.UnitList.get(i).UpdateUnit();
-            Main.UnitList.get(i).all_action_client_2();
+            //Main.UnitList.get(i).all_action_client_2();
         }
 
 
         for (i= 0; i< Main.DebrisList.size(); i++){
             Main.DebrisList.get(i).all_action_client();
         }
-        for(Unit unit : UnitList) {
-            unit.all_action_client();
+
+        for (i = 0;i< BulletListDown.size();i++){
+            BulletListDown.get(i).update();
+
         }
+        Render.polyBatch.flush();
+
+//        for(Unit unit : UnitList) {
+//            unit.all_action_client();
+//        }
 
 
         RC.BuildingUpdate();
@@ -131,12 +139,12 @@ public class ActionMenu extends ActionGame {
         //Batch.draw(TextureAtl.createSprite("BottleFlame"),20,20,10,10);
 //        Render.end();
 //        Render.begin();
+        for (i = 0;i< BulletListUp.size();i++){
+            BulletListUp.get(i).update();
 
-        for (i = 0; i< Main.BulletList.size(); i++){
-            if(Main.BulletList.get(i).height == 2) {
-                Main.BulletList.get(i).update();
-            }
         }
+
+
         for (i= 0; i< Main.UnitList.size(); i++){
             Main.UnitList.get(i).update();
         }
@@ -156,6 +164,7 @@ public class ActionMenu extends ActionGame {
             }
         }
         switch (ConfigMenu) {
+            case 4:
             case 0:{
                 SliderSound.AllAction();
                 SoundProcent = SliderSound.PercentageGet() * 0.2f;
@@ -211,6 +220,7 @@ public class ActionMenu extends ActionGame {
                     serverMain = new ServerMain();
                     serverMain.create();
                     ActionGameMain = ActionGameH;
+                    ActionGameTotal = ActionGameH;
                     Block.passability_detected();
                     SpawnPlayer();
                     KeyboardObj.zoom_const();
@@ -225,12 +235,14 @@ public class ActionMenu extends ActionGame {
                     Main_client = new ClientMain();
                     Main_client.create();
                     ActionGameMain = ActionGameCl;
+                    ActionGameTotal = ActionGameCl;
                     ActionGameClient.ActionGameClientIteration();
                     KeyboardObj.zoom_const();
                 } catch (Exception e) {
                     throw new RuntimeException(e);
                 }
             }
+            ActionGameChoiceConf = true;
             ActionGameMain.ThreadAllAdd();
         }
         Keyboard.LeftMouseClick = false;

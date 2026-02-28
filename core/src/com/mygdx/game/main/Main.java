@@ -121,6 +121,7 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
+	public static ActionGame ActionGameTotal;
     public static int udpPort = 27950, tcpPort = 27950;
 
 
@@ -280,6 +281,12 @@ public class Main extends ApplicationAdapter {
 		ButtonList.add(new Maps(100,400,400,120,"MAPS",(byte)0));
 		ButtonList.add(new Exit(100,200,400,120,"Exit",(byte)0));
 		ButtonList.add(new Cancel(100,400,400,120,"CANCEL",(byte)3));
+		ButtonList.add(new Play2(100,600,400,120,"PLAYS",(byte)4));
+
+
+		ButtonList.add(new ExitPlay(100,400,400,120,"ExitPlay",(byte)4));
+
+		ButtonList.add(new Exit(100,200,400,120,"Exit",(byte)4));
 		PlayerAllLoad.PlayerCount();
 		ActionGameMain = com.mygdx.game.main.ActionGame.ActionMenu;
 		xMap = Main.BlockList2D.get(0).size();

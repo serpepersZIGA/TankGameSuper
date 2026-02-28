@@ -22,7 +22,7 @@ import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
 import static com.mygdx.game.Inventory.InventoryInterface.InventoryConfMoving;
 
 public class Keyboard extends InputAdapter{
-    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF;
+    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
     public static float ZoomMax;
@@ -38,28 +38,31 @@ public class Keyboard extends InputAdapter{
         if (keycode == Input.Keys.W) {
             PressW = true;
         }
-        if (keycode ==Input.Keys.S ) {
+        else if (keycode ==Input.Keys.S ) {
             PressS = true;
         }
-        if (keycode ==Input.Keys.A) {
+        else if (keycode ==Input.Keys.A) {
             PressA = true;
         }
-        if (keycode ==Input.Keys.D) {
+        else if (keycode ==Input.Keys.D) {
             PressD = true;
         }
-        if (keycode ==Input.Keys.F) {
+        else if (keycode ==Input.Keys.F) {
             PressF = true;
         }
-        if (keycode ==Input.Keys.E) {
+        else if (keycode ==Input.Keys.E) {
             PressE = true;
         }
-        if (keycode == Input.Keys.UP) {
+        else if (keycode == Input.Keys.UP) {
             Button.YList += 4;
             PressUP = true;
         }
-        if (keycode == Input.Keys.DOWN) {
+        else if (keycode == Input.Keys.DOWN) {
             Button.YList -= 4;
             PressDown = true;
+        }
+        else if (keycode == Input.Keys.ESCAPE) {
+            PressEsc = true;
         }
         return true;
     }
@@ -69,27 +72,30 @@ public class Keyboard extends InputAdapter{
         if (keycode ==Input.Keys.W) {
             PressW = false;
         }
-        if (keycode ==Input.Keys.S) {
+        else if (keycode ==Input.Keys.S) {
             PressS = false;
         }
-        if (keycode ==Input.Keys.A) {
+        else if (keycode ==Input.Keys.A) {
             PressA = false;
         }
-        if (keycode ==Input.Keys.D) {
+        else if (keycode ==Input.Keys.D) {
             PressD = false;
         }
-        if (keycode ==Input.Keys.F) {
+        else if (keycode ==Input.Keys.F) {
             PressF = false;
         }
-        if (keycode ==Input.Keys.E) {
+        else if (keycode ==Input.Keys.E) {
             PressE = false;
             InventoryConf = !InventoryConf;
         }
-        if (keycode == Input.Keys.UP) {
+        else if (keycode == Input.Keys.UP) {
             PressUP = false;
         }
-        if (keycode == Input.Keys.DOWN) {
+        else if (keycode == Input.Keys.DOWN) {
             PressDown = false;
+        }
+        else if (keycode == Input.Keys.ESCAPE) {
+            PressEsc = false;
         }
         return true;
     }

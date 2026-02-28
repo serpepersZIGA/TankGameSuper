@@ -85,6 +85,10 @@ public class ActionGameHost extends ActionGame{
             if(Keyboard.PressD){
                 Main.RC.x += 10;
             }
+            if(Keyboard.PressEsc){
+                ActionGameMain = ActionMenu;
+                ConfigMenu = 4;
+            }
 //            try {
 //                if(timer <= 0) {
 //                    if (Keyboard.LeftMouse) {
@@ -93,6 +97,7 @@ public class ActionGameHost extends ActionGame{
 //                        timer = 30;
 //
 //
+
 //                    }
 //                    if (Keyboard.RightMouse) {
 //                        //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
@@ -402,16 +407,6 @@ public class ActionGameHost extends ActionGame{
             Collision.CollisionIterationGlobal();
 
             return UnitList; // результат
-        };
-    }
-    private static Callable<LinkedList<Particle>> IterationParticle(LinkedList<Particle> particleList) {
-        return () -> {
-            for(int i = 0;i< particleList.size();i++) {
-               particleList.get(i).all_action();
-
-            }
-
-            return particleList; // результат
         };
     }
 }

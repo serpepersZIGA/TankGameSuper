@@ -82,6 +82,10 @@ public class ActionGameClient extends ActionGame {
         }
         if(Keyboard.PressD){
             RC.x += 10;}
+        if(Keyboard.PressEsc){
+            ActionGameMain = ActionMenu;
+            ConfigMenu = 4;
+        }
 //        try {
 //                if(timer <= 0) {
 //

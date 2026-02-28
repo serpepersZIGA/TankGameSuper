@@ -8,5 +8,5 @@
   "HP":120,
   "LightingConf":true,
   "Lighting":600,
-  "SpawnUnit": true
+  "SpawnUnit": false
 }

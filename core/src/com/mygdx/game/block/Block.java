@@ -7,6 +7,7 @@ import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 
+import static com.mygdx.game.block.UpdateRegister.GrassUpdate;
 import static com.mygdx.game.block.UpdateRegister.VoidUpdate;
 import static com.mygdx.game.method.pow2.pow2;
 
@@ -31,6 +32,16 @@ public abstract class Block {
 
                     }
                 }
+            }
+        }
+    }
+    public static void passability_detected2() {
+        for (int i = 0; i < Main.BlockList2D.size(); i++) {
+            for (int i2 = 0; i2 < Main.BlockList2D.get(i).size(); i2++) {
+                Main.BlockList2D.get(i).get(i2).passability = false;
+                Main.BlockList2D.get(i).get(i2).render_block = GrassUpdate;
+                Main.BlockList2D.get(i).get(i2).iBuilding = -1;
+
             }
         }
     }
