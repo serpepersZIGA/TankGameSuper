@@ -55,8 +55,8 @@ public class InventoryInterface {
     }
     public void InventoryIteration(){
         if(InventoryConf) {
-            ix = 0;
-            iy = 0;
+            int ix = 0;
+            int iy = 0;
             RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow,
                     TextureAtl.createSprite(frameInventory));
             for (Slot[] slotX : SlotInventory) {
@@ -92,8 +92,8 @@ public class InventoryInterface {
     }
     public void InventoryIterationClient(){
         if(InventoryConf) {
-            ix = 0;
-            iy = 0;
+            int ix = 0;
+            int iy = 0;
             RenderMethod.transorm_img(this.x, this.y, this.WidthWindow,
                     this.HeightWindow, TextureAtl.createSprite(frameInventory));
             for (Slot[] slotX : SlotInventory) {
@@ -134,10 +134,9 @@ public class InventoryInterface {
         return YCol < HeightWindow & YCol > 0 & XCol<WidthWindow &XCol> 0;
         //return false;
     }
-    public int ix,iy;
     public void CollisionMouseItem(){
-        ix = 0;
-        iy = 0;
+        int ix = 0;
+        int iy = 0;
         for(Slot[] SlotLine : SlotInventory){
             for(Slot Slot : SlotLine) {
                 XCol2 = MouseX-(Slot.x+this.x);
@@ -158,8 +157,8 @@ public class InventoryInterface {
         }
     }
     public void InventoryUs(Unit unit){
-        ix = 0;
-        iy = 0;
+        int ix = 0;
+        int iy = 0;
         for (Slot[] slots : SlotInventory) {
             for (Slot slot : slots) {
 
@@ -182,8 +181,8 @@ public class InventoryInterface {
         }
     }
     public void InventoryUsClient(Unit unit){
-        ix = 0;
-        iy = 0;
+        int ix = 0;
+        int iy = 0;
         for (Slot[] slots : SlotInventory) {
             for (Slot slot : slots) {
                 XColUs = MouseX - (this.x + slot.x);

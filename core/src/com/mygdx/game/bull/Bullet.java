@@ -138,7 +138,6 @@ public abstract class Bullet implements Serializable,Cloneable {
                     BulletListDown.add(bullet);
                     break;
                 case 2:
-                    System.out.println("eeee");
                     BulletListUp.add(bullet);
                     break;
             }

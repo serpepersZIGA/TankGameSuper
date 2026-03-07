@@ -43,12 +43,12 @@ public class ActionGameClient extends ActionGame {
     private static Callable<ArrayList<Unit>> UnitThreadIteration;
     private static Callable<ArrayList<Unit>> DebrisThreadIteration;
 
+    private Thread ThreadIterationDebris;
+    private Thread ThreadIterationBullet;
+    private Thread ThreadIterationUnit;
+
     public void ThreadAllAdd(){
-        BulletThreadIteration = IterationBullet();
 
-        UnitThreadIteration = IterationUnit();
-
-        DebrisThreadIteration = IterationDebris();
 
     }
     public static void ActionGameClientIteration(){
@@ -61,12 +61,12 @@ public class ActionGameClient extends ActionGame {
     private static int timer = 0;
     @Override final
     public void action() throws ExecutionException, InterruptedException {
-        Future<ArrayList<Bullet>> BulletFutureIteration = executor.submit(BulletThreadIteration);
-        BulletFutureIteration.get();
-        Future<ArrayList<Unit>>UnitFutureIteration = executor.submit(UnitThreadIteration);
-        UnitFutureIteration.get();
-        Future<ArrayList<Unit>>DebrisFutureIteration = executor.submit(DebrisThreadIteration);
-        DebrisFutureIteration.get();
+        ThreadIterationBullet = new Thread(new IterationBullet());
+        ThreadIterationDebris = new Thread(new IterationDebris());
+        ThreadIterationUnit = new Thread(new IterationUnit());
+        ThreadIterationBullet.start();
+        ThreadIterationDebris.start();
+        ThreadIterationUnit.start();
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
@@ -82,7 +82,7 @@ public class ActionGameClient extends ActionGame {
         }
         if(Keyboard.PressD){
             RC.x += 10;}
-        if(Keyboard.PressEsc){
+        if(Keyboard.ClickEsc){
             ActionGameMain = ActionMenu;
             ConfigMenu = 4;
         }
@@ -152,7 +152,12 @@ public class ActionGameClient extends ActionGame {
 
         for (i = 0;i< BulletListDown.size();i++){
             Bullet bullet = BulletListDown.get(i);
-            bullet.update();
+            if(bullet!= null) {
+                synchronized (bullet) {
+                    bullet.update();
+                }
+            }
+
         }
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
@@ -176,7 +181,12 @@ public class ActionGameClient extends ActionGame {
         RC.BuildingUpdate();
 
         for (i = 0;i< BulletListUp.size();i++){
-            BulletListUp.get(i).update();
+            Bullet bullet = BulletListUp.get(i);
+            if(bullet!= null) {
+                synchronized (bullet) {
+                    bullet.update();
+                }
+            }
 
         }
 
@@ -202,6 +212,9 @@ public class ActionGameClient extends ActionGame {
         WeatherIteration(Batch);
         LightSystem.begin(Batch);
         //PackUpdateUnit();
+        while (ThreadIterationBullet.isAlive()||ThreadIterationUnit.isAlive()||ThreadIterationDebris.isAlive()){
+
+        };
     }
     public static void PackUpdateUnit(){
         if(packetUnitUpdate.ConfUnitList){
@@ -218,41 +231,47 @@ public class ActionGameClient extends ActionGame {
             packetUnitUpdate.ConfDebrisList = false;
         }
     }
-    private static Callable<ArrayList<Unit>> IterationDebris() {
-        return () -> {
+    private class IterationDebris implements Runnable{
+        public void run() {
             for (int i = 0;i< DebrisList.size();i++){
-                DebrisList.get(i).all_action_client();
+                Unit debris = DebrisList.get(i);
+                if(debris != null) {
+                    synchronized (debris) {
+                        debris.all_action_client();
+                    }
+                }
                 //Main_client.debris_data(debris);
             }
-            return DebrisList; // результат
-        };
+            // результат
+        }
     }
-    private static Callable<ArrayList<Bullet>> IterationBullet() {
-        return () -> {
+    private class IterationBullet implements Runnable{
+        public void run(){
             for (int i = 0; i< BulletList.size(); i++){
                 Bullet bullet = BulletList.get(i);
                 if(bullet != null) {
-                    bullet.all_action_client();
-
+                    synchronized (bullet) {
+                        bullet.all_action_client();
+                    }
                 }
             }
-            return BulletList; // результат
-        };
+        }
     }
-    private static Callable<ArrayList<Unit>> IterationUnit() {
-        return () -> {
+    private class IterationUnit implements Runnable{
+        public void run(){
             for(int i = 0;i< UnitList.size();i++) {
                 Unit unit = UnitList.get(i);
-                //Main_client.player_data(unit);
-                if(unit.host || unit.nConnect != IDClient) {
-                    unit.all_action_client_2();
-                }
-                else {
-                    //System.out.println(unit.nConnect+" "+IDClient);
-                    unit.all_action_client_1();
+                if(unit != null) {
+                    synchronized (unit) {
+                        if (unit.host || unit.nConnect != IDClient) {
+                            unit.all_action_client_2();
+                        } else {
+                            unit.all_action_client_1();
+                        }
+                    }
                 }
             }
-            return UnitList; // результат
-        };
+
+        }
     }
 }

@@ -164,7 +164,6 @@ public class ActionMenu extends ActionGame {
             }
         }
         switch (ConfigMenu) {
-            case 4:
             case 0:{
                 SliderSound.AllAction();
                 SoundProcent = SliderSound.PercentageGet() * 0.2f;
@@ -188,6 +187,13 @@ public class ActionMenu extends ActionGame {
                     button.heightXY = button.yConst + button.height - TotalPointListMap;
                 }
             }break;
+            case 4:
+                SliderSound.AllAction();
+                SoundProcent = SliderSound.PercentageGet() * 0.2f;
+                if(Keyboard.ClickEsc){
+                    Main.ActionGameMain = ActionGameTotal;
+                }
+                break;
         }
 //        for (i = 0;i< ButtonList.size();i++){
 //            Button but = ButtonList.get(i);

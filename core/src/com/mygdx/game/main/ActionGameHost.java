@@ -1,12 +1,7 @@
 package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.files.FileHandle;
 import com.badlogic.gdx.graphics.GL20;
-import Content.Particle.Acid;
-import Content.Particle.FlameSpawn;
-import com.badlogic.gdx.graphics.Pixmap;
-import com.badlogic.gdx.graphics.Texture;
 import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
@@ -16,15 +11,14 @@ import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.Inventory.PacketInventory;
-import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
 
 import java.util.ArrayList;
 import java.util.LinkedList;
+import java.util.Queue;
 import java.util.concurrent.*;
 
-import static com.badlogic.gdx.graphics.Pixmap.*;
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
@@ -39,33 +33,48 @@ import static com.mygdx.game.unit.TransportRegister.*;
 
 public class ActionGameHost extends ActionGame{
 
-    private static Callable<ArrayList<Bullet>> BulletThreadIteration;
+    //private static Callable<ArrayList<Bullet>> BulletThreadIteration;
     private static Callable<ArrayList<Unit>> UnitThreadIteration;
-    private static Callable<ArrayList<Unit>> DebrisThreadIteration;
+  //  private static Callable<ArrayList<Unit>> DebrisThreadIteration;
+
+    private Thread ThreadIterationDebris;
+    private Thread ThreadIterationBullet;
+    private Thread ThreadIterationUnit;
 
     //private static IterationBullet IterationBullet = new IterationBullet();
 
     private int i;
     private static int timer = 0;
     public void ThreadAllAdd(){
-        BulletThreadIteration = IterationBullet();
 
-        UnitThreadIteration = IterationUnit();
 
-        DebrisThreadIteration = IterationDebris();
+
+        //DebrisThreadIteration = IterationDebris();
 
 
     }
     @Override final
     public void action() throws ExecutionException, InterruptedException {
+        ThreadIterationDebris = new Thread(new IterationDebris());
+        ThreadIterationBullet = new Thread(new IterationBullet());
+        ThreadIterationUnit = new Thread(new IterationUnit());
+
+        ThreadIterationDebris.start();
+        ThreadIterationBullet.start();
+        ThreadIterationUnit.start();
         //executor = Executors.newFixedThreadPool(1);
         //ThreadAllAddHost();
-        Future<ArrayList<Bullet>>BulletFutureIteration = executor.submit(BulletThreadIteration);
-        BulletFutureIteration.get();
-        Future<ArrayList<Unit>>UnitFutureIteration = executor.submit(UnitThreadIteration);
-        UnitFutureIteration.get();
-        Future<ArrayList<Unit>>DebrisFutureIteration = executor.submit(DebrisThreadIteration);
-        DebrisFutureIteration.get();
+        //Future<ArrayList<Bullet>>BulletFutureIteration = executor.submit(BulletThreadIteration);
+        //BulletFutureIteration.get();
+
+
+        //UnitFutureIteration.get();
+        //Future<ArrayList<Unit>>DebrisFutureIteration = executor.submit(DebrisThreadIteration);
+
+        //BulletFutureIteration.get();
+        //DebrisList = DebrisThreadIteration.Debris;
+
+        //DebrisFutureIteration.get();
 
 
 
@@ -85,7 +94,7 @@ public class ActionGameHost extends ActionGame{
             if(Keyboard.PressD){
                 Main.RC.x += 10;
             }
-            if(Keyboard.PressEsc){
+            if(Keyboard.ClickEsc){
                 ActionGameMain = ActionMenu;
                 ConfigMenu = 4;
             }
@@ -191,7 +200,12 @@ public class ActionGameHost extends ActionGame{
 
 //        IterationBullet.start();
         for (int i = 0;i< BulletListDown.size();i++){
-            BulletListDown.get(i).update();
+            Bullet bullet = BulletListDown.get(i);
+            if(bullet!= null) {
+                synchronized (bullet) {
+                    bullet.update();
+                }
+            }
 
         }
 
@@ -215,7 +229,12 @@ public class ActionGameHost extends ActionGame{
         RC.BuildingUpdate();
 
         for (i = 0;i< BulletListUp.size();i++){
-            BulletListUp.get(i).update();
+            Bullet bullet = BulletListUp.get(i);
+            if(bullet!= null) {
+                synchronized (bullet) {
+                    bullet.update();
+                }
+            }
 
         }
 //        for (i = 0; i< Main.BulletList.size(); i++){
@@ -257,15 +276,17 @@ public class ActionGameHost extends ActionGame{
         WeatherIteration(Batch);
         LightSystem.begin(Batch);
         //LightSystem.end(Batch);
-        server_packet();
         //System.out.println(UnitList.size());
 //        if(Unit.ai_sost == 0){
 //            Unit.AIScan = false;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
-        BulletFutureIteration.cancel(true);
-        UnitFutureIteration.cancel(true);
-        DebrisFutureIteration.cancel(true);
+        //BulletFutureIteration.cancel(true);
+        //DebrisFutureIteration.cancel(true);
+        while (ThreadIterationBullet.isAlive()||ThreadIterationUnit.isAlive()||ThreadIterationDebris.isAlive()){
+
+        }
+        server_packet();
 
 
         //executor.shutdown();
@@ -287,6 +308,7 @@ public class ActionGameHost extends ActionGame{
                 ClearDebrisList.clear();
             }
         }
+
 //        if(EnumerationList){
 //            for (i = 0; i < Main.UnitList.size(); i++) {
                 //packet_player_server(Main.UnitList.get(i));
@@ -295,10 +317,10 @@ public class ActionGameHost extends ActionGame{
 //            EnumerationList = false;
 //        }
         PacketServer.item = ItemPackList;
+        PacketServer.building = PacketBuilding;
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
-        PacketServer.building = PacketBuilding;
         packetInventoryServer();
         PacketServer.sound = SoundPack;
         PacketServer.mapObject = MapObject.PacketMapObjects;
@@ -310,9 +332,9 @@ public class ActionGameHost extends ActionGame{
         packetUnitUpdate.ConfDebrisList = false;
         packetUnitUpdate.ConfUnitList = false;
         ItemPackList.clear();
-        PacketUnit.clear();
-        PacketBull.clear();
         PacketDebris.clear();
+        PacketBull.clear();
+        PacketUnit.clear();
         PacketBuilding.clear();
     }
     public static void packet_player_server(Unit unit,int i){
@@ -368,46 +390,58 @@ public class ActionGameHost extends ActionGame{
         PacketBuilding.get(i).x = BuildingList.get(i).x;
         PacketBuilding.get(i).y = BuildingList.get(i).y;
     }
-    private static Callable<ArrayList<Unit>> IterationDebris() {
-        return () -> {
-            for(int i = 0;i< DebrisList.size();i++) {
+    private class IterationDebris implements Runnable{
+        public void run(){
+            for (int i = 0; i < DebrisList.size(); i++) {
                 Unit debris = DebrisList.get(i);
-                packet_debris_server(debris,i);
-                debris.all_action();
-                debris.corpus_corpus(Main.UnitList);
-                debris.corpus_corpus(Main.DebrisList);
+                //if(debris != null){
+                    //synchronized (debris) {
+                        packet_debris_server(debris, i);
+                        debris.all_action();
+                        debris.corpus_corpus(Main.UnitList);
+                        debris.corpus_corpus(Main.DebrisList);
+                    //}
+                //}
             }
-            return DebrisList; // результат
-        };
+            //Debris = DebrisList;
+        }
     }
-    private static Callable<ArrayList<Bullet>> IterationBullet() {
-        return () -> {
-            for (int i = 0; i < BulletList.size(); i++) {
-                BulletList.get(i).all_action();
+    private class IterationBullet implements Runnable {
+        public void run() {
 
-            } // имитация длительной задачи
-            return BulletList; // результат
-        };
+            for (int i = 0; i < BulletList.size(); i++) {
+                Bullet bullet = BulletList.get(i);
+                //if (bullet != null) {
+                    //synchronized (bullet) {
+                        bullet.all_action();
+                    //}
+
+                //}
+            }
+        }
     }
-    private static Callable<ArrayList<Unit>> IterationUnit() {
-        return () -> {
-            for(int i = 0;i< UnitList.size();i++) {
+    public class IterationUnit implements Runnable {
+        public void run() {
+            for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
-                ActionGameHost.packet_player_server(unit,i);
-                if (unit.host || unit.control == RegisterControl.controllerBot
-                        || unit.control == RegisterControl.controllerBotSupport
-                        || unit.control == RegisterControl.controllerSoldatTransport
-                        || unit.control == RegisterControl.controllerSoldatBot
-                        || unit.control == RegisterControl.controllerHelicopter) {
-                    unit.all_action();
-                } else {
-                    unit.all_action_client();
-                }
+                //if (unit != null) {
+                    //synchronized (unit) {
+                        ActionGameHost.packet_player_server(unit, i);
+                        if (unit.host || unit.control == RegisterControl.controllerBot
+                                || unit.control == RegisterControl.controllerBotSupport
+                                || unit.control == RegisterControl.controllerSoldatTransport
+                                || unit.control == RegisterControl.controllerSoldatBot
+                                || unit.control == RegisterControl.controllerHelicopter) {
+                            unit.all_action();
+
+                        } else {
+                            unit.all_action_client();
+                        }
+                    //}
+                //}
             }
             Collision.CollisionIterationGlobal();
-
-            return UnitList; // результат
-        };
+        }
     }
 }
 

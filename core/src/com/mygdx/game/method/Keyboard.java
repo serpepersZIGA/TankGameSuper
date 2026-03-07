@@ -22,7 +22,7 @@ import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
 import static com.mygdx.game.Inventory.InventoryInterface.InventoryConfMoving;
 
 public class Keyboard extends InputAdapter{
-    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc;
+    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc,ClickEsc;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
     public static float ZoomMax;
@@ -63,6 +63,7 @@ public class Keyboard extends InputAdapter{
         }
         else if (keycode == Input.Keys.ESCAPE) {
             PressEsc = true;
+            ClickEsc = true;
         }
         return true;
     }

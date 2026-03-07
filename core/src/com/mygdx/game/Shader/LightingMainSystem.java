@@ -112,7 +112,13 @@ public class LightingMainSystem implements Disposable {
 
         // Устанавливаем общие параметры освещения
         LightSystem.lightsRender.clear();
-        for(LightingMainSystem.Light light : LightSystem.lights){
+        for(int i = 0;i< LightSystem.lights.size();i++){
+            Light light = LightSystem.lights.get(i);
+
+            float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
+            light.XRender = xy[0];
+            light.YRender = xy[1];
+
             if(light.XRender+LightSystem.limitLightingRender >0 &
                     light.YRender+LightSystem.limitLightingRender >0&
                     light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
@@ -128,11 +134,9 @@ public class LightingMainSystem implements Disposable {
         shader.setUniformf("u_minLightness", minLightness);
         shader.setUniformf("u_resolution", screenWidth, screenHeight);
         shader.setUniformi("u_activeLights", lightsRender.size());
-        for (Light light : lights) {
-            float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
-            light.XRender = xy[0];
-            light.YRender = xy[1];
-        }
+//        for (int i = 0;i<lights.size();i++) {
+//            Light light = lights.get(i);
+//        }
 
         // Устанавливаем параметры каждого источника света
         for (int i = 0; i < lightsRender.size() && i < 160; i++) {

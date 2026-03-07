@@ -54,6 +54,7 @@ import static com.mygdx.game.MapFunction.MapScan.MapSize;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
 import static com.mygdx.game.main.ActionGame.executor;
+import static com.mygdx.game.method.Keyboard.ClickEsc;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
@@ -320,6 +321,7 @@ public class Main extends ApplicationAdapter {
             throw new RuntimeException(e);
         }
         TimeGlobal = 0;
+		ClickEsc = false;
 		//LightSystem.clearLights();
 	}
 	@Override final

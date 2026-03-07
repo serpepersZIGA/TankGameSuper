@@ -1,12 +1,14 @@
 package com.mygdx.game.method;
 
 import com.mygdx.game.Shader.LightingMainSystem;
+import com.mygdx.game.build.Building;
 import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.main.Main.BuildingList;
 import static com.mygdx.game.main.Main.LightSystem;
 import static java.lang.StrictMath.abs;
 
@@ -79,7 +81,8 @@ public class RenderCenter {
                 }
             }
             LightSystem.lightsRender.clear();
-            for(LightingMainSystem.Light light : LightSystem.lights){
+            for(int i = 0;i<LightSystem.lights.size();i++){
+                LightingMainSystem.Light light = LightSystem.lights.get(i);
                 if(light.XRender+LightSystem.limitLightingRender >0 &
                         light.YRender+LightSystem.limitLightingRender >0&
                         light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
@@ -108,7 +111,8 @@ public class RenderCenter {
         else if(render_y_max >Main.yMap){render_y_max = Main.yMap;}
         BuildingConst();
         LightSystem.lightsRender.clear();
-        for(LightingMainSystem.Light light : LightSystem.lights){
+        for(int i = 0;i<LightSystem.lights.size();i++){
+            LightingMainSystem.Light light = LightSystem.lights.get(i);
             if(light.XRender+LightSystem.limitLightingRender >0 &
                     light.YRender+LightSystem.limitLightingRender >0&
                     light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
@@ -138,10 +142,12 @@ public class RenderCenter {
         }
     }
     public void BuildingUpdate(){
-        for (Integer integer : IndBuilding) {
-            Main.BuildingList.get(integer).all_action();
-            Main.BuildingList.get(integer).update();
-            Main.BuildingList.get(integer).xy_light_render.clear();
+        for(int i = 0;i<IndBuilding.size();i++){
+            Building Build = BuildingList.get(IndBuilding.get(i));
+            Build.all_action();
+            Build.update();
+            Build.xy_light_render.clear();
+
         }
     }
 }
