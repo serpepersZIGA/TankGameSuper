@@ -106,7 +106,7 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     public void BulletAdd(float x, float y, float rotation, float damage, float penetration, float damage_fragment,
                         float penetration_fragment, byte type_team, byte height,float tDamage,
-                        float speed,int AmountFragment,float time){
+                        float speed,int AmountFragment,float time,Unit unit){
         Bullet bullet;
         try {
             bullet = (Bullet) this.clone();
@@ -141,6 +141,54 @@ public abstract class Bullet implements Serializable,Cloneable {
                     BulletListUp.add(bullet);
                     break;
             }
+
+            BullPacket bullPacket1 = new BullPacket();
+            unit.bull_packets(bullPacket1,bullet);
+            PacketBull.add(bullPacket1);
+
+            BulletList.add(bullet);
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void BulletAdd(float x, float y, float rotation, float damage, float penetration, float damage_fragment,
+                          float penetration_fragment, byte type_team, byte height,float tDamage,
+                          float speed,int AmountFragment,float time){
+        Bullet bullet;
+        try {
+            bullet = (Bullet) this.clone();
+            bullet.x = x;
+            bullet.y = y;
+            bullet.rotation = rotation;
+            bullet.damage = damage;
+            bullet.penetration = penetration;
+            bullet.damage_fragment = damage_fragment;
+            bullet.penetration_fragment = penetration_fragment;
+            bullet.type_team = type_team;
+            bullet.height = height;
+            bullet.speed = speed;
+            bullet.AmountFragment = AmountFragment;
+            bullet.t_damage = tDamage;
+            bullet.time = time;
+            if(bullet.TypeShape){
+                bullet.size += rand.rand(bullet.sizeRandom);
+            }
+            else {
+                bullet.x2 +=rand.rand(bullet.sizeRandom);
+                bullet.y2 +=rand.rand(bullet.sizeRandom);
+                bullet.size = bullet.x2;
+            }
+            bullet.size_render = (int)(bullet.size*Main.Zoom);
+            bullet.speed_save();
+            switch (bullet.height){
+                case 1:
+                    BulletListDown.add(bullet);
+                    break;
+                case 2:
+                    BulletListUp.add(bullet);
+                    break;
+            }
+
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);

@@ -29,7 +29,6 @@ public class LightingMainSystem implements Disposable {
     public int limitLightingRender = 650;
     public static FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth()
             , Gdx.graphics.getHeight(), false);
-    public static TextureRegion fboLTexture = new TextureRegion(fbo.getColorBufferTexture());
 
     public static Mesh mesh;
     public static Texture texture;

@@ -4,6 +4,7 @@ import Content.Particle.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.Inventory.Inventory;
+import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
 import com.mygdx.game.Network.PackerServer;
@@ -264,6 +265,8 @@ public class ActionMenu extends ActionGame {
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
     UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
+
+    inventoryMain = new InventoryInterface(UnitList.get(UnitList.size()-1).inventory,200,500,600,350);
 
 //    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
 //            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));

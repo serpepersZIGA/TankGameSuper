@@ -2,6 +2,7 @@ package com.mygdx.game.unit.Fire;
 
 import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Network.BullPacket;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.method.rand;
@@ -23,11 +24,8 @@ public class FireBull extends Fire {
         unit.fire_y = (float) (unit.tower_y+unit.tower_height_2+((unit.tower_height_2+unit.y_tower) *cos(rotationTower*3.1415926535/180)));
         BulletRegister.BulletTank.BulletAdd(unit.fire_x, unit.fire_y,rotationTower+ -2+ rand.rand(4),unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
-                ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand));
-        PacketBull.add(new BullPacket());
-        int i1 = PacketBull.size()-1;
-        int i2 = BulletList.size()-1;
-        unit.bull_packets(i1,i2);
+                ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
+
 
 
     }

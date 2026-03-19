@@ -17,4 +17,6 @@ public class PackerServer {
 
     public ArrayList<SoundPacket>sound = new ArrayList<>();
     public float TotalLight;
+    public int MoneyAdd;
+
 }

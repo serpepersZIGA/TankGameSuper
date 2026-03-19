@@ -12,8 +12,7 @@ import java.util.ArrayList;
 
 
 import static Data.DataImage.TextureAtl;
-import static com.mygdx.game.main.Main.ItemPackList;
-import static com.mygdx.game.main.Main.UnitList;
+import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.Math.sqrt;
 
@@ -55,8 +54,12 @@ public class ItemObject{
     protected void Press(){
         for (Unit unit : UnitList) {
             if (unit.press_f & sqrt(pow2(this.x-unit.x)+pow2(this.y-unit.y))<LineSelection) {
-                unit.inventory.ItemAdd(this.item);
-                ItemList.remove(this);
+                if(unit.inventory.ItemAdd(this.item)) {
+                    if(unit.inventory== inventoryMain.inventory){
+                        inventoryMain.SlotGeneration();
+                    }
+                    ItemList.remove(this);
+                }
                 unit.press_f = false;
                     //unit.inventory.ItemAdd(item);
             }

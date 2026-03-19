@@ -12,8 +12,8 @@ import static com.mygdx.game.method.Keyboard.MouseX;
 import static com.mygdx.game.method.Keyboard.MouseY;
 
 public class InventoryInterface {
-    public static boolean InventoryConf = false;
-    public static boolean InventoryConfMoving = false;
+    public boolean InventoryConf = false;
+    public boolean InventoryConfMoving = false;
     public int XCol,YCol,XColUs,YColUs,XCol2,YCol2;
     public int XInterface,YInterface,XSlots,YSlots,WidthWindow,HeightWindow,x,y;
     public String frame = "frameSlot";
@@ -36,7 +36,7 @@ public class InventoryInterface {
         YSlots = height/YInterface;
         if(XSlots>YSlots){XSlots=YSlots;}
         else if(XSlots<YSlots){YSlots = XSlots;}
-        SlotGeneration(inventory);
+        SlotGeneration();
     }
     public InventoryInterface(){
         SlotInventory = new Slot[0][0];
@@ -44,7 +44,7 @@ public class InventoryInterface {
         WidthWindow = 600;
         HeightWindow = 350;
     }
-    public void SlotGeneration(Inventory inventory){
+    public void SlotGeneration(){
         for(int ix = 0;ix<inventory.InventorySlots.length;ix++){
             for(int iy = 0;iy<inventory.InventorySlots[ix].length;iy++){
                 SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots);
@@ -142,8 +142,8 @@ public class InventoryInterface {
                 XCol2 = MouseX-(Slot.x+this.x);
                 YCol2 = MouseY-(Slot.y+this.y);
                 if(YCol2 < Slot.height & YCol2 > 0 & XCol2<Slot.width &XCol2> 0){
-                    if(inventory.InventorySlots[ix][iy]!= null) {
-                        Slot.item = inventory.InventorySlots[ix][iy];
+                    if(SlotInventory[ix][iy].item!= null) {
+                        Slot.item = SlotInventory[ix][iy].item;
                         slotBuf = Slot;
                         SlotBuffer = new SlotBuffer(Slot, XCol2, YCol2, Slot.width, Slot.height, ix, iy);
                     }

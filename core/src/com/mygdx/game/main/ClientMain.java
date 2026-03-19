@@ -357,7 +357,14 @@ public class ClientMain extends Listener {
         Unit unit;
         for (TransportPacket pack : PacketUnit) {
             unit = Unit.IDList.get(pack.ID);
-            UnitList.add(unit.UnitAdd(0,0,pack.host,pack.team));
+
+            R_LOCK.lock();
+            try {
+                UnitList.add(unit.UnitAdd(0,0,pack.host,pack.team));
+            }
+            finally {
+                R_LOCK.unlock();
+            }
             UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerBot;
             UnitDataCreate(pack,unit);
 

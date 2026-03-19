@@ -16,7 +16,7 @@ public class Item implements Cloneable{
     public TypeItem typeItem;
     public ArrayList<TegItem>teg;
     public Gun gun;
-    public int HPHill;
+    public int HPHill,Price;
     public float HPPercent,HP, Armor, ArmorPercent,DamagePercent,PenetrationPercent,
             MoveUPPercent,MoveDownPercent, AccelerationPercent;
     public Item(Gun gun,ArrayList<TegItem>teg){
@@ -26,11 +26,11 @@ public class Item implements Cloneable{
     }
     public Item(float HPPercent,float HP,float Armor,float ArmorPercent
             ,float DamagePercent,float PenetrationPercent,
-                int MoveUPPercent,int MoveDownPercent,int AccelerationPercent
+                int MoveUPPercent,int MoveDownPercent,int AccelerationPercent,int Price
             ,String ID,ArrayList<TegItem>teg,String image){
         this.teg = teg;
         this.ID = ID;
-
+        this.Price = Price;
         this.HPPercent = HPPercent;
         this.Armor = Armor;
         this.ArmorPercent = ArmorPercent;

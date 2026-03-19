@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Inventory.Shop.ShopInterface;
 import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.PacketBuildingServer;
@@ -48,6 +49,8 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
@@ -102,7 +105,7 @@ public class Main extends ApplicationAdapter {
 	public static com.mygdx.game.Network.PacketBuildingServer PacketBuildingServer;
 	public static Packet_client PacketClient;
 	public static float TickBlock,TickBlockMax = 600;
-	public static BitmapFont font,font2;
+	public static BitmapFont font,font2,font3;
 	public static byte ConfigMenu;
 	public static InputWindow InputWindow;
 	public static int xMap,yMap,i;
@@ -119,11 +122,16 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<Unit> ClearDebrisList = new ArrayList<>();
 	public static ArrayList<PacketInventory> InventoryPack = new ArrayList<>();
 	public static InventoryInterface inventoryMain;
+	public static ShopInterface shopMain;
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
 	public static ActionGame ActionGameTotal;
     public static int udpPort = 27950, tcpPort = 27950;
+
+	public static final Lock R_LOCK = new ReentrantLock();
+
+
 
 
 
@@ -230,7 +238,6 @@ public class Main extends ApplicationAdapter {
 
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
-
 		RegisterModuleCannon.Create();
 		RegisterModuleEngine.Create();
 		RegisterModuleCorpus.Create();
@@ -241,7 +248,8 @@ public class Main extends ApplicationAdapter {
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
-
+		Inventory shop = new Inventory();
+		shopMain = new ShopInterface(shop);
 
 		Render = new RenderPrimitive();
 //		Render = new ShapeRenderer(128,LightSystem.shader);
@@ -259,6 +267,7 @@ public class Main extends ApplicationAdapter {
 
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
+		//font3 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
 		InputWindow = new InputWindow();
 		EventData = new EventRegister();
 		PlayerSpawnListData.Create();
@@ -315,6 +324,7 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         TimeGlobal+= Gdx.graphics.getDeltaTime();
         TimeGlobalBullet = TimeGlobal*50;
+		//System.out.println(Shop.Money);
         try {
             ActionGameMain.action();
         } catch (ExecutionException | InterruptedException e) {

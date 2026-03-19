@@ -232,8 +232,13 @@ public abstract class Unit implements Cloneable{
 //            for(Unit cannons : unitAdd.tower_obj){
 //                cannons.team = team;
 //            }
-
-            UnitList.add(unitAdd);
+            R_LOCK.lock();
+            try {
+                UnitList.add(unitAdd);
+            }
+            finally {
+                R_LOCK.unlock();
+            }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -555,9 +560,7 @@ public abstract class Unit implements Cloneable{
     protected void blade_helicopter(){
         this.rotation_tower += speed_tower;
     }
-    public void bull_packets(int i1, int i2){
-        BullPacket bullPack = PacketBull.get(i1);
-        Bullet bullet = BulletList.get(i2);
+    public void bull_packets(BullPacket bullPack,Bullet bullet){
         if(bullet != null) {
             bullPack.x = this.fire_x;
             bullPack.y = this.fire_y;
@@ -609,7 +612,13 @@ public abstract class Unit implements Cloneable{
     }
     public void FireControl(){
         if(this.reload_bot() && this.left_mouse){
-            fire.FireIteration(this);
+            R_LOCK.lock();
+            try {
+                fire.FireIteration(this);
+            }
+            finally {
+                R_LOCK.unlock();
+            }
             reload = reload_max;
             this.left_mouse = false;
         }
@@ -1042,7 +1051,13 @@ public abstract class Unit implements Cloneable{
         if(this.crite_life){
 //            Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.RotationInert,this.SpeedInert,
 //                    this.corpus_img,this.corpus_width,this.corpus_height,this.type_unit));
-            UnitDelete();
+            R_LOCK.lock();
+            try {UnitDelete();}
+            finally {R_LOCK.unlock();}
+            int money = 5+rand.rand(5);
+            PacketServer.MoneyAdd += money;
+            Inventory.Money += money;
+
             eventDead();
             packetUnitUpdate.ConfUnitList = true;
             ClearUnitList.add(this);
@@ -1050,7 +1065,7 @@ public abstract class Unit implements Cloneable{
             return;
         }
         this.crite_life = true;
-        this.hp = this.max_hp/2;
+        this.hp = (int) (this.max_hp*0.5f);
 
     }
     public void DebrisDelete() {
@@ -1250,16 +1265,22 @@ public abstract class Unit implements Cloneable{
             Inventory inventory1 = new Inventory(new Item[3][4]);
             inventory1.ItemAdd(ItemRegister.AK74);
             inventory1.ItemAdd(ItemRegister.flamethrower);
-            switch(rand.rand(2)){
-                case 0:{
-                    Veteran.UnitAdd((int) this.x, (int) this.y,true, (byte) 2, RegisterControl.controllerSoldatBot,inventory1);
-                    break;
+            R_LOCK.lock();
+            try {
+                switch (rand.rand(2)) {
+                    case 0: {
+                        Veteran.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, RegisterControl.controllerSoldatBot, inventory1);
+                        break;
+                    }
+                    case 1: {
+                        Jaeger.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, Main.RegisterControl.controllerSoldatBot, inventory1);
+                        break;
+                    }
+                    //case 3->{soldat.add(new soldat_(this.x,this.y));}
                 }
-                case 1:{
-                    Jaeger.UnitAdd((int) this.x, (int) this.y,true, (byte) 2,Main.RegisterControl.controllerSoldatBot,inventory1);
-                    break;
-                }
-                //case 3->{soldat.add(new soldat_(this.x,this.y));}
+            } finally {
+                // 3. ОБЯЗАТЕЛЬНО отпускаем замок в finally
+                R_LOCK.unlock();
             }
         }
     }

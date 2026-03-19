@@ -2,6 +2,7 @@ package com.mygdx.game.unit.Fire;
 
 import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Network.BullPacket;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.method.rand;
@@ -26,17 +27,12 @@ public class FireFlame extends Fire {
 //        Main.BulletList.add(new BullFlame(unit.fire_x,unit.fire_y,rotationTower+ -10+rand.rand(20),unit.damage,unit.t_damage,unit.penetration,unit.team,unit.height));
         BulletRegister.BulletFlame.BulletAdd(unit.fire_x, unit.fire_y,rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
-                ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand));
+                ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
 
 
         BulletRegister.BulletFlame.BulletAdd(unit.fire_x, unit.fire_y,rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
-                ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand));
-        PacketBull.add(new BullPacket());
-        PacketBull.add(new BullPacket());
-        int i1 = PacketBull.size()-2;
-        int i2 = BulletList.size()-2;
-        unit.bull_packets(i1,i2);
-        unit.bull_packets(i1+1,i2+1);
+                ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
+
     }
 }

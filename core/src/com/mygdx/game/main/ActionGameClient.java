@@ -152,11 +152,7 @@ public class ActionGameClient extends ActionGame {
 
         for (i = 0;i< BulletListDown.size();i++){
             Bullet bullet = BulletListDown.get(i);
-            if(bullet!= null) {
-                synchronized (bullet) {
-                    bullet.update();
-                }
-            }
+            bullet.update();
 
         }
         for(i = 0;i< UnitList.size();i++) {
@@ -182,11 +178,9 @@ public class ActionGameClient extends ActionGame {
 
         for (i = 0;i< BulletListUp.size();i++){
             Bullet bullet = BulletListUp.get(i);
-            if(bullet!= null) {
-                synchronized (bullet) {
-                    bullet.update();
-                }
-            }
+            bullet.update();
+
+
 
         }
 
@@ -200,7 +194,7 @@ public class ActionGameClient extends ActionGame {
                 }
             }
         }
-
+        shopMain.InventoryIteration();
         inventoryMain.InventoryIterationClient();
 
         for (i= 0; i< BangList.size(); i++){
@@ -236,9 +230,8 @@ public class ActionGameClient extends ActionGame {
             for (int i = 0;i< DebrisList.size();i++){
                 Unit debris = DebrisList.get(i);
                 if(debris != null) {
-                    synchronized (debris) {
-                        debris.all_action_client();
-                    }
+                    debris.all_action_client();
+
                 }
                 //Main_client.debris_data(debris);
             }
@@ -250,9 +243,8 @@ public class ActionGameClient extends ActionGame {
             for (int i = 0; i< BulletList.size(); i++){
                 Bullet bullet = BulletList.get(i);
                 if(bullet != null) {
-                    synchronized (bullet) {
-                        bullet.all_action_client();
-                    }
+                    bullet.all_action_client();
+
                 }
             }
         }
@@ -262,12 +254,10 @@ public class ActionGameClient extends ActionGame {
             for(int i = 0;i< UnitList.size();i++) {
                 Unit unit = UnitList.get(i);
                 if(unit != null) {
-                    synchronized (unit) {
                         if (unit.host || unit.nConnect != IDClient) {
                             unit.all_action_client_2();
                         } else {
                             unit.all_action_client_1();
-                        }
                     }
                 }
             }

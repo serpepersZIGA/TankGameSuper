@@ -2,12 +2,37 @@ package com.mygdx.game.Inventory;
 
 import com.mygdx.game.unit.Unit;
 
+import java.util.ArrayList;
 import java.util.Arrays;
+
+import static java.lang.StrictMath.sqrt;
 
 public class Inventory implements Cloneable{
     public Item[][]InventorySlots;
+    public static int MoneyAdd;
+    public static int Money;
+    public static ArrayList<Item> AssortmentList = new ArrayList<>();
+    public int xySize;
     public Inventory(Item[][]InventorySlots){
         this.InventorySlots = InventorySlots;
+    }
+    public Inventory(){
+        xySize = (int) sqrt(AssortmentList.size())+1;
+        InventorySlots = new Item[xySize][xySize];
+        int ii = 0;
+        int i2 = 0;
+        //System.out.println("DID "+AssortmentList.size());
+        for (Item item : AssortmentList) {
+            InventorySlots[ii][i2] = item;
+            ii++;
+            if (ii == xySize) {
+                i2++;
+            }
+
+        }
+    }
+    public static void AssortmentAdd(Item item){
+        AssortmentList.add(item);
     }
     public void ItemAdd(int x,int y,Item item){
         if(item != null) {
@@ -54,6 +79,7 @@ public class Inventory implements Cloneable{
             for (Item value : inventorySlot) {
                 if (value == item) {
                     if(value.Use(unit)){
+
                         InventorySlots[ix][iy] = null;
                     }
                     return true;
@@ -78,10 +104,9 @@ public class Inventory implements Cloneable{
         }
         return false;
     }
-    public static int ix,iy;
     public boolean ItemUseTeg(TegItem teg, Unit unit){
-        ix = 0;
-        iy = 0;
+        int ix = 0;
+        int iy = 0;
         for (Item[] inventorySlot : InventorySlots) {
             for (Item value : inventorySlot) {
                 for(TegItem tegItem : value.teg){

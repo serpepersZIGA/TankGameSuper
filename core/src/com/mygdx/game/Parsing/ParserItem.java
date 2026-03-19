@@ -3,6 +3,7 @@ import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
+import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.TegItem;
 import com.mygdx.game.unit.ClassUnit;
@@ -15,7 +16,7 @@ public class ParserItem {
     public static String Image;
     public static ArrayList<String> Cannon;
     public static int Armor,Hp,ArmorPercent,HPPercent,DamagePercent,PenetrationPercent
-            ,MoveUPPercent,MoveDownPercent, AccelerationPercent;
+            ,MoveUPPercent,MoveDownPercent, AccelerationPercent,Price;
     public static ClassUnit classUnit;
     public static int medic_help;
 
@@ -58,12 +59,20 @@ public class ParserItem {
         MoveUPPercent= obj.MoveUPPercent;
         MoveDownPercent= obj.MoveDownPercent;
         AccelerationPercent= obj.AccelerationPercent;
+        Price = obj.Price;
 
         ArrayList<TegItem> list = new ArrayList();
         list.add(TegItem.upgrade);
-        new Item(HPPercent,Hp,Armor,ArmorPercent,DamagePercent,PenetrationPercent
-                ,MoveUPPercent,MoveDownPercent,AccelerationPercent,ID,
-                new ArrayList<>(list),Image);
+        if(Price!= 0){
+            Inventory.AssortmentAdd(new Item(HPPercent,Hp,Armor,ArmorPercent,DamagePercent,PenetrationPercent
+                    ,MoveUPPercent,MoveDownPercent,AccelerationPercent,Price,ID,
+                    new ArrayList<>(list),Image));
+        }
+        else{
+            new Item(HPPercent,Hp,Armor,ArmorPercent,DamagePercent,PenetrationPercent
+                    ,MoveUPPercent,MoveDownPercent,AccelerationPercent,Price,ID,
+                    new ArrayList<>(list),Image);
+        }
     }
     public static void AddBuilding(){
         new File("ContentGlobal").mkdirs();

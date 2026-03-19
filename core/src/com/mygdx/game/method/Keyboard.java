@@ -2,6 +2,7 @@ package com.mygdx.game.method;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
+import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Weather.Ripple;
@@ -18,11 +19,9 @@ import java.util.ArrayList;
 import static com.mygdx.game.block.Block.lighting;
 import static com.mygdx.game.block.Block.lighting_zoom;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
-import static com.mygdx.game.Inventory.InventoryInterface.InventoryConfMoving;
 
 public class Keyboard extends InputAdapter{
-    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc,ClickEsc;
+    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc,ClickEsc,PressB;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
     public static float ZoomMax;
@@ -35,68 +34,93 @@ public class Keyboard extends InputAdapter{
 
     @Override
     public boolean keyDown(int keycode) {
-        if (keycode == Input.Keys.W) {
-            PressW = true;
-        }
-        else if (keycode ==Input.Keys.S ) {
-            PressS = true;
-        }
-        else if (keycode ==Input.Keys.A) {
-            PressA = true;
-        }
-        else if (keycode ==Input.Keys.D) {
-            PressD = true;
-        }
-        else if (keycode ==Input.Keys.F) {
-            PressF = true;
-        }
-        else if (keycode ==Input.Keys.E) {
-            PressE = true;
-        }
-        else if (keycode == Input.Keys.UP) {
-            Button.YList += 4;
-            PressUP = true;
-        }
-        else if (keycode == Input.Keys.DOWN) {
-            Button.YList -= 4;
-            PressDown = true;
-        }
-        else if (keycode == Input.Keys.ESCAPE) {
-            PressEsc = true;
-            ClickEsc = true;
+
+        switch (keycode) {
+            case Input.Keys.W: {
+                PressW = true;
+                break;
+            }
+            case Input.Keys.S: {
+                PressS = true;
+                break;
+            }
+            case Input.Keys.A: {
+                PressA = true;
+                break;
+            }
+            case Input.Keys.D: {
+                PressD = true;
+                break;
+            }
+            case Input.Keys.F: {
+                PressF = true;
+                break;
+            }
+            case Input.Keys.E: {
+                PressE = true;
+                break;
+            }
+            case Input.Keys.B: {
+                PressB = true;
+                break;
+            }
+            case Input.Keys.UP: {
+                Button.YList += 4;
+                PressUP = true;
+                break;
+            }
+            case Input.Keys.DOWN: {
+                Button.YList -= 4;
+                PressDown = true;
+                break;
+            }
+            case Input.Keys.ESCAPE: {
+                PressEsc = true;
+                ClickEsc = true;
+                break;
+            }
         }
         return true;
     }
 
     @Override
     public boolean keyUp(int keycode) {
-        if (keycode ==Input.Keys.W) {
-            PressW = false;
-        }
-        else if (keycode ==Input.Keys.S) {
-            PressS = false;
-        }
-        else if (keycode ==Input.Keys.A) {
-            PressA = false;
-        }
-        else if (keycode ==Input.Keys.D) {
-            PressD = false;
-        }
-        else if (keycode ==Input.Keys.F) {
-            PressF = false;
-        }
-        else if (keycode ==Input.Keys.E) {
-            PressE = false;
-            InventoryConf = !InventoryConf;
-        }
-        else if (keycode == Input.Keys.UP) {
-            PressUP = false;
-        }
-        else if (keycode == Input.Keys.DOWN) {
-            PressDown = false;
-        }
-        else if (keycode == Input.Keys.ESCAPE) {
-            PressEsc = false;
+        switch (keycode) {
+            case Input.Keys.W:{
+                PressW = false;
+                break;
+            } case Input.Keys.S: {
+                PressS = false;
+                break;
+            } case Input.Keys.A: {
+                PressA = false;
+                break;
+            } case Input.Keys.D: {
+                PressD = false;
+                break;
+            } case Input.Keys.F: {
+                PressF = false;
+                break;
+            } case Input.Keys.E:{
+                PressE = false;
+                inventoryMain.InventoryConf = !inventoryMain.InventoryConf;
+                break;
+            }
+            case Input.Keys.B: {
+                PressB = false;
+                shopMain.InventoryConf = !shopMain.InventoryConf;
+                break;
+            }
+            case Input.Keys.UP: {
+                PressUP = false;
+                break;
+            } case Input.Keys.DOWN:{
+                PressDown = false;
+                break;
+            } case Input.Keys.ESCAPE: {
+                PressEsc = false;
+                break;
+            }
         }
         return true;
     }
@@ -108,39 +132,60 @@ public class Keyboard extends InputAdapter{
 
     @Override
     public boolean touchDown(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT) {
-            LeftMouse = true;
-        }
-        if(button == Input.Buttons.MIDDLE) {
-            if(InventoryConf) {
-                inventoryMain.CollisionMouseItem();
+        switch (button){
+            case Input.Buttons.LEFT:{
+                LeftMouse = true;
+                break;
             }
-            MiddleMouse = true;
-        }
-        if(button == Input.Buttons.RIGHT) {
-            if(InventoryConf & inventoryMain.CollisionMouseInvert()){
-                InventoryConfMoving = true;
+            case Input.Buttons.MIDDLE:
+            {
+                if(inventoryMain.InventoryConf) {
+                    inventoryMain.CollisionMouseItem();
+                }
+                if(shopMain.InventoryConf) {
+                    shopMain.CollisionMouseItem();
+                }
+                MiddleMouse = true;
+                break;
             }
-           RightMouse = true;
+            case Input.Buttons.RIGHT:{
+                if(inventoryMain.InventoryConf & inventoryMain.CollisionMouseInvert()){
+                    inventoryMain.InventoryConfMoving = true;
+                }
+                else if(shopMain.InventoryConf & shopMain.CollisionMouseInvert()){
+                    shopMain.InventoryConfMoving = true;
+                }
+                RightMouse = true;
+                break;
+            }
         }
         return false;
     }
 
     @Override
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
-        if(button == Input.Buttons.LEFT) {
-            LeftMouse = false;
-            LeftMouseClick = true;
-        }
-        if(button == Input.Buttons.RIGHT) {
-            if(InventoryConfMoving){
-                InventoryConfMoving = false;
+        switch (button){
+            case Input.Buttons.LEFT:{
+                LeftMouse = false;
+                LeftMouseClick = true;
+                break;
             }
-            RightMouse = false;
-            RightMouseClick = true;
-        }
-        if(button == Input.Buttons.MIDDLE) {
-            MiddleMouse = false;
+            case Input.Buttons.MIDDLE:
+            {
+                MiddleMouse = false;
+                break;
+            }
+            case Input.Buttons.RIGHT:{
+                if(inventoryMain.InventoryConfMoving){
+                    inventoryMain.InventoryConfMoving = false;
+                }
+                else if(shopMain.InventoryConfMoving){
+                    shopMain.InventoryConfMoving = false;
+                }
+                RightMouse = false;
+                RightMouseClick = true;
+                break;
+            }
         }
         return false;
     }

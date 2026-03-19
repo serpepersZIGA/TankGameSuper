@@ -201,11 +201,10 @@ public class ActionGameHost extends ActionGame{
 //        IterationBullet.start();
         for (int i = 0;i< BulletListDown.size();i++){
             Bullet bullet = BulletListDown.get(i);
-            if(bullet!= null) {
-                synchronized (bullet) {
-                    bullet.update();
-                }
+            if(bullet != null) {
+                bullet.update();
             }
+
 
         }
 
@@ -230,11 +229,10 @@ public class ActionGameHost extends ActionGame{
 
         for (i = 0;i< BulletListUp.size();i++){
             Bullet bullet = BulletListUp.get(i);
-            if(bullet!= null) {
-                synchronized (bullet) {
-                    bullet.update();
-                }
+            if(bullet != null) {
+                bullet.update();
             }
+
 
         }
 //        for (i = 0; i< Main.BulletList.size(); i++){
@@ -253,8 +251,9 @@ public class ActionGameHost extends ActionGame{
                 }
             }
         }
-
+        shopMain.InventoryIteration();
         inventoryMain.InventoryIteration();
+
 //        Map<Thread,StackTraceElement[]> threads = Thread.getAllStackTraces();
 //        for (Map.Entry<Thread, StackTraceElement[]> entry : threads.entrySet()) {
 //            System.out.println(entry.getKey());
@@ -297,13 +296,25 @@ public class ActionGameHost extends ActionGame{
             Server.sendToAllTCP(packetUnitUpdate);
             if(packetUnitUpdate.ConfUnitList){
                 for(Unit unit : ClearUnitList){
-                    UnitList.remove(unit);
+                    R_LOCK.lock();
+                    try {
+                        UnitList.remove(unit);
+                    }
+                    finally {
+                        R_LOCK.unlock();
+                    }
                 }
                 ClearUnitList.clear();
             }
             else if(packetUnitUpdate.ConfDebrisList){
-                for(Unit unit : ClearDebrisList){
-                    DebrisList.remove(unit);
+                R_LOCK.lock();
+                try {
+                    for (Unit unit : ClearDebrisList) {
+                        DebrisList.remove(unit);
+                    }
+                }
+                finally {
+                    R_LOCK.unlock();
                 }
                 ClearDebrisList.clear();
             }
@@ -394,14 +405,14 @@ public class ActionGameHost extends ActionGame{
         public void run(){
             for (int i = 0; i < DebrisList.size(); i++) {
                 Unit debris = DebrisList.get(i);
-                //if(debris != null){
+                if(debris != null){
                     //synchronized (debris) {
                         packet_debris_server(debris, i);
                         debris.all_action();
                         debris.corpus_corpus(Main.UnitList);
                         debris.corpus_corpus(Main.DebrisList);
                     //}
-                //}
+                }
             }
             //Debris = DebrisList;
         }
@@ -411,12 +422,12 @@ public class ActionGameHost extends ActionGame{
 
             for (int i = 0; i < BulletList.size(); i++) {
                 Bullet bullet = BulletList.get(i);
-                //if (bullet != null) {
+                if (bullet != null) {
                     //synchronized (bullet) {
                         bullet.all_action();
                     //}
 
-                //}
+                }
             }
         }
     }
@@ -424,7 +435,7 @@ public class ActionGameHost extends ActionGame{
         public void run() {
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
-                //if (unit != null) {
+                if (unit != null) {
                     //synchronized (unit) {
                         ActionGameHost.packet_player_server(unit, i);
                         if (unit.host || unit.control == RegisterControl.controllerBot
@@ -438,7 +449,7 @@ public class ActionGameHost extends ActionGame{
                             unit.all_action_client();
                         }
                     //}
-                //}
+                }
             }
             Collision.CollisionIterationGlobal();
         }

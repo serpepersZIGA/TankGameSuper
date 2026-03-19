@@ -8,7 +8,6 @@ import com.mygdx.game.unit.Unit;
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.LeftMouse;
-import static com.mygdx.game.Inventory.InventoryInterface.InventoryConf;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit){
@@ -28,11 +27,11 @@ public class ControllerPlayer extends Controller {
             Tower.TargetX = unit.TargetX+Tower.tower_x;
             Tower.TargetY = unit.TargetY+Tower.tower_y;
         }
-        if(Keyboard.PressE){
-            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
-            //Keyboard.PressE = false;
-        }
-        if(InventoryConf & LeftMouse){
+//        if(Keyboard.PressE){
+//            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
+////            //Keyboard.PressE = false;
+//        }
+        if(inventoryMain.InventoryConf & LeftMouse){
             inventoryMain.InventoryUs(unit);
         }
 
@@ -81,7 +80,7 @@ public class ControllerPlayer extends Controller {
             inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
             //Keyboard.PressE = false;
         }
-        if(InventoryConf & LeftMouse){
+        if(inventoryMain.InventoryConf & LeftMouse){
             inventoryMain.InventoryUsClient(unit);
         }
         Client.sendUDP(PacketClient);
