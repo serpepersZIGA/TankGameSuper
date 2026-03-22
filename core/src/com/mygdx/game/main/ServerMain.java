@@ -128,6 +128,7 @@ public class ServerMain extends Listener {
     public void received(Connection c, Object p){
         if(p instanceof Packet_client) {
             Packet_client pack = (Packet_client)p;
+            Inventory.Money -= pack.MoneyAdd;
             for (Unit unit : UnitList) {
                 //System.out.println(IDClient+" "+unit.nConnect );
                 if (pack.IDClient == unit.nConnect) {

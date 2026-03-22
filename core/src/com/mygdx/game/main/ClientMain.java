@@ -133,6 +133,9 @@ public class ClientMain extends Listener {
 
             LightSystem.setAmbientColor(new Color(0,0,0,lightTotal));
             LightSystem.setMinLightness(lightTotal);
+
+            Inventory.Money = ((PackerServer) p).Money;
+
             PacketUnit = ((PackerServer) p).player;
             i = 0;
             if(PacketUnit.size()== UnitList.size()) {

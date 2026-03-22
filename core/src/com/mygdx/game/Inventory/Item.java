@@ -105,6 +105,7 @@ public class Item implements Cloneable{
                         cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
                     }
                     unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+
                     return true;
                 }
 

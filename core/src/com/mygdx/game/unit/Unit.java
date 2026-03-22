@@ -1055,8 +1055,9 @@ public abstract class Unit implements Cloneable{
             try {UnitDelete();}
             finally {R_LOCK.unlock();}
             int money = 5+rand.rand(5);
-            PacketServer.MoneyAdd += money;
+            //PacketServer.MoneyAdd += money;
             Inventory.Money += money;
+            PacketServer.Money = Inventory.Money;
 
             eventDead();
             packetUnitUpdate.ConfUnitList = true;

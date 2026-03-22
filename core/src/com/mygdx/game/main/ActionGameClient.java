@@ -28,8 +28,6 @@ import static com.mygdx.game.Sound.SoundPlay.soundPlayClient;
 import static com.mygdx.game.Sound.SoundRegister.IDSound;
 import static com.mygdx.game.Weather.WeatherMainSystem.RippleIteration;
 import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
-import static com.mygdx.game.bull.Bullet.BulletListDown;
-import static com.mygdx.game.bull.Bullet.BulletListUp;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.method.Option.SoundConst;
@@ -150,9 +148,11 @@ public class ActionGameClient extends ActionGame {
         }
         Render.polyBatch.flush();
 
-        for (i = 0;i< BulletListDown.size();i++){
-            Bullet bullet = BulletListDown.get(i);
-            bullet.update();
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
+            if(bullet.height == 1) {
+                bullet.update();
+            }
 
         }
         for(i = 0;i< UnitList.size();i++) {
@@ -176,9 +176,13 @@ public class ActionGameClient extends ActionGame {
 
         RC.BuildingUpdate();
 
-        for (i = 0;i< BulletListUp.size();i++){
-            Bullet bullet = BulletListUp.get(i);
-            bullet.update();
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
+            if(bullet!= null) {
+                if(bullet.height == 2) {
+                    bullet.update();
+                }
+            }
 
 
 
@@ -194,7 +198,8 @@ public class ActionGameClient extends ActionGame {
                 }
             }
         }
-        shopMain.InventoryIteration();
+        shopMain.InventoryIterationClient();
+        equipmentMain.InventoryIterationClient();
         inventoryMain.InventoryIterationClient();
 
         for (i= 0; i< BangList.size(); i++){

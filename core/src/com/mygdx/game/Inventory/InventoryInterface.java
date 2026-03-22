@@ -19,8 +19,8 @@ public class InventoryInterface {
     public String frame = "frameSlot";
     public String frameInventory = "InventoryBackground";
     public Slot[][]SlotInventory;
-    public SlotBuffer SlotBuffer;
-    public Slot slotBuf;
+    public static SlotBuffer SlotBuffer;
+    public static Slot slotBuf;
     public Inventory inventory;
     public WindowName WindowName;
     public InventoryInterface(Inventory inventory,int x,int y,int width,int height){
@@ -78,11 +78,6 @@ public class InventoryInterface {
             if(InventoryConfMoving){
                 x = MouseX-XCol;
                 y = MouseY-YCol;
-            }
-            if(SlotBuffer != null){
-                SlotBuffer.SlotXY();
-                SlotBuffer.SlotRender();
-                SlotBuffer.SlotPaste();
             }
             if(WindowName.conf){
                 WindowName.RenderWindow();
@@ -145,7 +140,7 @@ public class InventoryInterface {
                     if(SlotInventory[ix][iy].item!= null) {
                         Slot.item = SlotInventory[ix][iy].item;
                         slotBuf = Slot;
-                        SlotBuffer = new SlotBuffer(Slot, XCol2, YCol2, Slot.width, Slot.height, ix, iy);
+                        SlotBuffer = new SlotBuffer(Slot, XCol2, YCol2, Slot.width, Slot.height, ix, iy,this);
                     }
                     return;
                 }

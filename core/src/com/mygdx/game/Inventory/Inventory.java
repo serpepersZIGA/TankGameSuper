@@ -16,18 +16,26 @@ public class Inventory implements Cloneable{
     public Inventory(Item[][]InventorySlots){
         this.InventorySlots = InventorySlots;
     }
-    public Inventory(){
-        xySize = (int) sqrt(AssortmentList.size())+1;
-        InventorySlots = new Item[xySize][xySize];
-        int ii = 0;
-        int i2 = 0;
-        //System.out.println("DID "+AssortmentList.size());
-        for (Item item : AssortmentList) {
-            InventorySlots[ii][i2] = item;
-            ii++;
-            if (ii == xySize) {
-                i2++;
+    public Inventory(int conf){
+        switch (conf) {
+            case 0:
+            xySize = (int) sqrt(AssortmentList.size()) + 1;
+            InventorySlots = new Item[xySize][xySize];
+            int ii = 0;
+            int i2 = 0;
+            //System.out.println("DID "+AssortmentList.size());
+            for (Item item : AssortmentList) {
+                InventorySlots[ii][i2] = item;
+                ii++;
+                if (ii == xySize) {
+                    i2++;
+                }
+
             }
+            break;
+            case 1:
+                this.InventorySlots = new Item[7][2];
+                break;
 
         }
     }

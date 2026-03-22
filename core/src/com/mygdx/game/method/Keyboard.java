@@ -21,7 +21,7 @@ import static com.mygdx.game.block.Block.lighting_zoom;
 import static com.mygdx.game.main.Main.*;
 
 public class Keyboard extends InputAdapter{
-    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc,ClickEsc,PressB;
+    public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc,ClickEsc,PressB,PressZ;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
     public static int MouseX,MouseY;
     public static float ZoomMax;
@@ -62,6 +62,10 @@ public class Keyboard extends InputAdapter{
             }
             case Input.Keys.B: {
                 PressB = true;
+                break;
+            }
+            case Input.Keys.Z: {
+                PressZ = true;
                 break;
             }
             case Input.Keys.UP: {
@@ -111,6 +115,11 @@ public class Keyboard extends InputAdapter{
                 shopMain.InventoryConf = !shopMain.InventoryConf;
                 break;
             }
+            case Input.Keys.Z: {
+                PressZ = false;
+                equipmentMain.InventoryConf = !equipmentMain.InventoryConf;
+                break;
+            }
             case Input.Keys.UP: {
                 PressUP = false;
                 break;
@@ -145,12 +154,18 @@ public class Keyboard extends InputAdapter{
                 if(shopMain.InventoryConf) {
                     shopMain.CollisionMouseItem();
                 }
+                if(equipmentMain.InventoryConf){
+                    equipmentMain.CollisionMouseItem();
+                }
                 MiddleMouse = true;
                 break;
             }
             case Input.Buttons.RIGHT:{
                 if(inventoryMain.InventoryConf & inventoryMain.CollisionMouseInvert()){
                     inventoryMain.InventoryConfMoving = true;
+                }
+                else if(equipmentMain.InventoryConf & equipmentMain.CollisionMouseInvert()){
+                    equipmentMain.InventoryConfMoving = true;
                 }
                 else if(shopMain.InventoryConf & shopMain.CollisionMouseInvert()){
                     shopMain.InventoryConfMoving = true;
@@ -181,6 +196,9 @@ public class Keyboard extends InputAdapter{
                 }
                 else if(shopMain.InventoryConfMoving){
                     shopMain.InventoryConfMoving = false;
+                }
+                else if(equipmentMain.InventoryConfMoving){
+                    equipmentMain.InventoryConfMoving = false;
                 }
                 RightMouse = false;
                 RightMouseClick = true;

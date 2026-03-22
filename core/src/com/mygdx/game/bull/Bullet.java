@@ -36,7 +36,7 @@ public abstract class Bullet implements Serializable,Cloneable {
     public boolean BangSpawn;
     public boolean FlameSpawn,clear_sost;
     public byte type_team,height;
-    public static ArrayList<Bullet> BulletListDown=new ArrayList<Bullet>(),BulletListUp=new ArrayList<Bullet>();
+    //public static ArrayList<Bullet> BulletListDown=new ArrayList<Bullet>(),BulletListUp=new ArrayList<Bullet>();
     public FunctionalList functionalList;
     public Bullet(float x, float y, float rotation, float damage, float penetration, float damage_fragment, float penetration_fragment, byte type_team, byte height) {
         this.x = x;
@@ -133,14 +133,14 @@ public abstract class Bullet implements Serializable,Cloneable {
             }
             bullet.size_render = (int)(bullet.size*Main.Zoom);
             bullet.speed_save();
-            switch (bullet.height){
-                case 1:
-                    BulletListDown.add(bullet);
-                    break;
-                case 2:
-                    BulletListUp.add(bullet);
-                    break;
-            }
+//            switch (bullet.height){
+//                case 1:
+//                    BulletListDown.add(bullet);
+//                    break;
+//                case 2:
+//                    BulletListUp.add(bullet);
+//                    break;
+//            }
 
             BullPacket bullPacket1 = new BullPacket();
             unit.bull_packets(bullPacket1,bullet);
@@ -180,14 +180,14 @@ public abstract class Bullet implements Serializable,Cloneable {
             }
             bullet.size_render = (int)(bullet.size*Main.Zoom);
             bullet.speed_save();
-            switch (bullet.height){
-                case 1:
-                    BulletListDown.add(bullet);
-                    break;
-                case 2:
-                    BulletListUp.add(bullet);
-                    break;
-            }
+//            switch (bullet.height){
+//                case 1:
+//                    BulletListDown.add(bullet);
+//                    break;
+//                case 2:
+//                    BulletListUp.add(bullet);
+//                    break;
+//            }
 
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
@@ -274,23 +274,23 @@ public abstract class Bullet implements Serializable,Cloneable {
                         65+rand.rand(35));
                 PackBulletFragment(bullet);
                 Main.BulletList.add(bullet);
-                switch (bullet.height){
-                    case 1:
-                        BulletListDown.add(bullet);
-                        break;
-                    case 2:
-                        BulletListUp.add(bullet);
-                        break;
-                }
+//                switch (bullet.height){
+//                    case 1:
+//                        BulletListDown.add(bullet);
+//                        break;
+//                    case 2:
+//                        BulletListUp.add(bullet);
+//                        break;
+//                }
             }
-            switch (this.height){
-                case 1:
-                    BulletListDown.remove(this);
-                    break;
-                case 2:
-                    BulletListUp.remove(this);
-                    break;
-            }
+//            switch (this.height){
+//                case 1:
+//                    BulletListDown.remove(this);
+//                    break;
+//                case 2:
+//                    BulletListUp.remove(this);
+//                    break;
+//            }
             Main.BulletList.remove(this);
         }
     }
@@ -301,14 +301,14 @@ public abstract class Bullet implements Serializable,Cloneable {
             }
             if(FlameSpawn) {spawn_flame();}
             if(AcidSpawn){spawn_acid();}
-            switch (this.height){
-                case 1:
-                    BulletListDown.remove(this);
-                    break;
-                case 2:
-                    BulletListUp.remove(this);
-                    break;
-            }
+//            switch (this.height){
+//                case 1:
+//                    BulletListDown.remove(this);
+//                    break;
+//                case 2:
+//                    BulletListUp.remove(this);
+//                    break;
+//            }
             Main.BulletList.remove(this);
         }
     }

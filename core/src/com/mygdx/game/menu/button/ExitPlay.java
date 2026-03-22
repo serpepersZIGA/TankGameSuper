@@ -10,8 +10,7 @@ import com.mygdx.game.main.ServerMain;
 
 
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
-import static com.mygdx.game.bull.Bullet.BulletListDown;
-import static com.mygdx.game.bull.Bullet.BulletListUp;
+
 import static com.mygdx.game.main.ActionGame.ActionGameH;
 import static com.mygdx.game.main.ActionGame.ActionMenu;
 import static com.mygdx.game.main.Main.*;
@@ -56,8 +55,6 @@ public class ExitPlay extends Button{
             UnitList.clear();
             BuildingList.clear();
             BulletList.clear();
-            BulletListUp.clear();
-            BulletListDown.clear();
             LightSystem.lights.clear();
             LightSystem.lightsRender.clear();
             BlockList2D.clear();

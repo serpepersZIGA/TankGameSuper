@@ -12,6 +12,7 @@ import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.menu.slider.Slider;
 import com.mygdx.game.method.Keyboard;
@@ -19,8 +20,6 @@ import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
-import static com.mygdx.game.bull.Bullet.BulletListDown;
-import static com.mygdx.game.bull.Bullet.BulletListUp;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.menu.button.ButtonTank.TankChoice.TankChoiceList;
 import static com.mygdx.game.menu.button.MapLoad.MapChoiceList;
@@ -109,7 +108,12 @@ public class ActionMenu extends ActionGame {
         Batch.setShader(LightSystem.shader);
         if(ActionGameTotal != ActionGameH) {
             for (i = 0; i < Main.BulletList.size(); i++) {
-                Main.BulletList.get(i).all_action();
+                Bullet bullet = BulletList.get(i);
+                if(bullet != null) {
+                    if (bullet.height == 1) {
+                        Main.BulletList.get(i).update();
+                    }
+                }
             }
         }
 
@@ -123,8 +127,13 @@ public class ActionMenu extends ActionGame {
             Main.DebrisList.get(i).all_action_client();
         }
 
-        for (i = 0;i< BulletListDown.size();i++){
-            BulletListDown.get(i).update();
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
+            if(bullet != null){
+                if(bullet.height == 1) {
+                    BulletList.get(i).update();
+                }
+            }
 
         }
         Render.polyBatch.flush();
@@ -140,8 +149,13 @@ public class ActionMenu extends ActionGame {
         //Batch.draw(TextureAtl.createSprite("BottleFlame"),20,20,10,10);
 //        Render.end();
 //        Render.begin();
-        for (i = 0;i< BulletListUp.size();i++){
-            BulletListUp.get(i).update();
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
+            if(bullet != null) {
+                if (bullet.height == 2) {
+                    BulletList.get(i).update();
+                }
+            }
 
         }
 

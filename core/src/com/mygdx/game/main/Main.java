@@ -8,6 +8,7 @@ import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Inventory.Shop.ShopInterface;
 import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.Network.PackerServer;
@@ -123,6 +124,7 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<PacketInventory> InventoryPack = new ArrayList<>();
 	public static InventoryInterface inventoryMain;
 	public static ShopInterface shopMain;
+	public static EquipmentInterface equipmentMain;
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
@@ -248,8 +250,9 @@ public class Main extends ApplicationAdapter {
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
-		Inventory shop = new Inventory();
+		Inventory shop = new Inventory(0);
 		shopMain = new ShopInterface(shop);
+		equipmentMain = new EquipmentInterface();
 
 		Render = new RenderPrimitive();
 //		Render = new ShapeRenderer(128,LightSystem.shader);

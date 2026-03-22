@@ -28,10 +28,7 @@ public class ShopInterface extends InventoryInterface {
         else if(XSlots<YSlots){YSlots = XSlots;}
         SlotGeneration();
     }
-    public void BuyItem(){
-
-
-    }
+    @Override final
     public void CollisionMouseItem(){
         int ix = 0;
         int iy = 0;

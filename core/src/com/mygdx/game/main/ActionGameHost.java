@@ -2,6 +2,7 @@ package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
@@ -24,8 +25,6 @@ import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
-import static com.mygdx.game.bull.Bullet.BulletListDown;
-import static com.mygdx.game.bull.Bullet.BulletListUp;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
@@ -199,10 +198,12 @@ public class ActionGameHost extends ActionGame{
         //IterationBullet.start();
 
 //        IterationBullet.start();
-        for (int i = 0;i< BulletListDown.size();i++){
-            Bullet bullet = BulletListDown.get(i);
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
             if(bullet != null) {
-                bullet.update();
+                if(bullet.height == 1) {
+                    bullet.update();
+                }
             }
 
 
@@ -227,10 +228,12 @@ public class ActionGameHost extends ActionGame{
 
         RC.BuildingUpdate();
 
-        for (i = 0;i< BulletListUp.size();i++){
-            Bullet bullet = BulletListUp.get(i);
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
             if(bullet != null) {
-                bullet.update();
+                if(bullet.height == 2) {
+                    bullet.update();
+                }
             }
 
 
@@ -252,7 +255,13 @@ public class ActionGameHost extends ActionGame{
             }
         }
         shopMain.InventoryIteration();
+        equipmentMain.InventoryIteration();
         inventoryMain.InventoryIteration();
+        if(InventoryInterface.SlotBuffer != null){
+            InventoryInterface.SlotBuffer.SlotXY();
+            InventoryInterface.SlotBuffer.SlotRender();
+            InventoryInterface.SlotBuffer.SlotPaste();
+        }
 
 //        Map<Thread,StackTraceElement[]> threads = Thread.getAllStackTraces();
 //        for (Map.Entry<Thread, StackTraceElement[]> entry : threads.entrySet()) {
