@@ -152,7 +152,7 @@ public class Main extends ApplicationAdapter {
 //		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
         TrackSoldatT1.UnitAdd(1200,1200,true, (byte) 2,
-				RegisterControl.controllerSoldatTransport,new Inventory(new Item[3][4]));
+				RegisterControl.controllerSoldatTransport,new Inventory(new Item[3][4],1),new Inventory(new Item[1][1],1));
 
 		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 	}
@@ -250,10 +250,7 @@ public class Main extends ApplicationAdapter {
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();
-		Inventory shop = new Inventory(0);
-		shopMain = new ShopInterface(shop);
-		equipmentMain = new EquipmentInterface();
-
+		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
 		Render = new RenderPrimitive();
 //		Render = new ShapeRenderer(128,LightSystem.shader);
 //		Matrix4 u_projTrans = new Matrix4();

@@ -138,11 +138,11 @@ public class MapObject implements Cloneable{
 
         if(rand.rand(2) == 1){
             IDList.get("Pz-2M").UnitAdd(block.x,block.y,true, (byte) 2,
-                    RegisterControl.controllerBot,new Inventory(new Item[4][4]));
+                    RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
         }
         else{
             IDList.get("Pz-2A").UnitAdd(block.x,block.y,true, (byte) 2,
-                    RegisterControl.controllerBot,new Inventory(new Item[4][4]));
+                    RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
         }
 
     }

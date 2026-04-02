@@ -157,17 +157,16 @@ public class ServerMain extends Listener {
             //System.out.println("586855");
             nConnect += 1;
             EnumerationList = true;
-
-            Unit unit = IDList.get(((SpawnPlayerPack) p).ID);
-            unit.UnitAdd(200,200,false,(byte) 1
-                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4]));
-            UnitList.get(UnitList.size()-1).nConnect = nConnect;
-            UnitList.get(UnitList.size()-1).PlayerConf = true;
-            UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-            UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-            UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-            UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-                    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+            Unit unitBuf;
+            unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
+                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1));
+            unitBuf.nConnect = nConnect;
+            unitBuf.PlayerConf = true;
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
 //            if(!p.equals(new SpawnPlayerVoid())) {
 //                int i2 = Main.UnitList.size();
 //                ((PlayerSpawnData) p).SpawnPlayer(false);
@@ -176,9 +175,14 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventUseClient){
 
-
-            UnitList.get(((EventUseClient) p).ID).inventory.ItemUse(IDListItem.get(((EventUseClient) p).str)
-                    ,UnitList.get(((EventUseClient) p).ID));
+            if(!((EventUseClient) p).conf) {
+                UnitList.get(((EventUseClient) p).ID).inventory.ItemUse(IDListItem.get(((EventUseClient) p).str)
+                        , UnitList.get(((EventUseClient) p).ID));
+            }
+            else{
+                UnitList.get(((EventUseClient) p).ID).equipment.ItemUse(IDListItem.get(((EventUseClient) p).str)
+                        , UnitList.get(((EventUseClient) p).ID));
+            }
 
 
             return;
@@ -187,9 +191,22 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventDeleteItemClient){
             EventDeleteItemClient pack = (EventDeleteItemClient) p;
-            ItemList.add(new ItemObject(UnitList.get(pack.i).inventory.InventorySlots
-                    [pack.x][pack.y], (int) UnitList.get(pack.i).x, (int) UnitList.get(pack.i).y));
-            UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
+            if(!pack.conf) {
+                ItemList.add(new ItemObject(
+                        UnitList.get(pack.i).
+                                inventory.InventorySlots
+                                [pack.x][pack.y], (int) UnitList.get(pack.i).x, (int) UnitList.get(pack.i).y));
+                UnitList.get(pack.i).inventory.inventoryStr[pack.x][pack.y] = null;
+                UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
+            }
+            else{
+                ItemList.add(new ItemObject(
+                        UnitList.get(pack.i).
+                                equipment.InventorySlots
+                                [pack.x][pack.y], (int) UnitList.get(pack.i).x, (int) UnitList.get(pack.i).y));
+                UnitList.get(pack.i).equipment.inventoryStr[pack.x][pack.y] = null;
+                UnitList.get(pack.i).equipment.InventorySlots[pack.x][pack.y] = null;
+            }
             return;
 
 
@@ -199,8 +216,17 @@ public class ServerMain extends Listener {
             //System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
 //            Item item1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
 //            Item item2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
-            UnitList.get(pack.i).inventory.ItemAdd(pack.x,pack.y,pack.item2);
-            UnitList.get(pack.i).inventory.ItemAdd(pack.x2,pack.y2,pack.item1);
+            if(!pack.InventoryType){
+                UnitList.get(pack.i).inventory.ItemAdd(pack.x2,pack.y2,pack.item1);}
+            else{
+                UnitList.get(pack.i).equipment.ItemAdd(pack.x2,pack.y2,pack.item1);
+            }
+            if(!pack.InventoryType2) {
+                UnitList.get(pack.i).inventory.ItemAdd(pack.x, pack.y, pack.item2);
+            }
+            else{
+                UnitList.get(pack.i).equipment.ItemAdd(pack.x, pack.y, pack.item2);
+            }
             //packetInventoryServer();
 //            if(UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y]!= null) {
 //                Item itemBuff1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];

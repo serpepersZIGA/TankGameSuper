@@ -60,7 +60,7 @@ public class ItemObject{
                     }
                     ItemList.remove(this);
                 }
-                unit.press_f = false;
+                //unit.press_f = false;
                     //unit.inventory.ItemAdd(item);
             }
         }

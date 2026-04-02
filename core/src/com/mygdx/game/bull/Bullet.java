@@ -26,7 +26,7 @@ import static java.lang.StrictMath.abs;
 
 public abstract class Bullet implements Serializable,Cloneable {
     public float x,y,speed,damage,penetration,rotation,speed_x,speed_y,damage_fragment,penetration_fragment,t_damage,time;
-    public int size,AmountFragment,x_rend,y_rend,size_render,x2,y2,sizeRandom;
+    public int size,AmountFragment,x_rend,y_rend,size_render,x2,y2,sizeRandom,ind;
     public static float r_wane = 4f/255f,g_wane= 1.7f/255f,b_wane= 1f/255f;
     public UpdaterBullet updaterBullet;
     public float  r,g,b;
@@ -36,6 +36,8 @@ public abstract class Bullet implements Serializable,Cloneable {
     public boolean BangSpawn;
     public boolean FlameSpawn,clear_sost;
     public byte type_team,height;
+    public static ArrayList<Bullet>BulletListClear = new ArrayList<>();
+    public static ArrayList<Integer>BulletListInd = new ArrayList<>();
     //public static ArrayList<Bullet> BulletListDown=new ArrayList<Bullet>(),BulletListUp=new ArrayList<Bullet>();
     public FunctionalList functionalList;
     public Bullet(float x, float y, float rotation, float damage, float penetration, float damage_fragment, float penetration_fragment, byte type_team, byte height) {
@@ -145,7 +147,15 @@ public abstract class Bullet implements Serializable,Cloneable {
             BullPacket bullPacket1 = new BullPacket();
             unit.bull_packets(bullPacket1,bullet);
             PacketBull.add(bullPacket1);
-
+            for(int i = 0;i<BulletList.size();i++) {
+                //Bullet bull = BulletList.get(i);
+                if(BulletList.get(i) == null) {
+                    bullet.ind = i;
+                    BulletList.set(i,bullet);
+                    return;
+                }
+            }
+            bullet.ind = BulletList.size();
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -189,6 +199,15 @@ public abstract class Bullet implements Serializable,Cloneable {
 //                    break;
 //            }
 
+            for(int i = 0;i<BulletList.size();i++) {
+                //Bullet bull = BulletList.get(i);
+                if(BulletList.get(i) == null) {
+                    bullet.ind = i;
+                    BulletList.set(i,bullet);
+                    return;
+                }
+            }
+            bullet.ind = BulletList.size();
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -247,7 +266,13 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     protected final void spawn_flame(){
         if(1 == rand.rand(16)){
-            Main.FlameSpawnList.add(new FlameSpawn(this.x,this.y));
+            R_LOCK.lock();
+            try {
+                Main.FlameSpawnList.add(new FlameSpawn(this.x, this.y));
+            }
+            finally {
+                R_LOCK.unlock();
+            }
 
         }
     }
@@ -258,7 +283,11 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     protected final void spawn_acid(){
         if(1 == rand.rand(3)){
-            Main.LiquidList.add(new Acid(this.x,this.y));
+            R_LOCK.lock();
+            try {
+                Main.LiquidList.add(new Acid(this.x, this.y));
+            }
+            finally {R_LOCK.unlock();}
         }
     }
     protected final void clear(){
@@ -272,8 +301,28 @@ public abstract class Bullet implements Serializable,Cloneable {
                 Bullet bullet = BulletFragment.BulletAdd2(this.x,this.y,rand.rand(360),damage_fragment,penetration_fragment,
                         0,0,type_team,height,0,12+rand.rand(6),0,
                         65+rand.rand(35));
+
                 PackBulletFragment(bullet);
-                Main.BulletList.add(bullet);
+//                R_LOCK.lock();
+//                try {
+                boolean conf = false;
+                for(int i = 0;i<BulletList.size();i++) {
+                    //Bullet bull = BulletList.get(i);
+                    if(BulletList.get(i) == null) {
+                        bullet.ind = i;
+                        BulletList.set(i,bullet);
+                        conf = true;
+                        break;
+                    }
+                }
+                if(!conf) {
+                    bullet.ind = BulletList.size();
+                    BulletList.add(bullet);
+                }
+                //}
+//                finally {
+//                    R_LOCK.unlock();
+//                }
 //                switch (bullet.height){
 //                    case 1:
 //                        BulletListDown.add(bullet);
@@ -291,9 +340,17 @@ public abstract class Bullet implements Serializable,Cloneable {
 //                    BulletListUp.remove(this);
 //                    break;
 //            }
-            Main.BulletList.remove(this);
+            R_LOCK.lock();
+            try {
+                BulletList.set(ind,null);
+                //Main.BulletList.remove(this);
+            }
+            finally {
+                R_LOCK.unlock();
+            }
         }
     }
+
     protected final void clearClient(){
         if(this.clear_sost){
             if(BangSpawn) {
@@ -309,7 +366,14 @@ public abstract class Bullet implements Serializable,Cloneable {
 //                    BulletListUp.remove(this);
 //                    break;
 //            }
-            Main.BulletList.remove(this);
+//            R_LOCK.lock();
+//            try {
+                BulletList.set(ind,null);
+                //BulletListInd.add(this.);
+           // }
+//            finally {
+//                R_LOCK.unlock();
+//            }
         }
     }
     public void all_action(){
@@ -346,7 +410,8 @@ public abstract class Bullet implements Serializable,Cloneable {
                 if(FlameSpawn) {
                     BuildingList.get(BlockList2D.get(yMap).get(xMap).iBuilding).time_flame += 10;
                 }
-            }}
+            }
+        }
         else{this.clear_sost = true;}
     }
     public void PackBulletFragment(Bullet bullet){
@@ -388,7 +453,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         for(int i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             if (this.type_team != unit.team & abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-                if (this.type_team != unit.team & rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
+                if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
                         (int) unit.corpus_height, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
                     armor_damage(unit);
                     unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;

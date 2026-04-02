@@ -140,15 +140,17 @@ public class LightingMainSystem implements Disposable {
         // Устанавливаем параметры каждого источника света
         for (int i = 0; i < lightsRender.size() && i < 160; i++) {
             Light light = lightsRender.get(i);
-            float[]xy = Main.RC.render_objZoom(light.position.x,light.position.y);
-            light.XRender = xy[0];
-            light.YRender = xy[1];
-            shader.setUniformf("u_lights[" + i + "].position", light.XRender, light.YRender);
-            shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
-                    light.color.a);
-            shader.setUniformf("u_lights[" + i + "].intensity", light.intensity);
-            shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom *0.5f * lightTotal);
-            shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
+            if(light!=null) {
+                float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
+                light.XRender = xy[0];
+                light.YRender = xy[1];
+                shader.setUniformf("u_lights[" + i + "].position", light.XRender, light.YRender);
+                shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
+                        light.color.a);
+                shader.setUniformf("u_lights[" + i + "].intensity", light.intensity);
+                shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom * 0.5f * lightTotal);
+                shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
+            }
 
         }
         batch.draw(TextureAtl.createSprite("Buffer2"),0,0,screenWidth,screenHeight);

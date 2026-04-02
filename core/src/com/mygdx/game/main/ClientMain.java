@@ -6,6 +6,7 @@ import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -14,6 +15,7 @@ import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Network.*;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
@@ -99,6 +101,7 @@ public class ClientMain extends Listener {
         SearchPort(tcpPort,udpPort);
         packetUnitUpdate.ConfUnitList = true;
         packetUnitUpdate.ConfDebrisList = true;
+        UnitList.clear();
         Client.addListener(Main.Main_client);
     }
     private void SearchPort(int tcpPort, int udpPort){
@@ -138,9 +141,17 @@ public class ClientMain extends Listener {
 
             PacketUnit = ((PackerServer) p).player;
             i = 0;
+//            ArrayList<PacketInventory> InventoryPack = ((PackerServer) p).inventory;
+//            ArrayList<PacketInventory> InventoryPack2 = ((PackerServer) p).equipment;
             if(PacketUnit.size()== UnitList.size()) {
                 for (Unit unit : UnitList) {
                     player_data(unit);
+                    if(PacketUnit.get(i).inventory!= null) {
+                        unit.inventory = ItemSynchronization(unit.inventory, PacketUnit.get(i).inventory);
+                    }
+                    if(PacketUnit.get(i).equipment!= null) {
+                        unit.equipment = ItemSynchronization(unit.equipment, PacketUnit.get(i).equipment);
+                    }
                     i++;
                 }
             }
@@ -160,33 +171,13 @@ public class ClientMain extends Listener {
                 ItemCreate();
             }
 
-
-
-            InventoryPack = ((PackerServer) p).inventory;
-            if(InventoryPack != null) {
-                try {
-                for (i = 0; i < InventoryPack.size(); i++) {
-                    if(UnitList.get(i).inventory!= null) {
-                        UnitList.get(i).inventory.ItemClear();
-                    }
-                    else {
-                        UnitList.get(i).inventory = new Inventory(new Item[InventoryPack.get(i).Inventory.length][InventoryPack.get(i).Inventory[0].length]);
-
-                    }
-                    for (int ix = 0; ix < InventoryPack.get(i).Inventory.length; ix++) {
-                        for (int iy = 0; iy < InventoryPack.get(i).Inventory[ix].length; iy++) {
-                            if (InventoryPack.get(i).Inventory[ix][iy] != null) {
-                                UnitList.get(i).inventory.ItemAdd(ix, iy,IDListItem.get(InventoryPack.get(i).Inventory[ix][iy]));
-                            }
-                            else {
-                                UnitList.get(i).inventory.InventorySlots[ix][iy] = null;
-                            }
-                        }
-                    }
-                }
-                InventoryPack = null;
-                }catch (IndexOutOfBoundsException ignored){}
-            }
+//            ArrayList<PacketInventory> InventoryPack = ((PackerServer) p).inventory;
+//            ArrayList<PacketInventory> InventoryPack2 = ((PackerServer) p).equipment;
+//            for(i = 0;i<UnitList.size();i++) {
+//                Unit unit = UnitList.get(i);
+//                ItemSynchronization(unit.inventory,InventoryPack);
+//                ItemSynchronization(unit.equipment,InventoryPack2);
+//            }
 
             PacketDebris = ((PackerServer) p).debris;
             i = 0;
@@ -249,6 +240,29 @@ public class ClientMain extends Listener {
             packetUnitUpdate = (PacketUnitUpdate)p;
         }
     }
+
+    private Inventory ItemSynchronization(Inventory inventory,String[][] pack){
+        if(pack!= null) {
+            if (inventory == null) {
+                inventory = new Inventory(new Item[pack.length][pack[0].length],1);
+                //inventory.ItemClear();
+            }
+            inventory.inventoryStr = pack;
+            for (int ix = 0; ix < pack.length; ix++) {
+                for (int iy = 0; iy < pack[ix].length; iy++) {
+                    if (pack[ix][iy] != null) {
+                        inventory.ItemAdd(ix, iy, IDListItem.get(pack[ix][iy]));
+
+                    } else {
+                        inventory.InventorySlots[ix]
+                                [iy] = null;
+                    }
+                }
+            }
+        }
+        return inventory;
+
+    }
     //public static int si = 0;
 
     public void object_create(int ix, int iy, String assets, int x, int y) {
@@ -279,6 +293,7 @@ public class ClientMain extends Listener {
         unit.y = packet.y;
         unit.rotation_corpus = packet.rotation_corpus;
         unit.hp = packet.hp;
+        unit.max_hp = packet.max_hp;
         unit.team = packet.team;
         unit.speed = packet.speed;
         unit.host = packet.host;
@@ -352,29 +367,44 @@ public class ClientMain extends Listener {
 
     public void debris_create(DebrisPacket debris){
         Unit unit = Unit.IDList.get(debris.UnitID);
-        DebrisList.add(new UnitPattern(unit.CorpusUnit, debris.UnitID,debris.x,debris.y,debris.rotation,0,0,0,1));
+        DebrisList.add(new UnitPattern(unit.CorpusUnit, debris.UnitID,debris.x,debris.y,debris.rotation,
+                0,0,0,1));
     }
 
     public void UnitCreate() {
         UnitList.clear();
         Unit unit;
+        Unit unitBuf;
         for (TransportPacket pack : PacketUnit) {
             unit = Unit.IDList.get(pack.ID);
 
             R_LOCK.lock();
             try {
-                UnitList.add(unit.UnitAdd(0,0,pack.host,pack.team));
+                unitBuf = unit.UnitAdd(0,0,pack.host,pack.team);
+                UnitList.add(unitBuf);
             }
             finally {
                 R_LOCK.unlock();
             }
             UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerBot;
-            UnitDataCreate(pack,unit);
-
+            UnitDataCreate(pack,unitBuf);
+//            if(){
+//
+//            }
+            unitBuf.inventory = ItemSynchronization(unitBuf.inventory,PacketUnit.get(i).inventory);
+            unitBuf.equipment = ItemSynchronization(unitBuf.equipment,PacketUnit.get(i).equipment);
             if (pack.PlayerConf) {
-                UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerPlayer;
-                UnitList.get(UnitList.size() - 1).nConnect = pack.IDClient;
+                unitBuf.control = RegisterControl.controllerPlayer;
+                unitBuf.nConnect = pack.IDClient;
+                if(unitBuf.nConnect == IDClient){
+                    inventoryMain = new InventoryInterface(unitBuf.inventory,200,500,600,350);
+                    equipmentMain = new EquipmentInterface(unitBuf.equipment);
+                }
+//                if (pack.IDClient == IDClient){
+//                    equipmentMain = new EquipmentInterface(UnitList.get(UnitList.size() - 1).equipment);
+//                }
             }
+            i++;
         }
         KeyboardObj.ZoomConstTransport();
     }

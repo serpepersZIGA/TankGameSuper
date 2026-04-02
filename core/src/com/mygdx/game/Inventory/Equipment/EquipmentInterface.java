@@ -8,9 +8,10 @@ import static com.mygdx.game.method.Keyboard.MouseX;
 import static com.mygdx.game.method.Keyboard.MouseY;
 
 public class EquipmentInterface extends InventoryInterface {
-    public EquipmentInterface(){
-        this.inventory = new Inventory(1);
+    public EquipmentInterface(Inventory inventory){
+        this.inventory = inventory;
         WindowName = new WindowName();
+        InventoryType = true;
         XInterface = inventory.InventorySlots.length;
         YInterface = inventory.InventorySlots[0].length;
         SlotInventory = new Slot[XInterface][YInterface];

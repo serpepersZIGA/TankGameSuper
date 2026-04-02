@@ -1,18 +1,19 @@
 package com.mygdx.game.Inventory.Shop;
 
+import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.method.RenderMethod;
 
 import java.util.ArrayList;
 
 import static Data.DataImage.TextureAtl;
-import static com.mygdx.game.main.Main.inventoryMain;
+import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.MouseX;
 import static com.mygdx.game.method.Keyboard.MouseY;
 import static java.lang.StrictMath.sqrt;
 
 public class ShopInterface extends InventoryInterface {
-
     public ShopInterface(Inventory ShopGlobal){
         this.inventory = ShopGlobal;
         WindowName = new WindowName();
@@ -39,9 +40,27 @@ public class ShopInterface extends InventoryInterface {
                     if (YCol2 < Slot.height & YCol2 > 0 & XCol2 < Slot.width & XCol2 > 0) {
                         if (SlotInventory[ix][iy].item != null) {
                             if(Slot.item.Price<Inventory.Money) {
-                                inventoryMain.inventory.ItemAdd(Slot.item);
-                                inventoryMain.SlotGeneration();
-                                Inventory.Money -= Slot.item.Price;
+                                if(GameHost) {
+                                    inventoryMain.inventory.ItemAdd(Slot.item);
+                                    inventoryMain.SlotGeneration();
+                                    Inventory.Money -= Slot.item.Price;
+                                }
+                                else {
+                                    for (int i = 0;i<UnitList.size();i++) {
+                                        if(IDClient == UnitList.get(i).nConnect) {
+                                            EventUseClient event = new EventUseClient();
+                                            event.x = Slot.x;
+                                            event.y = Slot.y;
+                                            event.str = Slot.item.ID;
+                                            event.ID = i;
+                                            ClientMain.Client.sendTCP(event);
+
+                                            inventoryMain.inventory.ItemAdd(Slot.item);
+                                            inventoryMain.SlotGeneration();
+                                            Inventory.Money -= Slot.item.Price;
+                                        }
+                                    }
+                                }
                             }
                         }
                         return;
@@ -56,7 +75,5 @@ public class ShopInterface extends InventoryInterface {
         }
     }
 
-
-
-
 }
+

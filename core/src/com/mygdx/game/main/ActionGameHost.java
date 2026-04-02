@@ -262,6 +262,9 @@ public class ActionGameHost extends ActionGame{
             InventoryInterface.SlotBuffer.SlotRender();
             InventoryInterface.SlotBuffer.SlotPaste();
         }
+        if(InventoryInterface.WindowName.conf){
+            InventoryInterface.WindowName.RenderWindow();
+        }
 
 //        Map<Thread,StackTraceElement[]> threads = Thread.getAllStackTraces();
 //        for (Map.Entry<Thread, StackTraceElement[]> entry : threads.entrySet()) {
@@ -341,13 +344,13 @@ public class ActionGameHost extends ActionGame{
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
         PacketServer.bull = PacketBull;
-        packetInventoryServer();
+        //packetInventoryServer();
         PacketServer.sound = SoundPack;
         PacketServer.mapObject = MapObject.PacketMapObjects;
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
         Server.sendToAllUDP(PacketServer);
         SoundPack.clear();
-        PacketServer.inventory.clear();
+        //PacketServer.inventory.clear();
         MapObject.PacketMapObjects.clear();
         packetUnitUpdate.ConfDebrisList = false;
         packetUnitUpdate.ConfUnitList = false;
@@ -366,34 +369,24 @@ public class ActionGameHost extends ActionGame{
         pack.PlayerConf = unit.PlayerConf;
         pack.rotation_corpus = unit.rotation_corpus;
         pack.hp = unit.hp;
+        pack.max_hp = unit.max_hp;
         pack.team = unit.team;
         pack.speed = unit.speed;
         pack.host = unit.host;
         pack.IDClient = unit.nConnect;
         pack.ID = unit.ID;
+        if(unit.inventory.ConfRefactor) {
+            pack.inventory = unit.inventory.inventoryStr;
+            unit.inventory.ConfRefactor = false;
+        }
+        if(unit.equipment.ConfRefactor) {
+            pack.equipment = unit.equipment.inventoryStr;
+            unit.equipment.ConfRefactor = false;
+        }
+
         for (Unit Tower : unit.tower_obj){
             pack.reloadTower.add(Tower.reload);
             pack.rotation_tower_2.add(Tower.rotation_tower);
-        }
-    }
-    public static void packetInventoryServer(){
-        for (int i = 0;i<UnitList.size();i++) {
-            Unit unit = UnitList.get(i);
-            PacketInventory pack = new PacketInventory();
-            pack.Inventory = new String[unit.inventory.InventorySlots.length][unit.inventory.InventorySlots[0].length];
-            //InventoryPack.add(new PacketInventory());
-            //PacketInventory pack = InventoryPack.get(InventoryPack.size() - 1);
-            for (int ix = 0;ix<unit.inventory.InventorySlots.length;ix++) {
-                //pack.Inventory[ix][0]
-                for (int iy = 0;iy<unit.inventory.InventorySlots[ix].length;iy++) {
-                    if (unit.inventory.InventorySlots[ix][iy] != null) {
-                        pack.Inventory[ix][iy] = unit.inventory.InventorySlots[ix][iy].ID;
-                    } else {
-                        pack.Inventory[ix][iy] = null;
-                    }
-                }
-            }
-            PacketServer.inventory.add(pack);
         }
     }
     public static void packet_debris_server(Unit unit,int i){
@@ -403,12 +396,6 @@ public class ActionGameHost extends ActionGame{
         pack.x = unit.x;
         pack.y = unit.y;
         pack.rotation = unit.rotation_corpus;
-    }
-    public void PacketBuildServer(int i){
-        PacketBuilding.add(new BuildPacket());
-        PacketBuilding.get(i).ID = BuildingList.get(i).ID;
-        PacketBuilding.get(i).x = BuildingList.get(i).x;
-        PacketBuilding.get(i).y = BuildingList.get(i).y;
     }
     private class IterationDebris implements Runnable{
         public void run(){

@@ -30,7 +30,6 @@ public class Acid extends Particle {
     public void all_action(){
         this.size_render = (int)(size*Main.Zoom);
         //liquid_const();
-        super.size_rise_delete(LiquidList);
         this.move_particle();
         this.slow_particle();
         center_render();
@@ -41,6 +40,7 @@ public class Acid extends Particle {
                 ,size_render,size_render);
         //super.size_update();
         //this.x +=10;
+        super.size_rise_delete(LiquidList);
     }
 
 }

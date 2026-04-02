@@ -3,10 +3,12 @@ package com.mygdx.game.main;
 import Content.Particle.*;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
+import com.mygdx.game.Inventory.Shop.ShopInterface;
 import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Shader.FlameShader;
@@ -236,6 +238,7 @@ public class ActionMenu extends ActionGame {
             GameStart = false;
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();
+            Inventory shop = new Inventory(new Item[0][0],0);
             if (GameHost) {
                 try {
                     serverMain = new ServerMain();
@@ -243,6 +246,7 @@ public class ActionMenu extends ActionGame {
                     ActionGameMain = ActionGameH;
                     ActionGameTotal = ActionGameH;
                     Block.passability_detected();
+                    shopMain = new ShopInterface(shop);
                     SpawnPlayer();
                     KeyboardObj.zoom_const();
 
@@ -257,6 +261,7 @@ public class ActionMenu extends ActionGame {
                     Main_client.create();
                     ActionGameMain = ActionGameCl;
                     ActionGameTotal = ActionGameCl;
+                    shopMain = new ShopInterface(shop);
                     ActionGameClient.ActionGameClientIteration();
                     KeyboardObj.zoom_const();
                 } catch (Exception e) {
@@ -271,16 +276,19 @@ public class ActionMenu extends ActionGame {
         //Batch.setShader(null);
     }
     public void SpawnPlayer(){
-    Unit unit = IDList.get(SpawnIDPlayer);
-    unit.UnitAdd(200,200,true,(byte)1,
-            RegisterControl.controllerPlayer,new Inventory(new Item[4][4]));
-    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-    UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
-    UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
 
-    inventoryMain = new InventoryInterface(UnitList.get(UnitList.size()-1).inventory,200,500,600,350);
+        Inventory inventory = new Inventory(new Item[4][4],1);
+        Inventory equipment = new Inventory(new Item[4][2],1);
+        Unit unit = IDList.get(SpawnIDPlayer);
+        unit.UnitAdd(200,200,true,(byte)1,
+                RegisterControl.controllerPlayer,inventory,equipment);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
+        UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
+        equipmentMain = new EquipmentInterface(equipment);
+        inventoryMain = new InventoryInterface(inventory,200,500,600,350);
 
 //    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
 //            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));

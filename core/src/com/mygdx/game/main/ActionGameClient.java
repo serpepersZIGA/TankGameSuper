@@ -5,6 +5,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
 import Content.Particle.Acid;
 import Content.Particle.FlameSpawn;
+import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
@@ -150,8 +151,10 @@ public class ActionGameClient extends ActionGame {
 
         for (i = 0;i< BulletList.size();i++){
             Bullet bullet = BulletList.get(i);
-            if(bullet.height == 1) {
-                bullet.update();
+            if(bullet!=null) {
+                if (bullet.height == 1) {
+                    bullet.update();
+                }
             }
 
         }
@@ -201,6 +204,16 @@ public class ActionGameClient extends ActionGame {
         shopMain.InventoryIterationClient();
         equipmentMain.InventoryIterationClient();
         inventoryMain.InventoryIterationClient();
+
+
+        if(InventoryInterface.SlotBuffer != null){
+            InventoryInterface.SlotBuffer.SlotXY();
+            InventoryInterface.SlotBuffer.SlotRender();
+            InventoryInterface.SlotBuffer.SlotPasteClient();
+        }
+        if(InventoryInterface.WindowName.conf){
+            InventoryInterface.WindowName.RenderWindow();
+        }
 
         for (i= 0; i< BangList.size(); i++){
             BangList.get(i).all_action();

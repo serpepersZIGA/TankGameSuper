@@ -11,12 +11,13 @@ public abstract class EventGame {
     public EventGame(){
 
     }
-    public static void EventGameClient(String str,int i,int x,int y){
+    public static void EventGameClient(String str,int i,int x,int y,boolean conf){
         EventUseClient event = new EventUseClient();
         event.str = str;
         event.ID = i;
         event.x = x;
         event.y = y;
+        event.conf = conf;
         ClientMain.Client.sendTCP(event);
     }
     public void EventIteration(){

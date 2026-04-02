@@ -153,7 +153,13 @@ public abstract class Particle {
 
         this.size -= this.interval_rise_size;
         if(this.size < 4){
-            particles.remove(this);
+            R_LOCK.lock();
+            try {
+                particles.remove(this);
+            }
+            finally {
+                R_LOCK.unlock();
+            }
         }
         //this.size_2 = this.size/2;
         //this.size_3 = this.size_2/2;

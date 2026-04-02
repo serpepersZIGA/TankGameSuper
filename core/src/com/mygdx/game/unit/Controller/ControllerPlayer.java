@@ -1,5 +1,6 @@
 package com.mygdx.game.unit.Controller;
 
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.Inventory.InventoryInterface;
@@ -76,10 +77,13 @@ public class ControllerPlayer extends Controller {
         PacketClient.mouse_x = (int) (Keyboard.MouseX-RC.width_2);
         PacketClient.mouse_y = (int) (Keyboard.MouseY-RC.height_2);
         PacketClient.IDClient = IDClient;
-        if(Keyboard.PressE){
-            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
+        //if(Keyboard.PressE){
+            //inventoryMain.InventoryConf = new InventoryInterface(unit.inventory,200,500,600,350);
             //Keyboard.PressE = false;
-        }
+        //}
+        //if(Keyboard.PressZ){
+           // equipmentMain = new EquipmentInterface(unit.equipment);
+        //}
         if(inventoryMain.InventoryConf & LeftMouse){
             inventoryMain.InventoryUsClient(unit);
         }

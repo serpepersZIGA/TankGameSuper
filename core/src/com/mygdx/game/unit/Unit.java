@@ -4,11 +4,8 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
-import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
-import com.mygdx.game.block.Block;
-import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
@@ -31,12 +28,8 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
-import static com.mygdx.game.Sound.SoundRegister.SoundPack;
-import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
-import static com.mygdx.game.method.Option.SoundConst;
-import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
 import static com.mygdx.game.unit.Fire.FireRegister.FireVoid;
@@ -54,7 +47,7 @@ public abstract class Unit implements Cloneable{
     public float SpeedBullet,SpeedBulletRand;
     public static boolean AIScan;
     public ClassUnit classUnit = ClassUnit.Transport;
-    public Inventory inventory;
+    public Inventory inventory, equipment;
     public float x, y;
     public Corpus CorpusUnit;
     public Engine EngineUnit;
@@ -183,11 +176,12 @@ public abstract class Unit implements Cloneable{
         classUnit = ClassUnit.Tower;
         this.CannonUnit = cannon;
     }
-    public void UnitAdd(int x, int y, boolean host, byte team, Controller controller,Inventory inventory){
+    public Unit UnitAdd(int x, int y, boolean host, byte team, Controller controller,Inventory inventory,Inventory equipment){
         try {
             Unit unitAdd = (Unit) this.clone();
             unitAdd.x = x;
-            unitAdd.inventory =inventory.clone();
+            unitAdd.inventory =inventory;
+            unitAdd.equipment = equipment;
             unitAdd.y = y;
             unitAdd.host = host;
             unitAdd.team = team;
@@ -239,6 +233,7 @@ public abstract class Unit implements Cloneable{
             finally {
                 R_LOCK.unlock();
             }
+            return unitAdd;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -1263,18 +1258,18 @@ public abstract class Unit implements Cloneable{
         if(this.time_spawn_soldat <= 0){
             this.time_spawn_soldat = this.time_spawn_soldat_max;
             packetUnitUpdate.ConfUnitList = true;
-            Inventory inventory1 = new Inventory(new Item[3][4]);
+            Inventory inventory1 = new Inventory(new Item[3][4],1);
             inventory1.ItemAdd(ItemRegister.AK74);
             inventory1.ItemAdd(ItemRegister.flamethrower);
             R_LOCK.lock();
             try {
                 switch (rand.rand(2)) {
                     case 0: {
-                        Veteran.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, RegisterControl.controllerSoldatBot, inventory1);
+                        Veteran.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, RegisterControl.controllerSoldatBot, inventory1,new Inventory(new Item[1][1],1));
                         break;
                     }
                     case 1: {
-                        Jaeger.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, Main.RegisterControl.controllerSoldatBot, inventory1);
+                        Jaeger.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, Main.RegisterControl.controllerSoldatBot, inventory1,new Inventory(new Item[1][1],1));
                         break;
                     }
                     //case 3->{soldat.add(new soldat_(this.x,this.y));}

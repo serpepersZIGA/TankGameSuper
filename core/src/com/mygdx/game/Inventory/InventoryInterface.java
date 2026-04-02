@@ -7,11 +7,13 @@ import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.Unit;
 
 import static Data.DataImage.TextureAtl;
+import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Keyboard.MouseX;
 import static com.mygdx.game.method.Keyboard.MouseY;
 
 public class InventoryInterface {
+    public boolean InventoryType = false;
     public boolean InventoryConf = false;
     public boolean InventoryConfMoving = false;
     public int XCol,YCol,XColUs,YColUs,XCol2,YCol2;
@@ -22,9 +24,9 @@ public class InventoryInterface {
     public static SlotBuffer SlotBuffer;
     public static Slot slotBuf;
     public Inventory inventory;
-    public WindowName WindowName;
+    public static WindowName WindowName = new WindowName();
     public InventoryInterface(Inventory inventory,int x,int y,int width,int height){
-        WindowName = new WindowName();
+        InventoryType = false;
         XInterface = inventory.InventorySlots.length;
         YInterface = inventory.InventorySlots[0].length;
         this.inventory = inventory;
@@ -50,6 +52,15 @@ public class InventoryInterface {
                 SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots);
                 Slot slot = SlotInventory[ix][iy];
                 slot.item = inventory.InventorySlots[ix][iy];
+            }
+        }
+    }
+    public void SlotGenerationClient(){
+        for(int ix = 0;ix<inventory.inventoryStr.length;ix++){
+            for(int iy = 0;iy<inventory.inventoryStr[ix].length;iy++){
+                SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots);
+                Slot slot = SlotInventory[ix][iy];
+                slot.item = IDListItem.get(inventory.inventoryStr[ix][iy]);
             }
         }
     }
@@ -111,11 +122,6 @@ public class InventoryInterface {
             if(InventoryConfMoving){
                 x = MouseX-XCol;
                 y = MouseY-YCol;
-            }
-            if(SlotBuffer != null){
-                SlotBuffer.SlotXY();
-                SlotBuffer.SlotRender();
-                SlotBuffer.SlotPasteClient();
             }
             if(WindowName.conf){
                 WindowName.RenderWindow();
@@ -185,7 +191,7 @@ public class InventoryInterface {
                 if (YColUs < slot.height & YColUs > 0 & XColUs < slot.width & XColUs > 0) {
                     if (slot.item != null) {
                         for (int i = 0; i < UnitList.size(); i++) {
-                            EventGame.EventGameClient(slot.item.ID, i,ix,iy);
+                            EventGame.EventGameClient(slot.item.ID, i,ix,iy,this.InventoryType);
                         }
                         if(slot.item.Use(unit)) {
                             inventory.InventorySlots[ix][iy]= null;

@@ -9,23 +9,22 @@ import static java.lang.StrictMath.sqrt;
 
 public class Inventory implements Cloneable{
     public Item[][]InventorySlots;
+    public boolean ConfRefactor;
     public static int MoneyAdd;
     public static int Money;
     public static ArrayList<Item> AssortmentList = new ArrayList<>();
+    public String[][]inventoryStr;
     public int xySize;
-    public Inventory(Item[][]InventorySlots){
-        this.InventorySlots = InventorySlots;
-    }
-    public Inventory(int conf){
+    public Inventory(Item[][]InventorySlots,int conf){
         switch (conf) {
             case 0:
             xySize = (int) sqrt(AssortmentList.size()) + 1;
-            InventorySlots = new Item[xySize][xySize];
+            this.InventorySlots = new Item[xySize][xySize];
             int ii = 0;
             int i2 = 0;
             //System.out.println("DID "+AssortmentList.size());
             for (Item item : AssortmentList) {
-                InventorySlots[ii][i2] = item;
+                this.InventorySlots[ii][i2] = item;
                 ii++;
                 if (ii == xySize) {
                     i2++;
@@ -34,7 +33,18 @@ public class Inventory implements Cloneable{
             }
             break;
             case 1:
-                this.InventorySlots = new Item[7][2];
+                ConfRefactor = true;
+                this.InventorySlots = InventorySlots;
+                inventoryStr = new String[InventorySlots.length][InventorySlots[0].length];
+                for (int ix = 0;ix<InventorySlots.length;ix++) {
+                    for (int iy = 0;iy<InventorySlots[ix].length;iy++) {
+                        if (InventorySlots[ix][iy] != null) {
+                            inventoryStr[ix][iy] = InventorySlots[ix][iy].ID;
+                        }
+
+
+                    }
+                }
                 break;
 
         }
@@ -43,29 +53,37 @@ public class Inventory implements Cloneable{
         AssortmentList.add(item);
     }
     public void ItemAdd(int x,int y,Item item){
-        if(item != null) {
-            InventorySlots[x][y] = item.clone();
+        //if(item != null) {
+        ConfRefactor = true;
+        InventorySlots[x][y] = item.clone();
+        inventoryStr[x][y] = item.ID;
             return;
-        }
-        InventorySlots[x][y] = null;
+        //}
+        //InventorySlots[x][y] = null;
     }
     public void ItemClear(){
+        ConfRefactor = true;
         for (Item[] inventorySlot : InventorySlots) {
             Arrays.fill(inventorySlot, null);
         }
     }
     public void ItemAdd(int x,int y,String item){
+        ConfRefactor = true;
         if(item != null) {
-            Item.IDListItem.get(item);
+            InventorySlots[x][y] = Item.IDListItem.get(item);
+            inventoryStr[x][y] = item;
             return;
         }
         InventorySlots[x][y] = null;
+        inventoryStr[x][y] = null;
     }
     public boolean ItemAdd(Item item){
+        ConfRefactor = true;
         for (int iX =0;iX<InventorySlots.length;iX++) {
             for (int iY =0;iY<InventorySlots[iX].length;iY++) {
                 if(InventorySlots[iX][iY]==null){
                     InventorySlots[iX][iY] = item.clone();
+                    inventoryStr[iX][iY] = item.ID;
                     return true;
                 }
             }
@@ -73,9 +91,11 @@ public class Inventory implements Cloneable{
         return false;
     }
     public void ItemRemove(int x,int y){
+        ConfRefactor = true;
         InventorySlots[x][y] = null;
     }
     public void ItemUse(int x, int y, Unit unit){
+        ConfRefactor = true;
         if(InventorySlots[x][y]!= null) {
             InventorySlots[x][y].Use(unit);
         }
@@ -83,22 +103,25 @@ public class Inventory implements Cloneable{
     public boolean ItemUse(Item item, Unit unit){
         int ix = 0;
         int iy = 0;
+        ConfRefactor = true;
         for (Item[] inventorySlot : InventorySlots) {
             for (Item value : inventorySlot) {
                 if (value == item) {
                     if(value.Use(unit)){
-
                         InventorySlots[ix][iy] = null;
+                        inventoryStr[ix][iy] = null;
                     }
                     return true;
                 }
                 iy++;
             }
+            iy = 0;
             ix++;
         }
         return false;
     }
     public boolean ItemUseType(TypeItem type, Unit unit){
+        ConfRefactor = true;
         for (Item[] inventorySlot : InventorySlots) {
             for (Item value : inventorySlot) {
                 if (value.typeItem == type) {
@@ -115,6 +138,7 @@ public class Inventory implements Cloneable{
     public boolean ItemUseTeg(TegItem teg, Unit unit){
         int ix = 0;
         int iy = 0;
+        ConfRefactor = true;
         for (Item[] inventorySlot : InventorySlots) {
             for (Item value : inventorySlot) {
                 for(TegItem tegItem : value.teg){
@@ -124,6 +148,7 @@ public class Inventory implements Cloneable{
 //                        unit.GunUse = value;
                         if(value.Use(unit)){
                             InventorySlots[ix][iy] = null;
+                            inventoryStr[ix][iy] = null;
                         }
                         return true;
                     }
