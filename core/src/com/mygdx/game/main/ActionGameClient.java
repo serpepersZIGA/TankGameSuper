@@ -38,18 +38,11 @@ import static java.lang.StrictMath.sqrt;
 
 
 public class ActionGameClient extends ActionGame {
-    private static Callable<ArrayList<Bullet>> BulletThreadIteration;
-    private static Callable<ArrayList<Unit>> UnitThreadIteration;
-    private static Callable<ArrayList<Unit>> DebrisThreadIteration;
 
     private Thread ThreadIterationDebris;
     private Thread ThreadIterationBullet;
     private Thread ThreadIterationUnit;
 
-    public void ThreadAllAdd(){
-
-
-    }
     public static void ActionGameClientIteration(){
         SpawnPlayerPack pack = new SpawnPlayerPack();
         //inventoryMain = new InventoryInterface(new Inventory(new Item[4][4]),200,200,500,400);
@@ -227,21 +220,6 @@ public class ActionGameClient extends ActionGame {
         while (ThreadIterationBullet.isAlive()||ThreadIterationUnit.isAlive()||ThreadIterationDebris.isAlive()){
 
         };
-    }
-    public static void PackUpdateUnit(){
-        if(packetUnitUpdate.ConfUnitList){
-            Main_client.UnitCreate();
-            packetUnitUpdate.ConfUnitList = false;
-        }
-        if(packetUnitUpdate.ConfDebrisList){
-            DebrisList.clear();
-            for (DebrisPacket packetDebris : PacketDebris) {
-                Main_client.debris_create(packetDebris);
-                Main_client.debris_data_add(packetDebris);
-            }
-            KeyboardObj.ZoomConstTransport();
-            packetUnitUpdate.ConfDebrisList = false;
-        }
     }
     private class IterationDebris implements Runnable{
         public void run() {

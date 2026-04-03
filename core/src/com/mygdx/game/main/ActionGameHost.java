@@ -43,17 +43,8 @@ public class ActionGameHost extends ActionGame{
     //private static IterationBullet IterationBullet = new IterationBullet();
 
     private int i;
-    private static int timer = 0;
-    public void ThreadAllAdd(){
-
-
-
-        //DebrisThreadIteration = IterationDebris();
-
-
-    }
     @Override final
-    public void action() throws ExecutionException, InterruptedException {
+    public void action() {
         ThreadIterationDebris = new Thread(new IterationDebris());
         ThreadIterationBullet = new Thread(new IterationBullet());
         ThreadIterationUnit = new Thread(new IterationUnit());
@@ -304,33 +295,33 @@ public class ActionGameHost extends ActionGame{
         //executor.close();
     }
     private void server_packet() {
-        if(packetUnitUpdate.ConfUnitList || packetUnitUpdate.ConfDebrisList){
-            Server.sendToAllTCP(packetUnitUpdate);
-            if(packetUnitUpdate.ConfUnitList){
-                for(Unit unit : ClearUnitList){
-                    R_LOCK.lock();
-                    try {
-                        UnitList.remove(unit);
-                    }
-                    finally {
-                        R_LOCK.unlock();
-                    }
-                }
-                ClearUnitList.clear();
+
+            //Server.sendToAllTCP(packetUnitUpdate);
+        //if(PacketServer.unitConf){
+        //R_LOCK.lock();
+        //try {
+            for (Unit unit : ClearUnitList) {
+                UnitList.remove(unit);
             }
-            else if(packetUnitUpdate.ConfDebrisList){
-                R_LOCK.lock();
-                try {
-                    for (Unit unit : ClearDebrisList) {
-                        DebrisList.remove(unit);
-                    }
-                }
-                finally {
-                    R_LOCK.unlock();
-                }
-                ClearDebrisList.clear();
+        //}
+//        finally {
+//            R_LOCK.unlock();
+//        }
+        ClearUnitList.clear();
+        //}
+        //else if(PacketServer.debrisConf){
+        //R_LOCK.lock();
+        //try {
+            for (Unit unit : ClearDebrisList) {
+                DebrisList.remove(unit);
             }
-        }
+        //}
+        //finally {
+            //R_LOCK.unlock();
+        //}
+        ClearDebrisList.clear();
+        //}
+
 
 //        if(EnumerationList){
 //            for (i = 0; i < Main.UnitList.size(); i++) {
@@ -352,17 +343,16 @@ public class ActionGameHost extends ActionGame{
         SoundPack.clear();
         //PacketServer.inventory.clear();
         MapObject.PacketMapObjects.clear();
-        packetUnitUpdate.ConfDebrisList = false;
-        packetUnitUpdate.ConfUnitList = false;
+        PacketServer.unitConf = false;
+        PacketServer.debrisConf = false;
         ItemPackList.clear();
         PacketDebris.clear();
         PacketBull.clear();
         PacketUnit.clear();
         PacketBuilding.clear();
     }
-    public static void packet_player_server(Unit unit,int i){
-        PacketUnit.add(new TransportPacket());
-        TransportPacket pack = PacketUnit.get(i);
+    public static TransportPacket packet_player_server(Unit unit){
+        TransportPacket pack = new TransportPacket();
         pack.name = unit.TypeUnit;
         pack.x = unit.x;
         pack.y = unit.y;
@@ -375,19 +365,21 @@ public class ActionGameHost extends ActionGame{
         pack.host = unit.host;
         pack.IDClient = unit.nConnect;
         pack.ID = unit.ID;
-        if(unit.inventory.ConfRefactor) {
-            pack.inventory = unit.inventory.inventoryStr;
-            unit.inventory.ConfRefactor = false;
-        }
-        if(unit.equipment.ConfRefactor) {
-            pack.equipment = unit.equipment.inventoryStr;
-            unit.equipment.ConfRefactor = false;
-        }
+        //if(unit.inventory.ConfRefactor) {
+//        pack.inventory = unit.inventory.inventoryStr;
+//        pack.equipment = unit.equipment.inventoryStr;
+            //unit.inventory.ConfRefactor = false;
+        //}
+        //if(unit.equipment.ConfRefactor) {
+//        pack.equipment = unit.equipment.inventoryStr;
+            //unit.equipment.ConfRefactor = false;
+        //}
 
         for (Unit Tower : unit.tower_obj){
             pack.reloadTower.add(Tower.reload);
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }
+        return pack;
     }
     public static void packet_debris_server(Unit unit,int i){
         PacketDebris.add(new DebrisPacket());
@@ -429,19 +421,24 @@ public class ActionGameHost extends ActionGame{
     }
     public class IterationUnit implements Runnable {
         public void run() {
+            TransportPacket pack;
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
                 if (unit != null) {
                     //synchronized (unit) {
-                        ActionGameHost.packet_player_server(unit, i);
+                        pack = ActionGameHost.packet_player_server(unit);
                         if (unit.host || unit.control == RegisterControl.controllerBot
                                 || unit.control == RegisterControl.controllerBotSupport
                                 || unit.control == RegisterControl.controllerSoldatTransport
                                 || unit.control == RegisterControl.controllerSoldatBot
                                 || unit.control == RegisterControl.controllerHelicopter) {
+                            PacketUnit.add(pack);
                             unit.all_action();
 
                         } else {
+                            pack.inventory = unit.inventory.inventoryStr;
+                            pack.equipment = unit.equipment.inventoryStr;
+                            PacketUnit.add(pack);
                             unit.all_action_client();
                         }
                     //}

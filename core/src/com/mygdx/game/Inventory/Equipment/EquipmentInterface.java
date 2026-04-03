@@ -24,6 +24,22 @@ public class EquipmentInterface extends InventoryInterface {
         else if(XSlots<YSlots){YSlots = XSlots;}
         SlotGeneration();
     }
+    @Override final
+    public void InventoryRefactor(Inventory inventory){
+        this.inventory = inventory;
+        WindowName = new WindowName();
+        InventoryType = true;
+        XInterface = inventory.InventorySlots.length;
+        YInterface = inventory.InventorySlots[0].length;
+        SlotInventory = new Slot[XInterface][YInterface];
+        this.x = 220;this.y = 220;
+        WidthWindow = 600;
+        HeightWindow = 320;
+        XSlots = WidthWindow/XInterface;
+        YSlots = HeightWindow/YInterface;
+        if(XSlots>YSlots){XSlots=YSlots;}
+        else if(XSlots<YSlots){YSlots = XSlots;}
+    }
     public void StrengtheningInitialization(Unit unit){
         //unit.max_hp+= (int) HP;
         //unit.armor+= Armor;

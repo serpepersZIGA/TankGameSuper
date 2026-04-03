@@ -238,7 +238,6 @@ public class ActionMenu extends ActionGame {
             GameStart = false;
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();
-            Inventory shop = new Inventory(new Item[0][0],0);
             if (GameHost) {
                 try {
                     serverMain = new ServerMain();
@@ -246,7 +245,6 @@ public class ActionMenu extends ActionGame {
                     ActionGameMain = ActionGameH;
                     ActionGameTotal = ActionGameH;
                     Block.passability_detected();
-                    shopMain = new ShopInterface(shop);
                     SpawnPlayer();
                     KeyboardObj.zoom_const();
 
@@ -261,7 +259,6 @@ public class ActionMenu extends ActionGame {
                     Main_client.create();
                     ActionGameMain = ActionGameCl;
                     ActionGameTotal = ActionGameCl;
-                    shopMain = new ShopInterface(shop);
                     ActionGameClient.ActionGameClientIteration();
                     KeyboardObj.zoom_const();
                 } catch (Exception e) {
@@ -288,7 +285,7 @@ public class ActionMenu extends ActionGame {
         UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
         UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
         equipmentMain = new EquipmentInterface(equipment);
-        inventoryMain = new InventoryInterface(inventory,200,500,600,350);
+        inventoryMain = new InventoryInterface(inventory);
 
 //    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
 //            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));

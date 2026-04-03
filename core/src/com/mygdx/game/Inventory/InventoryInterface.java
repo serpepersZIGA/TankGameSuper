@@ -25,20 +25,33 @@ public class InventoryInterface {
     public static Slot slotBuf;
     public Inventory inventory;
     public static WindowName WindowName = new WindowName();
-    public InventoryInterface(Inventory inventory,int x,int y,int width,int height){
+    public InventoryInterface(Inventory inventory){
         InventoryType = false;
         XInterface = inventory.InventorySlots.length;
         YInterface = inventory.InventorySlots[0].length;
         this.inventory = inventory;
         SlotInventory = new Slot[XInterface][YInterface];
-        this.x = x;this.y = y;
-        WidthWindow = width;
-        HeightWindow = height;
-        XSlots = width/XInterface;
-        YSlots = height/YInterface;
+        this.x = 200;this.y = 500;
+        WidthWindow = 600;
+        HeightWindow = 350;
+        XSlots = 600/XInterface;
+        YSlots = 350/YInterface;
         if(XSlots>YSlots){XSlots=YSlots;}
         else if(XSlots<YSlots){YSlots = XSlots;}
         SlotGeneration();
+    }
+    public void InventoryRefactor(Inventory inventory){
+        XInterface = inventory.InventorySlots.length;
+        YInterface = inventory.InventorySlots[0].length;
+        this.inventory = inventory;
+        SlotInventory = new Slot[XInterface][YInterface];
+        this.x = 200;this.y = 500;
+        WidthWindow = 600;
+        HeightWindow = 350;
+        XSlots = 600/XInterface;
+        YSlots = 350/YInterface;
+        if(XSlots>YSlots){XSlots=YSlots;}
+        else if(XSlots<YSlots){YSlots = XSlots;}
     }
     public InventoryInterface(){
         SlotInventory = new Slot[0][0];

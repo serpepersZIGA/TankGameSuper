@@ -54,9 +54,9 @@ public class Inventory implements Cloneable{
     }
     public void ItemAdd(int x,int y,Item item){
         //if(item != null) {
-        ConfRefactor = true;
+        //ConfRefactor = true;
         InventorySlots[x][y] = item.clone();
-        inventoryStr[x][y] = item.ID;
+        //inventoryStr[x][y] = item.ID;
             return;
         //}
         //InventorySlots[x][y] = null;
@@ -65,6 +65,9 @@ public class Inventory implements Cloneable{
         ConfRefactor = true;
         for (Item[] inventorySlot : InventorySlots) {
             Arrays.fill(inventorySlot, null);
+        }
+        for(String[] inventoryStr : inventoryStr){
+            Arrays.fill(inventoryStr, null);
         }
     }
     public void ItemAdd(int x,int y,String item){
@@ -93,11 +96,15 @@ public class Inventory implements Cloneable{
     public void ItemRemove(int x,int y){
         ConfRefactor = true;
         InventorySlots[x][y] = null;
+        inventoryStr[x][y] = null;
     }
     public void ItemUse(int x, int y, Unit unit){
         ConfRefactor = true;
         if(InventorySlots[x][y]!= null) {
-            InventorySlots[x][y].Use(unit);
+            if(InventorySlots[x][y].Use(unit)){
+                inventoryStr[x][y] = null;
+                InventorySlots[x][y] = null;
+            }
         }
     }
     public boolean ItemUse(Item item, Unit unit){

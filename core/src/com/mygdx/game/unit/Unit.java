@@ -8,6 +8,7 @@ import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.main.ServerMain;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
@@ -1055,7 +1056,7 @@ public abstract class Unit implements Cloneable{
             PacketServer.Money = Inventory.Money;
 
             eventDead();
-            packetUnitUpdate.ConfUnitList = true;
+            PacketServer.unitConf = true;
             ClearUnitList.add(this);
             //UnitList.remove(this);
             return;
@@ -1067,7 +1068,7 @@ public abstract class Unit implements Cloneable{
     public void DebrisDelete() {
         if (this.hp > 0) return;
         eventDead();
-        packetUnitUpdate.ConfDebrisList = true;
+        PacketServer.debrisConf = true;
         ClearDebrisList.add(this);
 
 
@@ -1077,7 +1078,7 @@ public abstract class Unit implements Cloneable{
     protected void debrisDelete(){
         if(this.hp<0){
             ClearDebrisList.add(this);
-            packetUnitUpdate.ConfDebrisList = true;
+            PacketServer.debrisConf = true;
             //DebrisList.remove(this);
 
         }
@@ -1257,7 +1258,7 @@ public abstract class Unit implements Cloneable{
         this.time_spawn_soldat -= TimeGlobalBullet;
         if(this.time_spawn_soldat <= 0){
             this.time_spawn_soldat = this.time_spawn_soldat_max;
-            packetUnitUpdate.ConfUnitList = true;
+            PacketServer.unitConf = true;
             Inventory inventory1 = new Inventory(new Item[3][4],1);
             inventory1.ItemAdd(ItemRegister.AK74);
             inventory1.ItemAdd(ItemRegister.flamethrower);
@@ -1384,10 +1385,9 @@ public abstract class Unit implements Cloneable{
         if(this.hp <0){
             for(int i1 =0;i1<12;i1++){
                 BloodList.add(new Blood(this.x+i1, this.y));}
-            packetUnitUpdate.ConfUnitList = true;
+            PacketServer.unitConf = true;
             ClearUnitList.add(this);
             //UnitList.remove(this);
-            EnumerationList = true;
         }
     }
     public boolean rect_bull(int x1,int y1,int width,int height,int x,int y,int size,float rotation){

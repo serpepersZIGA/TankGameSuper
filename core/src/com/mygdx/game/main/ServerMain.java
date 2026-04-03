@@ -95,6 +95,11 @@ public class ServerMain extends Listener {
                 PacketObjectMapServer(ix,iy,PacketBuildingServer.ObjectMapPack.get(iy));
             }
         }
+        for (int i = 0;i<UnitList.size();i++){
+            Unit unit = UnitList.get(i);
+            unit.inventory.ConfRefactor = true;
+            unit.equipment.ConfRefactor = true;
+        }
         PacketBuildingServer.FlameLight = CycleTimeDay.lightFlame;
         Server.sendToAllTCP(PacketBuildingServer);
         PacketBuildingServer.ObjectMapPack.clear();
@@ -156,7 +161,6 @@ public class ServerMain extends Listener {
         else if(p instanceof SpawnPlayerPack){
             //System.out.println("586855");
             nConnect += 1;
-            EnumerationList = true;
             Unit unitBuf;
             unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
                     ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1));

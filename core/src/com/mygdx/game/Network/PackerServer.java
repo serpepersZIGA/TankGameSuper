@@ -10,6 +10,7 @@ public class PackerServer {
     public ArrayList<BullPacket>bull;
     public ArrayList<BuildPacket>building;
     public ArrayList<DebrisPacket>debris;
+    public boolean debrisConf,unitConf;
     public ArrayList<PacketMapObject>mapObject = new ArrayList<>();
 
     public ArrayList<ItemPacket>item = new ArrayList<>();

@@ -57,7 +57,6 @@ import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalCo
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
 import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
 import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
-import static com.mygdx.game.main.ActionGame.executor;
 import static com.mygdx.game.method.Keyboard.ClickEsc;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
@@ -90,7 +89,6 @@ public class Main extends ApplicationAdapter {
 	public static int screenHeight;
 	public static float Zoom = 1,ZoomWindowX,ZoomWindowY;
 	public static AI Ai;
-	public static boolean EnumerationList;
 	public static ActionGame ActionGameMain;
 	public static boolean GameStart;
 	public static int FPS;
@@ -237,6 +235,8 @@ public class Main extends ApplicationAdapter {
 		ContentImage = new DataImage();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
+		Inventory shop = new Inventory(new Item[0][0],0);
+		shopMain = new ShopInterface(shop);
 
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
@@ -349,7 +349,6 @@ public class Main extends ApplicationAdapter {
 		ButtonList.clear();
 		KeyboardObj = null;
 		RC= null;
-        executor.shutdown();
 		Batch.dispose();
 		Render.dispose();
 		font.dispose();
