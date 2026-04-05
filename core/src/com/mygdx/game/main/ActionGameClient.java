@@ -183,7 +183,6 @@ public class ActionGameClient extends ActionGame {
 
 
         }
-
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             if(unit.height == 2) {

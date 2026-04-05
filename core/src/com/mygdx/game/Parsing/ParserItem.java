@@ -61,7 +61,7 @@ public class ParserItem {
         AccelerationPercent= obj.AccelerationPercent;
         Price = obj.Price;
 
-        ArrayList<TegItem> list = new ArrayList();
+        ArrayList<TegItem> list = new ArrayList<>();
         list.add(TegItem.upgrade);
         if(Price!= 0){
             Inventory.AssortmentAdd(new Item(HPPercent,Hp,Armor,ArmorPercent,DamagePercent,PenetrationPercent

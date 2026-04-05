@@ -52,7 +52,7 @@ import static java.lang.StrictMath.sqrt;
 
 public class ClientMain extends Listener {
     public static Client Client;
-    public static String IP = "127.0.0.1";
+    public static String IP;
     private int i;
 
     public void create() {
@@ -107,7 +107,8 @@ public class ClientMain extends Listener {
         try {
             Client.connect(5000, IP, tcpPort, udpPort);
         } catch (IOException e) {
-            SearchPort(tcpPort+1, udpPort+1);
+            e.printStackTrace();
+            //SearchPort(tcpPort+1, udpPort+1);
         }
     }
 
@@ -410,9 +411,11 @@ public class ClientMain extends Listener {
                 unitBuf.control = RegisterControl.controllerPlayer;
                 unitBuf.nConnect = pack.IDClient;
                 if(unitBuf.nConnect == IDClient){
+
                     unitBuf.inventory = ItemSynchronization(unitBuf.inventory, PacketUnit.get(i).inventory);
                     unitBuf.equipment = ItemSynchronization(unitBuf.equipment, PacketUnit.get(i).equipment);
 
+                    RC.MainUnit = unitBuf;
                     inventoryMain.InventoryRefactor(unitBuf.inventory);
                     equipmentMain.InventoryRefactor(unitBuf.equipment);
                     inventoryMain.SlotGenerationClient();

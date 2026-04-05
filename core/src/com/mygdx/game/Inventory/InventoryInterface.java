@@ -78,7 +78,7 @@ public class InventoryInterface {
         }
     }
     public void InventoryIteration(){
-        if(InventoryConf) {
+        if(InventoryConf & RC.MainUnit != null) {
             int ix = 0;
             int iy = 0;
             RenderMethod.transorm_img(this.x, this.y, this.WidthWindow, this.HeightWindow,
@@ -110,7 +110,7 @@ public class InventoryInterface {
         }
     }
     public void InventoryIterationClient(){
-        if(InventoryConf) {
+        if(InventoryConf & RC.MainUnit != null) {
             int ix = 0;
             int iy = 0;
             RenderMethod.transorm_img(this.x, this.y, this.WidthWindow,

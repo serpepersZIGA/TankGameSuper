@@ -46,11 +46,17 @@ public class SlotBuffer {
                     !(YCol2 < equipmentMain.HeightWindow & YCol2 > 0 & XCol2<equipmentMain.WidthWindow &XCol2> 0
                     &equipmentMain.InventoryConf)
             ){
+//                if(slot.item.typeItem == TypeItem.Upgrade) {
+//                    if (inventoryMain.InventoryType) {
+//                        slot.item.UpgradeUnUse(RC.MainUnit);
+//                    }
+//                }
                 ItemList.add(new ItemObject(slot.item, (int) RC.x, (int) RC.y));
                 slot.item = null;
                 InventoryInterface.slotBuf = null;
                 inventoryBuffer.inventory.InventorySlots[ix][iy] = null;
                 InventoryInterface.SlotBuffer = null;
+                equipmentMain.InventoryReload(RC.MainUnit);
                 return;
             }
             int ix = 0;
@@ -58,6 +64,7 @@ public class SlotBuffer {
             for(Slot[] SlotLine : inventoryMain.SlotInventory){
                 for(Slot Slot : SlotLine) {
                     if(SlotPaste(Slot,ix,iy,inventoryMain)){
+                        equipmentMain.InventoryReload(RC.MainUnit);
                         return;
                     }
                     iy++;
@@ -71,6 +78,7 @@ public class SlotBuffer {
             for(Slot[] SlotLine : equipmentMain.SlotInventory){
                 for(Slot Slot : SlotLine) {
                     if(SlotPaste(Slot,ix,iy,equipmentMain)){
+                        equipmentMain.InventoryReload(RC.MainUnit);
                         //equipmentMain.StrengtheningInitialization();
                         return;
                     }
@@ -80,6 +88,7 @@ public class SlotBuffer {
                 iy = 0;
 
             }
+            equipmentMain.InventoryReload(RC.MainUnit);
             InventoryInterface.SlotBuffer = null;
             InventoryInterface.slotBuf = null;
         }
@@ -115,6 +124,7 @@ public class SlotBuffer {
                     }
                 }
                 Client.sendTCP(event);
+                equipmentMain.InventoryReload(RC.MainUnit);
                 return;
             }
             int ix2 = 0;
@@ -122,6 +132,7 @@ public class SlotBuffer {
             for (Slot[] SlotLine : inventoryMain.SlotInventory) {
                 for (Slot Slot : SlotLine) {
                     if(SlotPasteClient(Slot,ix2,iy2,inventoryMain)){
+                        equipmentMain.InventoryReload(RC.MainUnit);
                         return;
                     }
                     iy2++;
@@ -133,6 +144,7 @@ public class SlotBuffer {
             for (Slot[] SlotLine : equipmentMain.SlotInventory) {
                 for (Slot Slot : SlotLine) {
                     if(SlotPasteClient(Slot,ix2,iy2,equipmentMain)){
+                        equipmentMain.InventoryReload(RC.MainUnit);
                         return;
                     }
                     iy2++;
@@ -140,6 +152,7 @@ public class SlotBuffer {
                 ix2++;
                 iy2 = 0;
             }
+
 
             InventoryInterface.SlotBuffer = null;
             InventoryInterface.slotBuf = null;
@@ -222,6 +235,7 @@ public class SlotBuffer {
             if (item1 != null) {
                 Slot.item = item1.clone();
                 inventoryMain.inventory.InventorySlots[ix][iy] = item1.clone();
+
                 if (item2 != null) {
                     slot.item = item2.clone();
                     inventoryBuffer.inventory.InventorySlots[this.ix][this.iy] = item2.clone();

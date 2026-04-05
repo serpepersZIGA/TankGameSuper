@@ -230,12 +230,14 @@ public class Main extends ApplicationAdapter {
 		EngineParser.ParsEngine();
 		CannonParser.ParsCannon();
 
-
+		GunRegister.Create();
+		ParserItem.Pars();
+		ItemRegister.Create();
 		VoidObj = new VoidObject();
 		ContentImage = new DataImage();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
-		Inventory shop = new Inventory(new Item[0][0],0);
+		Inventory shop = new Inventory(new Item[2][2],0);
 		shopMain = new ShopInterface(shop);
 
 		BulletRegister.BulletRegisterAdd();
@@ -244,9 +246,6 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleEngine.Create();
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();
-        ParserItem.Pars();
-		GunRegister.Create();
-		ItemRegister.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
 		PacketBuildingServer = new PacketBuildingServer();

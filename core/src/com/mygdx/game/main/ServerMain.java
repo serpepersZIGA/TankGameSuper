@@ -195,42 +195,48 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventDeleteItemClient){
             EventDeleteItemClient pack = (EventDeleteItemClient) p;
+            Unit unit = UnitList.get(pack.i);
             if(!pack.conf) {
                 ItemList.add(new ItemObject(
-                        UnitList.get(pack.i).
-                                inventory.InventorySlots
-                                [pack.x][pack.y], (int) UnitList.get(pack.i).x, (int) UnitList.get(pack.i).y));
-                UnitList.get(pack.i).inventory.inventoryStr[pack.x][pack.y] = null;
-                UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
+                        unit.inventory.InventorySlots[pack.x][pack.y],
+                        (int) unit.x, (int) unit.y));
+                unit.inventory.inventoryStr[pack.x][pack.y] = null;
+                unit.inventory.InventorySlots[pack.x][pack.y] = null;
             }
             else{
                 ItemList.add(new ItemObject(
-                        UnitList.get(pack.i).
-                                equipment.InventorySlots
-                                [pack.x][pack.y], (int) UnitList.get(pack.i).x, (int) UnitList.get(pack.i).y));
-                UnitList.get(pack.i).equipment.inventoryStr[pack.x][pack.y] = null;
-                UnitList.get(pack.i).equipment.InventorySlots[pack.x][pack.y] = null;
+                        unit.equipment.InventorySlots[pack.x][pack.y],
+                        (int) unit.x, (int) unit.y));
+                unit.equipment.inventoryStr[pack.x][pack.y] = null;
+                unit.equipment.InventorySlots[pack.x][pack.y] = null;
             }
+            equipmentMain.InventoryReload(unit);
             return;
 
 
         }
         else if(p instanceof EventTransferItemClient){
             EventTransferItemClient pack = (EventTransferItemClient) p;
+            Unit unit = UnitList.get(pack.i);
             //System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
 //            Item item1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
 //            Item item2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
             if(!pack.InventoryType){
-                UnitList.get(pack.i).inventory.ItemAdd(pack.x2,pack.y2,pack.item1);}
+                unit.inventory.ItemAdd(pack.x2,pack.y2,pack.item1);
+            }
             else{
-                UnitList.get(pack.i).equipment.ItemAdd(pack.x2,pack.y2,pack.item1);
+                unit.equipment.ItemAdd(pack.x2,pack.y2,pack.item1);
+
+
             }
             if(!pack.InventoryType2) {
-                UnitList.get(pack.i).inventory.ItemAdd(pack.x, pack.y, pack.item2);
+                unit.inventory.ItemAdd(pack.x, pack.y, pack.item2);
             }
             else{
-                UnitList.get(pack.i).equipment.ItemAdd(pack.x, pack.y, pack.item2);
+                unit.equipment.ItemAdd(pack.x, pack.y, pack.item2);
+
             }
+            equipmentMain.InventoryReload(unit);
             //packetInventoryServer();
 //            if(UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y]!= null) {
 //                Item itemBuff1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];

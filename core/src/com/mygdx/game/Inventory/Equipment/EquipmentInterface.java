@@ -40,12 +40,25 @@ public class EquipmentInterface extends InventoryInterface {
         if(XSlots>YSlots){XSlots=YSlots;}
         else if(XSlots<YSlots){YSlots = XSlots;}
     }
+    public void InventoryReload(Unit unit){
+        StrengtheningInitialization(unit);
+        for(int ix = 0;ix<unit.equipment.InventorySlots.length;ix++){
+            for(int iy = 0;iy<unit.equipment.InventorySlots[ix].length;iy++) {
+                if (unit.equipment.InventorySlots[ix][iy] != null) {
+                    if (unit.equipment.InventorySlots[ix][iy].typeItem == TypeItem.Upgrade) {
+                        unit.equipment.InventorySlots[ix][iy].UpgradeUse(unit);
+                    }
+                }
+            }
+        }
+    }
+
     public void StrengtheningInitialization(Unit unit){
         //unit.max_hp+= (int) HP;
         //unit.armor+= Armor;
         //unit.hp += (int) HP;
         unit.max_hp = unit.HpBase;
-        unit.hp = unit.HpBase;
+        //unit.hp = unit.HpBase;
         unit.armor = unit.ArmorBase;
         unit.Acceleration =  unit.AccelerationBase;
         unit.SpeedUp = unit.SpeedUpBase;
@@ -60,15 +73,15 @@ public class EquipmentInterface extends InventoryInterface {
 
 
         unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
-        for(int i = 0;i<inventory.InventorySlots.length;i++){
-            for(int i2 = 0;i2<inventory.InventorySlots[i].length;i2++){
-                Item item = inventory.InventorySlots[i][i2];
-                if(item != null) {
-                    item.Use(unit);
-                    //inventory.InventorySlots[i][i2].
-                }
-            }
-        }
+//        for(int i = 0;i<inventory.InventorySlots.length;i++){
+//            for(int i2 = 0;i2<inventory.InventorySlots[i].length;i2++){
+//                Item item = inventory.InventorySlots[i][i2];
+//                if(item != null) {
+//                    item.Use(unit);
+//                    //inventory.InventorySlots[i][i2].
+//                }
+//            }
+//        }
     }
 
 }

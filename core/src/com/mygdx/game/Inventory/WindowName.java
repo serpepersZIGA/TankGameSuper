@@ -24,6 +24,7 @@ public class WindowName {
             this.x = MouseX;
             this.y = MouseY;
             this.conf = true;
+            return;
             //RenderWindow(Keyboard.MouseX,Keyboard.MouseY,str);
         }
     }

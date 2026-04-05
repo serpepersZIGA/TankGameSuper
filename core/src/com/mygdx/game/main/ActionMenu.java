@@ -277,13 +277,14 @@ public class ActionMenu extends ActionGame {
         Inventory inventory = new Inventory(new Item[4][4],1);
         Inventory equipment = new Inventory(new Item[4][2],1);
         Unit unit = IDList.get(SpawnIDPlayer);
-        unit.UnitAdd(200,200,true,(byte)1,
+        unit = unit.UnitAdd(200,200,true,(byte)1,
                 RegisterControl.controllerPlayer,inventory,equipment);
-        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.MedicineT1);
-        UnitList.get(UnitList.size()-1).inventory.ItemAdd(ItemRegister.AK74);
-        UnitList.get(UnitList.size()-1).inventory.ItemAdd(IDListItem.get("armorB1"));
+        unit.inventory.ItemAdd(ItemRegister.MedicineT1);
+        unit.inventory.ItemAdd(ItemRegister.MedicineT1);
+        unit.inventory.ItemAdd(ItemRegister.MedicineT1);
+        unit.inventory.ItemAdd(ItemRegister.AK74);
+        unit.inventory.ItemAdd(IDListItem.get("armorB1"));
+        RC.MainUnit = unit;
         equipmentMain = new EquipmentInterface(equipment);
         inventoryMain = new InventoryInterface(inventory);
 

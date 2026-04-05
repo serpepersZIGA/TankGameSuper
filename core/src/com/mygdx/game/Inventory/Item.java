@@ -88,26 +88,10 @@ public class Item implements Cloneable{
                 break;
                 case Upgrade:
                 {
-                    unit.max_hp+= (int) HP;
-                    unit.armor+= Armor;
-                    unit.hp += (int) HP;
-                    unit.max_hp += (int) (unit.HpBase * HPPercent*0.01f);
-                    unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
-                    unit.armor += (int) (unit.ArmorBase * ArmorPercent*0.01f);
-                    unit.Acceleration +=  unit.AccelerationBase * AccelerationPercent*0.01f;
-                    unit.SpeedUp += unit.SpeedUpBase *MoveUPPercent*0.01f;
-                    unit.SpeedDown += unit.SpeedDownBase *MoveDownPercent*0.01f;
+                    //UpgradeUse(unit);
 
-                    for (Unit cannon : unit.tower_obj) {
-                        cannon.damage += (int) (cannon.DamageBase*DamagePercent*0.01);
-                    }
-                    for (Unit cannon : unit.tower_obj) {
-                        cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
-                    }
-                    unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
-
-                    return true;
                 }
+                break;
 
 
         }
@@ -133,6 +117,44 @@ public class Item implements Cloneable{
             throw new RuntimeException(e);
         }
 
+    }
+    public void UpgradeUse(Unit unit){
+        unit.max_hp+= (int) HP;
+        unit.armor+= Armor;
+        //unit.hp += (int) HP;
+        unit.max_hp += (int) (unit.HpBase * HPPercent*0.01f);
+        unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
+        unit.armor += (int) (unit.ArmorBase * ArmorPercent*0.01f);
+        unit.Acceleration +=  unit.AccelerationBase * AccelerationPercent*0.01f;
+        unit.SpeedUp += unit.SpeedUpBase *MoveUPPercent*0.01f;
+        unit.SpeedDown += unit.SpeedDownBase *MoveDownPercent*0.01f;
+
+        for (Unit cannon : unit.tower_obj) {
+            cannon.damage += (int) (cannon.DamageBase*DamagePercent*0.01);
+        }
+        for (Unit cannon : unit.tower_obj) {
+            cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
+        }
+        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+    }
+    public void UpgradeUnUse(Unit unit){
+        unit.max_hp-= (int) HP;
+        unit.armor-= Armor;
+        //unit.hp += (int) HP;
+        unit.max_hp -= (int) (unit.HpBase * HPPercent*0.01f);
+        unit.hp -= (int) (unit.HpBase * HPPercent*0.01f);
+        unit.armor -= (int) (unit.ArmorBase * ArmorPercent*0.01f);
+        unit.Acceleration -=  unit.AccelerationBase * AccelerationPercent*0.01f;
+        unit.SpeedUp -= unit.SpeedUpBase *MoveUPPercent*0.01f;
+        unit.SpeedDown -= unit.SpeedDownBase *MoveDownPercent*0.01f;
+
+        for (Unit cannon : unit.tower_obj) {
+            cannon.damage -= (int) (cannon.DamageBase*DamagePercent*0.01);
+        }
+        for (Unit cannon : unit.tower_obj) {
+            cannon.penetration -= (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
+        }
+        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
     }
 
 }

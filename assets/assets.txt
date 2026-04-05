@@ -61,7 +61,6 @@ ShaderList/Grass/Grass.frag
 ShaderList/Grass/Grass.vert
 ShaderList/Lighting/Lighting.frag
 ShaderList/Lighting/Lighting.vert
-ShaderList/Lighting/Lighting2.frag
 ShaderList/Liquid/Blood.frag
 ShaderList/Liquid/Liquid.frag
 ShaderList/Liquid/Liquid.vert
