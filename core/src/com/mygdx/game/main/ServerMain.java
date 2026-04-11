@@ -185,25 +185,25 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventUseClient){
             EventUseClient pack = (EventUseClient) p;
-            if(!(pack).ConfUse) {
-                if (!(pack).conf) {
-                    UnitList.get((pack).ID).inventory.ItemUse(IDListItem.get((pack).str)
-                            , UnitList.get((pack).ID));
+            if(!(pack).MoneyAdd || Inventory.Money>IDListItem.get((pack).str).Price) {
+                if((pack).MoneyAdd) {
+                    Inventory.Money -= IDListItem.get((pack).str).Price;
+                }
+                if (!(pack).ConfUse) {
+                    if (!(pack).conf) {
+                        UnitList.get((pack).ID).inventory.ItemUse(IDListItem.get((pack).str)
+                                , UnitList.get((pack).ID));
+                    } else {
+                        UnitList.get((pack).ID).equipment.ItemUse(IDListItem.get((pack).str)
+                                , UnitList.get((pack).ID));
+                    }
                 } else {
-                    UnitList.get((pack).ID).equipment.ItemUse(IDListItem.get((pack).str)
-                            , UnitList.get((pack).ID));
+                    if (!(pack).conf) {
+                        UnitList.get((pack).ID).inventory.ItemAdd(IDListItem.get((pack).str));
+                    } else {
+                        UnitList.get((pack).ID).equipment.ItemAdd(IDListItem.get((pack).str));
+                    }
                 }
-            }
-            else{
-                if(!(pack).conf) {
-                    UnitList.get((pack).ID).inventory.ItemAdd(IDListItem.get((pack).str));
-                }
-                else{
-                    UnitList.get((pack).ID).equipment.ItemAdd(IDListItem.get((pack).str));
-                }
-            }
-            if((pack).MoneyAdd & Inventory.Money>IDListItem.get((pack).str).Price) {
-                Inventory.Money -= IDListItem.get((pack).str).Price;
             }
 
 
