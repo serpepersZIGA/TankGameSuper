@@ -52,12 +52,13 @@ import static java.lang.StrictMath.sqrt;
 
 public class ClientMain extends Listener {
     public static Client Client;
-    public static String IP;
+    public static String IP = "127.0.0.1";
     private int i;
 
     public void create() {
         System.out.println("Подключаемся к серверу");
         Client = new Client(200000000, 200000000);
+
 
         //Регистрируем пакет
         Client.getKryo().register(ItemPacket.class);
@@ -75,16 +76,17 @@ public class ClientMain extends Listener {
         Client.getKryo().register(SoundPlay.class);
         Client.getKryo().register(DebrisPacket.class);
         Client.getKryo().register(UnitType.class);
-        Client.getKryo().register(Bang.class);
-        Client.getKryo().register(FlameSpawn.class);
-        Client.getKryo().register(Flame.class);
-        Client.getKryo().register(FlameParticle.class);
-        Client.getKryo().register(Acid.class);
-        Client.getKryo().register(Blood.class);
-        Client.getKryo().register(FlameStatic.class);
+//        Client.getKryo().register(Bang.class);
+//        Client.getKryo().register(FlameSpawn.class);
+//        Client.getKryo().register(Flame.class);
+//        Client.getKryo().register(FlameParticle.class);
+//        Client.getKryo().register(Acid.class);
+//        Client.getKryo().register(Blood.class);
+        //Client.getKryo().register(FlameStatic.class);
         Client.getKryo().register(BuildPacket.class);
         Client.getKryo().register(PacketBuildingServer.class);
         Client.getKryo().register(SoundPacket.class);
+
 
 
         Client.getKryo().register(PacketMapObject.class);
@@ -98,6 +100,7 @@ public class ClientMain extends Listener {
         //Клиент начинает подключатся к серверу
 
         //Клиент подключается к серверу
+        portConst = 0;
         SearchPort(tcpPort,udpPort);
         UnitList.clear();
         Client.addListener(Main.Main_client);
@@ -107,8 +110,11 @@ public class ClientMain extends Listener {
         try {
             Client.connect(5000, IP, tcpPort, udpPort);
         } catch (IOException e) {
-            e.printStackTrace();
-            //SearchPort(tcpPort+1, udpPort+1);
+            if(portConst>16){
+                throw new RuntimeException(e);
+            }
+            portConst++;
+            SearchPort(tcpPort+portConst, udpPort+portConst);
         }
     }
 

@@ -130,7 +130,7 @@ public class Main extends ApplicationAdapter {
     public static int udpPort = 27950, tcpPort = 27950;
 
 	public static final Lock R_LOCK = new ReentrantLock();
-
+	public static int portConst = 0;
 
 
 

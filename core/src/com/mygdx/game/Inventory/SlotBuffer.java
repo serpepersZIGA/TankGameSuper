@@ -35,7 +35,7 @@ public class SlotBuffer {
     }
 
     public void SlotPaste() {
-        if(!MiddleMouse){
+        if(!MiddleMouse & RC.MainUnit != null){
             XCol = MouseX-(inventoryMain.x);
             YCol = MouseY-(inventoryMain.y);
 
@@ -95,7 +95,7 @@ public class SlotBuffer {
     }
 
     public void SlotPasteClient() {
-        if(!MiddleMouse) {
+        if(!MiddleMouse & RC.MainUnit != null) {
             XCol = MouseX-(inventoryMain.x);
             YCol = MouseY-(inventoryMain.y);
 

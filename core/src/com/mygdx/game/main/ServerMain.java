@@ -52,13 +52,13 @@ public class ServerMain extends Listener {
         Server.getKryo().register(SoundPlay.class);
         Server.getKryo().register(DebrisPacket.class);
         Server.getKryo().register(UnitType.class);
-        Server.getKryo().register(Bang.class);
-        Server.getKryo().register(FlameSpawn.class);
-        Server.getKryo().register(Flame.class);
-        Server.getKryo().register(FlameParticle.class);
-        Server.getKryo().register(Acid.class);
-        Server.getKryo().register(Blood.class);
-        Server.getKryo().register(FlameStatic.class);
+//        Server.getKryo().register(Bang.class);
+//        Server.getKryo().register(FlameSpawn.class);
+//        Server.getKryo().register(Flame.class);
+//        Server.getKryo().register(FlameParticle.class);
+//        Server.getKryo().register(Acid.class);
+//        Server.getKryo().register(Blood.class);
+//        Server.getKryo().register(FlameStatic.class);
         Server.getKryo().register(BuildPacket.class);
         Server.getKryo().register(PacketBuildingServer.class);
         Server.getKryo().register(SoundPacket.class);
@@ -67,7 +67,9 @@ public class ServerMain extends Listener {
         Server.getKryo().register(PacketUnitUpdate.class);
         Server.getKryo().register(SpawnPlayerPack.class);
 
+
         //Регистрируем порт
+        portConst = 0;
         SearchPort(tcpPort, udpPort);
 
         //Запускаем сервер
@@ -80,7 +82,11 @@ public class ServerMain extends Listener {
         try {
             Server.bind(tcpPort,udpPort);
         } catch (IOException e) {
-            SearchPort(tcpPort+1,udpPort+1);
+            if(portConst>16){
+                throw new RuntimeException(e);
+            }
+            portConst++;
+            SearchPort(tcpPort+portConst,udpPort+portConst);
         }
     }
     public void connected(Connection c){
@@ -178,14 +184,26 @@ public class ServerMain extends Listener {
 //            }
         }
         else if(p instanceof EventUseClient){
-
-            if(!((EventUseClient) p).conf) {
-                UnitList.get(((EventUseClient) p).ID).inventory.ItemUse(IDListItem.get(((EventUseClient) p).str)
-                        , UnitList.get(((EventUseClient) p).ID));
+            EventUseClient pack = (EventUseClient) p;
+            if(!(pack).ConfUse) {
+                if (!(pack).conf) {
+                    UnitList.get((pack).ID).inventory.ItemUse(IDListItem.get((pack).str)
+                            , UnitList.get((pack).ID));
+                } else {
+                    UnitList.get((pack).ID).equipment.ItemUse(IDListItem.get((pack).str)
+                            , UnitList.get((pack).ID));
+                }
             }
             else{
-                UnitList.get(((EventUseClient) p).ID).equipment.ItemUse(IDListItem.get(((EventUseClient) p).str)
-                        , UnitList.get(((EventUseClient) p).ID));
+                if(!(pack).conf) {
+                    UnitList.get((pack).ID).inventory.ItemAdd(IDListItem.get((pack).str));
+                }
+                else{
+                    UnitList.get((pack).ID).equipment.ItemAdd(IDListItem.get((pack).str));
+                }
+            }
+            if((pack).MoneyAdd & Inventory.Money>IDListItem.get((pack).str).Price) {
+                Inventory.Money -= IDListItem.get((pack).str).Price;
             }
 
 

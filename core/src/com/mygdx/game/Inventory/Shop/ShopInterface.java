@@ -49,10 +49,12 @@ public class ShopInterface extends InventoryInterface {
                                     for (int i = 0;i<UnitList.size();i++) {
                                         if(IDClient == UnitList.get(i).nConnect) {
                                             EventUseClient event = new EventUseClient();
-                                            event.x = Slot.x;
-                                            event.y = Slot.y;
                                             event.str = Slot.item.ID;
+                                            //System.out.println(i);
                                             event.ID = i;
+                                            event.conf = false;
+                                            event.ConfUse = true;
+                                            event.MoneyAdd = true;
                                             ClientMain.Client.sendTCP(event);
 
                                             inventoryMain.inventory.ItemAdd(Slot.item);
