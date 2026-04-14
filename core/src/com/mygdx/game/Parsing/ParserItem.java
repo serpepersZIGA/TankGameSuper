@@ -85,10 +85,10 @@ public class ParserItem {
                 "  \"HPPercent\": 0,\n" +
                 "  \"DamagePercent\": 0,\n" +
                 "  \"Image\": \"armorB1\",\n" +
-                "  \"MoveUPPercent\": 0,\n" +
+                "  \"MoveUPPercent\": 200,\n" +
                 "  \"MoveDownPercent\": 0,\n" +
-                "  \"AccelerationPercent\": 0\n" +
-                "\n" +
+                "  \"AccelerationPercent\": 0,\n" +
+                "  \"Price\": 2\n" +
                 "}";
         Create(armorB1,data);
 
