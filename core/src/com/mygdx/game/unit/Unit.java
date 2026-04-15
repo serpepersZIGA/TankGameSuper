@@ -875,7 +875,7 @@ public abstract class Unit implements Cloneable{
         Object[]sp = less_hp_bot();
         if(sp[0] != null) {
             Unit unit = (Unit) sp[0];
-            AngleTarget = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180);
+            AngleTarget = (float) (atan2(this.y - unit.y, this.x - unit.x) / 3.1415926535 * 180)-90;
             trigger_fire = true;
             rotation_bot();
             motor_bot_base((float) sp[1], this.behavior);

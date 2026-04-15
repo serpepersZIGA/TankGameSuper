@@ -60,7 +60,9 @@ import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
 import static com.mygdx.game.method.Keyboard.ClickEsc;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
+import static com.mygdx.game.unit.TransportRegister.Helicopter_t1;
 import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
+import static com.mygdx.game.unit.Unit.IDList;
 
 
 public class Main extends ApplicationAdapter {
@@ -309,6 +311,9 @@ public class Main extends ApplicationAdapter {
 		KeyboardObj.zoom_const();
         Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
         Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
+
+		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
+				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
 	}
 	public static BitmapFont TXTFont(int size,String fontPath){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
