@@ -1,5 +1,7 @@
 package com.mygdx.game;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
 import java.io.*;
 
 import com.badlogic.gdx.backends.lwjgl3.Lwjgl3Application;
@@ -14,8 +16,21 @@ public class GameStart {
 	public static void main (String[] arg) {
 		config = new Lwjgl3ApplicationConfiguration();
         config.setOpenGLEmulation(Lwjgl3ApplicationConfiguration.GLEmulation.GL30, 3, 0);
-		WindowSize("WindowSize/SizeWindow.txt");
-		config.setWindowedMode(WidthWindow,HeightWindow-100);
+		//WindowSize("WindowSize/SizeWindow.txt");
+
+		GraphicsEnvironment ge = GraphicsEnvironment.getLocalGraphicsEnvironment();
+		GraphicsDevice[] devices = ge.getScreenDevices();
+
+		GraphicsConfiguration gc = devices[0].getDefaultConfiguration();
+		Rectangle bounds = gc.getBounds(); // logical pixels / user space
+		AffineTransform tx = gc.getDefaultTransform(); // maps user->device
+		double scaleX = tx.getScaleX();
+		double scaleY = tx.getScaleY();
+
+		WidthWindow = (int) Math.round(bounds.getWidth() * scaleX);
+		HeightWindow = (int) Math.round(bounds.getHeight() * scaleY)-100;
+
+		config.setWindowedMode(WidthWindow,HeightWindow);
 		config.useVsync(true);
 //		config.title = "Title";
 //		config.useGL20 = true;
@@ -23,7 +38,7 @@ public class GameStart {
 		config.setForegroundFPS(120);
 		config.setTitle("Game");
 		config.setWindowIcon("image/player/tower_player.png");
-		new Lwjgl3Application(new Main(WidthWindow,HeightWindow-100,120), config);
+		new Lwjgl3Application(new Main(WidthWindow,HeightWindow,120), config);
 
 	}
 	private static void WindowSize(String path){

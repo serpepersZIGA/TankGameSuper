@@ -8,7 +8,6 @@ import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.main.ServerMain;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
@@ -87,6 +86,7 @@ public abstract class Unit implements Cloneable{
     public float rotation_fire;
     public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
     public static int ai_sost = 200;
+    public float SpeedMaxInertion,SpeedInertionX,SpeedInertionY;
     public EventGame EventClear = EventData.eventDeadTransport;
     public ArrayList<int[]>path;
     public ArrayList<Unit> tower_obj;
@@ -191,6 +191,7 @@ public abstract class Unit implements Cloneable{
             unitAdd.medic_help = this.medic_help;
             unitAdd.classUnit = this.classUnit;
             unitAdd.EventClear = this.EventClear;//EventData.eventDeadSoldat;
+            unitAdd.SpeedMaxInertion = this.SpeedMaxInertion;
 
 
 
@@ -467,8 +468,37 @@ public abstract class Unit implements Cloneable{
     public final void move_xy_transport(){
         float speed = this.speed*TimeGlobalBullet;
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        this.x -= move.move_sin2(speed, rotation_corpus2);
-        this.y -= move.move_cos2(speed, rotation_corpus2);
+        SpeedMaxInertion = this.speed*0.3f;
+        float SpeedInertion = abs(this.speed)*0.03f+0.02f;
+        if(SpeedInertionX>0.3f) {
+            this.SpeedInertionX -= SpeedInertion;
+        }
+        else if(SpeedInertionX<-0.3f) {
+            this.SpeedInertionX += SpeedInertion;
+        }
+        else{
+            SpeedInertionX = 0;
+        }
+
+        if(SpeedInertionY>0.3f) {
+            this.SpeedInertionY -= SpeedInertion;
+        }
+        else if(SpeedInertionY<-0.3f) {
+            this.SpeedInertionY += SpeedInertion;
+        }
+        else{
+            SpeedInertionY = 0;
+        }
+
+        if(SpeedMaxInertion-abs(SpeedInertionX)>0) {
+            this.SpeedInertionX -= move.move_sin2(speed, rotation_corpus2);
+        }
+        if(SpeedMaxInertion-abs(SpeedInertionY)>0) {
+            this.SpeedInertionY -= move.move_cos2(speed, rotation_corpus2);
+        }
+        this.x -= (move.move_sin2(speed, rotation_corpus2)-SpeedInertionX);//*TimeGlobalBullet;
+        this.y -= (move.move_cos2(speed, rotation_corpus2)-SpeedInertionY);//*TimeGlobalBullet;
+
     }
     public final void move_xy_transportInvert(){
         float speed = this.speed*TimeGlobalBullet;
@@ -546,7 +576,7 @@ public abstract class Unit implements Cloneable{
         }
 
     private boolean enemy_fire_not_tower(){
-        if(UnitList.size() != 0) {
+        if(!UnitList.isEmpty()) {
             Unit unit = detection_near_transport_i(this);
             return fire_bot_not_tower(unit.x,unit.y);
         }
@@ -1162,25 +1192,34 @@ public abstract class Unit implements Cloneable{
         }
     }
     private void MethodCollision(Unit unit){
+        //this.SpeedInertionX = 0;
+        //this.SpeedInertionY = 0;
+
+        this.SpeedInertionX -= move.move_sin(unit.speed*0.5f, -unit.rotation_corpus);
+        this.SpeedInertionY -= move.move_cos(unit.speed*0.5f, -unit.rotation_corpus);
+
+        unit.SpeedInertionX -= move.move_sin(this.speed*0.5f, -this.rotation_corpus);
+        unit.SpeedInertionY -= move.move_cos(this.speed*0.5f, -this.rotation_corpus);
+
         if(this.x< unit.x) {
             this.x -= 2f;
             unit.x += 2f;
-            this.SpeedInert += unit.speed*0.5f;
-            unit.SpeedInert += this.speed*0.5f;
+            //this.SpeedInert += unit.speed*0.5f;
+            //unit.SpeedInert += this.speed*0.5f;
             this.speed *= -0.8f;
             unit.speed *= -0.8f;
-            this.RotationInert = unit.rotation_corpus;
-            unit.RotationInert = this.rotation_corpus;
+            //this.RotationInert = unit.rotation_corpus;
+            //unit.RotationInert = this.rotation_corpus;
         }
         else if(this.x> unit.x) {
             this.x += 2;
             unit.x -= 2;
-            this.SpeedInert += unit.speed*0.5f;
-            unit.SpeedInert += this.speed*0.5f;
-            this.speed *= -0.5f;
-            unit.speed *= -0.7f;
-            this.RotationInert = unit.rotation_corpus;
-            unit.RotationInert = this.rotation_corpus;
+            //this.SpeedInert += unit.speed*0.5f;
+            //unit.SpeedInert += this.speed*0.5f;
+            this.speed *= -0.8f;
+            unit.speed *= -0.8f;
+            //this.RotationInert = unit.rotation_corpus;
+            //unit.RotationInert = this.rotation_corpus;
         }
         if(this.y< unit.y) {
             this.y -= 2f;
@@ -1192,15 +1231,17 @@ public abstract class Unit implements Cloneable{
         }
     }
     private void MethodCollision(int x, int y){
+        //this.SpeedInertionX = 0;
+        //this.SpeedInertionY = 0;
+        this.SpeedInertionX *= -0.8f;
+        this.SpeedInertionY *= -0.8f;
         if(this.x<x) {
             this.x -= 2f;
             this.speed *= -0.8f;
-            this.SpeedInert *= -0.8f;
         }
         else if(this.x>x) {
             this.x += 2f;
             this.speed *= -0.8f;
-            this.SpeedInert *= -0.8f;
         }
         if(this.y<y) {
             this.y -= 2f;
@@ -1403,13 +1444,13 @@ public abstract class Unit implements Cloneable{
     }
     public void all_action(){
         damage_temperature();
-        inertia_xy();
+        //inertia_xy();
         control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
         EventClear.EventIteration(this);
     }
     public void all_action_client(){
-        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
+        //this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
         control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
         EventClear.EventIteration(this);
@@ -1417,13 +1458,11 @@ public abstract class Unit implements Cloneable{
     }
     public void all_action_client_1(){
         this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
-        move_xy_transport();
         control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
     }
     public void all_action_client_2(){
         this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
-        move_xy_transport();
         functional.FunctionalIterationAnClient(this);
     }
     public void update(){

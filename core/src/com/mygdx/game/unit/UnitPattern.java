@@ -1,6 +1,7 @@
 package com.mygdx.game.unit;
 
 import com.mygdx.game.FunctionalComponent.FunctionalList;
+import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.moduleUnit.Cannon;
@@ -48,8 +49,8 @@ public class UnitPattern extends Unit {
     public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert,int Height){
         super(corpus,x,y,rotation,speed,SpeedInert,RotationInert,Height);
         corpus.functional = new FunctionalList();
-        corpus.functional.Add(RegisterFunctionalComponent.MoveDebris);
-        corpus.functional.Add(RegisterFunctionalComponent.BuildCollision);
+        corpus.functional.Add(FunctionalComponentUnitRegister.MoveDebris);
+        corpus.functional.Add(FunctionalComponentUnitRegister.BuildCollision);
         this.tower_obj = new ArrayList<>();
         ID = str;
         corpus.CorpusLoad(this);

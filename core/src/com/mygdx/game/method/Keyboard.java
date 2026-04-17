@@ -327,7 +327,8 @@ public class Keyboard extends InputAdapter{
         for(Particle particle : FlameList){
             particle.size_render = (int)(particle.size* Main.Zoom);
         }
-        for(Particle particle : FlameSpawnList){
+        for(int i = 0;i<FlameSpawnList.size();i++){
+            Particle particle = FlameSpawnList.get(i);
             particle.size_render = (int)(particle.size* Main.Zoom);
             particle.size_render2 = (int) (particle.size_render*0.5f);
         }

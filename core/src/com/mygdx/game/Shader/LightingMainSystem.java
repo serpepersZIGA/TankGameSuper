@@ -113,19 +113,20 @@ public class LightingMainSystem implements Disposable {
         LightSystem.lightsRender.clear();
         for(int i = 0;i< LightSystem.lights.size();i++){
             Light light = LightSystem.lights.get(i);
+            if(light!= null) {
+                float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
+                light.XRender = xy[0];
+                light.YRender = xy[1];
 
-            float[] xy = Main.RC.render_objZoom(light.position.x, light.position.y);
-            light.XRender = xy[0];
-            light.YRender = xy[1];
+                if (light.XRender + LightSystem.limitLightingRender > 0 &
+                        light.YRender + LightSystem.limitLightingRender > 0 &
+                        light.XRender - LightSystem.limitLightingRender < Main.screenWidth &
+                        light.YRender - LightSystem.limitLightingRender < Main.screenHeight &
+                        light.work
+                ) {
+                    LightSystem.lightsRender.add(light);
 
-            if(light.XRender+LightSystem.limitLightingRender >0 &
-                    light.YRender+LightSystem.limitLightingRender >0&
-                    light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
-                    light.YRender-LightSystem.limitLightingRender <Main.screenHeight &
-                    light.work
-            ){
-                LightSystem.lightsRender.add(light);
-
+                }
             }
         }
         shader.setUniformf("u_ambientColor", ambientColor.r, ambientColor.g, ambientColor.b
