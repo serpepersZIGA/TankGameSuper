@@ -55,7 +55,6 @@ public class Engine extends moduleUnit implements Cloneable{
         unit.SpeedUpBase = SpeedUp;
         unit.SpeedDownBase = SpeedDown;
         unit.AccelerationBase = Acceleration;
-        unit.SpeedMaxInertion = SpeedUp/3;
 
         unit.speed_rotation = SpeedRotation;
         for(int i = 0;i<functional.functional.size();i++){

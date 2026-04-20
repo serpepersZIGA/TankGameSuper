@@ -86,7 +86,8 @@ public abstract class Unit implements Cloneable{
     public float rotation_fire;
     public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
     public static int ai_sost = 200;
-    public float SpeedMaxInertion,SpeedInertionX,SpeedInertionY;
+    public float SpeedMaxInertion,SpeedInertionX,SpeedInertionY,SpeedMaxInertionX,SpeedMaxInertionY,
+            speedX,speedY;
     public EventGame EventClear = EventData.eventDeadTransport;
     public ArrayList<int[]>path;
     public ArrayList<Unit> tower_obj;
@@ -191,7 +192,6 @@ public abstract class Unit implements Cloneable{
             unitAdd.medic_help = this.medic_help;
             unitAdd.classUnit = this.classUnit;
             unitAdd.EventClear = this.EventClear;//EventData.eventDeadSoldat;
-            unitAdd.SpeedMaxInertion = this.SpeedMaxInertion;
 
 
 
@@ -449,10 +449,10 @@ public abstract class Unit implements Cloneable{
             this.rotation_corpus -= this.speed_rotation*TimeGlobalBullet;
         }
         if(!this.press_w && !this.press_s) {
-            if (this.speed > 0.5) {
+            if (this.speed > 0.1f) {
                 this.speed -= this.slowing;
                 //if (this.speed< Unit.speed_minimum){this.speed = 0;}
-            } else if (this.speed < -0.5) {
+            } else if (this.speed < -0.1f) {
                 this.speed += this.slowing;
                 //if (this.speed> Unit.speed_minimum){this.speed = 0;}
             } else{
@@ -468,36 +468,69 @@ public abstract class Unit implements Cloneable{
     public final void move_xy_transport(){
         float speed = this.speed*TimeGlobalBullet;
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        SpeedMaxInertion = this.speed*0.3f;
-        float SpeedInertion = abs(this.speed)*0.03f+0.02f;
-        if(SpeedInertionX>0.3f) {
+        SpeedMaxInertion = abs(speed);
+        //SpeedMaxInertionY = this.SpeedInertionY*0.3f;
+        float SpeedInertion = this.SpeedInertionX*0.035f;
+        float SpeedInertion2 = this.SpeedInertionY*0.035f;
+        speedX = (speedX+move.move_sin2(speed, rotation_corpus2))*0.5f;
+        speedY = (speedY+move.move_cos2(speed, rotation_corpus2))*0.5f;
+        SpeedMaxInertionX = abs(speedX);
+        SpeedMaxInertionY = abs(speedY);
+
+        //if(SpeedMaxInertionX-abs(SpeedInertionX)>0) {
+            //this.SpeedInertionX -= speedX;
+        //}
+        //if(SpeedMaxInertionY-abs(SpeedInertionY)>0) {
+            //this.SpeedInertionY -= speedY;
+        //}
+        this.SpeedInertionX -= speedX*0.1f;
+        this.SpeedInertionY -= speedY*0.1f;
+
+        this.SpeedInertionX -= SpeedInertion;
+        this.SpeedInertionY -= SpeedInertion2;
+        this.x += (SpeedInertionX);
+        this.y += (SpeedInertionY);
+
+    }
+    public final void move_xy_transport2(){
+        float speed = this.speed*TimeGlobalBullet;
+        float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
+        speedX = (speedX+move.move_sin2(speed, rotation_corpus2))*0.5f;
+        speedY = (speedY+move.move_cos2(speed, rotation_corpus2))*0.5f;
+        SpeedMaxInertionX = abs(speedX)*0.3f;
+        SpeedMaxInertionY = abs(speedY)*0.3f;
+        SpeedMaxInertion = abs(this.speed)*0.4f;
+        //SpeedMaxInertionY = this.SpeedInertionY*0.3f;
+        float SpeedInertion = abs(this.SpeedInertionX)*0.001f;
+        float SpeedInertion2 = abs(this.SpeedInertionY)*0.001f;
+        if(SpeedInertionX>0.05f) {
             this.SpeedInertionX -= SpeedInertion;
         }
-        else if(SpeedInertionX<-0.3f) {
+        else if(SpeedInertionX<-0.05f) {
             this.SpeedInertionX += SpeedInertion;
         }
         else{
             SpeedInertionX = 0;
         }
 
-        if(SpeedInertionY>0.3f) {
-            this.SpeedInertionY -= SpeedInertion;
+        if(SpeedInertionY>0.05f) {
+            this.SpeedInertionY -= SpeedInertion2;
         }
-        else if(SpeedInertionY<-0.3f) {
-            this.SpeedInertionY += SpeedInertion;
+        else if(SpeedInertionY<-0.05f) {
+            this.SpeedInertionY += SpeedInertion2;
         }
         else{
             SpeedInertionY = 0;
         }
 
-        if(SpeedMaxInertion-abs(SpeedInertionX)>0) {
-            this.SpeedInertionX -= move.move_sin2(speed, rotation_corpus2);
+        if(SpeedMaxInertionX-abs(SpeedInertionX)>0) {
+            this.SpeedInertionX -= speedX;
         }
-        if(SpeedMaxInertion-abs(SpeedInertionY)>0) {
-            this.SpeedInertionY -= move.move_cos2(speed, rotation_corpus2);
+        if(SpeedMaxInertionY-abs(SpeedInertionY)>0) {
+            this.SpeedInertionY -= speedY;
         }
-        this.x -= (move.move_sin2(speed, rotation_corpus2)-SpeedInertionX);//*TimeGlobalBullet;
-        this.y -= (move.move_cos2(speed, rotation_corpus2)-SpeedInertionY);//*TimeGlobalBullet;
+        this.x -= (speedX-SpeedInertionX);//*TimeGlobalBullet;
+        this.y -= (speedY-SpeedInertionY);//*TimeGlobalBullet;
 
     }
     public final void move_xy_transportInvert(){
@@ -1195,19 +1228,26 @@ public abstract class Unit implements Cloneable{
         //this.SpeedInertionX = 0;
         //this.SpeedInertionY = 0;
 
-        this.SpeedInertionX -= move.move_sin(unit.speed*0.5f, -unit.rotation_corpus);
-        this.SpeedInertionY -= move.move_cos(unit.speed*0.5f, -unit.rotation_corpus);
-
-        unit.SpeedInertionX -= move.move_sin(this.speed*0.5f, -this.rotation_corpus);
-        unit.SpeedInertionY -= move.move_cos(this.speed*0.5f, -this.rotation_corpus);
+        if(SpeedMaxInertion-abs(SpeedInertionX)>0) {
+            this.SpeedInertionX -= unit.SpeedInertionX * 0.5f;
+        }
+        if(SpeedMaxInertion-abs(SpeedInertionY)>0) {
+            this.SpeedInertionY -= unit.SpeedInertionY * 0.5f;
+        }
+        if(unit.SpeedMaxInertion-abs(unit.SpeedInertionX)>0) {
+            unit.SpeedInertionX -= this.SpeedInertionX * 0.5f;
+        }
+        if(unit.SpeedMaxInertion-abs(unit.SpeedInertionY)>0) {
+            unit.SpeedInertionY -= this.SpeedInertionY * 0.5f;
+        }
+        this.speed *= -0.8f;
+        unit.speed *= -0.8f;
 
         if(this.x< unit.x) {
             this.x -= 2f;
             unit.x += 2f;
             //this.SpeedInert += unit.speed*0.5f;
             //unit.SpeedInert += this.speed*0.5f;
-            this.speed *= -0.8f;
-            unit.speed *= -0.8f;
             //this.RotationInert = unit.rotation_corpus;
             //unit.RotationInert = this.rotation_corpus;
         }
@@ -1216,8 +1256,6 @@ public abstract class Unit implements Cloneable{
             unit.x -= 2;
             //this.SpeedInert += unit.speed*0.5f;
             //unit.SpeedInert += this.speed*0.5f;
-            this.speed *= -0.8f;
-            unit.speed *= -0.8f;
             //this.RotationInert = unit.rotation_corpus;
             //unit.RotationInert = this.rotation_corpus;
         }

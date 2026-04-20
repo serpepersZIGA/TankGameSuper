@@ -328,6 +328,9 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         TimeGlobal+= Gdx.graphics.getDeltaTime();
         TimeGlobalBullet = TimeGlobal*50;
+//		if(TimeGlobalBullet <0.1f){
+//			TimeGlobalBullet = 0.3f;
+//		}
 		//System.out.println(Shop.Money);
         try {
             ActionGameMain.action();
