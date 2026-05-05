@@ -18,17 +18,17 @@ public class TransportRegister {
 
     public static void Create() {
         ArrayList<Cannon>list = new ArrayList<>();
-        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
-        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
-        list.add(RegisterModuleCannon.CannonFlame);
-        ArrayList<String>listr = new ArrayList<>();
-        listr.add("Flk4CL");
-        listr.add("Flk4CL");
-        listr.add("Flk4C");
+//        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
+//        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
+//        list.add(RegisterModuleCannon.CannonFlame);
+//        ArrayList<String>listr = new ArrayList<>();
+//        listr.add("Flk4CL");
+//        listr.add("Flk4CL");
+//        listr.add("Flk4C");
 
         list = new ArrayList<>();
         TrackSoldatT1 = new UnitPattern("TrSolS1",RegisterModuleCorpus.CorpusSoldatTrackS1,
-                RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.SupportTransport,0,1);
+                RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.Transport,0,1);
 
         TrackSoldatT1.time_spawn_soldat_max = 200;
 

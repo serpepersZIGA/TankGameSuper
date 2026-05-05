@@ -21,8 +21,13 @@ public class RegisterModuleCorpus {
         func.Add(TowerIteration);
         func.Add(BuildCollision);
         func.Add(TowerXY);
+        func.Add(Hill);
         CorpusRemountTrackR1 = new Corpus(520,12,50,130,18
                 ,"machine_enemy_1lvl",func);
+        func = new FunctionalList();
+        func.Add(TowerIteration);
+        func.Add(BuildCollision);
+        func.Add(TowerXY);
         func.Add(SoldatSpawn);
         CorpusSoldatTrackS1 = new Corpus(520,12,50,130,18
                 ,"machine_enemy_1lvl",func);

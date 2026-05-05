@@ -1,10 +1,14 @@
 package com.mygdx.game.unit.Controller;
 
 import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
+import com.mygdx.game.block.Block;
+import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.unit.Unit;
+
+import java.util.ArrayList;
 
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
@@ -12,6 +16,16 @@ import static com.mygdx.game.method.Keyboard.LeftMouse;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit){
+//        for (ArrayList<Block> i2:Main.BlockList2D){
+//            for (Block i3:i2){
+//                i3.render_block = UpdateRegister.GrassUpdate;
+//            }
+//        }
+//
+//        Main.BlockList2D.get(unit.YMap).get(unit.XMap).render_block = UpdateRegister.Update3;
+
+
+
         unit.left_mouse = LeftMouse;
         unit.right_mouse = Keyboard.RightMouse;
         unit.press_w = Keyboard.PressW;

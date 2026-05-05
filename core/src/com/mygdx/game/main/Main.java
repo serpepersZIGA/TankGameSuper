@@ -151,8 +151,8 @@ public class Main extends ApplicationAdapter {
 		MapAllLoad.MapCount();
 //		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
-        TrackSoldatT1.UnitAdd(1200,1200,true, (byte) 2,
-				RegisterControl.controllerSoldatTransport,new Inventory(new Item[3][4],1),new Inventory(new Item[1][1],1));
+        //TrackSoldatT1.UnitAdd(1200,1200,true, (byte) 2,
+				//RegisterControl.controllerBotSupport,new Inventory(new Item[3][4],1),new Inventory(new Item[1][1],1));
 
 		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
 	}
@@ -181,12 +181,12 @@ public class Main extends ApplicationAdapter {
 		for(int i = 0;i<quantity_height;i++){
 
 			for(int i2 = 0;i2<quantity_width;i2++){
-				BlockList2D.get(quantity_height-3).get(i2).passability= true;
+				BlockList2D.get(quantity_height-1).get(i2).passability= true;
 				BlockList2D.get(0).get(i2).passability= true;
 
 			}
 			BlockList2D.get(i).get(0).passability= true;
-			BlockList2D.get(i).get(quantity_width-3).passability= true;
+			BlockList2D.get(i).get(quantity_width-1).passability= true;
 		}
         xMap = width_field;
         yMap = height_field;
@@ -312,8 +312,13 @@ public class Main extends ApplicationAdapter {
         Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
         Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
 
-		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
-				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
+//		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
+//				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
+		//IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
+				//RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+
+		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
+				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
 	}
 	public static BitmapFont TXTFont(int size,String fontPath){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));

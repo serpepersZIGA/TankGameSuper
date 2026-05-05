@@ -27,10 +27,11 @@ public class UnitPattern extends Unit {
         data();
         IDList.put(str,this);
     }
-    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY, ClassUnit classUnit, int medic_help, int Height){
-        super(corpus,engine,cannon,TowerXY,classUnit,medic_help,Height);
+    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY, ClassUnit classUnit, int HillHp, int Height){
+        super(corpus,engine,cannon,TowerXY,classUnit,HillHp,Height);
         tower_obj = new ArrayList<>();
         behavior = 3;
+        this.classUnit = ClassUnit.Transport;
         this.collision = TypeCollision.rect;
         this.CorpusUnit.CorpusLoad(this);
         this.EngineUnit.EngineLoad(this);
@@ -59,6 +60,7 @@ public class UnitPattern extends Unit {
     }
     public UnitPattern(String str, Soldat soldat){
         super(soldat);
+        ConfSquad = true;
         EventClear = EventData.eventDeadSoldat;
         tower_obj = new ArrayList<>();
         ID = str;
@@ -67,22 +69,18 @@ public class UnitPattern extends Unit {
     }
     @Override
     public void all_action() {
-        super.XYMapCord();
         super.all_action();
     }
     @Override
     public void all_action_client() {
-        super.XYMapCord();
         super.all_action_client();
     }
     @Override
     public void all_action_client_1() {
-        super.XYMapCord();
         super.all_action_client_1();
     }
     @Override
     public void all_action_client_2() {
-        super.XYMapCord();
         super.all_action_client_2();
     }
     public void UpdateUnit(){

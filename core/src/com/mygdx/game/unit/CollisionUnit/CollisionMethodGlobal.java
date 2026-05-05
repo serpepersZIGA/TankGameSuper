@@ -25,7 +25,8 @@ public class CollisionMethodGlobal {
         UnitsBuffer = new ArrayList<>();
     }
     public void CollisionIterationGlobal(){
-        for(Unit unit : Main.UnitList){
+        for(int i = 0;i<Main.UnitList.size();i++){
+            Unit unit = Main.UnitList.get(i);
             for (Unit unit2 : UnitsBuffer){
                 CollisionMethod(unit,unit2);
             }

@@ -14,7 +14,8 @@ public class UnitsParser {
     public static ArrayList<String> Cannon;
     public static int [][] TowerXY;
     public static ClassUnit classUnit;
-    public static int medic_help,height;
+    public static int height;
+    public static int HillHp;
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Unit").list();
@@ -32,7 +33,7 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon, TowerXY, classUnit, medic_help,height);
+                    Corpus, Engine, Cannon, TowerXY, classUnit, HillHp,height);
 
 
         }
@@ -53,7 +54,7 @@ public class UnitsParser {
         Engine = obj.Engine;
         Corpus = obj.Corpus;
         TowerXY = obj.TowerXY;
-        medic_help = obj.MedicConf;
+        HillHp = obj.MedicConf;
         height = obj.Height;
     }
     public static void AddBuilding(){

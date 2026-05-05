@@ -12,6 +12,8 @@ import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.Inventory.PacketInventory;
+import com.mygdx.game.unit.AI;
+import com.mygdx.game.unit.SpawnPlayer.Squad;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
 
@@ -45,6 +47,14 @@ public class ActionGameHost extends ActionGame{
     private int i;
     @Override final
     public void action() {
+        if(Unit.ai_sost != 0){
+            Unit.ai_sost-=1;
+            Unit.AIScan = false;}
+        else {
+            Squad.SquadCreate();
+            Unit.ai_sost=700;
+            Unit.AIScan = true;
+        }
         ThreadIterationDebris = new Thread(new IterationDebris());
         ThreadIterationBullet = new Thread(new IterationBullet());
         ThreadIterationUnit = new Thread(new IterationUnit());
@@ -116,13 +126,6 @@ public class ActionGameHost extends ActionGame{
         //boolean[]mouse_e = new metod.mouse_control().mouse_event();
         //Main.player_obj.get(1).all_action_client(Main.left_mouse_client, Main.right_mouse_client, Main.mouse_x_client,
                 //Main.mouse_y_client, Main.press_w_client, Main.press_a_client, Main.press_s_client, Main.press_d_client);
-        if(Unit.ai_sost != 0){
-            Unit.ai_sost-=1;
-            Unit.AIScan = false;}
-        else {
-            Unit.ai_sost=700;
-            Unit.AIScan = true;
-        }
 
 
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
@@ -277,10 +280,6 @@ public class ActionGameHost extends ActionGame{
         Batch.end();
         WeatherIteration(Batch);
         LightSystem.begin(Batch);
-        //LightSystem.end(Batch);
-        //System.out.println(UnitList.size());
-//        if(Unit.ai_sost == 0){
-//            Unit.AIScan = false;}
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
         //BulletFutureIteration.cancel(true);
@@ -396,6 +395,7 @@ public class ActionGameHost extends ActionGame{
                 if(debris != null){
                     //synchronized (debris) {
                         packet_debris_server(debris, i);
+                        debris.XYMapCordDebris();
                         debris.all_action();
                         debris.corpus_corpus(Main.UnitList);
                         debris.corpus_corpus(Main.DebrisList);
@@ -422,27 +422,34 @@ public class ActionGameHost extends ActionGame{
     public class IterationUnit implements Runnable {
         public void run() {
             TransportPacket pack;
+            for (Squad squad : AI.SquadList){
+                squad.SquadIteration();
+            }
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
                 if (unit != null) {
                     //synchronized (unit) {
-                        pack = ActionGameHost.packet_player_server(unit);
-                        if (unit.host || unit.control == RegisterControl.controllerBot
-                                || unit.control == RegisterControl.controllerBotSupport
-                                || unit.control == RegisterControl.controllerSoldatTransport
-                                || unit.control == RegisterControl.controllerSoldatBot
-                                || unit.control == RegisterControl.controllerHelicopter) {
-                            PacketUnit.add(pack);
-                            unit.all_action();
-
-                        } else {
-                            pack.inventory = unit.inventory.inventoryStr;
-                            pack.equipment = unit.equipment.inventoryStr;
-                            PacketUnit.add(pack);
-                            unit.all_action_client();
-                        }
+                    unit.XYMapCord();
+                    pack = ActionGameHost.packet_player_server(unit);
+                    if (unit.host || unit.control == RegisterControl.controllerBot
+                            || unit.control == RegisterControl.controllerBotSupport
+                            || unit.control == RegisterControl.controllerSoldatTransport
+                            || unit.control == RegisterControl.controllerSoldatBot
+                            || unit.control == RegisterControl.controllerHelicopter) {
+                        PacketUnit.add(pack);
+                        unit.all_action();
+                    } else {
+                        pack.inventory = unit.inventory.inventoryStr;
+                        pack.equipment = unit.equipment.inventoryStr;
+                        PacketUnit.add(pack);
+                        unit.all_action_client();
+                    }
                     //}
                 }
+            }
+            //System.out.println(AI.SquadList.size());
+            if (!AI.SquadDeleteList.isEmpty()) {
+                AI.SquadDeleteList.subList(0, AI.SquadDeleteList.size()).clear();
             }
             Collision.CollisionIterationGlobal();
         }

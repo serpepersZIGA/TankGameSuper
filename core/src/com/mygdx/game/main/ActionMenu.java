@@ -126,7 +126,7 @@ public class ActionMenu extends ActionGame {
 
 
         for (i= 0; i< Main.DebrisList.size(); i++){
-            Main.DebrisList.get(i).all_action_client();
+            Main.DebrisList.get(i).UpdateUnit();
         }
 
         for (i = 0;i< BulletList.size();i++){
