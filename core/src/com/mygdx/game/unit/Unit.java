@@ -6,10 +6,7 @@ import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
-import com.mygdx.game.block.Block;
-import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.bull.Bullet;
-import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
@@ -17,7 +14,6 @@ import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
-import com.mygdx.game.unit.SpawnPlayer.Squad;
 import com.mygdx.game.unit.moduleUnit.Cannon;
 import com.mygdx.game.unit.moduleUnit.Corpus;
 import com.mygdx.game.unit.moduleUnit.Engine;
@@ -309,7 +305,7 @@ public abstract class Unit implements Cloneable{
         this.reload = this.reload_max;
         this.hp = this.max_hp;
         this.HpBase = this.max_hp;
-        this.HPTriggerHill = (int) (this.max_hp*0.7f);
+        this.HPTriggerHill = (int) (this.max_hp*0.4f);
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width/2;
         this.corpus_height_2 = this.corpus_height/2;
@@ -348,7 +344,7 @@ public abstract class Unit implements Cloneable{
         this.reload = this.reload_max;
         this.hp = this.max_hp;
         this.HpBase = this.max_hp;
-        this.HPTriggerHill = (int) (this.max_hp*0.7f);
+        this.HPTriggerHill = (int) (this.max_hp*0.4f);
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width/2;
         this.corpus_height_2 = this.corpus_height/2;
@@ -404,8 +400,8 @@ public abstract class Unit implements Cloneable{
     }
     protected final void review_field(){
         // Object[] sp = detection_near_transport(this);
-        if(TargetUnit != null) {
-            RadiusTarget = (float) sqrt(pow2(EnemyFire.x - this.x) + pow2(EnemyFire.y - this.y));
+        if(EnemyFire != null) {
+             RadiusTarget = (float) sqrt(pow2(EnemyFire.x - this.x) + pow2(EnemyFire.y - this.y));
             if(EnemyFire.team != this.team) {
                 this.trigger_attack = (int) RadiusTarget < this.range_see;
             }
@@ -1050,17 +1046,28 @@ public abstract class Unit implements Cloneable{
 
 
     }
+    private boolean ConfMedicBuffer;
     public Object[] less_hp_bot(){
         if ((this.hp > HPTriggerHill|| crite_life) && this.medic_help == 0) {
+            //ConfMedicBuffer = false;
+            System.out.println("eee");
             return DetectionNearTransport(this);
 
         } else{
-            this.behavior_buffer = this.behavior;
-            this.behavior = 3;
-            this.medic_help = 1;
-            if (this.hp >= this.max_hp - 20) {
+            if(!ConfMedicBuffer) {
+                this.behavior_buffer = this.behavior;
+                this.behavior = 3;
+                this.medic_help = 1;
+                ConfMedicBuffer = true;
+                //TargetUnit = null;
+                //EnemyFire = null;
+            }
+            if (this.hp >= this.max_hp - 40) {
                 this.medic_help = 0;
                 this.behavior = this.behavior_buffer;
+                ConfMedicBuffer = false;
+                TargetUnit = null;
+                return new Object[]{null,0};
             }
             Unit unit2 = null;
             float radius = 0;

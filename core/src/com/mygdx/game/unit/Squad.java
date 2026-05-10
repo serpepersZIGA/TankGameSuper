@@ -1,13 +1,9 @@
-package com.mygdx.game.unit.SpawnPlayer;
+package com.mygdx.game.unit;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.rand;
-import com.mygdx.game.unit.AI;
-import com.mygdx.game.unit.ClassUnit;
-import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 
 import static com.mygdx.game.main.Main.Ai;
 import static com.mygdx.game.main.Main.BlockList2D;
@@ -111,6 +107,12 @@ public class Squad{
 //                EnemyDetectedInit();
                 //
                 //return;
+
+            } else if (unit.EnemyFire != null) {
+                if(EnemySquad == null){
+                    EnemySquad = unit.EnemyFire;
+                    AttackSquad = true;
+                }
 
             }
             //unit.AttackSquad =AttackSquad;

@@ -3,7 +3,6 @@ package com.mygdx.game.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.Inventory.InventoryInterface;
-import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.bull.Bullet;
@@ -11,15 +10,12 @@ import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
-import com.mygdx.game.Inventory.PacketInventory;
 import com.mygdx.game.unit.AI;
-import com.mygdx.game.unit.SpawnPlayer.Squad;
+import com.mygdx.game.unit.Squad;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
 
 import java.util.ArrayList;
-import java.util.LinkedList;
-import java.util.Queue;
 import java.util.concurrent.*;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;

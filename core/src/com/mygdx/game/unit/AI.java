@@ -1,8 +1,5 @@
 package com.mygdx.game.unit;
-import com.mygdx.game.block.Block;
-import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.unit.SpawnPlayer.Squad;
 
 import java.util.ArrayList;
 
