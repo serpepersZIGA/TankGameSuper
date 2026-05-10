@@ -13,13 +13,11 @@ import static com.mygdx.game.method.pow2.pow2;
 
 public abstract class Block {
     public int x,y;
-    public int x_rend,y_rend,x_center,y_center;
+    public int x_center,y_center;
     public UpdateBlock render_block;
     public MapObject objMap;
     public boolean passability,AiClose;
     public int iBuilding;
-    public static final float lighting = 400;
-    public static float lighting_zoom = 400,lighting_zoom_2 = 200;
     public static void passability_detected() {
         for (int i = 0; i < Main.BuildingList.size(); i++) {
             for (int j = 0; j < Main.BuildingList.get(i).ConstructBuilding.length; j++) {
@@ -49,7 +47,8 @@ public abstract class Block {
         this.x_center = (int) (this.x +Main.width_block *0.5);
         this.y_center = (int) (this.y +Main.width_block *0.5);
     }
-    private boolean rect_collision(int x1,int y1,int width,int height,
+    @SuppressWarnings("unused")
+	private boolean rect_collision(int x1,int y1,int width,int height,
                                   int x2,int y2,int width2,int height2,double rotation_2){
 
         Rectangle rect1 = new Rectangle(x1,y1,width,height); // Прямоугольник 1

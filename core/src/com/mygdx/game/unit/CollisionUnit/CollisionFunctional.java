@@ -3,6 +3,7 @@ package com.mygdx.game.unit.CollisionUnit;
 import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Unit;
 
+import static com.mygdx.game.method.Method.tower_xy_2;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.sqrt;
@@ -107,6 +108,33 @@ public abstract class CollisionFunctional{
             if(sqrt(pow2(x_1_1_2 - x_2_2) + pow2(y_1_1_2 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
                 unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
+        }
+        if(sqrt(pow2(x_2_1 - x_1_2) + pow2(y_2_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)*1.4){
+            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            float x_2_1_1 = xy[0];
+            float y_2_1_1 = xy[1];
+            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            float x_2_1_2 = xy[0];
+            float y_2_1_2 = xy[1];
+            xy = tower_xy_2(x,y,-unit2.corpus_height_3,unit2.corpus_width_3,-unit2.rotation_corpus);
+            float x_1_2_1 = xy[0];
+            float y_1_2_1 = xy[1];
+            xy = tower_xy_2(x,y,-unit2.corpus_height_3,-unit2.corpus_width_3,-unit2.rotation_corpus);
+            float x_1_2_2 = xy[0];
+            float y_1_2_2 = xy[1];
+            if(sqrt(pow2(x_2_1_1 - x_1_2) + pow2(y_2_1_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
+                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
+            }
+            if(sqrt(pow2(x_2_1_2 - x_1_2) + pow2(y_2_1_2 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
+                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
+            }
+            if(sqrt(pow2(x_1_2_1 - x_2_1) + pow2(y_1_2_1 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
+                unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
+            }
+            if(sqrt(pow2(x_1_2_2 - x_2_1) + pow2(y_1_2_2 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
+                unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;
+            }
+            return;
         }
     }
     public static void MethodCollisionTransport(Unit unit, Unit unit2){

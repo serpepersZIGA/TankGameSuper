@@ -17,7 +17,9 @@ public class CollisionBreak extends ComponentCollisionSystem{
     public void collision(Unit tr, int ix, int iy) {
         if(rect_collision(x,y,width,height,0,
                 (int)tr.x,(int)tr.y,(int)tr.corpus_width,(int)tr.corpus_height,tr.rotation_corpus)){
-            tr.speed /= 5;
+            tr.speed *= 0.2f;
+            tr.SpeedInertionY *= 0.2f;
+            tr.SpeedInertionX *= 0.2f;
             int n = Main.PacketServer.mapObject.size();
             Main.PacketServer.mapObject.add(new PacketMapObject());
             Main.PacketServer.mapObject.get(n).ix = ix;

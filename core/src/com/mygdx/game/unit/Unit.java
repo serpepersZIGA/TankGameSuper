@@ -1093,8 +1093,8 @@ public abstract class Unit implements Cloneable{
                         && unit.priority_paint == this.priority_paint) {
                     SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7, ContentSound.hit);
 
-                    MethodCollision(unit);
                     physicCollision(unit);
+                    MethodCollision(unit);
 
                 }
             }
@@ -1113,6 +1113,7 @@ public abstract class Unit implements Cloneable{
         xy = tower_xy(x_2,y_2,-unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_2 = xy[0];
         float y_2_2 = xy[1];
+
         if(sqrt(pow2(x_1_2 - x_2_2) + pow2(y_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
             xy = tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
@@ -1126,16 +1127,16 @@ public abstract class Unit implements Cloneable{
             xy = tower_xy_2(x,y,-corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
-            if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
-                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
+            if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus += (abs(this.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
-                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
+            if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
+            if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
                 this.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_2_2 - x_2_2) + pow2(y_1_2_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.5) {
+            if(sqrt(pow2(x_1_2_2 - x_2_2) + pow2(y_1_2_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
                 this.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
             return;
@@ -1146,7 +1147,7 @@ public abstract class Unit implements Cloneable{
         xy = tower_xy(x_2,y_2, unit.corpus_height_2,-unit.rotation_corpus);
         float x_2_1 = xy[0];
         float y_2_1 = xy[1];
-        if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*1.2){
+        if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*1.4){
             xy = tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_1_1 = xy[0];
             float y_2_1_1 = xy[1];
@@ -1160,10 +1161,10 @@ public abstract class Unit implements Cloneable{
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
             }
             if(sqrt(pow2(x_2_1_2 - x_1_1) + pow2(y_2_1_2 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus += (abs(this.speed) + 1) * v;
             }
             if(sqrt(pow2(x_1_1_1 - x_2_1) + pow2(y_1_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
                 this.rotation_corpus -= (abs(unit.speed) + 1) * v;
@@ -1173,7 +1174,7 @@ public abstract class Unit implements Cloneable{
             }
             return;
         }
-        if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.2){
+        if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
             xy = tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
             float x_2_2_1 = xy[0];
             float y_2_2_1 = xy[1];
@@ -1187,10 +1188,10 @@ public abstract class Unit implements Cloneable{
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
             }
             if(sqrt(pow2(x_2_2_2 - x_1_1) + pow2(y_2_2_2 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit.speed) + 1) * v;
+                unit.rotation_corpus += (abs(this.speed) + 1) * v;
             }
             if(sqrt(pow2(x_1_1_1 - x_2_2) + pow2(y_1_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
                 this.rotation_corpus -= (abs(unit.speed) + 1) * v;
@@ -1198,6 +1199,35 @@ public abstract class Unit implements Cloneable{
             if(sqrt(pow2(x_1_1_2 - x_2_2) + pow2(y_1_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
                 this.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
+            return;
+        }
+
+        if(sqrt(pow2(x_2_1 - x_1_2) + pow2(y_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
+            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
+            float x_2_1_1 = xy[0];
+            float y_2_1_1 = xy[1];
+            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
+            float x_2_1_2 = xy[0];
+            float y_2_1_2 = xy[1];
+            xy = tower_xy_2(x,y,-corpus_height_3,corpus_width_3,-rotation_corpus);
+            float x_1_2_1 = xy[0];
+            float y_1_2_1 = xy[1];
+            xy = tower_xy_2(x,y,-corpus_height_3,-corpus_width_3,-rotation_corpus);
+            float x_1_2_2 = xy[0];
+            float y_1_2_2 = xy[1];
+            if(sqrt(pow2(x_2_1_1 - x_1_2) + pow2(y_2_1_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
+            }
+            if(sqrt(pow2(x_2_1_2 - x_1_2) + pow2(y_2_1_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                unit.rotation_corpus += (abs(this.speed) + 1) * v;
+            }
+            if(sqrt(pow2(x_1_2_1 - x_2_1) + pow2(y_1_2_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                this.rotation_corpus += (abs(unit.speed) + 1) * v;
+            }
+            if(sqrt(pow2(x_1_2_2 - x_2_1) + pow2(y_1_2_2 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
+            }
+            return;
         }
 
 

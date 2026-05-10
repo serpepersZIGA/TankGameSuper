@@ -16,8 +16,6 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-import static com.mygdx.game.block.Block.lighting;
-import static com.mygdx.game.block.Block.lighting_zoom;
 import static com.mygdx.game.main.Main.*;
 
 public class Keyboard extends InputAdapter{
@@ -282,8 +280,6 @@ public class Keyboard extends InputAdapter{
         Main.width_block_zoom = (int) (Main.width_block_render * Main.Zoom);
         Main.height_block_zoom = (int) (Main.height_block_render * Main.Zoom);
         radius_air_max_zoom = radius_air_max*Main.Zoom;
-        lighting_zoom = lighting*Main.Zoom;
-        Block.lighting_zoom_2 = lighting_zoom / 2;
         for (ArrayList<Block> blocks : BlockList2D) {
             for (Block block : blocks) {
                 if (block.objMap != null) {
