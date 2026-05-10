@@ -141,22 +141,14 @@ public abstract class CollisionFunctional{
         if(unit2.x< unit.x) {
             unit2.x -= 2;
             unit.x += 2;
-            unit2.SpeedInert += unit.speed*0.5;
-            unit.SpeedInert += unit2.speed*0.5;
-            unit2.speed *= -0.8;
-            unit.speed *= -0.8;
-            unit2.RotationInert = unit.rotation_corpus;
-            unit.RotationInert = unit2.rotation_corpus;
+            unit2.speed *= -0.8f;
+            unit.speed *= -0.8f;
         }
         else if(unit2.x>= unit.x) {
             unit2.x += 2;
             unit.x -= 2;
-            unit2.SpeedInert += unit.speed*0.5;
-            unit.SpeedInert += unit2.speed*0.5;
-            unit2.speed *= -0.5;
-            unit.speed *= -0.5;
-            unit2.RotationInert = unit.rotation_corpus;
-            unit.RotationInert = unit2.rotation_corpus;
+            unit2.speed *= -0.5f;
+            unit.speed *= -0.5f;
         }
         if(unit2.y< unit.y) {
             unit2.y -= 2;

@@ -47,8 +47,8 @@ public class UnitPattern extends Unit {
         data_tower();
 
     }
-    public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert,int Height){
-        super(corpus,x,y,rotation,speed,SpeedInert,RotationInert,Height);
+    public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,int Height){
+        super(corpus,x,y,rotation,speed,Height);
         corpus.functional = new FunctionalList();
         corpus.functional.Add(FunctionalComponentUnitRegister.MoveDebris);
         corpus.functional.Add(FunctionalComponentUnitRegister.BuildCollision);

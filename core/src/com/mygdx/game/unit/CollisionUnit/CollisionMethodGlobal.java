@@ -16,8 +16,7 @@ import java.util.ArrayList;
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
-import static java.lang.StrictMath.pow;
-import static java.lang.StrictMath.sqrt;
+import static java.lang.StrictMath.*;
 
 public class CollisionMethodGlobal {
     public static ArrayList<Unit>UnitsBuffer;
@@ -38,37 +37,35 @@ public class CollisionMethodGlobal {
     }
     public void CollisionMethod(Unit unit1,Unit unit2){
         if(unit1.height == unit2.height) {
-            if (CollisionRectRect(unit1, unit2)) {
-                SoundPlay.soundPlay(unit1.x_rend,unit1.y_rend, (int) unit1.x, (int) unit1.y,7,Main.ContentSound.hit);
-                if(unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
-                    CollisionFunctional.physicCollision(unit1, unit2);
-                    CollisionFunctional.MethodCollisionTransport(unit1, unit2);
-                }
-                else if(unit1.classUnit == ClassUnit.Soldat & unit2.classUnit == ClassUnit.Soldat){
-                    CollisionFunctional.MethodCollisionSoldatSoldat(unit1, unit2);
-                }
-                else if(unit1.classUnit == ClassUnit.Soldat){
+            if (abs(unit1.XMap-unit2.XMap)<3 & abs(unit1.YMap-unit2.YMap)<3) {
+                if (CollisionRectRect(unit1, unit2)) {
+                    SoundPlay.soundPlay(unit1.x_rend, unit1.y_rend, (int) unit1.x, (int) unit1.y, 7, Main.ContentSound.hit);
+                    if (unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
+                        CollisionFunctional.physicCollision(unit1, unit2);
+                        CollisionFunctional.MethodCollisionTransport(unit1, unit2);
+                    } else if (unit1.classUnit == ClassUnit.Soldat & unit2.classUnit == ClassUnit.Soldat) {
+                        CollisionFunctional.MethodCollisionSoldatSoldat(unit1, unit2);
+                    } else if (unit1.classUnit == ClassUnit.Soldat) {
 
-                    if (unit1.team == unit2.team) {
-                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
+                        if (unit1.team == unit2.team) {
+                            CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
+                        } else {
+                            unit1.hp = -1;
+                            CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
+                        }
+
+
                     } else {
-                        unit1.hp = -1;
-                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit2, unit1);
+                        if (unit1.team == unit2.team) {
+                            CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
+                        } else {
+                            unit2.hp = -1;
+                            CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
+                        }
                     }
-
-
-
-                }
-                else{
-                    if (unit1.team == unit2.team) {
-                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
-                    } else {
-                        unit2.hp = -1;
-                        CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
-                    }
-                }
                 }
             }
+        }
 
     }
 

@@ -61,7 +61,7 @@ public abstract class Unit implements Cloneable{
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
     public float fire_y;
-    public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max, Acceleration =0.2f,speed, SpeedInert, RotationInert, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
+    public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max, Acceleration =0.2f,speed, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
              width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
@@ -115,8 +115,6 @@ public abstract class Unit implements Cloneable{
         this.y = y;
         this.rotation_corpus = rotation;
         this.speed = speed;
-        this.RotationInert = inert_rotation;
-        this.SpeedInert = inert_speed;
         this.corpus_img = corpus;
         this.corpus_width = width;
         this.corpus_height = height;
@@ -160,13 +158,11 @@ public abstract class Unit implements Cloneable{
         this.speed_rotation = 1.2F;
         soldat.SoldatLoad(this);
     }
-    public Unit(Corpus corpus,float x,float y,float rotation,float speed,float SpeedInert,float RotationInert,int Height){
+    public Unit(Corpus corpus,float x,float y,float rotation,float speed,int Height){
         this.x = x;
         this.y = y;
         this.rotation_corpus = rotation;
         this.speed = speed;
-        this.SpeedInert = SpeedInert;
-        this.RotationInert = RotationInert;
         this.height = (byte) Height;
         this.CorpusUnit = corpus.CorpusAdd();
 
@@ -175,7 +171,9 @@ public abstract class Unit implements Cloneable{
     }
     public void UnitDelete(){
         Unit unit = IDList.get(this.ID);
-        DebrisList.add(new UnitPattern(unit.CorpusUnit,this.ID,x,y,rotation_corpus,speed,SpeedInert,RotationInert,1));
+        DebrisList.add(new UnitPattern(unit.CorpusUnit,this.ID,x,y,rotation_corpus,speed,1));
+        DebrisList.get(DebrisList.size()-1).SpeedMaxInertionX = this.SpeedMaxInertionX;
+        DebrisList.get(DebrisList.size()-1).SpeedMaxInertionY = this.SpeedMaxInertionY;
         DebrisList.get(DebrisList.size()-1).EventClear = EventData.eventDeadDebris;
 
 
@@ -1471,19 +1469,6 @@ public abstract class Unit implements Cloneable{
                 this.speed -= Acceleration;
             } else {
                 speed = 0;
-            }
-        }
-    }
-    protected void inertia_xy() {
-        if(SpeedInert != 0) {
-            this.x -= move.move_sin(this.SpeedInert, -this.RotationInert);
-            this.y -= move.move_cos(this.SpeedInert, -this.RotationInert);
-            if (this.SpeedInert > 0.5) {
-                this.SpeedInert -= this.Acceleration;
-            } else if (this.SpeedInert < -0.5) {
-                this.SpeedInert += this.Acceleration;
-            } else {
-                SpeedInert = 0;
             }
         }
     }
