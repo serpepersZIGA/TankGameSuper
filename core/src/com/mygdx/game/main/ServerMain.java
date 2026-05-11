@@ -106,6 +106,9 @@ public class ServerMain extends Listener {
             unit.inventory.ConfRefactor = true;
             unit.equipment.ConfRefactor = true;
         }
+        ItemObject.ConfSentPackItem = true;
+        ItemObject.PacketAdd();
+
         PacketBuildingServer.FlameLight = CycleTimeDay.lightFlame;
         Server.sendToAllTCP(PacketBuildingServer);
         PacketBuildingServer.ObjectMapPack.clear();
@@ -114,6 +117,7 @@ public class ServerMain extends Listener {
         //KeyboardObj.zoom_const();
 
     }
+
     public void PacketObjectMapServer(int ix,int iy,ArrayList<PacketMapObject>YMap){
         YMap.add(new PacketMapObject());
         YMap.get(ix).x = BlockList2D.get(iy).get(ix).objMap.x;
@@ -228,6 +232,8 @@ public class ServerMain extends Listener {
                 unit.equipment.inventoryStr[pack.x][pack.y] = null;
                 unit.equipment.InventorySlots[pack.x][pack.y] = null;
             }
+            ItemObject.ConfSentPackItem = true;
+            ItemObject.PacketAdd();
             equipmentMain.InventoryReload(unit);
             return;
 

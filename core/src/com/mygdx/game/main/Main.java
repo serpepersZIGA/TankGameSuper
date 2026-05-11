@@ -359,8 +359,8 @@ public class Main extends ApplicationAdapter {
 		FlameParticleList.clear();
 		FlameStaticList.clear();
 		ButtonList.clear();
-		KeyboardObj = null;
-		RC= null;
+		//KeyboardObj = null;
+		//RC= null;
 		Batch.dispose();
 		Render.dispose();
 		font.dispose();

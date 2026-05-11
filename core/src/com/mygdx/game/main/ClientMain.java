@@ -165,17 +165,20 @@ public class ClientMain extends Listener {
                 UnitCreate();
             }
 
-            ItemPackList = ((PackerServer) p).item;
-            i = 0;
-            if(ItemPackList.size()== ItemList.size()) {
-                for (ItemObject item : ItemList) {
-                    item_data(item);
-                    i++;
-                }
-            }
-            else {
-                ItemCreate();
-            }
+//            ItemPackList = ((PackerServer) p).item;
+//            i = 0;
+//            if(ItemPackList!= null){
+//                ItemCreate();
+//            }
+//            if(ItemPackList.size()== ItemList.size()) {
+//                for (ItemObject item : ItemList) {
+//                    item_data(item);
+//                    i++;
+//                }
+//            }
+//            else {
+//                ItemCreate();
+//            }
 
 //            ArrayList<PacketInventory> InventoryPack = ((PackerServer) p).inventory;
 //            ArrayList<PacketInventory> InventoryPack2 = ((PackerServer) p).equipment;
@@ -255,6 +258,10 @@ public class ClientMain extends Listener {
                 }
                 KeyboardObj.ZoomConstTransport();
                 PacketServer.debrisConf = false;
+            }
+            ItemList.clear();
+            for(ItemPacket pack : packetUnitUpdate.ItemPack){
+                ItemList.add(new ItemObject(IDListItem.get(pack.ID),pack.x,pack.y));
             }
         }
     }
@@ -436,7 +443,8 @@ public class ClientMain extends Listener {
     }
     public void ItemCreate() {
         ItemList.clear();
-        for (ItemPacket pack : ItemPackList) {
+        for (int i = 0;i< ItemPackList.size();i++) {
+            ItemPacket pack = ItemPackList.get(i);
             ItemList.add(new ItemObject(IDListItem.get(pack.ID),pack.x,pack.y));
         }
         KeyboardObj.ZoomConstTransport();

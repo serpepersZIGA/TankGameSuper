@@ -52,6 +52,8 @@ public class SlotBuffer {
 //                    }
 //                }
                 ItemList.add(new ItemObject(slot.item, (int) RC.x, (int) RC.y));
+                ItemObject.ConfSentPackItem = true;
+                ItemObject.PacketAdd();
                 slot.item = null;
                 InventoryInterface.slotBuf = null;
                 inventoryBuffer.inventory.InventorySlots[ix][iy] = null;

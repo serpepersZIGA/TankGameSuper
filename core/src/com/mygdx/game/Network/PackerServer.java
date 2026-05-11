@@ -13,7 +13,7 @@ public class PackerServer {
     public boolean debrisConf,unitConf;
     public ArrayList<PacketMapObject>mapObject = new ArrayList<>();
 
-    public ArrayList<ItemPacket>item = new ArrayList<>();
+    //public ArrayList<ItemPacket>item = new ArrayList<>();
 
     public ArrayList<SoundPacket>sound = new ArrayList<>();
     public float TotalLight;

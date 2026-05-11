@@ -3,6 +3,7 @@ package com.mygdx.game.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.GL20;
 import com.mygdx.game.Inventory.InventoryInterface;
+import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.bull.Bullet;
@@ -327,7 +328,7 @@ public class ActionGameHost extends ActionGame{
 //            PacketUnit.clear();
 //            EnumerationList = false;
 //        }
-        PacketServer.item = ItemPackList;
+        //PacketServer.item = ItemPackList;
         PacketServer.building = PacketBuilding;
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
@@ -342,7 +343,9 @@ public class ActionGameHost extends ActionGame{
         MapObject.PacketMapObjects.clear();
         PacketServer.unitConf = false;
         PacketServer.debrisConf = false;
+        ItemObject.ConfSentPackItem = false;
         ItemPackList.clear();
+
         PacketDebris.clear();
         PacketBull.clear();
         PacketUnit.clear();
@@ -424,7 +427,6 @@ public class ActionGameHost extends ActionGame{
                 for (Squad squad : AI.SquadList) {
                     squad.SquadIteration();
                 }
-
             }
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);

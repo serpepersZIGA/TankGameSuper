@@ -105,8 +105,8 @@ public abstract class Unit implements Cloneable{
     public Squad SquadAlly;
     public Unit(){
     }
-    public Unit(float x, float y, float rotation, float speed, float inert_rotation,
-                float inert_speed, String corpus, float width, float height, UnitType type){
+    public Unit(float x, float y, float rotation, float speed,
+                String corpus, float width, float height, UnitType type){
         this.x = x;
         this.y = y;
         this.rotation_corpus = rotation;
@@ -1050,7 +1050,6 @@ public abstract class Unit implements Cloneable{
     public Object[] less_hp_bot(){
         if ((this.hp > HPTriggerHill|| crite_life) && this.medic_help == 0) {
             //ConfMedicBuffer = false;
-            System.out.println("eee");
             return DetectionNearTransport(this);
 
         } else{
