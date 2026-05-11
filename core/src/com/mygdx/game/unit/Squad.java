@@ -59,13 +59,12 @@ public class Squad{
 
     }
     public void SquadIteration() {
-        if (AIScan) {
-            if (!UnitSquad.isEmpty()) {
-                EnemyDetected();
-            } else {
-                AI.SquadList.remove(this);
-            }
+        if (!UnitSquad.isEmpty()) {
+            EnemyDetected();
+        } else {
+            AI.SquadList.remove(this);
         }
+
     }
     public void EnemyDetected(){
         AttackSquad = false;

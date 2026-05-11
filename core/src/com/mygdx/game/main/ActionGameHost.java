@@ -11,6 +11,7 @@ import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.unit.AI;
+import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Squad;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
@@ -27,6 +28,7 @@ import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
 import static com.mygdx.game.unit.TransportRegister.*;
+import static com.mygdx.game.unit.Unit.AIScan;
 
 public class ActionGameHost extends ActionGame{
 
@@ -418,8 +420,11 @@ public class ActionGameHost extends ActionGame{
     public class IterationUnit implements Runnable {
         public void run() {
             TransportPacket pack;
-            for (Squad squad : AI.SquadList){
-                squad.SquadIteration();
+            if (AIScan) {
+                for (Squad squad : AI.SquadList) {
+                    squad.SquadIteration();
+                }
+
             }
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
