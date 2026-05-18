@@ -249,11 +249,10 @@ public class ActionGameClient extends ActionGame {
             for(int i = 0;i< UnitList.size();i++) {
                 Unit unit = UnitList.get(i);
                 if(unit != null) {
-                        if (unit.host || unit.nConnect != IDClient) {
-                            unit.all_action_client_2();
-                        } else {
-                            unit.all_action_client_1();
-                    }
+                    unit.XYMapCord();
+                    if (unit.host || unit.nConnect != IDClient) {
+                        unit.all_action_client_2();}
+                    else {unit.all_action_client_1();}
                 }
             }
 

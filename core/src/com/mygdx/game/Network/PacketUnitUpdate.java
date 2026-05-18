@@ -7,4 +7,5 @@ import java.util.ArrayList;
 public class PacketUnitUpdate {
     public boolean ConfDebris,ConfUnit;
     public ArrayList<ItemPacket>ItemPack;
+    public ArrayList<BullPacket>bull;
 }

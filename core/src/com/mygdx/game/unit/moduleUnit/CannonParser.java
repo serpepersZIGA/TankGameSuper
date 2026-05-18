@@ -274,7 +274,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 2;\n" +
-                "SpeedBullet = 4;\n" +
+                "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -328,7 +328,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 3;\n" +
-                "SpeedBullet = 12;\n" +
+                "SpeedBullet = 32;\n" +
                 "TimeBullet = 270;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -355,7 +355,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 2;\n" +
-                "SpeedBullet = 4;\n" +
+                "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -381,7 +381,7 @@ public class CannonParser {
                 "TemperatureDamage = 1.5;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 2;\n" +
-                "SpeedBullet = 4;\n" +
+                "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -407,7 +407,7 @@ public class CannonParser {
                 "TemperatureDamage = 1.5;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 2;\n" +
-                "SpeedBullet = 4;\n" +
+                "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -433,7 +433,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 2;\n" +
-                "SpeedBullet = 12;\n" +
+                "SpeedBullet = 32;\n" +
                 "TimeBullet = 270;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -459,7 +459,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 2;\n" +
-                "SpeedBullet = 12;\n" +
+                "SpeedBullet = 32;\n" +
                 "TimeBullet = 270;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -485,7 +485,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 200;\n" +
-                "SpeedBullet = 10;\n" +
+                "SpeedBullet = 30;\n" +
                 "TimeBullet = 450;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +
@@ -511,7 +511,7 @@ public class CannonParser {
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
                 "ReloadMax = 200;\n" +
-                "SpeedBullet = 10;\n" +
+                "SpeedBullet = 30;\n" +
                 "TimeBullet = 450;\n" +
                 "TowerX = 15;\n" +
                 "TowerY = 20;\n" +

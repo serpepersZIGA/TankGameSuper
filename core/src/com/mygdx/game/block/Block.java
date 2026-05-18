@@ -6,6 +6,7 @@ import com.mygdx.game.object_map.MapObject;
 import java.awt.*;
 import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
+import java.util.HashMap;
 
 import static com.mygdx.game.block.UpdateRegister.GrassUpdate;
 import static com.mygdx.game.block.UpdateRegister.VoidUpdate;
@@ -16,6 +17,7 @@ public abstract class Block {
     public int x_center,y_center;
     public UpdateBlock render_block;
     public MapObject objMap;
+    public static HashMap<Integer,Block>BlockID = new HashMap<>();
     public boolean passability,AiClose;
     public int iBuilding;
     public static void passability_detected() {

@@ -53,7 +53,8 @@ public abstract class Unit implements Cloneable{
     public ArrayList<Cannon> CannonUnitList = new ArrayList<>();
     public Cannon CannonUnit;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend, x_tower,y_tower,
-    time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor,nConnect,HpBase,PenetrationBase;
+    nConnect,HpBase,PenetrationBase;
+    public static int time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor;
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
     public float fire_y;
@@ -66,21 +67,21 @@ public abstract class Unit implements Cloneable{
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0,HillHp;
     public float x_relocation,y_relocation,rotation_relocation,priority_paint = 0,ai_x_const = 24f,ai_y_const = 62f;
-    public int range_see=2000,range_see_2 = (int)(range_see*1.5),time_trigger_bull_bot,time_trigger_bull = 700;
+    public static int range_see=2000,range_see_2 = (int)(range_see*1.5),time_trigger_bull_bot,time_trigger_bull = 700;
     public boolean PlayerConf;
     public float AngleTarget,RadiusTarget;
 
     public byte behavior,behavior_buffer, medic_help, team,height = 1,trigger_drive;
-    private float g;
+    private static float g;
     public FunctionalList functional = new FunctionalList();
     public static int BorderDetected = 200;
     public boolean host,crite_life;
     public Soldat soldat;
 
-    private int i;
-    protected int distance_target = 200;
+    private static int i;
+    protected static int distance_target = 200;
     public float SpeedCollision = 10;
-    protected int distance_target_2 = 230;
+    protected static int distance_target_2 = 230;
     public float difference_x,difference_y,green_len,green_len_reload;
     public float rotation_fire;
     public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
@@ -1258,7 +1259,6 @@ public abstract class Unit implements Cloneable{
             //PacketServer.MoneyAdd += money;
             Inventory.Money += money;
             PacketServer.Money = Inventory.Money;
-
             eventDead();
             PacketServer.unitConf = true;
             ClearUnitList.add(this);

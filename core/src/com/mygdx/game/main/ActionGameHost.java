@@ -299,6 +299,11 @@ public class ActionGameHost extends ActionGame{
         //R_LOCK.lock();
         //try {
             for (Unit unit : ClearUnitList) {
+                for (Squad squad : AI.SquadList) {
+                    if (squad.EnemySquad == unit) {
+                        squad.EnemySquad = null;
+                    }
+                }
                 UnitList.remove(unit);
             }
         //}
@@ -332,7 +337,12 @@ public class ActionGameHost extends ActionGame{
         PacketServer.building = PacketBuilding;
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
-        PacketServer.bull = PacketBull;
+        //PacketServer.bull = PacketBull;
+        if(!PacketBull.isEmpty()){
+            packetUnitUpdate.bull = PacketBull;
+            Server.sendToAllTCP(packetUnitUpdate);
+            //PacketServer.bull = PacketBull;
+        }
         //packetInventoryServer();
         PacketServer.sound = SoundPack;
         PacketServer.mapObject = MapObject.PacketMapObjects;
@@ -431,7 +441,6 @@ public class ActionGameHost extends ActionGame{
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
                 if (unit != null) {
-                    //synchronized (unit) {
                     unit.XYMapCord();
                     pack = ActionGameHost.packet_player_server(unit);
                     if (unit.host || unit.control == RegisterControl.controllerBot
@@ -447,10 +456,8 @@ public class ActionGameHost extends ActionGame{
                         PacketUnit.add(pack);
                         unit.all_action_client();
                     }
-                    //}
                 }
             }
-            //System.out.println(AI.SquadList.size());
             if (!AI.SquadDeleteList.isEmpty()) {
                 AI.SquadDeleteList.subList(0, AI.SquadDeleteList.size()).clear();
             }

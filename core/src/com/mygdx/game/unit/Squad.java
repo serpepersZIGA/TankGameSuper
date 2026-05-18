@@ -116,6 +116,7 @@ public class Squad{
             }
             //unit.AttackSquad =AttackSquad;
         }
+        System.out.println(EnemySquad);
         if(EnemySquad!= null) {
             EnemyDetectedInit();
         }
@@ -162,12 +163,12 @@ public class Squad{
                     Unit unit = UnitSquad.get(i);
                     if(unit.TargetUnit == null){
                         unit.TargetUnit = EnemySquad;
-                        unit.EnemyFire = EnemySquad;
+                        //unit.EnemyFire = EnemySquad;
                         continue;
                     }
                     else if (unit.TargetUnit.team != Team) {
                         unit.TargetUnit = EnemySquad;
-                        unit.EnemyFire = EnemySquad;
+                        //unit.EnemyFire = EnemySquad;
                     }
                     //}
 

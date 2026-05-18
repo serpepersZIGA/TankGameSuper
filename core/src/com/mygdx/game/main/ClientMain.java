@@ -122,18 +122,6 @@ public class ClientMain extends Listener {
     public void received(Connection c, Object p) {
         IDClient = c.getID();
         if (p instanceof PackerServer) {
-            PacketBull = ((PackerServer) p).bull;
-            for (BullPacket pack : PacketBull) {
-                for (Object[] obj :IDBullet){
-                    if(pack.ID == (int)obj[1]) {
-                        Bullet bullet = (Bullet) obj[0];
-                        bullet.BulletAdd(pack.x,pack.y,pack.rotation,0,0,0,0,
-                                pack.team, pack.height, 0,pack.speed,0, pack.time);
-                    }
-                }
-            }
-            PacketBull.clear();
-
             lightTotal = ((PackerServer) p).TotalLight;
             lightGlobal = (lightTotal-CycleTimeDay.lightFlame);
             CycleTimeDay.lightRealGlobal = lightGlobal*1.5f;
@@ -221,7 +209,6 @@ public class ClientMain extends Listener {
 
             ItemPackList.clear();
             PacketMapObjects.clear();
-            PacketBull.clear();
             PacketUnit.clear();
             PacketDebris.clear();
         } else if (p instanceof PacketBuildingServer) {
@@ -246,6 +233,21 @@ public class ClientMain extends Listener {
 
         }
         else if (p instanceof PacketUnitUpdate) {
+            PacketBull = ((PacketUnitUpdate) p).bull;
+            if(PacketBull != null) {
+                for (BullPacket pack : PacketBull) {
+                    for (Object[] obj : IDBullet) {
+                        if (pack.ID == (int) obj[1]) {
+                            Bullet bullet = (Bullet) obj[0];
+                            bullet.BulletAdd(pack.x, pack.y, pack.rotation, 0, 0, 0, 0,
+                                    pack.team, pack.height, 0, pack.speed, 0, pack.time);
+                        }
+                    }
+                }
+                return;
+                //PacketBull.clear();
+            }
+
             packetUnitUpdate = (PacketUnitUpdate)p;
             if(packetUnitUpdate.ConfUnit){
                 UnitCreate();

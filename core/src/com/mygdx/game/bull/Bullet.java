@@ -403,7 +403,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         if(time<0){this.clear_sost = true;}
     }
     protected void BuildBulletCollision(){
-        yMap = (int) (y/ Main.width_block)-1;
+        yMap = (int) (y/width_block)-1;
         xMap = (int) (x/width_block)-1;
         if(xMap>-1&yMap>-1&xMap< Main.xMap&yMap<Main.yMap) {
             if (BlockList2D.get(yMap).get(xMap).passability & height == 1){this.clear_sost = true;
