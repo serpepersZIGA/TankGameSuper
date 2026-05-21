@@ -116,7 +116,6 @@ public class Squad{
             }
             //unit.AttackSquad =AttackSquad;
         }
-        System.out.println(EnemySquad);
         if(EnemySquad!= null) {
             EnemyDetectedInit();
         }

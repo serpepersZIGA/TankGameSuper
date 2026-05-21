@@ -133,7 +133,7 @@ public class Item implements Cloneable{
             cannon.damage += (int) (cannon.DamageBase*DamagePercent*0.01);
         }
         for (Unit cannon : unit.tower_obj) {
-            cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
+            cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01f);
         }
         unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
     }

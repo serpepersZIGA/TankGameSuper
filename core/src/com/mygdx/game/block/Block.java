@@ -8,7 +8,6 @@ import java.awt.geom.AffineTransform;
 import java.awt.geom.Area;
 import java.util.HashMap;
 
-import static com.mygdx.game.block.UpdateRegister.GrassUpdate;
 import static com.mygdx.game.block.UpdateRegister.VoidUpdate;
 import static com.mygdx.game.method.pow2.pow2;
 
@@ -17,7 +16,7 @@ public abstract class Block {
     public int x_center,y_center;
     public UpdateBlock render_block;
     public MapObject objMap;
-    public static HashMap<Integer,Block>BlockID = new HashMap<>();
+    public static HashMap<Integer,UpdateBlock>BlockID = new HashMap<>();
     public boolean passability,AiClose;
     public int iBuilding;
     public static void passability_detected() {
@@ -39,7 +38,7 @@ public abstract class Block {
         for (int i = 0; i < Main.BlockList2D.size(); i++) {
             for (int i2 = 0; i2 < Main.BlockList2D.get(i).size(); i2++) {
                 Main.BlockList2D.get(i).get(i2).passability = false;
-                Main.BlockList2D.get(i).get(i2).render_block = GrassUpdate;
+                Main.BlockList2D.get(i).get(i2).render_block = BlockID.get(1);
                 Main.BlockList2D.get(i).get(i2).iBuilding = -1;
 
             }

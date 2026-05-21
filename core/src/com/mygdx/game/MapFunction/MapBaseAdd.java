@@ -25,7 +25,7 @@ public class MapBaseAdd {
                 "(str):street1:x69:y23:;\n" +
                 "(str):street1:x69:y40:;\n" +
                 "(str):streetPoselok:x70:y60:;\n" +
-                "Asphalt:x70:y53:Y7:;\n" +
+                "BlockAdd:*Asphalt:x70:y53:Y7:;\n" +
                 "(str):pepper1:x12:y12:;";
         Create(MapFile,dataMap);
         String dataStr =
@@ -37,17 +37,17 @@ public class MapBaseAdd {
                         "BuildAdd:B BigBuildingWood1:x12:y10:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x24:y10:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x36:y10:r0:;\n" +
-                        "Asphalt:x0:y8:X46:;\n" +
-                        "Asphalt:x0:y9:X46:;\n" +
-                        "Asphalt:x0:y7:X46:;\n" +
-                        "Asphalt:x0:y16:X46:;\n" +
-                        "Asphalt:x0:y0:X46:;\n" +
-                        "Asphalt:x10:y1:Y15:;\n" +
-                        "Asphalt:x11:y1:Y15:;\n" +
-                        "Asphalt:x22:y1:Y15:;\n" +
-                        "Asphalt:x23:y1:Y15:;\n" +
-                        "Asphalt:x34:y1:Y15:;\n" +
-                        "Asphalt:x35:y1:Y15:;\n";
+                        "BlockAdd:*Asphalt:x0:y8:X46:;\n" +
+                        "BlockAdd:*Asphalt:x0:y9:X46:;\n" +
+                        "BlockAdd:*Asphalt:x0:y7:X46:;\n" +
+                        "BlockAdd:*Asphalt:x0:y16:X46:;\n" +
+                        "BlockAdd:*Asphalt:x0:y0:X46:;\n" +
+                        "BlockAdd:*Asphalt:x10:y1:Y15:;\n" +
+                        "BlockAdd:*Asphalt:x11:y1:Y15:;\n" +
+                        "BlockAdd:*Asphalt:x22:y1:Y15:;\n" +
+                        "BlockAdd:*Asphalt:x23:y1:Y15:;\n" +
+                        "BlockAdd:*Asphalt:x34:y1:Y15:;\n" +
+                        "BlockAdd:*Asphalt:x35:y1:Y15:;\n";
 
         Create(StrFile,dataStr);
 
@@ -56,13 +56,13 @@ public class MapBaseAdd {
                         "BuildAdd:B Building2:x8:y1:;\n" +
                         "BuildAdd:B Building2:x15:y1:;\n" +
                         "BuildAdd:B Building2:x22:y1:;\n" +
-                        "Asphalt:x0:y0:X29:;\n" +
-                        "Asphalt:x0:y7:X29:;\n" +
-                        "Asphalt:x7:y0:Y7:;\n" +
-                        "Asphalt:x14:y0:Y7:;\n" +
-                        "Asphalt:x21:y0:Y7:;\n" +
-                        "Asphalt:x0:y0:Y7:;\n" +
-                        "Asphalt:x28:y0:Y7:;";
+                        "BlockAdd:*Asphalt:x0:y0:X29:;\n" +
+                        "BlockAdd:*Asphalt:x0:y7:X29:;\n" +
+                        "BlockAdd:*Asphalt:x7:y0:Y7:;\n" +
+                        "BlockAdd:*Asphalt:x14:y0:Y7:;\n" +
+                        "BlockAdd:*Asphalt:x21:y0:Y7:;\n" +
+                        "BlockAdd:*Asphalt:x0:y0:Y7:;\n" +
+                        "BlockAdd:*Asphalt:x28:y0:Y7:;";
         Create(Str2File,dataStr);
         dataStr =
                 "MapObject:x14:y5:o pepper:;\n" +
@@ -80,24 +80,24 @@ public class MapBaseAdd {
                         "BuildAdd:B BigBuildingWood1:x0:y21:r1:;\n" +
                         "BuildAdd:B BigBuildingWood1:x0:y33:r1:;\n" +
                         "BuildAdd:B BigBuildingWood1:x0:y45:r1:;\n" +
-                        "Asphalt:x0:y7:X62:;\n" +
-                        "Asphalt:x0:y8:X62:;\n" +
-                        "Asphalt:x6:y7:Y50:;\n" +
-                        "Asphalt:x7:y7:Y50:;\n" +
+                        "BlockAdd:*Asphalt:x0:y7:X62:;\n" +
+                        "BlockAdd:*Asphalt:x0:y8:X62:;\n" +
+                        "BlockAdd:*Asphalt:x6:y7:Y50:;\n" +
+                        "BlockAdd:*Asphalt:x7:y7:Y50:;\n" +
                         "BuildAdd:B BigBuildingWood1:x56:y9:r1:;\n" +
                         "BuildAdd:B BigBuildingWood1:x56:y21:r1:;\n" +
                         "BuildAdd:B BigBuildingWood1:x56:y33:r1:;\n" +
                         "BuildAdd:B BigBuildingWood1:x56:y45:r1:;\n" +
-                        "Asphalt:x54:y7:Y50:;\n" +
-                        "Asphalt:x55:y7:Y50:;\n" +
-                        "Asphalt:x0:y56:X62:;\n" +
-                        "Asphalt:x0:y55:X62:;\n" +
+                        "BlockAdd:*Asphalt:x54:y7:Y50:;\n" +
+                        "BlockAdd:*Asphalt:x55:y7:Y50:;\n" +
+                        "BlockAdd:*Asphalt:x0:y56:X62:;\n" +
+                        "BlockAdd:*Asphalt:x0:y55:X62:;\n" +
                         "BuildAdd:B BigBuildingWood1:x8:y57:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x20:y57:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x32:y57:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x44:y57:r0:;\n" +
-                        "Asphalt:x31:y7:Y50:;\n" +
-                        "Asphalt:x30:y7:Y50:;\n" +
+                        "BlockAdd:*Asphalt:x31:y7:Y50:;\n" +
+                        "BlockAdd:*Asphalt:x30:y7:Y50:;\n" +
                         "BuildAdd:B BigBuildingWood1:x8:y49:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x20:y49:r0:;\n" +
                         "BuildAdd:B BigBuildingWood1:x32:y49:r0:;\n" +

@@ -7,6 +7,7 @@ import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
 
 import static Data.DataImage.TextureAtl;
+import static com.mygdx.game.block.Block.BlockID;
 import static com.mygdx.game.main.Main.ContentImage;
 
 public class UpdateDirt extends UpdateBlock {
@@ -19,7 +20,7 @@ public class UpdateDirt extends UpdateBlock {
     public void renderTick(int x, int y,int ix,int iy) {
         super.renderTick(x,y,ix,iy);
         if (rand.rand(20) == 1) {
-            Main.BlockList2D.get(iy).get(ix).render_block = UpdateRegister.GrassUpdate;
+            Main.BlockList2D.get(iy).get(ix).render_block = BlockID.get(1);
         }
     }
 }

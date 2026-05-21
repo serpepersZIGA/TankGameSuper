@@ -8,8 +8,8 @@ import lombok.NoArgsConstructor;
 @Getter
 @AllArgsConstructor
 @NoArgsConstructor
-public class buffItem {
-    public int Armor,Hp,ArmorPercent,HPPercent,DamagePercent,MoveUPPercent,MoveDownPercent, AccelerationPercent, Price,
-            PenetrationPercent;
+public class buffBlock {
     public String Image;
+    public int ind;
+    public boolean GrassGrow;
 }

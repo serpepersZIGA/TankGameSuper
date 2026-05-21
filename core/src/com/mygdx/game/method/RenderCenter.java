@@ -1,6 +1,7 @@
 package com.mygdx.game.method;
 
 import com.mygdx.game.Shader.LightingMainSystem;
+import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
@@ -8,6 +9,7 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.block.Block.BlockID;
 import static com.mygdx.game.main.Main.BuildingList;
 import static com.mygdx.game.main.Main.LightSystem;
 import static java.lang.StrictMath.abs;
@@ -73,7 +75,14 @@ public class RenderCenter {
         } else {
             for (int iy = render_y_min; iy < render_y_max; iy++) {
                 for (int ix = render_x_min; ix < render_x_max; ix++) {
-                    Main.BlockList2D.get(iy).get(ix).updateTick(ix,iy);
+                    Block block = Main.BlockList2D.get(iy).get(ix);
+                    block.update();
+                    if(block.render_block.GrassGrow){
+                        if (rand.rand(20) == 1) {
+                            block.render_block = BlockID.get(1);
+                        }
+                    }
+                    //Main.BlockList2D.get(iy).get(ix).updateTick(ix,iy);
 //                    if (Main.BlockList2D.get(iy).get(ix).render_block == UpdateRegister.DirtUpdate) {
 //                        if (rand.rand(20) == 1) {
 //                            Main.BlockList2D.get(iy).get(ix).render_block = UpdateRegister.GrassUpdate;

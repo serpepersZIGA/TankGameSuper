@@ -11,6 +11,6 @@ public class BlockMap extends Block {
         this.x = x;
         this.y = y;
         block_xy();
-        this.render_block = UpdateRegister.GrassUpdate;
+        this.render_block = BlockID.get(1);
     }
 }

@@ -50,16 +50,18 @@ public class ParserItem {
         ObjectMapper objectMapper = new ObjectMapper();
 
         buffItem obj = objectMapper.readValue(TxT, buffItem.class);
-        Armor = obj.Armor;
-        Hp = obj.Hp;
-        Image = obj.Image;
-        ArmorPercent = obj.ArmorPercent;
-        HPPercent = obj.HPPercent;
-        DamagePercent = obj.DamagePercent;
-        MoveUPPercent= obj.MoveUPPercent;
-        MoveDownPercent= obj.MoveDownPercent;
-        AccelerationPercent= obj.AccelerationPercent;
-        Price = obj.Price;
+        int Armor = obj.Armor;
+        int Hp = obj.Hp;
+        String Image = obj.Image;
+        int ArmorPercent = obj.ArmorPercent;
+        int HPPercent = obj.HPPercent;
+        int DamagePercent = obj.DamagePercent;
+        int MoveUPPercent= obj.MoveUPPercent;
+        int MoveDownPercent= obj.MoveDownPercent;
+        int AccelerationPercent= obj.AccelerationPercent;
+        int Price = obj.Price;
+
+        int PenetrationPercent = obj.PenetrationPercent;
 
         ArrayList<TegItem> list = new ArrayList<>();
         list.add(TegItem.upgrade);
@@ -88,7 +90,8 @@ public class ParserItem {
                 "  \"MoveUPPercent\": 200,\n" +
                 "  \"MoveDownPercent\": 0,\n" +
                 "  \"AccelerationPercent\": 0,\n" +
-                "  \"Price\": 2\n" +
+                "  \"Price\": 2,\n" +
+                "  \"PenetrationPercent\": 7\n" +
                 "}";
         Create(armorB1,data);
 

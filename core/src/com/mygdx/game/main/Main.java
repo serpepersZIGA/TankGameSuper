@@ -15,6 +15,7 @@ import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Parsing.ObjectPars;
+import com.mygdx.game.Parsing.ParsBlock;
 import com.mygdx.game.Parsing.ParserItem;
 import com.mygdx.game.Parsing.UnitsParser;
 import com.mygdx.game.Shader.LightingMainSystem;
@@ -226,6 +227,8 @@ public class Main extends ApplicationAdapter {
 		LightSystem = new LightingMainSystem();
 		LightSystem.setAmbientColor(new Color(0,0,0,1f));
 		ContentSound = new DataSound();
+		ContentImage = new DataImage();
+		ParsBlock.Pars();
 		SoundRegister.SoundAdd();
 		FunctionalComponentBuildingRegisters();
 		FireRegister.Create();
@@ -238,7 +241,6 @@ public class Main extends ApplicationAdapter {
 		ParserItem.Pars();
 		ItemRegister.Create();
 		VoidObj = new VoidObject();
-		ContentImage = new DataImage();
 		Collision = new CollisionMethodGlobal();
 		inventoryMain = new InventoryInterface();
 		Inventory shop = new Inventory(new Item[2][2],0);

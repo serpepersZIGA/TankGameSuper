@@ -6,15 +6,16 @@ BuildAdd:B BigBuildingWood1:x0:y10:r0:;
 BuildAdd:B BigBuildingWood1:x12:y10:r0:;
 BuildAdd:B BigBuildingWood1:x24:y10:r0:;
 BuildAdd:B BigBuildingWood1:x36:y10:r0:;
-Asphalt:x0:y8:X46:;
-Asphalt:x0:y9:X46:;
-Asphalt:x0:y7:X46:;
-Asphalt:x0:y16:X46:;
-Asphalt:x0:y0:X46:;
-Asphalt:x10:y1:Y15:;
-Asphalt:x11:y1:Y15:;
-Asphalt:x22:y1:Y15:;
-Asphalt:x23:y1:Y15:;
-Asphalt:x34:y1:Y15:;
-Asphalt:x35:y1:Y15:;
+
+BlockAdd:*Asphalt:x0:y8:X46:;
+BlockAdd:*Asphalt:x0:y9:X46:;
+BlockAdd:*Asphalt:x0:y7:X46:;
+BlockAdd:*Asphalt:x0:y16:X46:;
+BlockAdd:*Asphalt:x0:y0:X46:;
+BlockAdd:*Asphalt:x10:y1:Y15:;
+BlockAdd:*Asphalt:x11:y1:Y15:;
+BlockAdd:*Asphalt:x22:y1:Y15:;
+BlockAdd:*Asphalt:x23:y1:Y15:;
+BlockAdd:*Asphalt:x34:y1:Y15:;
+BlockAdd:*Asphalt:x35:y1:Y15:;
 

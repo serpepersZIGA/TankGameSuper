@@ -11,11 +11,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ObjectPars {
-    public static String Image, Collision;
-    public static int X,Y,width,height,HP,MoveUPPercent,MoveDownPercent, AccelerationPercent;
-    public static boolean LightingConf,SpawnUnit;
-    public static int Lighting;
-    public static int medic_help;
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/ObjectMap").list();
@@ -34,8 +29,6 @@ public class ObjectPars {
                 throw new RuntimeException(e);
             }
 
-            new MapObject(Image, width, height,HP,X, Y, Collision,LightingConf,Lighting,SpawnUnit
-                    ,file.name().replace(".json", ""));
 
 
         }
@@ -51,16 +44,19 @@ public class ObjectPars {
         ObjectMapper objectMapper = new ObjectMapper();
 
         buffObjMap obj = objectMapper.readValue(TxT, buffObjMap.class);
-        Image = obj.Image;
-        Collision = obj.Collision;
-        X = obj.X;
-        Y = obj.Y;
-        HP = obj.HP;
-        width = obj.width;
-        height = obj.height;
-        Lighting = obj.Lighting;
-        LightingConf = obj.LightingConf;
-        SpawnUnit = obj.SpawnUnit;
+        String Image = obj.Image;
+        String Collision = obj.Collision;
+        int X = obj.X;
+        int Y = obj.Y;
+        int HP = obj.HP;
+        int width = obj.width;
+        int height = obj.height;
+        int Lighting = obj.Lighting;
+        boolean LightingConf = obj.LightingConf;
+        boolean SpawnUnit = obj.SpawnUnit;
+
+        new MapObject(Image, width, height,HP,X, Y, Collision,LightingConf,Lighting,SpawnUnit
+                ,file.name().replace(".json", ""));
 
 
     }

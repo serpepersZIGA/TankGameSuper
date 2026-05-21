@@ -11,7 +11,7 @@ public class UpdateRegister {
     public static UpdateBlock DirtUpdate = new UpdateDirt();
     public static UpdateBlock Update3 = new UpdateDirt2();
     public static UpdateBlock UpdateAsphalt1 = new UpdateAsphalt1();
-//    public UpdateRegister(){
-//
-//    }
+    public static void UpdateRegisterAdd(){
+
+    }
 }

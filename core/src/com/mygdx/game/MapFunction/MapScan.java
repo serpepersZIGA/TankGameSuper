@@ -13,6 +13,7 @@ import java.nio.file.Paths;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import static com.mygdx.game.block.Block.BlockID;
 import static com.mygdx.game.build.BuildRegister.BuildingID;
 
 import static com.mygdx.game.main.Main.*;
@@ -64,7 +65,7 @@ public class MapScan {
                         //i = xy[2]+1;
                         i = BuildSpawn(i,TxT,0,0);
                         break;
-                    case "Asphalt":
+                    case "BlockAdd":
                         //i = xy[2]+1;
                         i = AsphaltSpawn(i,TxT,0,0);
                         break;
@@ -199,7 +200,7 @@ public class MapScan {
     private static void BlockDelete() {
         for (int i = 0; i < BlockList2D.size(); i++) {
             for (int i2 = 0; i2 < BlockList2D.get(i).size(); i2++) {
-                BlockList2D.get(i).get(i2).render_block = UpdateRegister.GrassUpdate;
+                BlockList2D.get(i).get(i2).render_block = BlockID.get(1);
                 BlockList2D.get(i).get(i2).objMap = VoidObj;
             }
         }
@@ -231,21 +232,32 @@ public class MapScan {
     }
 
     private static void MapSpawnBlock(String Build, int x, int y, int z, int conf) {
-        if (Objects.equals(Build, "Asphalt") & conf == 0) {
-            AsphaltSpawn(x, y);
-        } else if (Objects.equals(Build, "Asphalt") & conf == 1) {
-            for (int i = 0; i < z; i++) {
-                AsphaltSpawn(x + i, y);
-            }
-        } else if (Objects.equals(Build, "Asphalt") & conf == 2) {
-            for (int i = 0; i < z; i++) {
-                AsphaltSpawn(x, y + i);
+        for(int i2 = 0;i2<BlockID.size();i2++) {
+            if(Objects.equals(Build, BlockID.get(i2).ID)) {
+                switch (conf){
+                    case 0:{
+                        BlockList2D.get(y).get(x).render_block = BlockID.get(i2);
+                    }
+                    break;
+                    case 1:{
+                        for (int i = 0; i < z; i++) {
+                            BlockList2D.get(y).get(x+i).render_block = BlockID.get(i2);
+                        }
+                    }
+                    break;
+                    case 2:{
+                        for (int i = 0; i < z; i++) {
+                            BlockList2D.get(y+i).get(x).render_block = BlockID.get(i2);
+                        }
+                    }
+                    break;
+                }
             }
         }
     }
 
     public static void AsphaltSpawn(int x, int y) {
-        BlockList2D.get(y).get(x).render_block = UpdateRegister.UpdateAsphalt1;
+        BlockList2D.get(y).get(x).render_block = BlockID.get(3);
     }
 
 
@@ -283,7 +295,7 @@ public class MapScan {
                         break;
                     case "BuildAdd":i = BuildSpawn(i,TxT,xStr,yStr)+1;
                         break;
-                    case "Asphalt":i = AsphaltSpawn(i,TxT,xStr,yStr)+1;
+                    case "BlockAdd":i = AsphaltSpawn(i,TxT,xStr,yStr)+1;
                         break;
                     case "(str)":
                         int[]xy= XYObject(TxT,i);
@@ -401,10 +413,17 @@ public class MapScan {
         int y = 0;
         byte xy = 0;
         int XY = 0;
+        String Build = "";
         byte conf = 0;
         for (; i < TxT.length(); i++) {
             c = TxT.charAt(i);
             switch (c){
+                case '*':{
+                    Object[]obj = Parser.TextPars2(TxT,i);
+                    Build = (String) obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
                 case'x':{
                     Object[]obj = Parser.IntegerPars2(TxT,i);
                     x = (int)obj[0];
@@ -432,7 +451,7 @@ public class MapScan {
                 }
                 break;
                 case';':{
-                    MapSpawnBlock("Asphalt", xStr+ x, yStr+y, XY,xy);
+                    MapSpawnBlock(Build, xStr+ x, yStr+y, XY,xy);
                     return i;
                 }
             }

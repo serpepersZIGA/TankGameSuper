@@ -10,6 +10,7 @@ import com.mygdx.game.method.*;
 
 import java.util.LinkedList;
 
+import static com.mygdx.game.block.Block.BlockID;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.Option.SoundProcent;
@@ -67,8 +68,8 @@ public abstract class Particle {
         int ix = (int) (x/Main.width_block)-1;
         int iy = (int) (y/Main.width_block)-1;
         try {
-            if(Main.BlockList2D.get(iy).get(ix).render_block == UpdateRegister.GrassUpdate) {
-                Main.BlockList2D.get(iy).get(ix).render_block = UpdateRegister.DirtUpdate;
+            if(Main.BlockList2D.get(iy).get(ix).render_block == BlockID.get(1)) {
+                Main.BlockList2D.get(iy).get(ix).render_block = BlockID.get(0);
             }
         }
         catch (IndexOutOfBoundsException ignored){
