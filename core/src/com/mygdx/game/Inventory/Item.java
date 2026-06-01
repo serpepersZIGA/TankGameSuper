@@ -72,11 +72,11 @@ public class Item implements Cloneable{
                 if(unit.classUnit == ClassUnit.Soldat) {
                     gun.GunLoad(unit);
                 }
-                else if(unit.classUnit == ClassUnit.Transport){
-                    for(Unit tower : unit.tower_obj) {
-                        gun.GunLoad(tower);
-                    }
-                }
+//                else if(unit.classUnit == ClassUnit.Transport){
+//                    for(Unit tower : unit.tower_obj) {
+//                        gun.GunLoad(tower);
+//                    }
+//                }
                 break;
             case Medic:
                 if(unit.max_hp>=unit.hp+HPHill){
@@ -123,7 +123,7 @@ public class Item implements Cloneable{
         unit.armor+= Armor;
         //unit.hp += (int) HP;
         unit.max_hp += (int) (unit.HpBase * HPPercent*0.01f);
-        unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
+        //unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
         unit.armor += (int) (unit.ArmorBase * ArmorPercent*0.01f);
         unit.Acceleration +=  unit.AccelerationBase * AccelerationPercent*0.01f;
         unit.SpeedUp += unit.SpeedUpBase *MoveUPPercent*0.01f;

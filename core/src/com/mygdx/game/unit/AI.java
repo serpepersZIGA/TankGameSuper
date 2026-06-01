@@ -57,7 +57,7 @@ public class AI {
                 TargetLine = (float) sqrt(pow2(target_xy[0]-x)+pow2(target_xy[1]-yTotal));
                 OpenBlockList.add(new float[]{x, yTotal, TargetLine});
             }
-            if (OpenBlockList.size() == 0) {
+            if (OpenBlockList.isEmpty()) {
                 ai.path.remove(ai.path.size()-1);
                 x = ai.path.get(ai.path.size()-1)[0];
                 y = ai.path.get(ai.path.size()-1)[1];

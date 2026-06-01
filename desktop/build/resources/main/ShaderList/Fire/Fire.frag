@@ -48,10 +48,10 @@ void main() {
     float dist = length(st - center);  // Радиальное расстояние от центра
 
     // Анимация основного огня
-    float time = u_time *6.0;  // Ускоряем для живости
+    float time = u_time *12.0;  // Ускоряем для живости
     //float s = sin(abs(u_time))/12.0;
-    vec2 noiseUV = st * 5.0+time;  // Масштаб шума
-    //noiseUV += normalize((center)) + time;  // Движение наружу
+    vec2 noiseUV = st * 8.0;  // Масштаб шума
+    noiseUV += normalize((center)) + time;  // Движение наружу
     float n = fbm(noiseUV);
 
     // Интенсивность огня с радиальным градиентом
@@ -68,6 +68,7 @@ void main() {
     } else {
         fireCol = mix(vec3(1.0, 0.6, 0.0), vec3(1.0, 1.0, 0.5), (intensity - 0.7) *3.3);  // Жёлтый/белый
     }
+
 
     // Альфа для основного огня
     float alpha = clamp(intensity, 0.0, 1.0) * (1.0 - dist * 1.8);

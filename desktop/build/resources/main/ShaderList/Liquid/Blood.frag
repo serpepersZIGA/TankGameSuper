@@ -31,11 +31,11 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
     float value = 0.0;
     float amplitude = 0.5;
-    float frequency = 1.0;
+
     for (int i = 0; i < 8; ++i) {  // Увеличено до 8 октав
-        value += amplitude * noise(p * frequency);;
+        value += amplitude * noise(p);;
         amplitude *= 0.5;
-        frequency *= 2.01;  // Лёгкое смещение для хаотичности
+          // Лёгкое смещение для хаотичности
     }
     return value;
 }
@@ -52,7 +52,7 @@ void main() {
     float distInvert = 1.0-dist;// Радиальное расстояние от центра
 
     // Анимация основного огня
-    float time = u_time *2.0;  // Ускоряем для живости
+    float time = u_time /2.0;   // Ускоряем для живости
 
     vec2 noiseUV = st * 5.0+ time;  // Масштаб шума
 
@@ -65,9 +65,8 @@ void main() {
     vec3 fireCol;
     float alpha;
     if(dist < 0.5){
-
         if (intensity < 0.3) {
-            fireCol = vec3(0.0, 0.2, 0.0);// Синий у основания
+            fireCol = vec3(0.5, 0.2, 0.2);// Синий у основания
         } else if (intensity < 0.5) {
             fireCol = mix(vec3(0.5, 0.2, 0.2), vec3(0.8, 0.3, 0.2), (intensity - 0.3) *4.0);// Переход к оранжевому
         } else if (intensity < 0.74) {
@@ -88,5 +87,5 @@ void main() {
     vec3 finalCol = fireCol;
 
 
-    fragColor = (vec4(finalCol.rgb*lightTotal, 0.4* distInvert));
+    fragColor = (vec4(finalCol.rgb*lightTotal, 0.8* distInvert));
 }

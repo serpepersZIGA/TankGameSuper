@@ -33,11 +33,11 @@ float noise(vec2 p) {
 float fbm(vec2 p) {
     float value = 0.0;
     float amplitude = 0.5;
-    float frequency = 1.0;
+
     for (int i = 0; i < 8; ++i) {  // Увеличено до 8 октав
-        value += amplitude * noise(p * frequency);;
+        value += amplitude * noise(p);
         amplitude *= 0.5;
-        frequency *= 2.01;  // Лёгкое смещение для хаотичности
+         // Лёгкое смещение для хаотичности
     }
     return value;
 }
@@ -51,9 +51,13 @@ void main() {
     vec2 st = v_texCoord;  // UV координаты
     vec2 center = vec2(0.5, 0.5);  // Центр пламени
     float dist = length(st - center);// Радиальное расстояние от центра
+    //float wave1 = sin(st.x * 5.0 + u_time * 2.0) * 0.5;
+    //float wave2 = sin(st.x * 5.0 * 0.5 - u_time * 1.5) * 0.5 * 0.5;
+    //float wave3 = sin(st.x * 5.0 * 0.25 + u_time * 1.0) * 0.5 * 0.25;
+
     float distInvert = 1.0-dist;
     // Анимация основного огня
-    float time = u_time *2.0;  // Ускоряем для живости
+    float time = u_time /2.0;  // Ускоряем для живости
     //float s = sin(abs(u_time))/12.0;
     vec2 noiseUV = st * 5.0+ time;  // Масштаб шума
     //noiseUV += normalize((center)) + time;  // Движение наружу
@@ -88,5 +92,5 @@ void main() {
 
     // Комбинируем огонь и частицы
     vec3 finalCol = fireCol;
-    fragColor = (vec4(finalCol.rgb*lightTotal, 0.4* distInvert));
+    fragColor = (vec4(finalCol.rgb*lightTotal, 0.8* distInvert));
 }

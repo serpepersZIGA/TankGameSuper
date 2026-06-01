@@ -1220,16 +1220,16 @@ public abstract class Unit implements Cloneable{
             xy = tower_xy_2(x,y,-corpus_height_3,-corpus_width_3,-rotation_corpus);
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
-            if(sqrt(pow2(x_2_1_1 - x_1_2) + pow2(y_2_1_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+            if(sqrt(pow2(x_2_1_1 - x_1_2) + pow2(y_2_1_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
                 unit.rotation_corpus -= (abs(this.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_2_1_2 - x_1_2) + pow2(y_2_1_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+            if(sqrt(pow2(x_2_1_2 - x_1_2) + pow2(y_2_1_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
                 unit.rotation_corpus += (abs(this.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_2_1 - x_2_1) + pow2(y_1_2_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+            if(sqrt(pow2(x_1_2_1 - x_2_1) + pow2(y_1_2_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
                 this.rotation_corpus += (abs(unit.speed) + 1) * v;
             }
-            if(sqrt(pow2(x_1_2_2 - x_2_1) + pow2(y_1_2_2 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
+            if(sqrt(pow2(x_1_2_2 - x_2_1) + pow2(y_1_2_2 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
                 this.rotation_corpus -= (abs(unit.speed) + 1) * v;
             }
             return;
@@ -1241,8 +1241,8 @@ public abstract class Unit implements Cloneable{
     }
     private void damage_temperature(){
         if(abs(this.t) > 25){
-            this.hp -= abs(this.t/10);
-            this.t -=0.5;
+            this.hp -= (int) abs(this.t*0.1f);
+            this.t -=this.t*0.02f;
             this.green_len = ((float) this.hp / this.max_hp) * Option.size_x_indicator;
 
         }

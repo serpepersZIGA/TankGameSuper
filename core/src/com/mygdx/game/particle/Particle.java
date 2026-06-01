@@ -26,6 +26,7 @@ public abstract class Particle {
     protected int time_delete;
     public static int brightness = 200;
     private int sound_time;
+    public float seed;
     private static final int sound_time_max = 300;
     public static final float r_m =(float)(5.0/255);
     public static final float g_m =(float)(3.0/255);

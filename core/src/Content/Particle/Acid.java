@@ -3,6 +3,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.math.Vector3;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.main.Main;
+import com.mygdx.game.method.RenderPrimitive;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.particle.Particle;
 
@@ -14,6 +15,7 @@ import static com.mygdx.game.main.Main.*;
 public class Acid extends Particle {
     public Acid(float x, float y){
         this.size = 42+rand.rand(8);
+        seed = rand.rand(1026);
         this.size_render = (int)(size*Main.Zoom);
         this.x = x-size/2;
         this.y = y-size/2;

@@ -64,8 +64,6 @@ ShaderList/Lighting/Lighting.vert
 ShaderList/Liquid/Blood.frag
 ShaderList/Liquid/Liquid.frag
 ShaderList/Liquid/Liquid.vert
-ShaderList/Liquid/Liquid2.frag
-ShaderList/Liquid/Liquid2.vert
 ShaderList/Primitive/primitive.frag
 ShaderList/Primitive/primitive.vert
 ShaderList/Rain/Rain.frag

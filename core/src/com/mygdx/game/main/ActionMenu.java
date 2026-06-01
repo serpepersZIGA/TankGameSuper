@@ -76,13 +76,8 @@ public class ActionMenu extends ActionGame {
         RippleIteration(Batch);
 
         LiquidShader.AcidShaderIteration();
-        for (i= 0; i< Main.LiquidList.size(); i++){
-            Main.LiquidList.get(i).all_action();}
-        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         LiquidShader.BloodShaderIteration();
-        for (i= 0; i< BloodList.size(); i++){
-            Main.BloodList.get(i).all_action();}
-        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+
         //LightSystem.begin(Batch);
         //Batch.setShader(LightSystem.shader);
 //        for (Particle part : LiquidList){

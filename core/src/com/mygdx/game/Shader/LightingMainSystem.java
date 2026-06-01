@@ -154,6 +154,7 @@ public class LightingMainSystem implements Disposable {
             }
 
         }
+        //Batch.draw(LiquidShader.frameBuffer.getColorBufferTexture(), 0, 0);
         batch.draw(TextureAtl.createSprite("Buffer2"),0,0,screenWidth,screenHeight);
         //batch.flush();
         batch.end();

@@ -134,14 +134,8 @@ public class ActionGameHost extends ActionGame{
         RippleIteration(Batch);
 
         LiquidShader.AcidShaderIteration();
-        for (i= 0; i< Main.LiquidList.size(); i++){
-            Main.LiquidList.get(i).all_action();}
-        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         LiquidShader.BloodShaderIteration();
-        for (i= 0; i< BloodList.size(); i++){
-            Main.BloodList.get(i).all_action();}
-        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
 
         //liquidGlobal();
@@ -154,9 +148,6 @@ public class ActionGameHost extends ActionGame{
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
-        for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action();
-        }
         Batch.setShader(LightSystem.shader);
 
         for(int i = 0;i<ItemList.size();i++){

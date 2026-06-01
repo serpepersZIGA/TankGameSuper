@@ -113,14 +113,8 @@ public class ActionGameClient extends ActionGame {
 
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         LiquidShader.AcidShaderIteration();
-        for (i= 0; i< LiquidList.size(); i++){
-            LiquidList.get(i).all_action();}
-        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         LiquidShader.BloodShaderIteration();
-        for (i= 0; i< BloodList.size(); i++){
-            BloodList.get(i).all_action();}
-        Batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
 
         for (i = 0; i< FlameStaticList.size(); i++){
             FlameStaticList.get(i).all_action();}
@@ -132,9 +126,6 @@ public class ActionGameClient extends ActionGame {
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
-        for (i= 0; i< FlameSpawnList.size(); i++){
-            FlameSpawnList.get(i).all_action();
-        }
         Batch.setShader(LightSystem.shader);
         //Batch.flush();
         for(int i = 0;i<ItemList.size();i++){
