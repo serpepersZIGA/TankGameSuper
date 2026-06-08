@@ -62,7 +62,8 @@ public abstract class Unit implements Cloneable{
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
              width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
-    ArmorBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase;
+    ArmorBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,RotateBase
+            ,TowerFireConstX,TowerFireConstY;
     protected float slowing = 0.05f;
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0,HillHp;
@@ -466,16 +467,18 @@ public abstract class Unit implements Cloneable{
             }
 
             if (this.press_a) {
+                float speed = this.speed_rotation * TimeGlobalBullet;
                 for (Unit Tower : tower_obj) {
-                    Tower.rotation_tower += this.speed_rotation * TimeGlobalBullet;
+                    Tower.rotation_tower += speed;
                 }
-                this.rotation_corpus += this.speed_rotation * TimeGlobalBullet;
+                this.rotation_corpus += speed;
             }
             if (this.press_d) {
+                float speed = this.speed_rotation * TimeGlobalBullet;
                 for (Unit Tower : tower_obj) {
-                    Tower.rotation_tower -= this.speed_rotation * TimeGlobalBullet;
+                    Tower.rotation_tower -= speed;
                 }
-                this.rotation_corpus -= this.speed_rotation * TimeGlobalBullet;
+                this.rotation_corpus -= speed;
             }
         }
         if(!this.press_w && !this.press_s) {
@@ -531,6 +534,9 @@ public abstract class Unit implements Cloneable{
     public void TowerControl() {
         tower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
+    public void NotTowerControl() {
+        NotTower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+    }
     public void tower(float x, float y, float x_2, float y_2, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
         if(gh>50 && rotation_tower<-50){
@@ -544,6 +550,35 @@ public abstract class Unit implements Cloneable{
         if (rotation_tower < gh) {
             rotation_tower += speed_tower;
         } else if (rotation_tower > gh) {
+            rotation_tower -= speed_tower;
+        }
+        if(abs(rotation_tower-gh)<20 & trigger_fire){
+            left_mouse = true;
+        }
+
+        //left_mouse = abs(rotation_tower - gh) < 20 & trigger_fire;
+
+    }
+    public float RotateNotTower;
+    public void NotTower(float x, float y, float x_2, float y_2, float speed_tower) {
+        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        if(gh>50 && rotation_tower<-50){
+            gh= -180;
+        }
+        if(gh<-50 && rotation_tower>50){
+            gh= 180;
+        }
+        if (rotation_tower > 179){rotation_tower = -179;}
+        else if (rotation_tower < -179){rotation_tower = 179;}
+
+//        if (RotateNotTower > 179){RotateNotTower = -179;}
+//        else if (RotateNotTower < -179){RotateNotTower = 179;}
+
+        if (rotation_tower < gh & RotateNotTower <MaxRotate) {
+            rotation_tower += speed_tower;
+            RotateNotTower += speed_tower;
+        } else if (rotation_tower > gh & RotateNotTower >-MaxRotate) {
+            RotateNotTower -= speed_tower;
             rotation_tower -= speed_tower;
         }
         if(abs(rotation_tower-gh)<20 & trigger_fire){

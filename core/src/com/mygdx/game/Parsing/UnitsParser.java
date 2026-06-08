@@ -65,6 +65,7 @@ public class UnitsParser {
         File Pz2F = new File("ContentGlobal/Unit/Pz-2F.json");
         File Pz2M = new File("ContentGlobal/Unit/Pz-2M.json");
         File Helicopter2Z = new File("ContentGlobal/Unit/Helicopter-2Z.json");
+        File Gb1M = new File("ContentGlobal/Unit/Gb-1M.json");
         String data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"HelicopterCorpus1\",\n" +
@@ -75,6 +76,17 @@ public class UnitsParser {
                 "}";
 
         Create(Helicopter2Z,data);
+
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"At2E\",\n" +
+                "  \"Cannon\": [\"Kwk24M\",\"Cabine\"],\n" +
+                "  \"TowerXY\": [[0,18],[0,-12]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+
+        Create(Gb1M,data);
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +

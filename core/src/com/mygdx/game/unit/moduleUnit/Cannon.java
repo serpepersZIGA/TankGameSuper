@@ -1,7 +1,6 @@
 package com.mygdx.game.unit.moduleUnit;
 
 import com.badlogic.gdx.audio.Sound;
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
@@ -9,7 +8,6 @@ import com.mygdx.game.unit.Unit;
 import java.util.Objects;
 
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
-import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
 
 public class Cannon extends moduleUnit implements Cloneable{
     public Fire fire;
@@ -19,7 +17,7 @@ public class Cannon extends moduleUnit implements Cloneable{
     public int ConstTowerY;
     public float damage,penetration,SpeedBullet;
     public float SpeedRotationTower;
-    public int TimeBullet,TimeBulletRand,ReloadMax,SizeBullet;
+    public int TimeBullet,TimeBulletRand,ReloadMax,SizeBullet,MaxRotate,RotateBase;
     public int Reload,towerXConst,towerYConst;
     public float RotationTower;
     public boolean FireConf;
@@ -100,8 +98,10 @@ public class Cannon extends moduleUnit implements Cloneable{
                   float damage, float penetration
             , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
                   float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,String image,FunctionalList functional
-            ,Sound sound,int AmountFragment){
+            ,Sound sound,int AmountFragment,int MaxRotate,int RotateBase){
         this.ID = ID;
+        this.MaxRotate = MaxRotate;
+        this.RotateBase = RotateBase;
         CannonListID.add(new Object[]{this,ID});
         this.AmountFragment = AmountFragment;
         this.WidthTower = WidthTower;
@@ -135,8 +135,8 @@ public class Cannon extends moduleUnit implements Cloneable{
             CannonAdd.differenceX = differenceX;
             CannonAdd.differenceY = differenceY;
 
-            CannonAdd.CenterX = unit.CorpusUnit.corpus_width_2-WidthTower2-6;
-            CannonAdd.CenterY = unit.CorpusUnit.corpus_height_2-HeightTower2;
+            CannonAdd.CenterX = unit.CorpusUnit.corpus_width_2-ConstTowerX;
+            CannonAdd.CenterY = unit.CorpusUnit.corpus_height_2-ConstTowerY;
             //CannonAdd.ConstTowerX = unit.const_tower_x;
             //CannonAdd.ConstTowerY = unit.const_tower_y;
         } catch (CloneNotSupportedException e) {
@@ -156,8 +156,8 @@ public class Cannon extends moduleUnit implements Cloneable{
             cannon.differenceX = differenceX;
             cannon.differenceY = differenceY;
 
-            cannon.CenterX = unit.CorpusUnit.corpus_width_2-cannon.WidthTower2;
-            cannon.CenterY = unit.CorpusUnit.corpus_height_2-cannon.HeightTower2;
+            cannon.CenterX = unit.CorpusUnit.corpus_width_2-cannon.ConstTowerX;
+            cannon.CenterY = unit.CorpusUnit.corpus_height_2-cannon.ConstTowerY;
             //CannonAdd.ConstTowerX = unit.const_tower_x;
             //CannonAdd.ConstTowerY = unit.const_tower_y;
             return (Cannon) cannon.clone();
@@ -189,7 +189,13 @@ public class Cannon extends moduleUnit implements Cloneable{
 
         unit.const_tower_x = ConstTowerX;
         unit.const_tower_y = ConstTowerY;
+        unit.TowerFireConstX = -unit.const_tower_x;
+        unit.TowerFireConstY = -unit.const_tower_y;
+        unit.MaxRotate = MaxRotate;
+        unit.RotateBase = RotateBase;
+        unit.rotation_tower = RotateBase;
 
+        //unit.RotateNotTower = RotateBase;
         unit.TimeBullet = TimeBullet;
         unit.TimeBulletRand = TimeBulletRand;
         unit.fire = fire;

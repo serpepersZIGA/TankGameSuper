@@ -1,0 +1,8 @@
+{
+  "Engine": "V2A",
+  "Corpus": "At2E",
+  "Cannon": ["Kwk24M","Cabine"],
+  "TowerXY": [[0,18],[0,-12]],
+  "MedicConf": 0,
+  "Height": 1
+}

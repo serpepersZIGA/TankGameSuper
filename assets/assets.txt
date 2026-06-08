@@ -13,8 +13,11 @@ image/build/Build2.png
 image/build/build_1.png
 image/build/ExpBuild.png
 image/build/home_1.png
+image/enemy/CabinTank.png
+image/enemy/CorpusAT.png
 image/enemy/corpus_enemy.png
 image/enemy/corpus_track_remount_enemy.png
+image/enemy/gunTank.png
 image/enemy/helicopter_enemy_t1.png
 image/enemy/machine_enemy_1lvl.png
 image/enemy/tower_auxiliart_enemy.png

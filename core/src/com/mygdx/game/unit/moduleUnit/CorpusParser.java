@@ -13,7 +13,7 @@ import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
 
 public class CorpusParser {
-    public static int MaxHP,Armor,CorpusWidth,CorpusHeight,Difference;
+    public static int MaxHP,Armor,CorpusWidth,CorpusHeight,Difference,CorrectX,CorrectY;
     public static String Image;
     public static FunctionalList List;
     public static boolean ConfControl;
@@ -36,7 +36,7 @@ public class CorpusParser {
             CorpusListID.add(new Object[]{
                     new Corpus(file.name().replace(".Corpus","")
                             ,MaxHP,Armor,CorpusWidth,CorpusHeight,Difference
-                            ,Image,List)
+                            ,Image,List,CorrectX,CorrectY)
                     ,file.name().replace(".Corpus","")});
             List = new FunctionalList();
             //List.Clear();
@@ -78,6 +78,18 @@ public class CorpusParser {
             }
             //System.out.println(TotalTxT);
             switch (TotalTxT.trim()) {
+                case "CorrectX":
+                    obj = Parser.IntegerPars(TxT,i);
+                    CorrectX = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "CorrectY":
+                    obj = Parser.IntegerPars(TxT,i);
+                    CorrectY = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
                 case "MaxHP":
                     obj = Parser.IntegerPars(TxT,i);
                     MaxHP = (int) obj[0];
@@ -136,8 +148,22 @@ public class CorpusParser {
         new File("ContentGlobal/Module").mkdirs();
         new File("ContentGlobal/Module/Corpus").mkdirs();
         File Panzer1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
+        File At2E = new File("ContentGlobal/Module/Corpus/At2E.Corpus");
         File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus");
-        String data = "MaxHP = 700;\n" +
+        String data = "MaxHP = 1700;\n" +
+                "Armor = 55;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 145;\n" +
+                "Difference = 18;\n" +
+                "Image = CorpusAT;\n" +
+                "CorrectX = 0;\n" +
+                "CorrectY = 0;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(At2E,data);
+         data = "MaxHP = 700;\n" +
                 "Armor = 20;\n" +
                 "CorpusWidth = 76;\n" +
                 "CorpusHeight = 220;\n" +

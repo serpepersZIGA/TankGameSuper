@@ -90,6 +90,7 @@ public class UnitPattern extends Unit {
         for(Unit Tower : tower_obj){
             Tower.x = x;
             Tower.y = y;
+            Tower.rotation_corpus = rotation_corpus;
             Tower.UpdateTower();
         }
     }

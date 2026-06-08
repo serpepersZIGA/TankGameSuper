@@ -146,6 +146,10 @@ public class Parser {
                 return new Object[]{TowerIteration,n[1]};
             case "ComponentTowerControl":
                 return new Object[]{TowerControl,n[1]};
+            case "ComponentNotTowerControl":
+                return new Object[]{NotTowerControl,n[1]};
+            case "ComponentTowerPartCorpus":
+                return new Object[]{TowerPartCorpus,n[1]};
             case "ComponentTowerXY":
                 return new Object[]{TowerXY,n[1]};
             case "ComponentWorkBlade":

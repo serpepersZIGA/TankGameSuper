@@ -248,7 +248,6 @@ public class Main extends ApplicationAdapter {
 
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
-		RegisterModuleCannon.Create();
 		RegisterModuleEngine.Create();
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();
@@ -318,11 +317,14 @@ public class Main extends ApplicationAdapter {
 
 //		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
 //				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
-		IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
+//		IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
+//				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+
+		IDList.get("Gb-1M").UnitAdd(2000,700,true, (byte) 2,
 				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
 
-		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
-				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
+//		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
+//				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
 	}
 	public static BitmapFont TXTFont(int size,String fontPath){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));

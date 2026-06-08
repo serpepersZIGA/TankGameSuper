@@ -1,8 +1,8 @@
-WidthTower = 55;
-HeightTower = 35;
-ConstTowerX = 36;
-ConstTowerY = 17;
-SpeedRotationTower = 1;
+WidthTower = 70;
+HeightTower = 50;
+ConstTowerX = 35;
+ConstTowerY = 25;
+SpeedRotationTower = 0;
 Damage = 22;
 Penetration = 20;
 DamageFragment = 0;
@@ -15,11 +15,11 @@ TimeBullet = 85;
 TowerX = 15;
 TowerY = 20;
 Fire = Acid;
-Image = tower_enemy;
+Image = CabinTank;
+RotateBase = 90;
 
+func.Add = ComponentTowerPartCorpus;
 func.Add = ComponentTowerXY;
-func.Add = ComponentTowerControl;
-func.Add = ComponentFireControl;
 
 Sound = 2;
 AmountFragment = 0;

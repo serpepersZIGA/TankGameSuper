@@ -1,9 +1,9 @@
-WidthTower = 20;
+WidthTower = 86;
 HeightTower = 16;
-ConstTowerX = 13;
+ConstTowerX = 77;
 ConstTowerY = 8;
 SpeedRotationTower = 1;
-Damage = 15;
+Damage = 0;
 Penetration = 12;
 DamageFragment = 0;
 PenetrationFragment = 0;
@@ -12,14 +12,16 @@ SizeBullet = 2;
 ReloadMax = 2;
 SpeedBullet = 42;
 TimeBullet = 270;
-TowerX = 16;
+TowerX = 15;
 TowerY = 20;
 Fire = Bullet;
-Image = tower_enemy_auxiliary_1;
+Image = gunTank;
+MaxRotate = 20;
+RotateBase = 90;
 
-func.Add ComponentTowerXY;
-func.Add ComponentTowerControl;
-func.Add ComponentFireControl;
+func.Add = ComponentTowerXY;
+func.Add = ComponentNotTowerControl;
+func.Add = ComponentFireControl;
 
 Sound = 4;
 AmountFragment = 0;

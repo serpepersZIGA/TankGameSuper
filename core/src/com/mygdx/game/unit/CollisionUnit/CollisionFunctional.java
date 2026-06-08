@@ -9,11 +9,12 @@ import static java.lang.StrictMath.abs;
 import static java.lang.StrictMath.sqrt;
 
 public abstract class CollisionFunctional{
+    public static float v = 4;
     public static void physicCollision(Unit unit,Unit unit2){
         float x = unit2.x+unit2.corpus_width_2;
         float y = unit2.y+unit2.corpus_height_2;
         float[]xy;
-        float v = 4;
+        float inertion;
         float x_2 = unit.x+ unit.corpus_width_2;
         float y_2 = unit.y+ unit.corpus_height_2;
         xy = Method.tower_xy(x,y,-unit2.corpus_height_2,-unit2.rotation_corpus);
@@ -36,17 +37,25 @@ public abstract class CollisionFunctional{
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
-                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,inertion);
+                unit.rotation_corpus += inertion;
             }
             if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
-                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,-inertion);
+                unit.rotation_corpus -= inertion;
             }
 
             if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
-                unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,inertion);
+                unit2.rotation_corpus += inertion;
             }
             if(sqrt(pow2(x_1_2_2 - x_2_2) + pow2(y_1_2_2 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.5) {
-                unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,-inertion);
+                unit2.rotation_corpus -= inertion;
             }
             return;
         }
@@ -70,16 +79,24 @@ public abstract class CollisionFunctional{
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,-inertion);
+                unit.rotation_corpus -= inertion;
             }
             if(sqrt(pow2(x_2_1_2 - x_1_1) + pow2(y_2_1_2 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,inertion);
+                unit.rotation_corpus += inertion;
             }
             if(sqrt(pow2(x_1_1_1 - x_2_1) + pow2(y_1_1_1 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,-inertion);
+                unit2.rotation_corpus -= inertion;
             }
             if(sqrt(pow2(x_1_1_2 - x_2_1) + pow2(y_1_1_2 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,inertion);
+                unit2.rotation_corpus += inertion;
             }
             return;
         }
@@ -97,16 +114,24 @@ public abstract class CollisionFunctional{
             float x_1_1_2 = xy[0];
             float y_1_1_2 = xy[1];
             if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,-inertion);
+                unit.rotation_corpus -= inertion;
             }
             if(sqrt(pow2(x_2_2_2 - x_1_1) + pow2(y_2_2_2 - y_1_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,inertion);
+                unit.rotation_corpus += inertion;
             }
             if(sqrt(pow2(x_1_1_1 - x_2_2) + pow2(y_1_1_1 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,-inertion);
+                unit2.rotation_corpus -= inertion;
             }
             if(sqrt(pow2(x_1_1_2 - x_2_2) + pow2(y_1_1_2 - y_2_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,inertion);
+                unit2.rotation_corpus += inertion;
             }
         }
         if(sqrt(pow2(x_2_1 - x_1_2) + pow2(y_2_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)*1.4){
@@ -123,18 +148,31 @@ public abstract class CollisionFunctional{
             float x_1_2_2 = xy[0];
             float y_1_2_2 = xy[1];
             if(sqrt(pow2(x_2_1_1 - x_1_2) + pow2(y_2_1_1 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,-inertion);
+                unit.rotation_corpus -= inertion;
             }
             if(sqrt(pow2(x_2_1_2 - x_1_2) + pow2(y_2_1_2 - y_1_2))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(unit2.speed) + 1) * v;
+                inertion = (abs(unit2.speed) + 1) * v;
+                TowerRotate(unit,inertion);
+                unit.rotation_corpus += inertion;
             }
             if(sqrt(pow2(x_1_2_1 - x_2_1) + pow2(y_1_2_1 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit2.rotation_corpus += (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,inertion);
+                unit2.rotation_corpus += inertion;
             }
             if(sqrt(pow2(x_1_2_2 - x_2_1) + pow2(y_1_2_2 - y_2_1))<(unit.corpus_width_2+unit2.corpus_width_2)/1.2) {
-                unit2.rotation_corpus -= (abs(unit.speed) + 1) * v;
+                inertion = (abs(unit.speed) + 1) * v;
+                TowerRotate(unit2,-inertion);
+                unit2.rotation_corpus -= inertion;
             }
             return;
+        }
+    }
+    private static void TowerRotate(Unit unit,float inertion){
+        for(Unit tower: unit.tower_obj){
+            tower.rotation_tower += inertion;
         }
     }
     public static void MethodCollisionTransport(Unit unit, Unit unit2){

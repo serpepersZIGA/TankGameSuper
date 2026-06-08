@@ -59,7 +59,7 @@ public class Corpus extends moduleUnit implements Cloneable{
         throw new RuntimeException();
     }
     public Corpus(String ID,int max_hp, int armor, int corpus_width, int corpus_height,
-                  int Difference, String image,FunctionalList func){
+                  int Difference, String image,FunctionalList func,int CorrectX,int CorrectY){
         this.ID = ID;
         CorpusListID.add(new Object[]{this,ID});
         this.max_hp = max_hp;
@@ -68,8 +68,8 @@ public class Corpus extends moduleUnit implements Cloneable{
         this.corpus_width = corpus_width;
         this.corpus_height = corpus_height;
 
-        this.corpus_width_2 = corpus_width/2;
-        this.corpus_height_2 = corpus_height/2;
+        this.corpus_width_2 = corpus_width/2+CorrectX;
+        this.corpus_height_2 = corpus_height/2+CorrectY;
         this.CenterCorpusX = corpus_width_2;
         this.CenterCorpusY = corpus_height_2;
 

@@ -1,6 +1,6 @@
 WidthTower = 55;
 HeightTower = 35;
-ConstTowerX = 34;
+ConstTowerX = 36;
 ConstTowerY = 17;
 SpeedRotationTower = 1;
 Damage = 420;

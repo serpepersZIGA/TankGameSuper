@@ -1,9 +1,9 @@
-MaxHP = 1200;
-Armor = 35;
+MaxHP = 1700;
+Armor = 55;
 CorpusWidth = 50;
-CorpusHeight = 130;
+CorpusHeight = 145;
 Difference = 18;
-Image = corpus_enemy;
+Image = CorpusAT;
 CorrectX = 0;
 CorrectY = 0;
 

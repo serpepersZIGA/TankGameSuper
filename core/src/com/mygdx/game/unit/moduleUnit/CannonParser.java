@@ -16,7 +16,7 @@ import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
 
 public class CannonParser {
     public static int WidthTower,HeightTower,ConstTowerX,ConstTowerY,Difference,SizeBullet,ReloadMax,TimeBullet
-            ,TimeBulletRand,TowerX,TowerY,AmountFragment;
+            ,TimeBulletRand,TowerX,TowerY,AmountFragment,MaxRotate,RotateBase;
     public static Fire Fire;
     public static Sound Sound;
     public static String Image;
@@ -48,10 +48,23 @@ public class CannonParser {
                             Damage, Penetration
                             , DamageFragment, PenetrationFragment, TemperatureDamage, SizeBullet, ReloadMax,
                             SpeedBullet, TimeBullet, TimeBulletRand, TowerX, TowerY, Fire.clone(), Image, List
-                            , Sound, AmountFragment)
+                            , Sound, AmountFragment,MaxRotate,RotateBase)
                     , file.name().replace(".Cannon", "")});
             List = new FunctionalList();
-
+            MaxRotate = 0;
+            RotateBase = 0;
+            AmountFragment = 0;
+            Sound = null;
+            Image = null;
+            ReloadMax = 0;
+            SizeBullet = 0;
+            TemperatureDamage = 0;
+            PenetrationFragment = 0;
+            DamageFragment = 0;
+            Penetration = 0;
+            Damage = 0;
+            SpeedRotationTower = 0;ConstTowerY = 0;ConstTowerX = 0;
+            WidthTower = 0;HeightTower = 0;
             //List.Clear();
             //System.out.println(BuildRegister.BuildingID.size());
 
@@ -155,7 +168,12 @@ public class CannonParser {
                         TotalTxT = "";
                         break;
 
-
+                    case"MaxRotate":
+                        obj = Parser.IntegerPars(TxT, i);
+                        MaxRotate = (int) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
                     case "SizeBullet":
                         obj = Parser.IntegerPars(TxT, i);
                         SizeBullet = (int) obj[0];
@@ -224,7 +242,12 @@ public class CannonParser {
                         TotalTxT = "";
                         break;
 
-
+                    case "RotateBase":
+                        obj = Parser.IntegerPars(TxT, i);
+                        RotateBase = (int) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
                     case "Image":
                         obj = Parser.TextPars(TxT, i);
                         Image = (String) obj[0];
@@ -258,13 +281,15 @@ public class CannonParser {
         File Kwk12AL = new File("ContentGlobal/Module/Cannon/Kwk12AL.Cannon");
         File Kwk12M = new File("ContentGlobal/Module/Cannon/Kwk12M.Cannon");
         File Kwk12ML = new File("ContentGlobal/Module/Cannon/Kwk12ML.Cannon");
+        File Kwk24M = new File("ContentGlobal/Module/Cannon/Kwk24M.Cannon");
+        File Cabin = new File("ContentGlobal/Module/Cannon/Cabine.Cannon");
 
         File Blade = new File("ContentGlobal/Module/Cannon/Blade.Cannon");
         File DP27 = new File("ContentGlobal/Module/Cannon/DP-27.Cannon");
 
         String data = "WidthTower = 55;\n" +
                 "HeightTower = 35;\n" +
-                "ConstTowerX = 34;\n" +
+                "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 22;\n" +
@@ -288,6 +313,63 @@ public class CannonParser {
                 "Sound = 2;\n" +
                 "AmountFragment = 0;";
         Create(Ack2A,data);
+
+
+        data = "WidthTower = 86;\n" +
+                "HeightTower = 16;\n" +
+                "ConstTowerX = 77;\n" +
+                "ConstTowerY = 8;\n" +
+                "SpeedRotationTower = 1;\n" +
+                "Damage = 0;\n" +
+                "Penetration = 12;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 42;\n" +
+                "TimeBullet = 270;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Bullet;\n" +
+                "Image = gunTank;\n" +
+                "MaxRotate = 20;\n" +
+                "RotateBase = 90;\n" +
+                "\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "func.Add = ComponentNotTowerControl;\n" +
+                "func.Add = ComponentFireControl;\n" +
+                "\n" +
+                "Sound = 4;\n" +
+                "AmountFragment = 0;";
+        Create(Kwk24M,data);
+        data = "WidthTower = 70;\n" +
+                "HeightTower = 50;\n" +
+                "ConstTowerX = 35;\n" +
+                "ConstTowerY = 25;\n" +
+                "SpeedRotationTower = 0;\n" +
+                "Damage = 22;\n" +
+                "Penetration = 20;\n" +
+                "DamageFragment = 0;\n" +
+                "PenetrationFragment = 0;\n" +
+                "TemperatureDamage = 0;\n" +
+                "SizeBullet = 2;\n" +
+                "ReloadMax = 2;\n" +
+                "SpeedBullet = 6;\n" +
+                "TimeBullet = 85;\n" +
+                "TowerX = 15;\n" +
+                "TowerY = 20;\n" +
+                "Fire = Acid;\n" +
+                "Image = CabinTank;\n" +
+                "RotateBase = 90;\n" +
+                "\n" +
+                "func.Add = ComponentTowerPartCorpus;\n" +
+                "func.Add = ComponentTowerXY;\n" +
+                "\n" +
+                "Sound = 2;\n" +
+                "AmountFragment = 0;";
+        Create(Cabin,data);
+
 
         data = "WidthTower = 120;\n" +
                 "HeightTower = 120;\n" +
@@ -344,9 +426,9 @@ public class CannonParser {
         Create(DP27,data);
 
         data = "WidthTower = 20;\n" +
-                "HeightTower = 15;\n" +
-                "ConstTowerX = 12;\n" +
-                "ConstTowerY = 7;\n" +
+                "HeightTower = 16;\n" +
+                "ConstTowerX = 13;\n" +
+                "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 15;\n" +
                 "Penetration = 20;\n" +
@@ -357,7 +439,7 @@ public class CannonParser {
                 "ReloadMax = 2;\n" +
                 "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
-                "TowerX = 15;\n" +
+                "TowerX = 16;\n" +
                 "TowerY = 20;\n" +
                 "Fire = Acid;\n" +
                 "Image = tower_enemy_auxiliary_1;\n" +
@@ -371,7 +453,7 @@ public class CannonParser {
         Create(Ack2AL,data);
         data = "WidthTower = 55;\n" +
                 "HeightTower = 35;\n" +
-                "ConstTowerX = 34;\n" +
+                "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 10;\n" +
@@ -396,9 +478,9 @@ public class CannonParser {
                 "AmountFragment = 0;";
         Create(Flk4C,data);
         data = "WidthTower = 20;\n" +
-                "HeightTower = 15;\n" +
-                "ConstTowerX = 12;\n" +
-                "ConstTowerY = 7;\n" +
+                "HeightTower = 16;\n" +
+                "ConstTowerX = 13;\n" +
+                "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 10;\n" +
                 "Penetration = 2;\n" +
@@ -409,7 +491,7 @@ public class CannonParser {
                 "ReloadMax = 2;\n" +
                 "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
-                "TowerX = 15;\n" +
+                "TowerX = 16;\n" +
                 "TowerY = 20;\n" +
                 "Fire = Flame;\n" +
                 "Image = tower_enemy_auxiliary_1;\n" +
@@ -423,7 +505,7 @@ public class CannonParser {
         Create(Flk4CL,data);
         data = "WidthTower = 55;\n" +
                 "HeightTower = 35;\n" +
-                "ConstTowerX = 34;\n" +
+                "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 15;\n" +
@@ -448,9 +530,9 @@ public class CannonParser {
                 "AmountFragment = 0;";
         Create(Kwk12A,data);
         data = "WidthTower = 20;\n" +
-                "HeightTower = 15;\n" +
-                "ConstTowerX = 12;\n" +
-                "ConstTowerY = 7;\n" +
+                "HeightTower = 16;\n" +
+                "ConstTowerX = 13;\n" +
+                "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 15;\n" +
                 "Penetration = 12;\n" +
@@ -461,7 +543,7 @@ public class CannonParser {
                 "ReloadMax = 2;\n" +
                 "SpeedBullet = 32;\n" +
                 "TimeBullet = 270;\n" +
-                "TowerX = 15;\n" +
+                "TowerX = 16;\n" +
                 "TowerY = 20;\n" +
                 "Fire = Bullet;\n" +
                 "Image = tower_enemy_auxiliary_1;\n" +
@@ -475,7 +557,7 @@ public class CannonParser {
         Create(Kwk12AL,data);
         data = "WidthTower = 55;\n" +
                 "HeightTower = 35;\n" +
-                "ConstTowerX = 34;\n" +
+                "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 420;\n" +
@@ -500,9 +582,9 @@ public class CannonParser {
                 "AmountFragment = 15;";
         Create(Kwk12M,data);
         data = "WidthTower = 20;\n" +
-                "HeightTower = 15;\n" +
-                "ConstTowerX = 12;\n" +
-                "ConstTowerY = 7;\n" +
+                "HeightTower = 16;\n" +
+                "ConstTowerX = 13;\n" +
+                "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 320;\n" +
                 "Penetration = 24;\n" +
@@ -513,7 +595,7 @@ public class CannonParser {
                 "ReloadMax = 200;\n" +
                 "SpeedBullet = 30;\n" +
                 "TimeBullet = 450;\n" +
-                "TowerX = 15;\n" +
+                "TowerX = 16;\n" +
                 "TowerY = 20;\n" +
                 "Fire = Mortar;\n" +
                 "Image = tower_enemy_auxiliary_1;\n" +

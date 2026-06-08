@@ -5,6 +5,7 @@ import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.method.Method;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.unit.Unit;
 
@@ -20,9 +21,12 @@ public class FireMortar extends Fire {
         rotationTower = -unit.rotation_tower-90;
         SoundPlay.soundPlay(unit.x_rend,unit.y_rend, (int) unit.x, (int) unit.y,4, unit.sound_fire);
 
-        unit.fire_x = (float) (unit.tower_x+unit.tower_width_2+((unit.tower_height_2+unit.y_tower) *sin(rotationTower*3.1415926535/180)));
-        unit.fire_y = (float) (unit.tower_y+unit.tower_height_2+((unit.tower_height_2+unit.y_tower) *cos(rotationTower*3.1415926535/180)));
-        BulletRegister.BulletMortar.BulletAdd(unit.fire_x, unit.fire_y,rotationTower,unit.damage,unit.penetration,
+//        unit.fire_x = (float) (unit.tower_x+unit.tower_width_2+((unit.tower_height_2+unit.y_tower) *sin(rotationTower*3.1415926535/180)));
+//        unit.fire_y = (float) (unit.tower_y+unit.tower_height_2+((unit.tower_height_2+unit.y_tower) *cos(rotationTower*3.1415926535/180)));
+        float[] xy = Method.tower_xy_2(unit.tower_x+unit.const_tower_x,
+                unit.tower_y+unit.const_tower_y
+                ,unit.TowerFireConstY,unit.TowerFireConstX,-unit.rotation_tower);
+        BulletRegister.BulletMortar.BulletAdd(xy[0], xy[1],rotationTower,unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
                 ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
 
