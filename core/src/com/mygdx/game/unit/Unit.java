@@ -571,8 +571,8 @@ public abstract class Unit implements Cloneable{
         if (rotation_tower > 179){rotation_tower = -179;}
         else if (rotation_tower < -179){rotation_tower = 179;}
 
-//        if (RotateNotTower > 179){RotateNotTower = -179;}
-//        else if (RotateNotTower < -179){RotateNotTower = 179;}
+        //if (RotateNotTower > 179){RotateNotTower = -179;}
+        //else if (RotateNotTower < -179){RotateNotTower = 179;}
 
         if (rotation_tower < gh & RotateNotTower <MaxRotate) {
             rotation_tower += speed_tower;
