@@ -2,7 +2,6 @@ package com.mygdx.game.method;
 
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
-import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Weather.Ripple;
@@ -343,11 +342,18 @@ public class Keyboard extends InputAdapter{
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
             tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
             tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
-            for (Unit tower : tr.tower_obj){
+            for (Unit tower : tr.TowerUnitList){
                 tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
                 tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
+            }
+            for (Unit track : tr.TrackUnitList){
+                track.width_tower_zoom = (int)(track.width_tower *Main.Zoom);
+                track.height_tower_zoom = (int)(track.height_tower *Main.Zoom);
+                track.const_x_tower = (int)(track.width_tower *Main.Zoom*0.5);
+                track.const_y_tower = (int)(track.height_tower *Main.Zoom*0.5);
+
             }
 
         }
@@ -376,7 +382,7 @@ public class Keyboard extends InputAdapter{
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
             tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
             tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
-            for (Unit tower : tr.tower_obj){
+            for (Unit tower : tr.TowerUnitList){
                 tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
                 tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);

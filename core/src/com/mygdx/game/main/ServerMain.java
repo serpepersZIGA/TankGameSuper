@@ -1,5 +1,4 @@
 package com.mygdx.game.main;
-import Content.Particle.*;
 import com.esotericsoftware.kryonet.Connection;
 import com.esotericsoftware.kryonet.Listener;
 import com.esotericsoftware.kryonet.Server;
@@ -19,9 +18,7 @@ import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.UnitType;
 
 import java.io.IOException;
-import java.net.InetSocketAddress;
 import java.util.ArrayList;
-import java.util.Objects;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.main.Main.*;
@@ -158,7 +155,7 @@ public class ServerMain extends Listener {
                     unit.TargetX = pack.mouse_x;
                     unit.TargetY = pack.mouse_y;
                     //unit.FireControl();
-                    for (Unit Tower : unit.tower_obj) {
+                    for (Unit Tower : unit.TowerUnitList) {
                         Tower.left_mouse = pack.left_mouse;
                         Tower.TargetX = unit.TargetX+ Tower.tower_x;
                         Tower.TargetY = unit.TargetY+ Tower.tower_y;

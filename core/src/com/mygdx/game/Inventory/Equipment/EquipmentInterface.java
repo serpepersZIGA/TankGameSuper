@@ -4,8 +4,6 @@ import com.mygdx.game.Inventory.*;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.method.Keyboard.MouseX;
-import static com.mygdx.game.method.Keyboard.MouseY;
 
 public class EquipmentInterface extends InventoryInterface {
     public EquipmentInterface(Inventory inventory){
@@ -64,10 +62,10 @@ public class EquipmentInterface extends InventoryInterface {
         unit.SpeedUp = unit.SpeedUpBase;
         unit.SpeedDown = unit.SpeedDownBase;
 
-        for (Unit cannon : unit.tower_obj) {
+        for (Unit cannon : unit.TowerUnitList) {
             cannon.damage = (int) cannon.DamageBase;
         }
-        for (Unit cannon : unit.tower_obj) {
+        for (Unit cannon : unit.TowerUnitList) {
             cannon.penetration = cannon.PenetrationBase;
         }
 

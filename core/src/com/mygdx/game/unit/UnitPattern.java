@@ -4,21 +4,17 @@ import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.unit.CollisionUnit.TypeCollision;
-import com.mygdx.game.unit.moduleUnit.Cannon;
-import com.mygdx.game.unit.moduleUnit.Corpus;
-import com.mygdx.game.unit.moduleUnit.Engine;
-import com.mygdx.game.unit.moduleUnit.Soldat;
+import com.mygdx.game.unit.moduleUnit.*;
 
 import java.util.ArrayList;
 
 import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.main.Main.EventData;
-import static com.mygdx.game.main.Main.RegisterFunctionalComponent;
 
 public class UnitPattern extends Unit {
     public UnitPattern(String str,Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit,int medic_help,int Height){
         super(corpus,engine,cannon,TowerXY,classUnit,medic_help,Height);
-        tower_obj = new ArrayList<>();
+        TowerUnitList = new ArrayList<>();
         behavior = 3;
         this.collision = TypeCollision.rect;
         corpus.CorpusLoad(this);
@@ -27,9 +23,10 @@ public class UnitPattern extends Unit {
         data();
         IDList.put(str,this);
     }
-    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY, ClassUnit classUnit, int HillHp, int Height){
-        super(corpus,engine,cannon,TowerXY,classUnit,HillHp,Height);
-        tower_obj = new ArrayList<>();
+    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,
+            ArrayList<String>track,int[][]TrackXY, ClassUnit classUnit, int HillHp, int Height){
+        super(corpus,engine,cannon,TowerXY,track,TrackXY,classUnit,HillHp,Height);
+        TowerUnitList = new ArrayList<>();
         behavior = 3;
         this.classUnit = ClassUnit.Transport;
         this.collision = TypeCollision.rect;
@@ -47,12 +44,19 @@ public class UnitPattern extends Unit {
         data_tower();
 
     }
+    public UnitPattern(Track track, Unit unit){
+        super(track);
+        track.TrackLoad(this);
+        data_tower();
+
+    }
     public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,int Height){
         super(corpus,x,y,rotation,speed,Height);
         corpus.functional = new FunctionalList();
         corpus.functional.Add(FunctionalComponentUnitRegister.MoveDebris);
         corpus.functional.Add(FunctionalComponentUnitRegister.BuildCollision);
-        this.tower_obj = new ArrayList<>();
+        this.TrackUnitList = new ArrayList<>();
+        this.TowerUnitList = new ArrayList<>();
         ID = str;
         corpus.CorpusLoad(this);
         data();
@@ -62,7 +66,7 @@ public class UnitPattern extends Unit {
         super(soldat);
         ConfSquad = true;
         EventClear = EventData.eventDeadSoldat;
-        tower_obj = new ArrayList<>();
+        TowerUnitList = new ArrayList<>();
         ID = str;
         dataSoldat();
         IDList.put(str,this);
@@ -85,9 +89,15 @@ public class UnitPattern extends Unit {
     }
     public void UpdateUnit(){
         center_render();
+        for(Unit Tower : TrackUnitList){
+            Tower.x = x;
+            Tower.y = y;
+            Tower.rotation_corpus = rotation_corpus;
+            Tower.UpdateTrack(this.speed);
+        }
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom
                 ,this.rotation_corpus,TextureAtl.createSprite(this.corpus_img),const_x_corpus,const_y_corpus);
-        for(Unit Tower : tower_obj){
+        for(Unit Tower : TowerUnitList){
             Tower.x = x;
             Tower.y = y;
             Tower.rotation_corpus = rotation_corpus;
@@ -109,5 +119,13 @@ public class UnitPattern extends Unit {
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom
                 ,this.rotation_tower,TextureAtl.createSprite(this.tower_img),const_x_tower,const_y_tower
         );
+    }
+    public void UpdateTrack(float speed){
+        //this.x = tower_x;
+        //this.y = tower_y;
+        TowerXY2();
+        center_render();
+        animator.render(x_tower_rend,y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,
+                this.const_x_tower,this.const_y_tower,this.rotation_corpus,speed);
     }
 }

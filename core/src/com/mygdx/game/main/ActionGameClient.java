@@ -1,40 +1,24 @@
 package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.GL20;
-import Content.Particle.Acid;
-import Content.Particle.FlameSpawn;
 import com.mygdx.game.Inventory.InventoryInterface;
-import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
-import com.mygdx.game.Sound.SoundPlay;
-import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.Network.DebrisPacket;
-import com.mygdx.game.method.RenderCenter;
 import com.mygdx.game.unit.SpawnPlayer.SpawnPlayerPack;
 import com.mygdx.game.unit.Unit;
 
-import java.util.ArrayList;
-import java.util.Objects;
-import java.util.concurrent.Callable;
 import java.util.concurrent.ExecutionException;
-import java.util.concurrent.Future;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.Sound.SoundPlay.soundPlayClient;
-import static com.mygdx.game.Sound.SoundRegister.IDSound;
 import static com.mygdx.game.Weather.WeatherMainSystem.RippleIteration;
 import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ClientMain.Client;
-import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
-import static com.mygdx.game.unit.TransportRegister.*;
-import static java.lang.StrictMath.sqrt;
 
 
 public class ActionGameClient extends ActionGame {
@@ -147,7 +131,7 @@ public class ActionGameClient extends ActionGame {
             if(unit.height == 1) {
                 unit.UpdateUnit();
                 unit.update();
-                for (Unit tower : unit.tower_obj){
+                for (Unit tower : unit.TowerUnitList){
                     tower.updateTower();
                 }
             }
@@ -179,7 +163,7 @@ public class ActionGameClient extends ActionGame {
             if(unit.height == 2) {
                 unit.UpdateUnit();
                 unit.update();
-                for (Unit tower : unit.tower_obj){
+                for (Unit tower : unit.TowerUnitList){
                     tower.updateTower();
                 }
             }

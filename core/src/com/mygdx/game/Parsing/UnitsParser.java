@@ -12,7 +12,8 @@ import java.util.ArrayList;
 public class UnitsParser {
     public static String Engine, Corpus, Soldat;
     public static ArrayList<String> Cannon;
-    public static int [][] TowerXY;
+    public static ArrayList<String> Track;
+    public static int [][] TowerXY,TrackXY;
     public static ClassUnit classUnit;
     public static int height;
     public static int HillHp;
@@ -33,7 +34,7 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon, TowerXY, classUnit, HillHp,height);
+                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY, classUnit, HillHp,height);
 
 
         }
@@ -51,8 +52,11 @@ public class UnitsParser {
         buff obj = objectMapper.readValue(TxT, buff.class);
         Cannon = new ArrayList<>();
         Cannon.addAll(obj.Cannon);
+        Track = new ArrayList<>();
+        Track.addAll(obj.Track);
         Engine = obj.Engine;
         Corpus = obj.Corpus;
+        TrackXY = obj.TrackXY;
         TowerXY = obj.TowerXY;
         HillHp = obj.MedicConf;
         height = obj.Height;
@@ -71,6 +75,9 @@ public class UnitsParser {
                 "  \"Corpus\": \"HelicopterCorpus1\",\n" +
                 "  \"Cannon\": [\"Blade\",\"DP-27\",\"DP-27\"],\n" +
                 "  \"TowerXY\": [[0,50],[25,50],[-25,50]],\n" +
+                "\n" +
+                "  \"Track\": [],\n" +
+                "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 2\n" +
                 "}";
@@ -82,6 +89,9 @@ public class UnitsParser {
                 "  \"Corpus\": \"At2E\",\n" +
                 "  \"Cannon\": [\"Kwk24M\",\"Cabine\"],\n" +
                 "  \"TowerXY\": [[0,18],[0,-12]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
                 "}";
@@ -92,6 +102,9 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
                 "}";
@@ -102,6 +115,9 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
                 "}";
@@ -109,8 +125,11 @@ public class UnitsParser {
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"]," +
+                "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
                 "}";
@@ -118,8 +137,11 @@ public class UnitsParser {
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"]," +
+                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
                 "}";

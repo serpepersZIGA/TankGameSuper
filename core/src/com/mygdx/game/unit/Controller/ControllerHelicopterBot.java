@@ -8,7 +8,7 @@ public class ControllerHelicopterBot extends Controller{
         unit.TowerXY2();
         unit.TowerAI();
         //unit.bot_fire();
-        for (Unit Tower : unit.tower_obj){
+        for (Unit Tower : unit.TowerUnitList){
             Tower.TargetX = unit.TargetX;
             Tower.TargetY = unit.TargetY;
             Tower.trigger_fire = unit.trigger_fire;

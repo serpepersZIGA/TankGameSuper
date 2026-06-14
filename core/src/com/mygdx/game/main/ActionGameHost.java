@@ -12,7 +12,6 @@ import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.unit.AI;
-import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Squad;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
@@ -199,7 +198,7 @@ public class ActionGameHost extends ActionGame{
             if(unit.height == 1) {
                 unit.UpdateUnit();
                 unit.update();
-                for (Unit tower : unit.tower_obj){
+                for (Unit tower : unit.TowerUnitList){
                     tower.updateTower();
                 }
             }
@@ -233,7 +232,7 @@ public class ActionGameHost extends ActionGame{
             if(unit.height == 2) {
                 unit.UpdateUnit();
                 unit.update();
-                for (Unit tower : unit.tower_obj){
+                for (Unit tower : unit.TowerUnitList){
                     tower.updateTower();
                 }
             }
@@ -376,7 +375,7 @@ public class ActionGameHost extends ActionGame{
             //unit.equipment.ConfRefactor = false;
         //}
 
-        for (Unit Tower : unit.tower_obj){
+        for (Unit Tower : unit.TowerUnitList){
             pack.reloadTower.add(Tower.reload);
             pack.rotation_tower_2.add(Tower.rotation_tower);
         }

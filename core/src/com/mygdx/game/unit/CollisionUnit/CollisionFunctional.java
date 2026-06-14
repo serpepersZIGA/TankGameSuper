@@ -171,9 +171,8 @@ public abstract class CollisionFunctional{
         }
     }
     private static void TowerRotate(Unit unit,float inertion){
-        for(Unit tower: unit.tower_obj){
+        for(Unit tower: unit.TowerUnitList){
             tower.rotation_tower += inertion;
-            //tower.RotateNotTower += inertion;
         }
     }
     public static void MethodCollisionTransport(Unit unit, Unit unit2){

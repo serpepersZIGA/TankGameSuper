@@ -10,9 +10,9 @@ import java.util.List;
 @AllArgsConstructor
 @NoArgsConstructor
 public class buff{
-    public List<String> Cannon;
+    public List<String> Cannon,Track;
     public String Corpus;
     public String Engine;
-    public int[][]TowerXY;
+    public int[][]TowerXY,TrackXY;
     public int MedicConf,Height;
 }

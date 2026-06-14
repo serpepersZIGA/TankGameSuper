@@ -1,12 +1,9 @@
 package com.mygdx.game.main;
-import Content.Particle.*;
-import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Objects;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -15,9 +12,7 @@ import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
-import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Network.*;
-import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.Network.BuildPacket;
 import com.mygdx.game.build.Building;
@@ -32,7 +27,6 @@ import com.mygdx.game.unit.*;
 import com.mygdx.game.unit.SpawnPlayer.*;
 
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
-import static com.mygdx.game.Sound.SoundRegister.IDSound;
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.build.BuildRegister.BuildingID;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
@@ -41,13 +35,11 @@ import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.CycleTimeDay.lightGlobal;
 import static com.mygdx.game.method.CycleTimeDay.lightTotal;
-import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.object_map.MapObject.ObjectMapIDList;
 import static com.mygdx.game.object_map.MapObject.PacketMapObjects;
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.unit.TransportRegister.*;
-import static java.lang.StrictMath.sqrt;
 
 
 public class ClientMain extends Listener {
@@ -326,10 +318,10 @@ public class ClientMain extends Listener {
         unit.speed = packet.speed;
         unit.host = packet.host;
         unit.nConnect = packet.IDClient;
-        for (int i2 = 0; i2 < unit.tower_obj.size(); i2++) {
+        for (int i2 = 0; i2 < unit.TowerUnitList.size(); i2++) {
 
-            unit.tower_obj.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
-            unit.tower_obj.get(i2).reload = packet.reloadTower.get(i2);
+            unit.TowerUnitList.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
+            unit.TowerUnitList.get(i2).reload = packet.reloadTower.get(i2);
         }
 
     }
@@ -344,9 +336,9 @@ public class ClientMain extends Listener {
         transport.speed = pack.speed;
         transport.host = pack.host;
         transport.nConnect = pack.IDClient;
-        for (int i2 = 0; i2 < transport.tower_obj.size(); i2++) {
-            transport.tower_obj.get(i2).rotation_tower=pack.rotation_tower_2.get(i2);
-            transport.tower_obj.get(i2).reload=pack.reloadTower.get(i2);
+        for (int i2 = 0; i2 < transport.TowerUnitList.size(); i2++) {
+            transport.TowerUnitList.get(i2).rotation_tower=pack.rotation_tower_2.get(i2);
+            transport.TowerUnitList.get(i2).reload=pack.reloadTower.get(i2);
         }
 
     }

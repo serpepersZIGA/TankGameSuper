@@ -3,6 +3,9 @@
   "Corpus": "At2E",
   "Cannon": ["Kwk24M","Cabine"],
   "TowerXY": [[0,18],[0,-12]],
+
+  "Track": ["TrackPz2","TrackPz2"],
+  "TrackXY": [[-22,0],[22,0]],
   "MedicConf": 0,
   "Height": 1
 }

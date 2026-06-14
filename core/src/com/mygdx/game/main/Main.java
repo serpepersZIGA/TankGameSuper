@@ -236,6 +236,7 @@ public class Main extends ApplicationAdapter {
 		CorpusParser.ParsCorpus();
 		EngineParser.ParsEngine();
 		CannonParser.ParsCannon();
+		TrackParser.ParsTrack();
 
 		GunRegister.Create();
 		ParserItem.Pars();
@@ -248,6 +249,7 @@ public class Main extends ApplicationAdapter {
 
 		BulletRegister.BulletRegisterAdd();
 		RegisterControl = new RegisterController();
+        RegisterModuleTrack.Create();
 		RegisterModuleEngine.Create();
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();

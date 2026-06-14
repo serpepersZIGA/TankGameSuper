@@ -1,14 +1,8 @@
 package com.mygdx.game.unit.Controller;
 
-import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
-import com.mygdx.game.block.Block;
-import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
-import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.unit.Unit;
-
-import java.util.ArrayList;
 
 import static com.mygdx.game.main.ClientMain.Client;
 import static com.mygdx.game.main.Main.*;
@@ -37,7 +31,7 @@ public class ControllerPlayer extends Controller {
         unit.TargetY = Keyboard.MouseY- RC.height_2;
         Main.RC.x = unit.tower_x;
         Main.RC.y = unit.tower_y;
-        for(Unit Tower : unit.tower_obj){
+        for(Unit Tower : unit.TowerUnitList){
             Tower.left_mouse = LeftMouse;
             Tower.TargetX = unit.TargetX+Tower.tower_x;
             Tower.TargetY = unit.TargetY+Tower.tower_y;

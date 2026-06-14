@@ -8,6 +8,8 @@ font/Base/BaseFont.ttf
 font/Base/BaseFont2.otf
 font/Base/BaseFont3.ttf
 font/Base/BaseFont4.ttf
+image/animation/animationTrack.png
+image/animation/AnimationTrackUp.png
 image/build/big_build_wood_1.png
 image/build/Build2.png
 image/build/build_1.png
