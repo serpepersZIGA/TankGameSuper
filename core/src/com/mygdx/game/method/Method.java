@@ -12,6 +12,7 @@ import static java.lang.StrictMath.atan2;
 import static java.lang.StrictMath.sqrt;
 
 public class Method {
+    public static float PR = (float) (3.141559265/180f),RP = (float) (180f/3.141559265);
     public static float tower(float x, float y, float x_2, float y_2, float rotation_tower, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
         if(gh>50 && rotation_tower<-50){
@@ -30,10 +31,10 @@ public class Method {
         return rotation_tower;
     }
     public static float difference_rotation_sin(float x,float difference,float rotation){
-        return (float) (x - (difference * sin(rotation * 3.1415926535 / 180.0)));
+        return (float) (x - (difference * sin(rotation * PR)));
     }
     public static float difference_rotation_cos(float x,float difference,float rotation){
-        return (float) (x - (difference * cos(rotation * 3.1415926535f / 180.0f)));
+        return (float) (x - (difference * cos(rotation * PR)));
     }
     public static float[]tower_xy(float x,float y,float difference,float rotation){
         float tower_x = difference_rotation_sin(x,difference,rotation);

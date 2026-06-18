@@ -28,6 +28,8 @@ import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.MethodCollisionTransport;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.physicCollision;
 import static com.mygdx.game.unit.Fire.FireRegister.FireVoid;
 import static com.mygdx.game.unit.TransportRegister.*;
 import static java.lang.StrictMath.*;
@@ -61,7 +63,7 @@ public abstract class Unit implements Cloneable{
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
              width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
-    ArmorBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,RotateBase
+    ArmorBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,MaxRotate2,RotateBase
             ,TowerFireConstX,TowerFireConstY;
     protected float slowing = 0.05f;
     public static float speed_minimum = 0.5f;
@@ -536,7 +538,7 @@ public abstract class Unit implements Cloneable{
     }
     public final void move_xy_soldat(){
         float speed = this.speed*TimeGlobalBullet;
-        float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
+        float rotation_corpus2 = (float) (-this.rotation_corpus*RP);
         this.x -= move.move_sin2(speed, rotation_corpus2);
         this.y -= move.move_cos2(speed, rotation_corpus2);
     }
@@ -547,7 +549,7 @@ public abstract class Unit implements Cloneable{
         NotTower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void tower(float x, float y, float x_2, float y_2, float speed_tower) {
-        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        int gh = (int) (atan2(y - y_2, x - x_2) * RP);
         if(gh>50 && rotation_tower<-50){
             gh= -180;
         }
@@ -570,27 +572,42 @@ public abstract class Unit implements Cloneable{
     }
     public float RotateNotTower;
     public void NotTower(float x, float y, float x_2, float y_2, float speed_tower) {
-        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        int gh = (int) (atan2(y - y_2, x - x_2) *RP);
         if(gh>50 && rotation_tower<-50){
             gh= -180;
         }
         if(gh<-50 && rotation_tower>50){
             gh= 180;
         }
-        if (rotation_tower > 179){rotation_tower = -179;}
-        else if (rotation_tower < -179){rotation_tower = 179;}
+        if (rotation_tower > 180F){rotation_tower = -180F;}
+        else if (rotation_tower < -180F){rotation_tower = 180F;}
 
         //if (RotateNotTower > 179){RotateNotTower = -179;}
         //else if (RotateNotTower < -179){RotateNotTower = 179;}
+        //float a1 = (float) ((float) cos(rotation_corpus)+cos(MaxRotate));
+        //float a2 = (float) ((float) cos(rotation_corpus)-cos(MaxRotate));
+        //float a3 = (float) cos(-rotation_tower);
+        if(abs(abs(rotation_tower)-abs(rotation_corpus))>MaxRotate2){
+            if(RotateNotTower<0) {
+                rotation_tower = RotateBase + rotation_corpus-MaxRotate;
+                RotateNotTower = -MaxRotate;
+            }
+            else{
+                rotation_tower = RotateBase + rotation_corpus+MaxRotate;
+                RotateNotTower = MaxRotate;
+//                System.out.println(abs((rotation_tower) - rotation_corpus));
+            }
+        }
 
-        if (rotation_tower < gh & RotateNotTower <MaxRotate) {
-            rotation_tower += speed_tower;
+        if (rotation_tower < gh & RotateNotTower < MaxRotate) {
             RotateNotTower += speed_tower;
-        }if (rotation_tower > gh & RotateNotTower >-MaxRotate) {
+            rotation_tower += speed_tower;
+            //System.out.println(RotateNotTower+"+");
+        }else if (rotation_tower > gh & RotateNotTower >-MaxRotate) {
             RotateNotTower -= speed_tower;
             rotation_tower -= speed_tower;
+            //System.out.println(RotateNotTower+"-");
         }
-        System.out.println(RotateNotTower+ " "+MaxRotate);
         if(abs(rotation_tower-gh)<20 & trigger_fire){
             left_mouse = true;
         }
@@ -599,7 +616,7 @@ public abstract class Unit implements Cloneable{
 
     }
     public void SoldatRotate(float x, float y, float x_2, float y_2, float speed_tower) {
-        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        int gh = (int) (atan2(y - y_2, x - x_2) *RP);
         if(gh>50 && rotation_corpus<-50){
             gh= -180;
         }
@@ -732,7 +749,7 @@ public abstract class Unit implements Cloneable{
         float []xy = tower_xy_2(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     protected boolean fire_bot(float obj_x,float obj_y){
-        g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
+        g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) *RP);
         return abs(g - (rotation_tower)) < 20;
     }
     protected boolean fire_bot(){
@@ -740,7 +757,7 @@ public abstract class Unit implements Cloneable{
         return abs(AngleTarget - (rotation_corpus)) < 20;
     }
     protected boolean fire_bot_not_tower(double obj_x,double obj_y){
-        g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) / 3.1415926535f * 180f);
+        g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) *RP);
         sost_fire_bot = abs(g-rotation_tower)<20;
         //sost_fire_bot = true;
         if(reload_bot() & sost_fire_bot){
@@ -869,7 +886,7 @@ public abstract class Unit implements Cloneable{
                     + abs(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center))*0.5f;
             AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1])
                     .get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1])
-                    .get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
+                    .get(path.get(0)[0]).x_center)*RP)-90);
             rotation_bot();
             //System.out.println(trigger_drive);
             motor_bot_base();
@@ -894,7 +911,7 @@ public abstract class Unit implements Cloneable{
         }
         else{
             AngleTarget = (float) ((atan2(tower_y - Target.tower_y,
-                    tower_x - Target.tower_x)/3.1415926535*180)-90);
+                    tower_x - Target.tower_x)*RP)-90);
             rotation_bot();
             motor_bot_base(rad, this.behavior);
         }
@@ -945,7 +962,7 @@ public abstract class Unit implements Cloneable{
                     + abs(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center))*0.5f;
             AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1])
                     .get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1])
-                    .get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
+                    .get(path.get(0)[0]).x_center)*RP)-90);
             rotation_bot();
             //System.out.println(trigger_drive);
             motor_bot_base();
@@ -971,7 +988,7 @@ public abstract class Unit implements Cloneable{
         else if(Target != null){
             RadiusTarget = (float) sqrt(pow2(this.tower_x-Target.tower_x)+pow2(this.tower_y-Target.tower_y));
             AngleTarget = (float) ((atan2(tower_y - Target.tower_y,
-                    tower_x - Target.tower_x)/3.1415926535*180)-90);
+                    tower_x - Target.tower_x)*RP)-90);
             rotation_bot();
             motor_bot_base(rad, this.behavior);
         }
@@ -1079,7 +1096,7 @@ public abstract class Unit implements Cloneable{
     }
     public void helicopterAi(){
         if(TargetUnit != null) {
-            AngleTarget = (float) (atan2(this.y - TargetUnit.y, this.x - TargetUnit.x) / 3.1415926535 * 180)-90;
+            AngleTarget = (float) (atan2(this.y - TargetUnit.y, this.x - TargetUnit.x) *RP)-90;
 
             trigger_fire = true;
             rotation_bot();
@@ -1143,147 +1160,19 @@ public abstract class Unit implements Cloneable{
                         && unit.priority_paint == this.priority_paint) {
                     SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7, ContentSound.hit);
 
-                    physicCollision(unit);
-                    MethodCollision(unit);
+                    physicCollision(this,unit);
+                    MethodCollisionTransport(this,unit);
 
                 }
             }
         }
     }
-    private void physicCollision(Unit unit){
-        float x = this.x+corpus_width_2;
-        float y = this.y+corpus_height_2;
-        float[]xy;
-        float v = 4;
-        float x_2 = unit.x+ unit.corpus_width_2;
-        float y_2 = unit.y+ unit.corpus_height_2;
-        xy = tower_xy(x,y,-corpus_height_2,-rotation_corpus);
-        float x_1_2 = xy[0];
-        float y_1_2 = xy[1];
-        xy = tower_xy(x_2,y_2,-unit.corpus_height_2,-unit.rotation_corpus);
-        float x_2_2 = xy[0];
-        float y_2_2 = xy[1];
-
-        if(sqrt(pow2(x_1_2 - x_2_2) + pow2(y_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
-            xy = tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_2_1 = xy[0];
-            float y_2_2_1 = xy[1];
-            xy = tower_xy_2(x_2,y_2,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_2_2 = xy[0];
-            float y_2_2_2 = xy[1];
-            xy = tower_xy_2(x,y,-corpus_height_3,corpus_width_3,-rotation_corpus);
-            float x_1_2_1 = xy[0];
-            float y_1_2_1 = xy[1];
-            xy = tower_xy_2(x,y,-corpus_height_3,-corpus_width_3,-rotation_corpus);
-            float x_1_2_2 = xy[0];
-            float y_1_2_2 = xy[1];
-            if(sqrt(pow2(x_2_2_1 - x_1_2) + pow2(y_2_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_2_2_2 - x_1_2) + pow2(y_2_2_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_2_1 - x_2_2) + pow2(y_1_2_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus += (abs(unit.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_2_2 - x_2_2) + pow2(y_1_2_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
-            }
-            return;
-        }
-        xy = tower_xy(x,y,corpus_height_2,-rotation_corpus);
-        float x_1_1 = xy[0];
-        float y_1_1 = xy[1];
-        xy = tower_xy(x_2,y_2, unit.corpus_height_2,-unit.rotation_corpus);
-        float x_2_1 = xy[0];
-        float y_2_1 = xy[1];
-        if(sqrt(pow2(x_1_1 - x_2_1) + pow2(y_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*1.4){
-            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_1_1 = xy[0];
-            float y_2_1_1 = xy[1];
-            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_1_2 = xy[0];
-            float y_2_1_2 = xy[1];
-            xy = tower_xy_2(x,y,corpus_height_3,corpus_width_3,-rotation_corpus);
-            float x_1_1_1 = xy[0];
-            float y_1_1_1 = xy[1];
-            xy = tower_xy_2(x,y,corpus_height_3,-corpus_width_3,-rotation_corpus);
-            float x_1_1_2 = xy[0];
-            float y_1_1_2 = xy[1];
-            if(sqrt(pow2(x_2_1_1 - x_1_1) + pow2(y_2_1_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_2_1_2 - x_1_1) + pow2(y_2_1_2 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_1_1 - x_2_1) + pow2(y_1_1_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_1_2 - x_2_1) + pow2(y_1_1_2 - y_2_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus += (abs(unit.speed) + 1) * v;
-            }
-            return;
-        }
-        if(sqrt(pow2(x_1_1 - x_2_2) + pow2(y_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
-            xy = tower_xy_2(x_2,y_2,-unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_2_1 = xy[0];
-            float y_2_2_1 = xy[1];
-            xy = tower_xy_2(x_2,y_2,-unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_2_2 = xy[0];
-            float y_2_2_2 = xy[1];
-            xy = tower_xy_2(x,y,corpus_height_3,corpus_width_3,-rotation_corpus);
-            float x_1_1_1 = xy[0];
-            float y_1_1_1 = xy[1];
-            xy = tower_xy_2(x,y,corpus_height_3,-corpus_width_3,-rotation_corpus);
-            float x_1_1_2 = xy[0];
-            float y_1_1_2 = xy[1];
-            if(sqrt(pow2(x_2_2_1 - x_1_1) + pow2(y_2_2_1 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_2_2_2 - x_1_1) + pow2(y_2_2_2 - y_1_1))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                unit.rotation_corpus += (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_1_1 - x_2_2) + pow2(y_1_1_1 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_1_2 - x_2_2) + pow2(y_1_1_2 - y_2_2))<(unit.corpus_width_2+corpus_width_2)/1.2) {
-                this.rotation_corpus += (abs(unit.speed) + 1) * v;
-            }
-            return;
-        }
-
-        if(sqrt(pow2(x_2_1 - x_1_2) + pow2(y_2_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)*1.4){
-            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3, unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_1_1 = xy[0];
-            float y_2_1_1 = xy[1];
-            xy = tower_xy_2(x_2,y_2, unit.corpus_height_3,-unit.corpus_width_3,-unit.rotation_corpus);
-            float x_2_1_2 = xy[0];
-            float y_2_1_2 = xy[1];
-            xy = tower_xy_2(x,y,-corpus_height_3,corpus_width_3,-rotation_corpus);
-            float x_1_2_1 = xy[0];
-            float y_1_2_1 = xy[1];
-            xy = tower_xy_2(x,y,-corpus_height_3,-corpus_width_3,-rotation_corpus);
-            float x_1_2_2 = xy[0];
-            float y_1_2_2 = xy[1];
-            if(sqrt(pow2(x_2_1_1 - x_1_2) + pow2(y_2_1_1 - y_1_2))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
-                unit.rotation_corpus -= (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_2_1_2 - x_1_2) + pow2(y_2_1_2 - y_1_2))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
-                unit.rotation_corpus += (abs(this.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_2_1 - x_2_1) + pow2(y_1_2_1 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
-                this.rotation_corpus += (abs(unit.speed) + 1) * v;
-            }
-            if(sqrt(pow2(x_1_2_2 - x_2_1) + pow2(y_1_2_2 - y_2_1))<(unit.corpus_width_2+corpus_width_2)*0.8f) {
-                this.rotation_corpus -= (abs(unit.speed) + 1) * v;
-            }
-            return;
-        }
 
 
 
 
-    }
+
+
     private void damage_temperature(){
         if(abs(this.t) > 25){
             this.hp -= (int) abs(this.t*0.1f);
@@ -1664,7 +1553,7 @@ public abstract class Unit implements Cloneable{
         }
         else {
             RadiusTarget = (float) sqrt(pow2((x - iEnemy.tower_x)) + pow2(y - iEnemy.tower_y));
-            AngleTarget = (float) ((atan2(y - iEnemy.tower_y,x - iEnemy.tower_x)/3.1415926535*180)-90);
+            AngleTarget = (float) ((atan2(y - iEnemy.tower_y,x - iEnemy.tower_x)*RP)-90);
             SoldatRotateBot();
             SoldatMoveBot();
         }

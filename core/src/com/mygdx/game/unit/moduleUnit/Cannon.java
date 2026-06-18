@@ -192,6 +192,7 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.TowerFireConstX = -unit.const_tower_x;
         unit.TowerFireConstY = -unit.const_tower_y;
         unit.MaxRotate = MaxRotate;
+        unit.MaxRotate2 = MaxRotate+3+RotateBase;
         unit.RotateBase = RotateBase;
         unit.rotation_tower = RotateBase;
 
