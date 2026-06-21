@@ -55,7 +55,8 @@ public abstract class Unit implements Cloneable{
     public Cannon CannonUnit;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend,
     nConnect,HpBase,PenetrationBase;
-    public static int time_max_sound_motor = 20,time_sound_motor = time_max_sound_motor;
+    public int time_sound_motor = time_max_sound_motor;
+    public static int time_max_sound_motor = 20;
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
     public float fire_y;
@@ -128,6 +129,7 @@ public abstract class Unit implements Cloneable{
         this.CorpusUnit = corpus.CorpusAdd();
         this.EngineUnit = engine.EngineAdd();
         this.CannonUnitList = cannon;
+        //this.TrackUnitLists = cannon;
         this.TowerXY = TowerXY;
         this.classUnit = classUnit;
 //        for(int i = 0;i<cannon.size();i++){
@@ -225,6 +227,9 @@ public abstract class Unit implements Cloneable{
             unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2* Zoom);
             unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2* Zoom);
             unitAdd.const_x_tower = (int)(unitAdd.const_tower_x* Zoom);
+
+            unitAdd.TowerFireConstX = -this.const_tower_x;
+            unitAdd.TowerFireConstY = -this.const_tower_y;
             this.const_y_tower = (int)(unitAdd.const_tower_y* Zoom);
             for (Unit tower : unitAdd.TowerUnitList){
                 tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
@@ -297,6 +302,10 @@ public abstract class Unit implements Cloneable{
                 unitAdd.TowerUnitList.add(new UnitPattern(unitAdd.CannonUnitList.get(i).
                         CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
             }
+            for(int i = 0;i<TrackUnitLists.size();i++){
+                unitAdd.TrackUnitList.add(new UnitPattern(TrackUnitLists.get(i).
+                        TrackAdd(unitAdd,unitAdd.TrackXY[i][0],unitAdd.TrackXY[i][1]),unitAdd));
+            }
             unitAdd.corpus_width_zoom = (int)(unitAdd.corpus_width* Zoom);
             unitAdd.corpus_height_zoom = (int)(unitAdd.corpus_height* Zoom);
             unitAdd.width_tower_zoom = (int)(unitAdd.width_tower * Zoom);
@@ -310,9 +319,14 @@ public abstract class Unit implements Cloneable{
                 tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x* Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y* Zoom);
+                tower.team = team;
             }
-            for(Unit cannons : unitAdd.TowerUnitList){
-                cannons.team = team;
+            for(Unit Track : unitAdd.TrackUnitList){
+                Track.width_tower_zoom = (int)(Track.width_tower * Zoom);
+                Track.height_tower_zoom = (int)(Track.height_tower * Zoom);
+                Track.const_x_tower = (int)(Track.const_tower_x* Zoom);
+                Track.const_y_tower = (int)(Track.const_tower_y* Zoom);
+                Track.team = team;
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -344,6 +358,10 @@ public abstract class Unit implements Cloneable{
         for (Unit cannon : TowerUnitList){
             cannon.tower_x_const = tower_x_const;
             cannon.tower_y_const = tower_y_const;
+        }
+        for (Unit track : TrackUnitList){
+            track.tower_x_const = tower_x_const;
+            track.tower_y_const = tower_y_const;
         }
 
 //        this.corpus_width_zoom = (int)(corpus_width*Main.Zoom);
@@ -672,8 +690,8 @@ public abstract class Unit implements Cloneable{
     }
     public void bull_packets(BullPacket bullPack,Bullet bullet){
         if(bullet != null) {
-            bullPack.x = this.fire_x;
-            bullPack.y = this.fire_y;
+            bullPack.x = bullet.x;
+            bullPack.y = bullet.y;
             bullPack.team = this.team;
             bullPack.rotation = bullet.rotation;
             bullPack.time = bullet.time;

@@ -219,7 +219,7 @@ public class Main extends ApplicationAdapter {
 
 	@Override final
 	public void create () {
-		Unit.time_max_sound_motor = 20;Unit.time_sound_motor = Unit.time_max_sound_motor;
+//		Unit.time_max_sound_motor = 20;Unit.time_sound_motor = Unit.time_max_sound_motor;
 		Unit.range_see=2000;Unit.range_see_2 = (int)(Unit.range_see*1.5);
 		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
 		FunctionalComponentBulletRegister.FunctionalComponentBulletRegisters();

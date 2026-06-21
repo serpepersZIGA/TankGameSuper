@@ -15,6 +15,7 @@ public class UnitPattern extends Unit {
     public UnitPattern(String str,Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit,int medic_help,int Height){
         super(corpus,engine,cannon,TowerXY,classUnit,medic_help,Height);
         TowerUnitList = new ArrayList<>();
+        this.TrackUnitList = new ArrayList<>();
         behavior = 3;
         this.collision = TypeCollision.rect;
         corpus.CorpusLoad(this);
@@ -27,6 +28,7 @@ public class UnitPattern extends Unit {
             ArrayList<String>track,int[][]TrackXY, ClassUnit classUnit, int HillHp, int Height){
         super(corpus,engine,cannon,TowerXY,track,TrackXY,classUnit,HillHp,Height);
         TowerUnitList = new ArrayList<>();
+        this.TrackUnitList = new ArrayList<>();
         behavior = 3;
         this.classUnit = ClassUnit.Transport;
         this.collision = TypeCollision.rect;
