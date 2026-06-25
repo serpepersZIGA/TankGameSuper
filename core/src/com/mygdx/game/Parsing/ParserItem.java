@@ -50,10 +50,14 @@ public class ParserItem {
         ObjectMapper objectMapper = new ObjectMapper();
 
         buffItem obj = objectMapper.readValue(TxT, buffItem.class);
-        int Armor = obj.Armor;
+        int ArmorFront = obj.ArmorFront;
+        int ArmorCenter = obj.ArmorCenter;
+        int ArmorBack = obj.ArmorBack;
         int Hp = obj.Hp;
         String Image = obj.Image;
-        int ArmorPercent = obj.ArmorPercent;
+        int ArmorFrontPercent = obj.ArmorFrontPercent;
+        int ArmorCenterPercent = obj.ArmorCenterPercent;
+        int ArmorBackPercent = obj.ArmorBackPercent;
         int HPPercent = obj.HPPercent;
         int DamagePercent = obj.DamagePercent;
         int MoveUPPercent= obj.MoveUPPercent;
@@ -66,12 +70,14 @@ public class ParserItem {
         ArrayList<TegItem> list = new ArrayList<>();
         list.add(TegItem.upgrade);
         if(Price!= 0){
-            Inventory.AssortmentAdd(new Item(HPPercent,Hp,Armor,ArmorPercent,DamagePercent,PenetrationPercent
+            Inventory.AssortmentAdd(new Item(HPPercent,Hp,ArmorFront,ArmorCenter,ArmorBack
+                    ,ArmorFrontPercent,ArmorCenterPercent,ArmorBackPercent,DamagePercent,PenetrationPercent
                     ,MoveUPPercent,MoveDownPercent,AccelerationPercent,Price,ID,
                     new ArrayList<>(list),Image));
         }
         else{
-            new Item(HPPercent,Hp,Armor,ArmorPercent,DamagePercent,PenetrationPercent
+            new Item(HPPercent,Hp,ArmorFront,ArmorCenter,ArmorBack
+                    ,ArmorFrontPercent,ArmorCenterPercent,ArmorBackPercent,DamagePercent,PenetrationPercent
                     ,MoveUPPercent,MoveDownPercent,AccelerationPercent,Price,ID,
                     new ArrayList<>(list),Image);
         }
@@ -81,17 +87,20 @@ public class ParserItem {
         new File("ContentGlobal/Item").mkdirs();
         File armorB1 = new File("ContentGlobal/Item/armorB1.json");
         String data = "{\n" +
-                "  \"Armor\": 20,\n" +
+                "  \"ArmorFront\": 20,\n" +
+                "  \"ArmorCenter\": 10,\n" +
+                "  \"ArmorBack\": 5,\n" +
                 "  \"Hp\": 500,\n" +
-                "  \"ArmorPercent\": 10,\n" +
+                "  \"ArmorFrontPercent\": 10,\n" +
+                "  \"ArmorCenterPercent\": 10,\n" +
+                "  \"ArmorBackPercent\": 10,\n" +
                 "  \"HPPercent\": 0,\n" +
                 "  \"DamagePercent\": 0,\n" +
                 "  \"Image\": \"armorB1\",\n" +
                 "  \"MoveUPPercent\": 200,\n" +
                 "  \"MoveDownPercent\": 0,\n" +
                 "  \"AccelerationPercent\": 0,\n" +
-                "  \"Price\": 2,\n" +
-                "  \"PenetrationPercent\": 7\n" +
+                "  \"Price\": 2\n" +
                 "}";
         Create(armorB1,data);
 

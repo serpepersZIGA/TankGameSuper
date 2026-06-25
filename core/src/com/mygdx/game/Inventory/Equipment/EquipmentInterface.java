@@ -57,7 +57,7 @@ public class EquipmentInterface extends InventoryInterface {
         //unit.hp += (int) HP;
         unit.max_hp = unit.HpBase;
         //unit.hp = unit.HpBase;
-        unit.armor = unit.ArmorBase;
+        unit.armorFront = unit.ArmorFrontBase;
         unit.Acceleration =  unit.AccelerationBase;
         unit.SpeedUp = unit.SpeedUpBase;
         unit.SpeedDown = unit.SpeedDownBase;

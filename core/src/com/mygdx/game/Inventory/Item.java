@@ -17,23 +17,34 @@ public class Item implements Cloneable{
     public ArrayList<TegItem>teg;
     public Gun gun;
     public int HPHill,Price;
-    public float HPPercent,HP, Armor, ArmorPercent,DamagePercent,PenetrationPercent,
+    public float HPPercent,HP, ArmorFront, ArmorFrontPercent,
+            ArmorBack, ArmorBackPercent,ArmorCenter, ArmorCenterPercent
+    ,DamagePercent,PenetrationPercent,
             MoveUPPercent,MoveDownPercent, AccelerationPercent;
     public Item(Gun gun,ArrayList<TegItem>teg){
         this.teg = teg;
         this.gun = gun;
         this.typeItem = TypeItem.Gun;
     }
-    public Item(float HPPercent,float HP,float Armor,float ArmorPercent
-            ,float DamagePercent,float PenetrationPercent,
-                int MoveUPPercent,int MoveDownPercent,int AccelerationPercent,int Price
-            ,String ID,ArrayList<TegItem>teg,String image){
+    public Item(float HPPercent, float HP, float ArmorFront, float ArmorFrontPercent
+            , float ArmorCenter, float ArmorCenterPercent
+            , float ArmorBack, float ArmorBackPercent
+            , float DamagePercent, float PenetrationPercent,
+                int MoveUPPercent, int MoveDownPercent, int AccelerationPercent, int Price
+            , String ID, ArrayList<TegItem>teg, String image){
         this.teg = teg;
         this.ID = ID;
         this.Price = Price;
         this.HPPercent = HPPercent;
-        this.Armor = Armor;
-        this.ArmorPercent = ArmorPercent;
+        this.ArmorFront = ArmorFront;
+        this.ArmorFrontPercent = ArmorFrontPercent;
+
+        this.ArmorBack = ArmorBack;
+        this.ArmorBackPercent = ArmorBackPercent;
+
+        this.ArmorCenter = ArmorCenter;
+        this.ArmorCenterPercent = ArmorCenterPercent;
+
         this.DamagePercent = DamagePercent;
         this.HP = HP;
         this.PenetrationPercent = PenetrationPercent;
@@ -120,11 +131,15 @@ public class Item implements Cloneable{
     }
     public void UpgradeUse(Unit unit){
         unit.max_hp+= (int) HP;
-        unit.armor+= Armor;
+        unit.armorFront += ArmorFront;
+        unit.armorBack += ArmorBack;
+        unit.armorCenter += ArmorCenter;
         //unit.hp += (int) HP;
         unit.max_hp += (int) (unit.HpBase * HPPercent*0.01f);
         //unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
-        unit.armor += (int) (unit.ArmorBase * ArmorPercent*0.01f);
+        unit.armorFront += (int) (unit.ArmorFrontBase * ArmorFrontPercent *0.01f);
+        unit.armorBack += (int) (unit.ArmorBackBase * ArmorFrontPercent *0.01f);
+        unit.armorCenter += (int) (unit.ArmorCenterBase * ArmorFrontPercent *0.01f);
         unit.Acceleration +=  unit.AccelerationBase * AccelerationPercent*0.01f;
         unit.SpeedUp += unit.SpeedUpBase *MoveUPPercent*0.01f;
         unit.SpeedDown += unit.SpeedDownBase *MoveDownPercent*0.01f;
@@ -139,11 +154,11 @@ public class Item implements Cloneable{
     }
     public void UpgradeUnUse(Unit unit){
         unit.max_hp-= (int) HP;
-        unit.armor-= Armor;
+        unit.armorFront -= ArmorFront;
         //unit.hp += (int) HP;
         unit.max_hp -= (int) (unit.HpBase * HPPercent*0.01f);
         unit.hp -= (int) (unit.HpBase * HPPercent*0.01f);
-        unit.armor -= (int) (unit.ArmorBase * ArmorPercent*0.01f);
+        unit.armorFront -= (int) (unit.ArmorFrontBase * ArmorFrontPercent *0.01f);
         unit.Acceleration -=  unit.AccelerationBase * AccelerationPercent*0.01f;
         unit.SpeedUp -= unit.SpeedUpBase *MoveUPPercent*0.01f;
         unit.SpeedDown -= unit.SpeedDownBase *MoveDownPercent*0.01f;

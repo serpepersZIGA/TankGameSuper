@@ -9,7 +9,9 @@ import lombok.NoArgsConstructor;
 @AllArgsConstructor
 @NoArgsConstructor
 public class buffItem {
-    public int Armor,Hp,ArmorPercent,HPPercent,DamagePercent,MoveUPPercent,MoveDownPercent, AccelerationPercent, Price,
+    public int ArmorFront, ArmorCenter, ArmorBack, Hp, ArmorFrontPercent, ArmorCenterPercent, ArmorBackPercent, HPPercent, DamagePercent, MoveUPPercent, MoveDownPercent, AccelerationPercent, Price,
             PenetrationPercent;
     public String Image;
+
+
 }

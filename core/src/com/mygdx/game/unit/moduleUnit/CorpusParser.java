@@ -10,10 +10,9 @@ import com.mygdx.game.Parsing.Parser;
 import java.io.*;
 
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
-import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
 
 public class CorpusParser {
-    public static int MaxHP,Armor,CorpusWidth,CorpusHeight,Difference,CorrectX,CorrectY;
+    public static int MaxHP, ArmorFront,ArmorCenter,ArmorBack,CorpusWidth,CorpusHeight,Difference,CorrectX,CorrectY;
     public static String Image;
     public static FunctionalList List;
     public static boolean ConfControl;
@@ -35,7 +34,7 @@ public class CorpusParser {
 
             CorpusListID.add(new Object[]{
                     new Corpus(file.name().replace(".Corpus","")
-                            ,MaxHP,Armor,CorpusWidth,CorpusHeight,Difference
+                            ,MaxHP, ArmorFront,ArmorCenter,ArmorBack,CorpusWidth,CorpusHeight,Difference
                             ,Image,List,CorrectX,CorrectY)
                     ,file.name().replace(".Corpus","")});
             List = new FunctionalList();
@@ -96,9 +95,21 @@ public class CorpusParser {
                     i = (int) obj[1];
                     TotalTxT = "";
                     break;
-                case "Armor":
+                case "ArmorFront":
                     obj = Parser.IntegerPars(TxT,i);
-                    Armor = (int) obj[0];
+                    ArmorFront = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "ArmorCenter":
+                    obj = Parser.IntegerPars(TxT,i);
+                    ArmorCenter = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "ArmorBack":
+                    obj = Parser.IntegerPars(TxT,i);
+                    ArmorBack = (int) obj[0];
                     i = (int) obj[1];
                     TotalTxT = "";
                     break;
@@ -131,7 +142,7 @@ public class CorpusParser {
                 case "func.Add":
                     obj = Parser.ComponentParsing(TxT,i);
                     FunctionalComponent comp =(FunctionalComponent)obj[0];
-                    System.out.println(comp);
+                    //System.out.println(comp);
                     List.Add(comp);
                     //ConfControl = (boolean) obj[0];
                     i = (int) obj[1];
@@ -151,7 +162,9 @@ public class CorpusParser {
         File At2E = new File("ContentGlobal/Module/Corpus/At2E.Corpus");
         File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus");
         String data = "MaxHP = 1700;\n" +
-                "Armor = 55;\n" +
+                "ArmorFront = 55;\n" +
+                "ArmorCenter = 35;\n" +
+                "ArmorBack = 25;\n" +
                 "CorpusWidth = 50;\n" +
                 "CorpusHeight = 145;\n" +
                 "Difference = 18;\n" +
@@ -164,21 +177,27 @@ public class CorpusParser {
                 "func.Add ComponentTowerXY;";
         Create(At2E,data);
          data = "MaxHP = 700;\n" +
-                "Armor = 20;\n" +
-                "CorpusWidth = 76;\n" +
-                "CorpusHeight = 220;\n" +
-                "Difference = 18;\n" +
-                "Image = helicopter_enemy_t1;\n" +
-                "\n" +
-                "func.Add ComponentTowerIteration;\n" +
-                "func.Add ComponentTowerXY;";
+                 "ArmorFront = 20;\n" +
+                 "ArmorCenter = 20;\n" +
+                 "ArmorBack = 10;\n" +
+                 "CorpusWidth = 76;\n" +
+                 "CorpusHeight = 220;\n" +
+                 "Difference = 18;\n" +
+                 "Image = helicopter_enemy_t1;\n" +
+                 "\n" +
+                 "func.Add ComponentTowerIteration;\n" +
+                 "func.Add ComponentTowerXY;";
         Create(HelicopterCorpus1,data);
         data = "MaxHP = 1200;\n" +
-                "Armor = 35;\n" +
+                "ArmorFront = 35;\n" +
+                "ArmorCenter = 20;\n" +
+                "ArmorBack = 10;\n" +
                 "CorpusWidth = 50;\n" +
                 "CorpusHeight = 130;\n" +
                 "Difference = 18;\n" +
                 "Image = corpus_enemy;\n" +
+                "CorrectX = 0;\n" +
+                "CorrectY = 0;\n" +
                 "\n" +
                 "func.Add ComponentTowerIteration;\n" +
                 "func.Add ComponentBuildingCollision;\n" +

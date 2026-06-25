@@ -1,18 +1,16 @@
 package com.mygdx.game.unit.moduleUnit;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
 
 import java.util.Objects;
 
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
-import static com.mygdx.game.unit.moduleUnit.RegisterModuleEngine.EngineListID;
 
 public class Corpus extends moduleUnit implements Cloneable{
     public int max_hp;
     public FunctionalList functional;
-    public int armor;
+    public int ArmorFront,ArmorBack,ArmorCenter;
     public int corpus_width,corpus_width_2;
     public int corpus_height,corpus_height_2;
     public float RotationCorpus;
@@ -21,11 +19,13 @@ public class Corpus extends moduleUnit implements Cloneable{
     public float CenterCorpusX;
     public float CenterCorpusY;
     public int Difference;
-    public Corpus(int max_hp, int armor, int corpus_width, int corpus_height,int Difference, String image,
-    FunctionalList func){
+    public Corpus(int max_hp, int ArmorFront,int ArmorCenter,int ArmorBack, int corpus_width, int corpus_height, int Difference, String image,
+                  FunctionalList func){
         this.max_hp = max_hp;
         this.Difference = Difference;
-        this.armor = armor;
+        this.ArmorFront = ArmorFront;
+        this.ArmorCenter = ArmorCenter;
+        this.ArmorBack = ArmorBack;
         this.corpus_width = corpus_width;
         this.corpus_height = corpus_height;
 
@@ -58,13 +58,15 @@ public class Corpus extends moduleUnit implements Cloneable{
         //System.out.println(string);
         throw new RuntimeException();
     }
-    public Corpus(String ID,int max_hp, int armor, int corpus_width, int corpus_height,
-                  int Difference, String image,FunctionalList func,int CorrectX,int CorrectY){
+    public Corpus(String ID, int max_hp, int ArmorFront,int ArmorCenter,int ArmorBack, int corpus_width, int corpus_height,
+                  int Difference, String image, FunctionalList func, int CorrectX, int CorrectY){
         this.ID = ID;
         CorpusListID.add(new Object[]{this,ID});
         this.max_hp = max_hp;
         this.Difference = Difference;
-        this.armor = armor;
+        this.ArmorFront = ArmorFront;
+        this.ArmorCenter = ArmorCenter;
+        this.ArmorBack = ArmorBack;
         this.corpus_width = corpus_width;
         this.corpus_height = corpus_height;
 
@@ -80,8 +82,13 @@ public class Corpus extends moduleUnit implements Cloneable{
         unit.max_hp = max_hp;
         unit.HpBase = max_hp;
         unit.hp = max_hp;
-        unit.armor = armor;
-        unit.ArmorBase = armor;
+        unit.armorFront = ArmorFront;
+        unit.armorCenter = ArmorCenter;
+        unit.armorBack = ArmorBack;
+        unit.ArmorFrontBase = ArmorFront;
+        unit.ArmorBackBase = ArmorBack;
+        unit.ArmorCenterBase = ArmorCenter;
+
         unit.corpus_width = corpus_width;
         unit.corpus_height = corpus_height;
 

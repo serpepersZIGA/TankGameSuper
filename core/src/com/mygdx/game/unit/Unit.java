@@ -60,11 +60,11 @@ public abstract class Unit implements Cloneable{
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
     public float fire_y;
-    public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage,armor,reload_max, Acceleration =0.2f,speed, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
+    public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage, armorFront,armorCenter,armorBack,reload_max, Acceleration =0.2f,speed, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
              width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
-    ArmorBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,MaxRotate2,RotateBase
+            ArmorFrontBase,ArmorCenterBase,ArmorBackBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,MaxRotate2,RotateBase
             ,TowerFireConstX,TowerFireConstY;
     protected float slowing = 0.05f;
     public static float speed_minimum = 0.5f;

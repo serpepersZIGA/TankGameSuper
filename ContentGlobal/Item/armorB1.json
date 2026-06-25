@@ -1,7 +1,11 @@
 {
-  "Armor": 20,
+  "ArmorFront": 20,
+  "ArmorCenter": 10,
+  "ArmorBack": 5,
   "Hp": 500,
-  "ArmorPercent": 10,
+  "ArmorFrontPercent": 10,
+  "ArmorCenterPercent": 10,
+  "ArmorBackPercent": 10,
   "HPPercent": 0,
   "DamagePercent": 0,
   "Image": "armorB1",

@@ -1,7 +1,10 @@
 package com.mygdx.game.main;
 
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Texture;
+import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Shader.FlameShader;
@@ -9,6 +12,7 @@ import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.method.Method;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.unit.AI;
@@ -19,6 +23,7 @@ import com.mygdx.game.Network.TransportPacket;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
+import static Data.DataImage.TextureAtl;
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
@@ -27,6 +32,7 @@ import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
+import static com.mygdx.game.method.Method.tower_xy;
 import static com.mygdx.game.unit.TransportRegister.*;
 import static com.mygdx.game.unit.Unit.AIScan;
 
@@ -218,9 +224,8 @@ public class ActionGameHost extends ActionGame{
                     bullet.update();
                 }
             }
-
-
         }
+
 //        for (i = 0; i< Main.BulletList.size(); i++){
 //            if(Main.BulletList.get(i).height == 2) {
 //                Main.BulletList.get(i).all_action();
@@ -229,6 +234,36 @@ public class ActionGameHost extends ActionGame{
 
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
+//            int x1 = (int) (unit.x);
+//            int y1 = (int) (unit.y+unit.corpus_height_2);
+//            float[]xy1 = Method.tower_xy_2(x1, y1-unit.corpus_height_2*0.2f,
+//                    -unit.corpus_height*0.4f,0,-unit.rotation_corpus);
+//            float[]xy2 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.6f,
+//                    -unit.corpus_height*0.0f,0,-unit.rotation_corpus);
+//            float[]xy3 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.2f,
+//                    unit.corpus_height*0.4f,0,-unit.rotation_corpus);
+//            float[]xy11= RC.render_objZoom(xy1[0],xy1[1]);
+//            float[]xy22 = RC.render_objZoom(xy2[0],xy2[1]);
+//            float[]xy33 = RC.render_objZoom(xy3[0],xy3[1]);
+//            Sprite sprite = TextureAtl.createSprite("corpus_player");
+//            sprite.setRotation(unit.rotation_corpus);
+//            sprite.setOrigin(unit.corpus_width_2* Zoom,(float) ((unit.corpus_height_2*0.2)* Zoom));
+//            sprite.setSize( unit.corpus_width* Zoom, (float) ((unit.corpus_height*0.2)* Zoom));
+//            sprite.setPosition(xy11[0],xy11[1]);
+//            sprite.draw(Batch);
+//            sprite.setPosition(xy33[0],xy33[1]);
+//            sprite.draw(Batch);
+//            sprite.setOrigin(unit.corpus_width_2* Zoom,(float) ((unit.corpus_height_2*0.6)* Zoom));
+//            sprite.setSize( unit.corpus_width* Zoom, (float) (unit.corpus_height*0.6)* Zoom);
+//            sprite.setPosition(xy22[0],xy22[1]);
+//            sprite.draw(Batch);
+
+//            Render.rect(xy11[0],xy11[1],(int) unit.corpus_width* Zoom,
+//                    (int) ((int) unit.corpus_height*0.2)* Zoom, Color.RED);
+//            Render.rect(xy22[0],xy22[1],(int) unit.corpus_width* Zoom,
+//                    (int) ((int) unit.corpus_height*0.6)* Zoom, Color.GREEN);
+//            Render.rect(xy33[0],xy33[1],(int) unit.corpus_width* Zoom,
+//                    (int) ((int) unit.corpus_height*0.2)* Zoom, Color.YELLOW);
             if(unit.height == 2) {
                 unit.UpdateUnit();
                 unit.update();

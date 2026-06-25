@@ -4,6 +4,7 @@ import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.bull.Updater.UpdaterBullet;
 import com.mygdx.game.main.Main;
 
+import com.mygdx.game.method.Method;
 import com.mygdx.game.method.move;
 import com.mygdx.game.method.rand;
 import Content.Particle.Acid;
@@ -22,7 +23,7 @@ import java.util.ArrayList;
 import static com.mygdx.game.bull.BulletRegister.*;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.pow2.pow2;
-import static java.lang.StrictMath.abs;
+import static java.lang.StrictMath.*;
 
 public abstract class Bullet implements Serializable,Cloneable {
     public float x,y,speed,damage,penetration,rotation,speed_x,speed_y,damage_fragment,penetration_fragment,t_damage,time;
@@ -455,7 +456,38 @@ public abstract class Bullet implements Serializable,Cloneable {
             if (this.type_team != unit.team & abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
                 if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
                         (int) unit.corpus_height, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
-                    armor_damage(unit);
+                    int x1 = (int) (unit.x);
+                    int y1 = (int) (unit.y+unit.corpus_height_2);
+
+                    float[]xy1 = Method.tower_xy_2(x1, y1-unit.corpus_height_2*0.2f,
+                            -unit.corpus_height*0.4f,0,-unit.rotation_corpus);
+//                    float[]xy2 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.6f,
+//                            -unit.corpus_height*0.0f,0,-unit.rotation_corpus);
+                    float[]xy3 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.2f,
+                            unit.corpus_height*0.4f,0,-unit.rotation_corpus);
+
+                    if (rect_bull((int) xy1[0] ,(int) xy1[1], (int) unit.corpus_width, (int) ((int) unit.corpus_height*0.2f), (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                        armor_damage(unit,unit.armorBack);
+                        System.out.println("3");
+                    }
+//                    else if (rect_bull((int) xy2[0],
+//                            (int) xy2[1]
+//                    , (int) unit.corpus_width,
+//                            (int) ((int) unit.corpus_height*0.6), (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+//                        armor_damage(unit,unit.armorCenter);
+//                        //System.out.println("2");
+//                    }
+                    else if (rect_bull((int) xy3[0],
+                            (int) xy3[1]
+                            , (int) unit.corpus_width,
+                            (int) ((int) unit.corpus_height*0.2f), (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                        armor_damage(unit,unit.armorFront);
+                        System.out.println("1");
+                    }
+                    else{
+                        armor_damage(unit,unit.armorCenter);
+                        System.out.println("2");
+                    }
                     unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
                     return;
                 }
@@ -466,7 +498,7 @@ public abstract class Bullet implements Serializable,Cloneable {
             if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
                 if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
                         this.size, -unit.rotation_corpus)) {
-                    armor_damage(unit);
+                    armor_damage(unit,unit.armorFront);
                     //unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
                     return;
                 }
@@ -495,13 +527,26 @@ public abstract class Bullet implements Serializable,Cloneable {
             //}
         }
     }
-    protected final void armor_damage(Unit unit){
-        unit.hp -= (int) (this.damage-((this.damage/100*(unit.armor-this.penetration))));
+    protected final void armor_damage(Unit unit,float armor){
+        int DamageTotal = (int) (this.damage-((this.damage*0.01f*(armor-this.penetration))));
+        if(DamageTotal>0) {
+            unit.hp -= DamageTotal;
+        }
         unit.t += this.t_damage;
         this.clear_sost = true;
     }
 
     protected final boolean rect_bull(int x1,int y1,int width,int height,int x,int y,int size,double rotation){
+        Rectangle2D rect1 = new Rectangle2D.Double(x1,y1,width,height);
+        AffineTransform transform1 = new AffineTransform();
+        transform1.rotate(Math.toRadians(-rotation), rect1.getCenterX(), rect1.getCenterY());
+        Area area1 = new Area(rect1);
+        area1.transform(transform1);
+
+        Ellipse2D circle = new Ellipse2D.Double(x,y,size,size);
+        return area1.intersects(circle.getBounds2D());
+    }
+    protected final boolean rect_bull2(int x1,int y1,int width,int height,int x,int y,int size,double rotation){
         Rectangle2D rect1 = new Rectangle2D.Double(x1,y1,width,height);
         AffineTransform transform1 = new AffineTransform();
         transform1.rotate(Math.toRadians(-rotation), rect1.getCenterX(), rect1.getCenterY());

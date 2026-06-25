@@ -1,5 +1,7 @@
 MaxHP = 700;
-Armor = 20;
+ArmorFront = 20;
+ArmorCenter = 20;
+ArmorBack = 10;
 CorpusWidth = 76;
 CorpusHeight = 220;
 Difference = 18;

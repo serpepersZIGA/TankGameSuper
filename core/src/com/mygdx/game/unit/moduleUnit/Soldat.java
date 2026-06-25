@@ -1,11 +1,8 @@
 package com.mygdx.game.unit.moduleUnit;
 
-import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Unit;
-
-import static com.mygdx.game.main.Main.EventData;
 
 public class Soldat extends moduleUnit implements Cloneable{
     public int max_hp,hp;
@@ -46,7 +43,7 @@ public class Soldat extends moduleUnit implements Cloneable{
         unit.max_hp = max_hp;
         unit.hp = hp;
         unit.HpBase = max_hp;
-        unit.armor = armor;
+        unit.armorFront = armor;
         unit.corpus_width = corpus_width;
         unit.corpus_height = corpus_height;
         unit.corpus_width_zoom = (int) (corpus_width* Main.Zoom);
