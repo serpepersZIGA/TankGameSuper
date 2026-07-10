@@ -5,6 +5,7 @@
   "TowerXY": [[-10,50],[10,50],[1,18]],
 
   "Track": ["TrackPz2","TrackPz2"],
+  "Side": [0,1],
   "TrackXY": [[-22,0],[22,0]],
   "MedicConf": 0,
   "Height": 1

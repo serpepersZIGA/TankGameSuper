@@ -5,6 +5,7 @@
   "TowerXY": [[0,50],[25,50],[-25,50]],
 
   "Track": [],
+  "Side": [],
   "TrackXY": [],
   "MedicConf": 0,
   "Height": 2

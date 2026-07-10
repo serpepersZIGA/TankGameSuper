@@ -38,7 +38,7 @@ public class LightingMainSystem implements Disposable {
         public final Vector2 position = new Vector2();
         public final Color color = new Color();
         public float intensity = 1f;
-        public float radius = 100f,radiusZoom;
+        public float radius = 100f,radiusZoom,radiusZoom2;
         public boolean work = true;
         public float XRender,YRender;
         public float transparency;
@@ -51,6 +51,7 @@ public class LightingMainSystem implements Disposable {
             this.intensity = intensity;
             this.radius = radius;
             this.radiusZoom = radius*Main.Zoom;
+            this.radiusZoom2 = this.radiusZoom*0.5f;
             this.transparency = transparency;
 
             float[]xy = Main.RC.render_objZoom(this.position.x,this.position.y);
@@ -102,8 +103,8 @@ public class LightingMainSystem implements Disposable {
     }
 
     public void begin(SpriteBatch batch) {
-        batch.enableBlending();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
+        //batch.enableBlending();
+        //batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE);
         batch.begin();
         //batch.flush();
         Batch.setShader(shader);
@@ -149,16 +150,16 @@ public class LightingMainSystem implements Disposable {
                 shader.setUniformf("u_lights[" + i + "].color", light.color.r, light.color.g, light.color.b,
                         light.color.a);
                 shader.setUniformf("u_lights[" + i + "].intensity", light.intensity);
-                shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom * 0.5f * lightTotal);
+                shader.setUniformf("u_lights[" + i + "].radius", light.radiusZoom + light.radiusZoom2);
                 shader.setUniformf("u_lights[" + i + "].transparency", light.transparency);
             }
 
         }
         //Batch.draw(LiquidShader.frameBuffer.getColorBufferTexture(), 0, 0);
-        batch.draw(TextureAtl.createSprite("Buffer2"),0,0,screenWidth,screenHeight);
+        //batch.draw(TextureAtl.createSprite("Buffer2"),0,0,screenWidth,screenHeight);
         //batch.flush();
         batch.end();
-        batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
+        //batch.setBlendFunction(GL20.GL_SRC_ALPHA, GL20.GL_ONE_MINUS_SRC_ALPHA);
         //batch.setShader(null);
     }
 

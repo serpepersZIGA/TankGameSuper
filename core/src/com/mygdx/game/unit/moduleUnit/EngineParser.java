@@ -112,13 +112,19 @@ public class EngineParser {
         new File("ContentGlobal/Module").mkdirs();
         new File("ContentGlobal/Module/Engine").mkdirs();
         File V2A = new File("ContentGlobal/Module/Engine/V2A.Engine");
+        File U1M = new File("ContentGlobal/Module/Engine/U1M.Engine");
         String data = "MaxSpeed = 4.5;\n" +
                 "MinSpeed = -4.5;\n" +
                 "Acceleration = 0.2;\n" +
                 "SpeedRotation = 1;\n" +
                 "ConfControl = true;";
         Create(V2A,data);
-
+        data = "MaxSpeed = 1.5;\n" +
+                "MinSpeed = -1.5;\n" +
+                "Acceleration = 0.05;\n" +
+                "SpeedRotation = 1.5;\n" +
+                "ConfControl = true;";
+        Create(U1M,data);
 
     }
     private static void Create(File file, String str){

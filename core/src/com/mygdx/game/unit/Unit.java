@@ -7,6 +7,7 @@ import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
+import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
 import Content.Particle.Bang;
@@ -74,7 +75,7 @@ public abstract class Unit implements Cloneable{
     public boolean PlayerConf;
     public float AngleTarget,RadiusTarget;
 
-    public byte behavior,behavior_buffer, medic_help, team,height = 1,trigger_drive;
+    public byte behavior,behavior_buffer, medic_help, team,height = 1,trigger_drive,Side;
     private static float g;
     public FunctionalList functional = new FunctionalList();
     public static int BorderDetected = 200;
@@ -90,7 +91,7 @@ public abstract class Unit implements Cloneable{
     public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
     public static int ai_sost = 200;
     public float SpeedMaxInertion,SpeedInertionX,SpeedInertionY,SpeedMaxInertionX,SpeedMaxInertionY,
-            speedX,speedY;
+            speedX,speedY,speedTrack;
     public EventGame EventClear = EventData.eventDeadTransport;
     public ArrayList<int[]>path;
     public ArrayList<Unit> TowerUnitList,TrackUnitList;
@@ -137,7 +138,7 @@ public abstract class Unit implements Cloneable{
 //        }
     }
     public Unit(String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,
-            ArrayList<String>track,int[][]TrackXY, ClassUnit classUnit
+            ArrayList<String>track,int[][]TrackXY,int[] Side, ClassUnit classUnit
             , int HillHp, float Height){
         this.height = (byte) Height;
         this.HillHp = HillHp;
@@ -147,7 +148,7 @@ public abstract class Unit implements Cloneable{
             this.CannonUnitList.add(Cannon.CannonAdd(cannon.get(i),this,TowerXY[i][0],TowerXY[i][1]));
         }
         for (int i = 0;i<track.size();i++) {
-            this.TrackUnitLists.add(Track.TrackAdd(track.get(i),this,TrackXY[i][0],TrackXY[i][1]));
+            this.TrackUnitLists.add(Track.TrackAdd(track.get(i),this,TrackXY[i][0],TrackXY[i][1],Side[i]));
         }
         this.TowerXY = TowerXY;
         this.TrackXY = TrackXY;
@@ -190,6 +191,7 @@ public abstract class Unit implements Cloneable{
     }
     public Unit(Track track){
         classUnit = ClassUnit.Tower;
+        //data_tower();
     }
     public Unit UnitAdd(int x, int y, boolean host, byte team, Controller controller,Inventory inventory,Inventory equipment){
         try {
@@ -214,6 +216,7 @@ public abstract class Unit implements Cloneable{
             for(int i = 0;i<TrackUnitLists.size();i++){
                 unitAdd.TrackUnitList.add(new UnitPattern(TrackUnitLists.get(i).
                         TrackAdd(unitAdd,unitAdd.TrackXY[i][0],unitAdd.TrackXY[i][1]),unitAdd));
+
             }
             for(int i = 0;i<CannonUnitList.size();i++){
                 unitAdd.TowerUnitList.add(new UnitPattern(CannonUnitList.get(i).
@@ -227,6 +230,7 @@ public abstract class Unit implements Cloneable{
             unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2* Zoom);
             unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2* Zoom);
             unitAdd.const_x_tower = (int)(unitAdd.const_tower_x* Zoom);
+            unitAdd.speedTrack = unitAdd.speed_rotation*2f;
 
             unitAdd.TowerFireConstX = -this.const_tower_x;
             unitAdd.TowerFireConstY = -this.const_tower_y;
@@ -234,17 +238,19 @@ public abstract class Unit implements Cloneable{
             for (Unit tower : unitAdd.TowerUnitList){
                 tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
                 tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
-                tower.const_x_tower = (int)(tower.const_tower_x* Zoom);
-                tower.const_y_tower = (int)(tower.const_tower_y* Zoom);
+                tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
+                tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
                 tower.team = team;
             }
 
             for(Unit Track : unitAdd.TrackUnitList){
-                Track.width_tower_zoom = (int)(Track.width_tower * Zoom);
-                Track.height_tower_zoom = (int)(Track.height_tower * Zoom);
-                Track.const_x_tower = (int)(Track.const_tower_x* Zoom);
-                Track.const_y_tower = (int)(Track.const_tower_y* Zoom);
+                Track.width_tower_zoom = (int)(Track.width_tower * Main.Zoom);
+                Track.height_tower_zoom = (int)(Track.height_tower *Main.Zoom);
+                Track.const_x_tower = (int)(Track.width_tower *Main.Zoom*0.5);
+                Track.const_y_tower = (int)(Track.height_tower *Main.Zoom*0.5);
+
                 Track.team = team;
+
             }
 //            for(Unit cannons : tower_obj){
 //                unitAdd.tower_obj.add((Unit) cannons.clone());
@@ -409,7 +415,13 @@ public abstract class Unit implements Cloneable{
     public void UpdateTrack(float speed){
 
     }
+    public void UpdateTrack(){
+
+    }
     public void UpdateUnit(){
+
+    }
+    public void UpdateUnitMenu(){
 
     }
     public final void tower_iteration(Unit unit){
@@ -462,17 +474,21 @@ public abstract class Unit implements Cloneable{
                 //this.left_mouse = sost_fire_bot & trigger_fire;
             }
 
-        } else {
-            if (this.rotation_tower > this.rotation_corpus + 180) {
-                this.rotation_tower -= this.speed_tower;
-            }
-            if (this.rotation_tower < this.rotation_corpus + 180) {
-                this.rotation_tower += this.speed_tower;
-            }
         }
+//        else {
+//            if (this.rotation_tower > this.rotation_corpus + 180) {
+//                this.rotation_tower -= this.speed_tower;
+//            }
+//            if (this.rotation_tower < this.rotation_corpus + 180) {
+//                this.rotation_tower += this.speed_tower;
+//            }
+//        }
     }
     public final void MotorControl(){
         this.time_sound_motor -= 1;
+        for(Unit Track : TrackUnitList) {
+            Track.speed = this.speed;
+        }
         if(!this.crite_life) {
             if (this.press_w) {
                 if (this.time_sound_motor < 0) {
@@ -500,12 +516,32 @@ public abstract class Unit implements Cloneable{
                 for (Unit Tower : TowerUnitList) {
                     Tower.rotation_tower += speed;
                 }
+                for (Unit Track : TrackUnitList) {
+                    switch (Track.Side){
+                        case 0:
+                            Track.speed += this.speedTrack;
+                            break;
+                        case 1:
+                            Track.speed -= this.speedTrack;
+                            break;
+                    }
+                }
                 this.rotation_corpus += speed;
             }
             if (this.press_d) {
                 float speed = this.speed_rotation * TimeGlobalBullet;
                 for (Unit Tower : TowerUnitList) {
                     Tower.rotation_tower -= speed;
+                }
+                for (Unit Track : TrackUnitList) {
+                    switch (Track.Side){
+                        case 0:
+                            Track.speed -=this.speedTrack;
+                            break;
+                        case 1:
+                            Track.speed += this.speedTrack;
+                            break;
+                    }
                 }
                 this.rotation_corpus -= speed;
             }
@@ -561,10 +597,21 @@ public abstract class Unit implements Cloneable{
         this.y -= move.move_cos2(speed, rotation_corpus2);
     }
     public void TowerControl() {
-        tower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+        float[] xy = Method.tower_xy_2(this.tower_x+this.const_tower_x,
+                this.tower_y+this.const_tower_y
+                ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
+        this.fire_x = xy[0];
+        this.fire_y = xy[1];
+        tower(xy[0],xy[1],TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void NotTowerControl() {
-        NotTower(this.tower_x,this.tower_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+        float[] xy = Method.tower_xy_2(this.tower_x+this.const_tower_x,
+                this.tower_y+this.const_tower_y
+                ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
+        this.fire_x = xy[0];
+        this.fire_y = xy[1];
+
+        NotTower(xy[0],xy[1],TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void tower(float x, float y, float x_2, float y_2, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) * RP);
@@ -747,6 +794,11 @@ public abstract class Unit implements Cloneable{
                 Option.size_y_indicator_zoom,new Color(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f));
     }
     public void FireControl(){
+        float[] xy = Method.tower_xy_2(this.tower_x+this.const_tower_x,
+                this.tower_y+this.const_tower_y
+                ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
+        fire_x = xy[0];
+        fire_y = xy[1];
         if(this.reload_bot() && this.left_mouse){
             R_LOCK.lock();
             try {
@@ -767,7 +819,7 @@ public abstract class Unit implements Cloneable{
         float []xy = tower_xy_2(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     protected boolean fire_bot(float obj_x,float obj_y){
-        g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) *RP);
+        float g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) *RP);
         return abs(g - (rotation_tower)) < 20;
     }
     protected boolean fire_bot(){
@@ -928,8 +980,12 @@ public abstract class Unit implements Cloneable{
             }
         }
         else{
+            for(Unit tower : TowerUnitList) {
+                tower.AngleTarget = (float) ((atan2(tower.tower_y - Target.tower_y,
+                        tower_x - Target.tower_x) * RP) - 90);
+            }
             AngleTarget = (float) ((atan2(tower_y - Target.tower_y,
-                    tower_x - Target.tower_x)*RP)-90);
+                    tower_x - Target.tower_x) * RP) - 90);
             rotation_bot();
             motor_bot_base(rad, this.behavior);
         }

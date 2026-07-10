@@ -14,12 +14,9 @@ import static com.mygdx.game.main.Main.BloodList;
 public class Blood extends Particle {
     public Blood(float x, float y){
         this.size = 42+rand.rand(8);
-        this.x = x-size/2;
-        this.y = y-size/2;
+        this.x = x-size*0.5f;
+        this.y = y-size*0.5f;
 
-        this.speed_x = 0;
-        this.speed_y = 0;
-        r = BloodR;g = BloodG;b = BloodB;
         this.interval_rise_size = 0.02f;
         liquidConst();
     }
@@ -27,15 +24,14 @@ public class Blood extends Particle {
     public void all_action(){
         this.size_render = (int)(size*Main.Zoom);
         //liquid_const();
-        super.size_rise_delete(BloodList);
         this.move_particle();
         this.slow_particle();
         center_render();
+        this.StateTime = BloodLiquid.render(x_rend,y_rend,size_render,size_render,0,0.5f,this.StateTime);
+        super.size_rise_delete(BloodList);
         //Sprite spr = TextureAtl.createSprite("Buffer");
         //spr.setColor(0.1f,0.6f,0.2f,1.0f);
-        Batch.draw(TextureAtl.createSprite("Buffer"),this.x_rend,
-                this.y_rend
-                ,size_render,size_render);
+
         //super.size_update();
     }
 

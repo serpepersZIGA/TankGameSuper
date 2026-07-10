@@ -33,8 +33,8 @@ float fbm(vec2 p) {
     float amplitude = 0.5;
 
     for (int i = 0; i < 8; ++i) {  // Увеличено до 8 октав
-        value += amplitude * noise(p);;
-        amplitude *= 0.5;
+        value += amplitude * noise(p);
+        amplitude *= 0.5f;
           // Лёгкое смещение для хаотичности
     }
     return value;

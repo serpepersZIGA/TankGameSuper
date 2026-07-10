@@ -92,5 +92,5 @@ void main() {
 
     // Комбинируем огонь и частицы
     vec3 finalCol = fireCol;
-    fragColor = (vec4(finalCol.rgb*lightTotal, 0.8* distInvert));
+    fragColor = (vec4(finalCol.rgb*lightTotal,0.9f));
 }

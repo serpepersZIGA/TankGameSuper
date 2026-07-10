@@ -254,7 +254,7 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(10,10,5,5,0.15f,0.80f);
+		CycleDayNight = new CycleTimeDay(10,10,5,5,0.12f,0.72f);
 		PacketBuildingServer = new PacketBuildingServer();
 		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
 		Render = new RenderPrimitive();

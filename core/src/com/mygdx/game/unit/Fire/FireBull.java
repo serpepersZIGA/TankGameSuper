@@ -22,15 +22,15 @@ public class FireBull extends Fire {
     public void FireIteration(Unit unit){
         rotationTower = -unit.rotation_tower-90;
         SoundPlay.soundPlay(unit.x_rend,unit.y_rend, (int) unit.x, (int) unit.y,10, unit.sound_fire);
-        float[] xy = Method.tower_xy_2(unit.tower_x+unit.const_tower_x,
-                unit.tower_y+unit.const_tower_y
-                ,unit.TowerFireConstY,unit.TowerFireConstX,-unit.rotation_tower);
+//        float[] xy = Method.tower_xy_2(unit.tower_x+unit.const_tower_x,
+//                unit.tower_y+unit.const_tower_y
+//                ,unit.TowerFireConstY,unit.TowerFireConstX,-unit.rotation_tower);
 //        unit.fire_x = xy[0];
 //        unit.fire_y = xy[1];
         //Render.polyBatch.begin();
         //Render.circle(unit.tower_x+unit.width_tower,unit.tower_y+unit.height_tower,20,new Color(0,0,0,1));
         //Render.polyBatch.end();
-        BulletRegister.BulletTank.BulletAdd(xy[0], xy[1],rotationTower+ -2+ rand.rand(4),unit.damage,unit.penetration,
+        BulletRegister.BulletTank.BulletAdd(unit.fire_x, unit.fire_y,rotationTower+ -2+ rand.rand(4),unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
                 ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
 

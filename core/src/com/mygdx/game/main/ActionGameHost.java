@@ -326,6 +326,15 @@ public class ActionGameHost extends ActionGame{
             for (Unit unit : ClearUnitList) {
                 for (Squad squad : AI.SquadList) {
                     if (squad.EnemySquad == unit) {
+                        for(Unit unit2 : squad.UnitSquad){
+                            if(unit2.EnemyFire == unit){
+                                unit2.EnemyFire = null;
+                                unit2.trigger_fire = false;
+                            }
+                            if(unit2.TargetUnit == unit){
+                                unit2.TargetUnit = null;
+                            }
+                        }
                         squad.EnemySquad = null;
                     }
                 }

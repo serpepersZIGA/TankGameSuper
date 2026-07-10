@@ -14,9 +14,9 @@ public class Bang extends Particle {
         this.size_render = (int)(size*Main.Zoom);
         this.interval_rise_size = 12;
         this.time_delete = 30;
-        this.r = (float)1/255*(160+rand.rand(70));
-        this.g = (float)1/255*(90+rand.rand(60));
-        this.b = (float)1/255*(20+rand.rand(3));
+        this.r = (float)0.0039215f*(160+rand.rand(70));
+        this.g = (float)0.0039215f*(90+rand.rand(60));
+        this.b = (float)0.0039215f*(20+rand.rand(3));
     }
     @Override final
     public void all_action() {

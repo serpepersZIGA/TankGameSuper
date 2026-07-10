@@ -13,12 +13,6 @@ import java.io.*;
 import java.util.ArrayList;
 
 public class ParserItem {
-    public static String Image;
-    public static ArrayList<String> Cannon;
-    public static int Armor,Hp,ArmorPercent,HPPercent,DamagePercent,PenetrationPercent
-            ,MoveUPPercent,MoveDownPercent, AccelerationPercent,Price;
-    public static ClassUnit classUnit;
-    public static int medic_help;
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Item").list();
@@ -50,6 +44,9 @@ public class ParserItem {
         ObjectMapper objectMapper = new ObjectMapper();
 
         buffItem obj = objectMapper.readValue(TxT, buffItem.class);
+
+        String TypeItem = obj.TypeItem;
+
         int ArmorFront = obj.ArmorFront;
         int ArmorCenter = obj.ArmorCenter;
         int ArmorBack = obj.ArmorBack;
@@ -64,29 +61,45 @@ public class ParserItem {
         int MoveDownPercent= obj.MoveDownPercent;
         int AccelerationPercent= obj.AccelerationPercent;
         int Price = obj.Price;
-
         int PenetrationPercent = obj.PenetrationPercent;
 
+
+
         ArrayList<TegItem> list = new ArrayList<>();
-        list.add(TegItem.upgrade);
-        if(Price!= 0){
-            Inventory.AssortmentAdd(new Item(HPPercent,Hp,ArmorFront,ArmorCenter,ArmorBack
-                    ,ArmorFrontPercent,ArmorCenterPercent,ArmorBackPercent,DamagePercent,PenetrationPercent
-                    ,MoveUPPercent,MoveDownPercent,AccelerationPercent,Price,ID,
-                    new ArrayList<>(list),Image));
-        }
-        else{
-            new Item(HPPercent,Hp,ArmorFront,ArmorCenter,ArmorBack
-                    ,ArmorFrontPercent,ArmorCenterPercent,ArmorBackPercent,DamagePercent,PenetrationPercent
-                    ,MoveUPPercent,MoveDownPercent,AccelerationPercent,Price,ID,
-                    new ArrayList<>(list),Image);
+        switch (TypeItem) {
+            case "Upgrade":
+            list.add(TegItem.upgrade);
+            if (Price != 0) {
+                Inventory.AssortmentAdd(new Item(HPPercent, Hp, ArmorFront, ArmorCenter, ArmorBack
+                        , ArmorFrontPercent, ArmorCenterPercent, ArmorBackPercent, DamagePercent, PenetrationPercent
+                        , MoveUPPercent, MoveDownPercent, AccelerationPercent, Price, ID,
+                        new ArrayList<>(list), Image));
+            } else {
+                new Item(HPPercent, Hp, ArmorFront, ArmorCenter, ArmorBack
+                        , ArmorFrontPercent, ArmorCenterPercent, ArmorBackPercent, DamagePercent, PenetrationPercent
+                        , MoveUPPercent, MoveDownPercent, AccelerationPercent, Price, ID,
+                        new ArrayList<>(list), Image);
+            }
+            break;
+            case "Spawner":
+                list.add(TegItem.spawner);
+                if (Price != 0) {
+                    Inventory.AssortmentAdd(new Item(ID, Price,
+                            new ArrayList<>(list), Image));
+                } else {
+                    new Item(ID, Price,
+                            new ArrayList<>(list), Image);
+                }
+                break;
         }
     }
     public static void AddBuilding(){
         new File("ContentGlobal").mkdirs();
         new File("ContentGlobal/Item").mkdirs();
         File armorB1 = new File("ContentGlobal/Item/armorB1.json");
+        File SpawnUnit1 = new File("ContentGlobal/Item/M1.json");
         String data = "{\n" +
+                "  \"TypeItem\": \"Upgrade\",\n" +
                 "  \"ArmorFront\": 20,\n" +
                 "  \"ArmorCenter\": 10,\n" +
                 "  \"ArmorBack\": 5,\n" +
@@ -103,6 +116,12 @@ public class ParserItem {
                 "  \"Price\": 2\n" +
                 "}";
         Create(armorB1,data);
+        data = "{\n" +
+                "  \"TypeItem\": \"Spawner\",\n" +
+                "  \"Image\": \"bottle\",\n" +
+                "  \"Price\": 2\n" +
+                "}";
+        Create(SpawnUnit1,data);
 
 
     }

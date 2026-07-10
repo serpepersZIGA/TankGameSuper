@@ -14,6 +14,7 @@ public class UnitsParser {
     public static ArrayList<String> Cannon;
     public static ArrayList<String> Track;
     public static int [][] TowerXY,TrackXY;
+    public static int []Side;
     public static ClassUnit classUnit;
     public static int height;
     public static int HillHp;
@@ -34,7 +35,7 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY, classUnit, HillHp,height);
+                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY,Side, classUnit, HillHp,height);
 
 
         }
@@ -58,6 +59,7 @@ public class UnitsParser {
         Corpus = obj.Corpus;
         TrackXY = obj.TrackXY;
         TowerXY = obj.TowerXY;
+        Side = obj.Side;
         HillHp = obj.MedicConf;
         height = obj.Height;
     }
@@ -70,6 +72,7 @@ public class UnitsParser {
         File Pz2M = new File("ContentGlobal/Unit/Pz-2M.json");
         File Helicopter2Z = new File("ContentGlobal/Unit/Helicopter-2Z.json");
         File Gb1M = new File("ContentGlobal/Unit/Gb-1M.json");
+        File M1 = new File("ContentGlobal/Unit/M1.json");
         String data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"HelicopterCorpus1\",\n" +
@@ -77,12 +80,28 @@ public class UnitsParser {
                 "  \"TowerXY\": [[0,50],[25,50],[-25,50]],\n" +
                 "\n" +
                 "  \"Track\": [],\n" +
+                "  \"Side\": [],\n" +
                 "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 2\n" +
                 "}";
 
         Create(Helicopter2Z,data);
+
+        data = "{\n" +
+                "  \"Engine\": \"U1M\",\n" +
+                "  \"Corpus\": \"CorpusM1\",\n" +
+                "  \"Cannon\": [\"Kwk12ML\"],\n" +
+                "  \"TowerXY\": [[0,8]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackM1\",\"TrackM1\"],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"TrackXY\": [[-9,0],[9,0]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+
+        Create(M1,data);
 
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
@@ -92,6 +111,7 @@ public class UnitsParser {
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
+                "  \"Side\": [0,1],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
                 "}";
@@ -104,6 +124,7 @@ public class UnitsParser {
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
@@ -117,6 +138,7 @@ public class UnitsParser {
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
@@ -129,6 +151,7 @@ public class UnitsParser {
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +
@@ -141,6 +164,7 @@ public class UnitsParser {
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1\n" +

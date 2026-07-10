@@ -15,4 +15,5 @@ public class buff{
     public String Engine;
     public int[][]TowerXY,TrackXY;
     public int MedicConf,Height;
+    public int[] Side;
 }

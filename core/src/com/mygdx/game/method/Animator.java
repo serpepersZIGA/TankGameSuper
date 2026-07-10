@@ -23,9 +23,9 @@ public class Animator implements Cloneable{
     private final Animation<TextureRegion> animation,animationInvert;
     private float stateTime;
     //4,2,0.1f;
-    public Animator(String image,String imageInvert){
-        animation = create(4,2,0.1f,image);
-        animationInvert = create(4,2,0.1f,imageInvert);
+    public Animator(String image,String imageInvert,int x,int y){
+        animation = create(x,y,0.1f,image);
+        animationInvert = create(x,y,0.1f,imageInvert);
         stateTime = 0f;
     }
     private Animation<TextureRegion> create(int frameCols,int frameRows,float frameDuration,String image) {
@@ -68,6 +68,25 @@ public class Animator implements Cloneable{
         sprite.setSize(width,height);
 
         sprite.draw(Main.Batch);
+    }
+    public float render(int x,int y,int width,int height,float rotation,float speed,float StateTime) {
+        StateTime += TimeGlobal*abs(speed);
+        TextureRegion currentFrame;
+        if(speed>0) {
+            currentFrame = animation.getKeyFrame(StateTime, true);
+        }
+        else{
+            currentFrame = animationInvert.getKeyFrame(StateTime, true);
+        }
+        Sprite sprite = new Sprite(currentFrame);
+        sprite.setPosition((float)x, (float) y);
+        //sprite.setOrigin(width2,height2);
+        sprite.setRotation(rotation);
+        sprite.setSize(width,height);
+        sprite.setColor(1,1,1,0.5f);
+
+        sprite.draw(Main.Batch);
+        return StateTime;
     }
 
     public void dispose() {

@@ -8,8 +8,10 @@ font/Base/BaseFont.ttf
 font/Base/BaseFont2.otf
 font/Base/BaseFont3.ttf
 font/Base/BaseFont4.ttf
+image/animation/AcidAnimation.png
 image/animation/animationTrack.png
 image/animation/AnimationTrackUp.png
+image/animation/BloodAnimation.png
 image/build/big_build_wood_1.png
 image/build/Build2.png
 image/build/build_1.png
@@ -17,6 +19,7 @@ image/build/ExpBuild.png
 image/build/home_1.png
 image/enemy/CabinTank.png
 image/enemy/CorpusAT.png
+image/enemy/CorpusM1.png
 image/enemy/corpus_enemy.png
 image/enemy/corpus_track_remount_enemy.png
 image/enemy/gunTank.png

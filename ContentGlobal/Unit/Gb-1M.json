@@ -6,6 +6,7 @@
 
   "Track": ["TrackPz2","TrackPz2"],
   "TrackXY": [[-22,0],[22,0]],
+  "Side": [0,1],
   "MedicConf": 0,
   "Height": 1
 }

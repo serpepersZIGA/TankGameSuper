@@ -115,7 +115,7 @@ public class ActionMenu extends ActionGame {
         }
 
         for(i = 0; i< Main.UnitList.size(); i++) {
-            Main.UnitList.get(i).UpdateUnit();
+            Main.UnitList.get(i).UpdateUnitMenu();
             //Main.UnitList.get(i).all_action_client_2();
         }
 

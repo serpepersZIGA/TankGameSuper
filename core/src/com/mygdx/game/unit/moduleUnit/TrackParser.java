@@ -117,7 +117,14 @@ public class TrackParser {
         new File("ContentGlobal/Module").mkdirs();
         new File("ContentGlobal/Module/Track").mkdirs();
         File Track = new File("ContentGlobal/Module/Track/TrackPz2.Track");
-        String data = "TrackWidth = 15;\n" +
+        File TrackM1 = new File("ContentGlobal/Module/Track/TrackM1.Track");
+
+        String data = "TrackWidth = 6;\n" +
+                "TrackHeight = 45;\n" +
+                "Images = image/animation/AnimationTrackUp.png;\n" +
+                "ImageInvert = image/animation/animationTrack.png;";
+        Create(TrackM1,data);
+        data = "TrackWidth = 15;\n" +
                 "TrackHeight = 130;\n" +
                 "Images = image/animation/AnimationTrackUp.png;\n" +
                 "ImageInvert = image/animation/animationTrack.png;";

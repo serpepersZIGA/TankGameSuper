@@ -17,8 +17,7 @@ public class Flame extends Particle {
         time_spawn_max = 60;
         this.time_delete = 60;
         super.size_update();
-        int z =  rand.rand(3);
-        switch(z){
+        switch(rand.rand(3)){
             case 0:{r = FlameR;g = FlameG;b = FlameB;break;}
             case 1:{r = FlameR2;g = FlameG2;b = FlameB2;break;}
             case 2:{r = FlameR3;g = FlameG3;b = FlameB3;break;}

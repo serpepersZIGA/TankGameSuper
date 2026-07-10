@@ -34,6 +34,13 @@ public abstract class Particle {
     protected int time_spawn,time_spawn_max;
     public int x_rend,y_rend,size_render,size_render2;
     public LightingMainSystem.Light light;
+    public float StateTime;
+    public static Animator AcidLiquid =
+            new Animator("image/animation/AcidAnimation.png",
+                    "image/animation/AcidAnimation.png",6,3);
+    public static Animator BloodLiquid =
+            new Animator("image/animation/BloodAnimation.png",
+                    "image/animation/BloodAnimation.png",6,3);
     public float[]rgb;
 
     protected void timer(LinkedList<Particle> obj){

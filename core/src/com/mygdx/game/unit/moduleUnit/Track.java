@@ -23,6 +23,7 @@ public class Track implements Cloneable{
     public Sound sound;
     public String image;
     public Animator animator;
+    public byte Side;
 
     public Track(String id,int WidthTrack, int HeightTrack
                   , String image,String imageInvert){
@@ -31,7 +32,7 @@ public class Track implements Cloneable{
         this.HeightTrack = HeightTrack;
         WidthTrack2 = (int) (WidthTrack *0.5f);
         HeightTrack2 = (int) (HeightTrack *0.5f);
-        animator = new Animator(image,imageInvert);
+        animator = new Animator(image,imageInvert,4,2);
 
 
         this.image =  image;
@@ -59,13 +60,14 @@ public class Track implements Cloneable{
         }
         return TrackAdd;
     }
-    public static Track TrackAdd(String string,Unit unit,int differenceX,int differenceY){
+    public static Track TrackAdd(String string,Unit unit,int differenceX,int differenceY,int Side){
         Track track = null;
         try {
             track = TrackID.get(string);
             track = (Track) track.clone();
             track.differenceX = differenceX;
             track.differenceY = differenceY;
+            track.Side = (byte)Side;
 
             track.CenterX = unit.CorpusUnit.corpus_width_2-track.WidthTrack2;
             track.CenterY = unit.CorpusUnit.corpus_height_2-track.HeightTrack2;

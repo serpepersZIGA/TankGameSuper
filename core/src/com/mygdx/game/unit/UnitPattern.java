@@ -25,8 +25,8 @@ public class UnitPattern extends Unit {
         IDList.put(str,this);
     }
     public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,
-            ArrayList<String>track,int[][]TrackXY, ClassUnit classUnit, int HillHp, int Height){
-        super(corpus,engine,cannon,TowerXY,track,TrackXY,classUnit,HillHp,Height);
+            ArrayList<String>track,int[][]TrackXY,int[]Side, ClassUnit classUnit, int HillHp, int Height){
+        super(corpus,engine,cannon,TowerXY,track,TrackXY,Side,classUnit,HillHp,Height);
         TowerUnitList = new ArrayList<>();
         this.TrackUnitList = new ArrayList<>();
         behavior = 3;
@@ -48,6 +48,9 @@ public class UnitPattern extends Unit {
     }
     public UnitPattern(Track track, Unit unit){
         super(track);
+        //track.XTower = (int) unit.CorpusUnit.CenterCorpusX;
+        //track.YTower = (int) unit.CorpusUnit.CenterCorpusY;
+        this.Side = track.Side;
         track.TrackLoad(this);
         data_tower();
 
@@ -73,19 +76,19 @@ public class UnitPattern extends Unit {
         dataSoldat();
         IDList.put(str,this);
     }
-    @Override
+    @Override final
     public void all_action() {
         super.all_action();
     }
-    @Override
+    @Override final
     public void all_action_client() {
         super.all_action_client();
     }
-    @Override
+    @Override final
     public void all_action_client_1() {
         super.all_action_client_1();
     }
-    @Override
+    @Override final
     public void all_action_client_2() {
         super.all_action_client_2();
     }
@@ -95,7 +98,25 @@ public class UnitPattern extends Unit {
             Tower.x = x;
             Tower.y = y;
             Tower.rotation_corpus = rotation_corpus;
-            Tower.UpdateTrack(this.speed);
+            Tower.UpdateTrack(Tower.speed);
+        }
+        RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom
+                ,this.rotation_corpus,TextureAtl.createSprite(this.corpus_img),const_x_corpus,const_y_corpus);
+        for(Unit Tower : TowerUnitList){
+            Tower.x = x;
+            Tower.y = y;
+            Tower.rotation_corpus = rotation_corpus;
+            Tower.UpdateTower();
+        }
+    }
+    @Override final
+    public void UpdateUnitMenu(){
+        center_render();
+        for(Unit Tower : TrackUnitList){
+            Tower.x = x;
+            Tower.y = y;
+            Tower.rotation_corpus = rotation_corpus;
+            Tower.UpdateTrack();
         }
         RenderMethod.transorm_img(this.x_rend,this.y_rend,this.corpus_width_zoom,this.corpus_height_zoom
                 ,this.rotation_corpus,TextureAtl.createSprite(this.corpus_img),const_x_corpus,const_y_corpus);
@@ -129,5 +150,13 @@ public class UnitPattern extends Unit {
         center_render();
         animator.render(x_tower_rend,y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,
                 this.const_x_tower,this.const_y_tower,this.rotation_corpus,speed);
+    }
+    public void UpdateTrack(){
+        //this.x = tower_x;
+        //this.y = tower_y;
+        TowerXY2();
+        center_render();
+        animator.render(x_tower_rend,y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,
+                this.const_x_tower,this.const_y_tower,this.rotation_corpus,0);
     }
 }

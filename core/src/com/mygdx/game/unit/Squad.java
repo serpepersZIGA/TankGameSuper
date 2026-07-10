@@ -34,9 +34,9 @@ public class Squad{
         classSquad = ClassUnit.Transport;
         Team = unit.team;
         UnitDetected();
-        for(int i = 0;i<UnitSquad.size();i++){
-            System.out.println(UnitSquad.get(i).ID);
-        }
+        //for(int i = 0;i<UnitSquad.size();i++){
+            //System.out.println(UnitSquad.get(i).ID);
+        //}
     }
     public void UnitDetected(){
         for (int i = 0; i < Main.UnitList.size(); i++) {

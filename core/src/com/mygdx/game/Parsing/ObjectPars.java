@@ -4,8 +4,6 @@ import com.badlogic.gdx.files.FileHandle;
 import com.fasterxml.jackson.databind.ObjectMapper;
 
 import com.mygdx.game.object_map.MapObject;
-import com.mygdx.game.unit.ClassUnit;
-import com.mygdx.game.unit.UnitPattern;
 
 import java.io.*;
 import java.util.ArrayList;

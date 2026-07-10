@@ -14,7 +14,7 @@ public class FlameSpawn extends Particle {
         this.y = y;
         this.size = 70;
         this.size_render = (int) (size*Main.Zoom);
-        this.size_render2 = size_render/2;
+        this.size_render2 = (int) (size_render*0.5f);
         this.time_delete = 400;
         grass_delete();
         rgb = RGBFlame;

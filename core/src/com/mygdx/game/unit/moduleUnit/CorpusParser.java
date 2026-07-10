@@ -161,6 +161,7 @@ public class CorpusParser {
         File Panzer1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
         File At2E = new File("ContentGlobal/Module/Corpus/At2E.Corpus");
         File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus");
+        File CorpusM1 = new File("ContentGlobal/Module/Corpus/CorpusM1.Corpus");
         String data = "MaxHP = 1700;\n" +
                 "ArmorFront = 55;\n" +
                 "ArmorCenter = 35;\n" +
@@ -203,6 +204,21 @@ public class CorpusParser {
                 "func.Add ComponentBuildingCollision;\n" +
                 "func.Add ComponentTowerXY;";
         Create(Panzer1,data);
+        data = "MaxHP = 200;\n" +
+                "ArmorFront = 5;\n" +
+                "ArmorCenter = 5;\n" +
+                "ArmorBack = 5;\n" +
+                "CorpusWidth = 18;\n" +
+                "CorpusHeight = 45;\n" +
+                "Difference = 5;\n" +
+                "Image = CorpusM1;\n" +
+                "CorrectX = 0;\n" +
+                "CorrectY = 0;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(CorpusM1,data);
 
 
     }

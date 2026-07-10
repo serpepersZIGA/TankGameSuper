@@ -1,6 +1,8 @@
 package com.mygdx.game.Inventory;
 
+import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.ClassUnit;
+import com.mygdx.game.unit.Controller.ControllerBot;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.unit.moduleUnit.Gun;
 
@@ -8,14 +10,16 @@ import java.util.ArrayList;
 import java.util.HashMap;
 
 import static com.mygdx.game.main.Main.Option;
+import static com.mygdx.game.unit.Unit.IDList;
 
 public class Item implements Cloneable{
-    public String ID;
+    public String ID,IDSpawnUnit;
     public static HashMap<String,Item>IDListItem = new HashMap<>();
     public String image;
     public TypeItem typeItem;
     public ArrayList<TegItem>teg;
     public Gun gun;
+    public int TimeCooldown;
     public int HPHill,Price;
     public float HPPercent,HP, ArmorFront, ArmorFrontPercent,
             ArmorBack, ArmorBackPercent,ArmorCenter, ArmorCenterPercent
@@ -54,6 +58,17 @@ public class Item implements Cloneable{
 
         this.image = image;
         this.typeItem = TypeItem.Upgrade;
+        IDListItem.put(ID,this);
+    }
+    public Item(
+            String ID,int Price, ArrayList<TegItem>teg, String image){
+        this.teg = teg;
+        this.ID = ID;
+        this.Price = Price;
+        this.IDSpawnUnit = ID;
+
+        this.image = image;
+        this.typeItem = TypeItem.Spawner;
         IDListItem.put(ID,this);
     }
     public Item(Gun gun,String ID,ArrayList<TegItem>teg,String image){
@@ -103,6 +118,12 @@ public class Item implements Cloneable{
 
                 }
                 break;
+            case Spawner:
+                IDList.get(IDSpawnUnit).UnitAdd((int) unit.x, (int) unit.y,true,unit.team
+                        , Main.RegisterControl.controllerBot,new Inventory(new Item[1][1],1)
+                        ,new Inventory(new Item[1][1],1));
+                return true;
+
 
 
         }

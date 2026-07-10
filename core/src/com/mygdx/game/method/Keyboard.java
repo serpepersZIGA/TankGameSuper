@@ -266,6 +266,7 @@ public class Keyboard extends InputAdapter{
         LightSystem.lightsRender.clear();
         for(LightingMainSystem.Light light : LightSystem.lights){
             light.radiusZoom = light.radius*Main.Zoom;
+            light.radiusZoom2 = light.radiusZoom*0.5f;
             if(light.XRender+LightSystem.limitLightingRender >0 &
                     light.YRender+LightSystem.limitLightingRender >0&
                     light.XRender-LightSystem.limitLightingRender < Main.screenWidth &

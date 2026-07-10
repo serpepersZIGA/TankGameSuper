@@ -34,7 +34,7 @@ public class CannonParser {
             files = Gdx.files.internal("ContentGlobal/Module/Cannon").list();
         }
         for (FileHandle file: files) {
-            System.out.println(file.name().replace(".Cannon",""));
+            //System.out.println(file.name().replace(".Cannon",""));
             //System.out.println(file.path());
             Scan(file.path());
 //            for (int i = file.name().length()-4;i<file.name().length();i++){
