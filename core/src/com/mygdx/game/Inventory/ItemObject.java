@@ -90,7 +90,10 @@ public class ItemObject{
             ItemPackList.add(pack);
         }
         packetUnitUpdate.ItemPack = ItemPackList;
-        ServerMain.Server.sendToAllUDP(packetUnitUpdate);
+        packetUnitUpdate.ConfItem = true;
+        packetUnitUpdate.ConfDebris = false;
+        ServerMain.Server.sendToAllTCP(packetUnitUpdate);
+        packetUnitUpdate.ConfItem = false;
 
 
     }

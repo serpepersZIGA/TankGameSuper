@@ -130,7 +130,7 @@ public class ClientMain extends Listener {
 //            ArrayList<PacketInventory> InventoryPack2 = ((PackerServer) p).equipment;
             if(UnitList.size() == PacketUnit.size()) {
                 for (Unit unit : UnitList) {
-                    player_data(unit);
+                    player_data(unit,PacketUnit.get(i));
                     if(PacketUnit.get(i).IDClient== IDClient) {
                         unit.inventory = ItemSynchronization(unit.inventory, PacketUnit.get(i).inventory);
                         unit.equipment = ItemSynchronization(unit.equipment, PacketUnit.get(i).equipment);
@@ -199,10 +199,10 @@ public class ClientMain extends Listener {
             SoundPack.addAll(((PackerServer) p).sound);
 
 
-            ItemPackList.clear();
-            PacketMapObjects.clear();
-            PacketUnit.clear();
-            PacketDebris.clear();
+            //ItemPackList.clear();
+            //PacketMapObjects.clear();
+            //PacketUnit.clear();
+            //PacketDebris.clear();
         } else if (p instanceof PacketBuildingServer) {
             PacketBuilding = ((PacketBuildingServer) p).BuildPack;
             BuildingList.clear();
@@ -226,20 +226,6 @@ public class ClientMain extends Listener {
         }
         else if (p instanceof PacketUnitUpdate) {
             PacketBull = ((PacketUnitUpdate) p).bull;
-            if(PacketBull != null) {
-                for (BullPacket pack : PacketBull) {
-                    for (Object[] obj : IDBullet) {
-                        if (pack.ID == (int) obj[1]) {
-                            Bullet bullet = (Bullet) obj[0];
-                            bullet.BulletAdd(pack.x, pack.y, pack.rotation, 0, 0, 0, 0,
-                                    pack.team, pack.height, 0, pack.speed, 0, pack.time);
-                        }
-                    }
-                }
-                return;
-                //PacketBull.clear();
-            }
-
             packetUnitUpdate = (PacketUnitUpdate)p;
             if(packetUnitUpdate.ConfUnit){
                 UnitCreate();
@@ -252,10 +238,28 @@ public class ClientMain extends Listener {
                 }
                 KeyboardObj.ZoomConstTransport();
                 PacketServer.debrisConf = false;
+                return;
             }
-            ItemList.clear();
-            for(ItemPacket pack : packetUnitUpdate.ItemPack){
-                ItemList.add(new ItemObject(IDListItem.get(pack.ID),pack.x,pack.y));
+            //System.out.println(packetUnitUpdate.ItemPack.size()+" "+packetUnitUpdate.ItemPack.get(0).ID);
+            if(packetUnitUpdate.ConfItem) {
+                //System.out.println(packetUnitUpdate.ItemPack.size()+" "+packetUnitUpdate.ItemPack.get(0).ID);
+                ItemList.clear();
+                for (ItemPacket pack : packetUnitUpdate.ItemPack) {
+                    ItemList.add(new ItemObject(IDListItem.get(pack.ID), pack.x, pack.y));
+                }
+            }
+            if(PacketBull != null) {
+                for (BullPacket pack : PacketBull) {
+                    for (Object[] obj : IDBullet) {
+                        if (pack.ID == (int) obj[1]) {
+                            Bullet bullet = (Bullet) obj[0];
+                            bullet.BulletAdd(pack.x, pack.y, pack.rotation, 0, 0, 0, 0,
+                                    pack.team, pack.height, 0, pack.speed, 0, pack.time);
+                        }
+                    }
+                }
+                return;
+                //PacketBull.clear();
             }
         }
     }
@@ -306,8 +310,7 @@ public class ClientMain extends Listener {
     }
 
 
-    public void player_data(Unit unit) {
-        TransportPacket packet = PacketUnit.get(i);
+    public void player_data(Unit unit,TransportPacket packet) {
         unit.TypeUnit = packet.name;
         unit.x = packet.x;
         unit.y = packet.y;
@@ -316,12 +319,37 @@ public class ClientMain extends Listener {
         unit.max_hp = packet.max_hp;
         unit.team = packet.team;
         unit.speed = packet.speed;
+        unit.press_a = packet.PressA;
+        unit.press_d = packet.PressD;
         unit.host = packet.host;
         unit.nConnect = packet.IDClient;
         for (int i2 = 0; i2 < unit.TowerUnitList.size(); i2++) {
 
             unit.TowerUnitList.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
             unit.TowerUnitList.get(i2).reload = packet.reloadTower.get(i2);
+        }
+        for(Unit Track : unit.TrackUnitList){
+            Track.speed = packet.speed;
+            if(unit.press_a) {
+                switch (Track.Side){
+                    case 0:
+                        Track.speed +=unit.speedTrack;
+                        break;
+                    case 1:
+                        Track.speed -= unit.speedTrack;
+                        break;
+                }
+            }
+            if(unit.press_d){
+                switch (Track.Side){
+                    case 0:
+                        Track.speed -=unit.speedTrack;
+                        break;
+                    case 1:
+                        Track.speed += unit.speedTrack;
+                        break;
+                }
+            }
         }
 
     }
@@ -334,6 +362,8 @@ public class ClientMain extends Listener {
         transport.hp = pack.hp;
         transport.team = pack.team;
         transport.speed = pack.speed;
+        transport.press_a = pack.PressA;
+        transport.press_d = pack.PressD;
         transport.host = pack.host;
         transport.nConnect = pack.IDClient;
         for (int i2 = 0; i2 < transport.TowerUnitList.size(); i2++) {
@@ -392,20 +422,17 @@ public class ClientMain extends Listener {
 
     public void UnitCreate() {
         UnitList.clear();
-        Unit unit;
         Unit unitBuf;
         for (TransportPacket pack : PacketUnit) {
-            unit = Unit.IDList.get(pack.ID);
-
+            unitBuf = Unit.IDList.get(pack.ID).UnitAdd(0,0,pack.host,pack.team);
             R_LOCK.lock();
             try {
-                unitBuf = unit.UnitAdd(0,0,pack.host,pack.team);
                 UnitList.add(unitBuf);
             }
             finally {
                 R_LOCK.unlock();
             }
-            UnitList.get(UnitList.size() - 1).control = RegisterControl.controllerBot;
+            unitBuf.control = RegisterControl.controllerBot;
             UnitDataCreate(pack,unitBuf);
 //            if(){
 //

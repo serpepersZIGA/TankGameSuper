@@ -221,7 +221,9 @@ public class ActionGameClient extends ActionGame {
     }
     private class IterationUnit implements Runnable{
         public void run(){
+            //System.out.println(UnitList.get(0).press_a+" "+UnitList.get(0).press_d);
             for(int i = 0;i< UnitList.size();i++) {
+
                 Unit unit = UnitList.get(i);
                 if(unit != null) {
                     unit.XYMapCord();

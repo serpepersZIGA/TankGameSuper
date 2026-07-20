@@ -160,7 +160,6 @@ public class Parser {
     }
     public static Object[] FireParsing(String TxT,int u){
         Object[]n = TextPars(TxT,u);
-        //System.out.println((String) n[0]);
 
         switch (((String) n[0]).trim()){
             case "Flame":

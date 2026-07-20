@@ -50,7 +50,6 @@ public class MapObject implements Cloneable{
         this.hp = hp;
         this.img = img;
         this.assets = assets;
-        System.out.println(assets);
         ObjectMapIDList.put(assets,this);
         CollisionBuff = collision;
         //center_render();

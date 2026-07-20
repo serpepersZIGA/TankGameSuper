@@ -39,7 +39,6 @@ public class Animator implements Cloneable{
         int index = 0;
         for (int i = 0; i < frameRows; i++) {
             for (int j = 0; j < frameCols; j++) {
-                System.out.println(index+" "+j+" "+i);
                 frames[index]
                         = tmp[i][j];
                 index++;

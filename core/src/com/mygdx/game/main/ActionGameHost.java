@@ -45,6 +45,8 @@ public class ActionGameHost extends ActionGame{
     private Thread ThreadIterationDebris;
     private Thread ThreadIterationBullet;
     private Thread ThreadIterationUnit;
+    private int e = 0;
+    private float TimeGlobals = 0f;
 
     //private static IterationBullet IterationBullet = new IterationBullet();
 
@@ -316,6 +318,12 @@ public class ActionGameHost extends ActionGame{
 
         //executor.shutdown();
         //executor.close();
+//        e++;
+//        TimeGlobals+=TimeGlobal;
+//        if(e == 1000){
+//            e = -10000;
+//            System.out.println(TimeGlobals);
+//        }
     }
     private void server_packet() {
 
@@ -375,6 +383,7 @@ public class ActionGameHost extends ActionGame{
         if(!PacketBull.isEmpty()){
             packetUnitUpdate.bull = PacketBull;
             Server.sendToAllTCP(packetUnitUpdate);
+            packetUnitUpdate.bull = null;
             //PacketServer.bull = PacketBull;
         }
         //packetInventoryServer();
@@ -401,6 +410,8 @@ public class ActionGameHost extends ActionGame{
         pack.x = unit.x;
         pack.y = unit.y;
         pack.PlayerConf = unit.PlayerConf;
+        pack.PressA = unit.press_a;
+        pack.PressD = unit.press_d;
         pack.rotation_corpus = unit.rotation_corpus;
         pack.hp = unit.hp;
         pack.max_hp = unit.max_hp;
@@ -443,10 +454,10 @@ public class ActionGameHost extends ActionGame{
                         debris.XYMapCordDebris();
                         debris.all_action();
                         debris.corpus_corpus(Main.UnitList);
-                        debris.corpus_corpus(Main.DebrisList);
                     //}
                 }
             }
+            Collision.DebrisCollisionIterationGlobal();
             //Debris = DebrisList;
         }
     }

@@ -7,6 +7,7 @@ public class ControllerBot extends Controller{
         unit.behavior_bot();
         unit.TowerXY2();
         unit.TowerAI();
+//        System.out.println(unit.press_a+" "+unit.press_d);
         //unit.bot_fire();
         for (Unit Tower : unit.TowerUnitList){
             Tower.TargetX = unit.TargetX;

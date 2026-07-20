@@ -19,9 +19,10 @@ import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.*;
 
 public class CollisionMethodGlobal {
-    public static ArrayList<Unit>UnitsBuffer;
+    public static ArrayList<Unit>UnitsBuffer,DebrisBuffer;
     public CollisionMethodGlobal(){
         UnitsBuffer = new ArrayList<>();
+        DebrisBuffer = new ArrayList<>();
     }
     public void CollisionIterationGlobal(){
         for(int i = 0;i<Main.UnitList.size();i++){
@@ -33,6 +34,18 @@ public class CollisionMethodGlobal {
 
         }
         UnitsBuffer.clear();
+
+    }
+    public void DebrisCollisionIterationGlobal(){
+        for(int i = 0;i<Main.DebrisList.size();i++){
+            Unit unit = Main.DebrisList.get(i);
+            for (Unit unit2 : DebrisBuffer){
+                CollisionMethod(unit,unit2);
+            }
+            DebrisBuffer.add(unit);
+
+        }
+        DebrisBuffer.clear();
 
     }
     public void CollisionMethod(Unit unit1,Unit unit2){

@@ -216,7 +216,6 @@ public abstract class Unit implements Cloneable{
             for(int i = 0;i<TrackUnitLists.size();i++){
                 unitAdd.TrackUnitList.add(new UnitPattern(TrackUnitLists.get(i).
                         TrackAdd(unitAdd,unitAdd.TrackXY[i][0],unitAdd.TrackXY[i][1]),unitAdd));
-
             }
             for(int i = 0;i<CannonUnitList.size();i++){
                 unitAdd.TowerUnitList.add(new UnitPattern(CannonUnitList.get(i).
@@ -295,22 +294,25 @@ public abstract class Unit implements Cloneable{
         }
     }
     public Unit UnitAdd(int x, int y,boolean host,byte team){
-        Unit unitAdd;
         try {
-            unitAdd = (Unit) this.clone();
+            Unit unitAdd = (Unit) this.clone();
             unitAdd.x = x;
             unitAdd.y = y;
             unitAdd.host = host;
+            unitAdd.classUnit = this.classUnit;
             unitAdd.TowerUnitList = new ArrayList<>();
+            unitAdd.TrackUnitList = new ArrayList<>();
             unitAdd.tower_x = x;
             unitAdd.tower_y = y;
-            for(int i = 0;i<unitAdd.CannonUnitList.size();i++){
-                unitAdd.TowerUnitList.add(new UnitPattern(unitAdd.CannonUnitList.get(i).
-                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
-            }
+            unitAdd.EventClear = this.EventClear;
+
             for(int i = 0;i<TrackUnitLists.size();i++){
                 unitAdd.TrackUnitList.add(new UnitPattern(TrackUnitLists.get(i).
                         TrackAdd(unitAdd,unitAdd.TrackXY[i][0],unitAdd.TrackXY[i][1]),unitAdd));
+            }
+            for(int i = 0;i<CannonUnitList.size();i++){
+                unitAdd.TowerUnitList.add(new UnitPattern(CannonUnitList.get(i).
+                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd));
             }
             unitAdd.corpus_width_zoom = (int)(unitAdd.corpus_width* Zoom);
             unitAdd.corpus_height_zoom = (int)(unitAdd.corpus_height* Zoom);
@@ -319,6 +321,10 @@ public abstract class Unit implements Cloneable{
             unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2* Zoom);
             unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2* Zoom);
             unitAdd.const_x_tower = (int)(unitAdd.const_tower_x* Zoom);
+            unitAdd.speedTrack = unitAdd.speed_rotation*2f;
+
+            unitAdd.TowerFireConstX = -this.const_tower_x;
+            unitAdd.TowerFireConstY = -this.const_tower_y;
             this.const_y_tower = (int)(unitAdd.const_tower_y* Zoom);
             for (Unit tower : unitAdd.TowerUnitList){
                 tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
@@ -330,14 +336,18 @@ public abstract class Unit implements Cloneable{
             for(Unit Track : unitAdd.TrackUnitList){
                 Track.width_tower_zoom = (int)(Track.width_tower * Zoom);
                 Track.height_tower_zoom = (int)(Track.height_tower * Zoom);
-                Track.const_x_tower = (int)(Track.const_tower_x* Zoom);
-                Track.const_y_tower = (int)(Track.const_tower_y* Zoom);
+                Track.const_x_tower = (int)(Track.width_tower *Main.Zoom*0.5);
+                Track.const_y_tower = (int)(Track.height_tower *Main.Zoom*0.5);
                 Track.team = team;
+
+
+
+
             }
+            return unitAdd;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
-        return unitAdd;
     }
     protected final void data(){
 
@@ -508,7 +518,6 @@ public abstract class Unit implements Cloneable{
                 if (this.SpeedDown < this.speed) {
                     this.speed -= this.Acceleration;
                 }
-
             }
 
             if (this.press_a) {
@@ -1655,21 +1664,22 @@ public abstract class Unit implements Cloneable{
     public void all_action(){
         damage_temperature();
         //inertia_xy();
-        control.ControllerIteration(this);
         functional.FunctionalIterationAnHost(this);
+        control.ControllerIteration(this);
         EventClear.EventIteration(this);
     }
     public void all_action_client(){
+        damage_temperature();
         //this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
-        control.ControllerIterationClientAnHost(this);
         functional.FunctionalIterationClientAnHost(this);
+        control.ControllerIterationClientAnHost(this);
         EventClear.EventIteration(this);
 
     }
     public void all_action_client_1(){
         this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
-        control.ControllerIterationClientAnClient(this);
         functional.FunctionalIterationAnClient(this);
+        control.ControllerIterationClientAnClient(this);
     }
     public void all_action_client_2(){
         this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;

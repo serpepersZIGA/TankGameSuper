@@ -12,7 +12,7 @@ public class TransportPacket {
     public byte team;
     public int hp,max_hp;
     public float speed;
-    public boolean host,crite_life,PlayerConf;
+    public boolean host,crite_life,PlayerConf,PressA,PressD;
     public int IDClient;
     public ArrayList<Float>rotation_tower_2 = new ArrayList<>(),reloadTower = new ArrayList<>();
     public String[][] inventory,equipment;

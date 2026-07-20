@@ -245,16 +245,39 @@ public class Building implements Serializable,Cloneable {
             this.brightness = brightness_max;
             if(rand.rand(4)== 1) {
                 int z = rand.rand(4);
-                    switch (z) {
-                        case 0:{
-                            Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.width), this.y + this.height));break;}
-                        case 1:{
-                            Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.width), this.y));break;}
-                        case 2:{
-                            Main.FlameParticleList.add(new FlameParticle(this.x + this.width, this.y + rand.rand(height)));break;}
-                        case 3:{
-                            Main.FlameParticleList.add(new FlameParticle(this.x, this.y + rand.rand(height)));break;}
+                switch(rotate) {
+                    case 0:
+                    case 180:
+                    {
+                        switch (z) {
+                            case 0:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.width), this.y + this.height));break;}
+                            case 1:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.width), this.y));break;}
+                            case 2:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x + this.width, this.y + rand.rand(height)));break;}
+                            case 3:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x, this.y + rand.rand(height)));break;}
+                        }
+                        break;
                     }
+                    case 90:
+                    case 270:
+                    {
+                        switch (z) {
+                            case 0:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.height), this.y + this.width));break;}
+                            case 1:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x + rand.rand(this.height), this.y));break;}
+                            case 2:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x + this.height, this.y + rand.rand(width)));break;}
+                            case 3:{
+                                Main.FlameParticleList.add(new FlameParticle(this.x, this.y + rand.rand(width)));break;}
+                        }
+                    break;
+                    }
+                }
+
             }
         }
         else {
