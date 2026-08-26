@@ -3,7 +3,10 @@ package com.mygdx.game.method;
 
 import com.badlogic.gdx.ApplicationAdapter;
 import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Animation;
 import com.badlogic.gdx.graphics.g2d.Sprite;
@@ -29,7 +32,13 @@ public class Animator implements Cloneable{
         stateTime = 0f;
     }
     private Animation<TextureRegion> create(int frameCols,int frameRows,float frameDuration,String image) {
-        sheet = new Texture(Gdx.files.internal(image)); // 4 cols x 2 rows
+        FileHandle file = Gdx.files.internal(image);
+        if (file.exists()) {
+            sheet = new Texture(file); // 4 cols x 2 rows
+        } else {
+            Gdx.app.error("Animator", "Missing animation sheet '" + image + "', using placeholder instead.");
+            sheet = placeholder(frameCols, frameRows);
+        }
 
         TextureRegion[][] tmp = TextureRegion.split(sheet,
                 sheet.getWidth() / frameCols,
@@ -49,6 +58,17 @@ public class Animator implements Cloneable{
         Animation<TextureRegion> animation = new Animation<>(frameDuration, frames);
         animation.setPlayMode(Animation.PlayMode.LOOP);
         return animation;
+    }
+
+    private static final int PLACEHOLDER_FRAME_SIZE = 8;
+
+    private static Texture placeholder(int frameCols, int frameRows) {
+        Pixmap pixmap = new Pixmap(frameCols * PLACEHOLDER_FRAME_SIZE, frameRows * PLACEHOLDER_FRAME_SIZE, Pixmap.Format.RGBA8888);
+        pixmap.setColor(Color.MAGENTA);
+        pixmap.fill();
+        Texture texture = new Texture(pixmap);
+        pixmap.dispose();
+        return texture;
     }
 
     public void render(int x,int y,int width,int height,int width2,int height2,float rotation,float speed) {

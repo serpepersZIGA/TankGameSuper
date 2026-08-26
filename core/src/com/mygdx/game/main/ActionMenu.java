@@ -233,6 +233,7 @@ public class ActionMenu extends ActionGame {
             GameStart = false;
             PacketServer = new PackerServer();
             PacketClient = new Packet_client();
+            boolean started;
             if (GameHost) {
                 try {
                     serverMain = new ServerMain();
@@ -242,10 +243,11 @@ public class ActionMenu extends ActionGame {
                     Block.passability_detected();
                     SpawnPlayer();
                     KeyboardObj.zoom_const();
-
+                    started = true;
 
                 } catch (Exception e) {
-                    //throw new RuntimeException(e);
+                    Gdx.app.error("ActionMenu", "Failed to start hosting a game, returning to menu.", e);
+                    started = false;
                 }
             } else {
                 try {
@@ -256,12 +258,19 @@ public class ActionMenu extends ActionGame {
                     ActionGameTotal = ActionGameCl;
                     ActionGameClient.ActionGameClientIteration();
                     KeyboardObj.zoom_const();
+                    started = true;
                 } catch (Exception e) {
-                    throw new RuntimeException(e);
+                    Gdx.app.error("ActionMenu", "Failed to connect to the server, returning to menu.", e);
+                    started = false;
                 }
             }
-            ActionGameChoiceConf = true;
-            ActionGameMain.ThreadAllAdd();
+            // Only advance into the game once the host/client setup actually
+            // succeeded - otherwise ActionGameMain may still be null/stale and
+            // the game should stay on the menu instead of crashing.
+            if (started) {
+                ActionGameChoiceConf = true;
+                ActionGameMain.ThreadAllAdd();
+            }
         }
         Keyboard.LeftMouseClick = false;
         CycleDayNight.WorkTime();
