@@ -380,6 +380,16 @@ public class Main extends ApplicationAdapter {
 		if (KeyboardObj != null) {
 			KeyboardObj.zoom_const();
 		}
+
+		// the actual squish cause: Batch/polyBatch set their projection matrix
+		// once at construction and never touch it again, so draws kept using
+		// the projection for whatever size the window was at launch
+		if (Batch != null) {
+			Batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		}
+		if (Render != null) {
+			Render.polyBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		}
 	}
 	@Override final
 	public void render () {
