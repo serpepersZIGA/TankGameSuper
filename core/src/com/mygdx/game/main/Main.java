@@ -274,7 +274,10 @@ public class Main extends ApplicationAdapter {
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
 		//font3 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
-		InputWindow = new InputWindow();
+		// The multiplayer IP-entry window is opened lazily, only once the player
+		// actually chooses to join a game (see PlayClient) - it used to pop up
+		// unconditionally on every launch, even for players who never touch
+		// multiplayer.
 		EventData = new EventRegister();
 		PlayerSpawnListData.Create();
 		KeyboardObj = new Keyboard();
