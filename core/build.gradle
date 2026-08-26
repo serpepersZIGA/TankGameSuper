@@ -1,10 +1,19 @@
 dependencies {
     compileOnly 'org.projectlombok:lombok:1.18.46'
     annotationProcessor 'org.projectlombok:lombok:1.18.46'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
 }
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
 sourceSets.main.kotlin.srcDirs = [ "src/" ]
+sourceSets.test.java.srcDirs = [ "test/" ]
+sourceSets.test.kotlin.srcDirs = [ "test/" ]
+
+test {
+    useJUnitPlatform()
+}
 
 eclipse.project.name = appName + "-core"
