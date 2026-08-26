@@ -1,7 +1,7 @@
 package com.mygdx.game.Parsing;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.fasterxml.jackson.databind.ObjectMapper;
+import tools.jackson.databind.ObjectMapper;
 
 import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.Item;
