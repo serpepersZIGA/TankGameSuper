@@ -225,8 +225,16 @@ public class ActionGameHost extends ActionGame{
                 }
             }
         }
-        for(Unit u: DebrisList){
-            u.UpdateUnit();
+        // Same reasoning as UnitList (see Unit.hill_bot()): DebrisList is
+        // also mutated from other threads, so an unprotected foreach can
+        // throw ConcurrentModificationException.
+        R_LOCK.lock();
+        try {
+            for(Unit u: DebrisList){
+                u.UpdateUnit();
+            }
+        } finally {
+            R_LOCK.unlock();
         }
 
         //Batch.flush();

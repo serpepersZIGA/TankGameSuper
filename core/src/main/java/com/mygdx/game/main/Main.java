@@ -236,6 +236,16 @@ public class Main extends ApplicationAdapter {
 		LightSystem.setAmbientColor(new Color(0,0,0,1f));
 		ContentSound = new DataSound();
 		ContentImage = new DataImage();
+		// Particle's static fields build Animators, which create OpenGL
+		// textures - and textures can only be created on the thread that
+		// owns the GL context. Particle is a plain class, so its static
+		// initializer only runs the *first* time something references it,
+		// and bullet/particle code runs on background worker threads
+		// (ActionGameHost/ActionGameClient's per-frame Iteration* threads) -
+		// if one of those happens to be first, texture creation crashes the
+		// JVM natively ("No context is current"). Referencing it here forces
+		// that one-time initialization to happen now, on the render thread.
+		com.mygdx.game.particle.Particle.AcidLiquid.getClass();
 		ParsBlock.Pars();
 		SoundRegister.SoundAdd();
 		FunctionalComponentBuildingRegisters();
