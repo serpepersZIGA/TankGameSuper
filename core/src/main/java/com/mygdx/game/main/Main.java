@@ -272,12 +272,8 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		// A 30-second full day/night cycle (10s day, 10s night, 5s each
-		// transition) made the lighting change feel like it was snapping
-		// rather than a smooth cycle, and night was very dark (0.72 alpha
-		// darkness). Stretched out to a ~3.5-minute cycle with much longer
-		// transitions, and eased off the night darkness a bit.
-		CycleDayNight = new CycleTimeDay(90,60,25,25,0.12f,0.55f);
+		// day/night light values, longer cycle + real day/night brightness (see shader: higher = brighter)
+		CycleDayNight = new CycleTimeDay(90,60,25,25,0.9f,0.3f);
 		PacketBuildingServer = new PacketBuildingServer();
 		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
 		Render = new RenderPrimitive();
@@ -317,13 +313,7 @@ public class Main extends ApplicationAdapter {
 		//field(120, 120);
         MapSize("Map/maps/MapBase.mapt");
 		spawn_object();
-		// The old pre-game menu screens (main menu, tank select, map select,
-		// host/join) have been replaced by the Scene2D screens in
-		// com.mygdx.game.ui. Only the in-game pause overlay (ConfigMenu 4)
-		// still uses this old Button-based system.
-		ButtonList.add(new Play2(100,600,400,120,"PLAYS",(byte)4));
-		ButtonList.add(new ExitPlay(100,400,400,120,"ExitPlay",(byte)4));
-		ButtonList.add(new Exit(100,200,400,120,"Exit",(byte)4));
+		// all pre-game + pause menus are now in com.mygdx.game.ui (Kotlin/Scene2D)
 		ActionGameMain = com.mygdx.game.ui.MainMenuScreen.INSTANCE;
 		xMap = Main.BlockList2D.get(0).size();
 		yMap = Main.BlockList2D.size();
