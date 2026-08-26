@@ -151,8 +151,10 @@ public class Main extends ApplicationAdapter {
 		screenWidth = x;
 		screenHeight = y;
 		Main.FPS = FPS;
-		ZoomWindowX = (float) screenWidth /1920;
-		ZoomWindowY = (float) screenHeight /1080;
+		// same factor both axes, see resize() for why
+		float zoom = Math.min((float) screenWidth / 1920, (float) screenHeight / 1080);
+		ZoomWindowX = zoom;
+		ZoomWindowY = zoom;
 	}
 	public static void spawn_object(){
 		//PlayerList.add(new PlayerCannonFlame(200,200, PlayerList,true));
@@ -349,17 +351,29 @@ public class Main extends ApplicationAdapter {
 	}
 	@Override
 	public void resize(int width, int height) {
-		// window got resized - screenWidth/height and the zoom factors were
-		// only ever set once in the constructor, so nothing adapted when the
-		// window changed size (squished tank, mouse aim off, menus half
-		// off-screen if the window wasn't at its final size yet on the first
-		// frame). Recompute the same way create() originally did.
 		screenWidth = width;
 		screenHeight = height;
-		ZoomWindowX = (float) screenWidth / 1920;
-		ZoomWindowY = (float) screenHeight / 1080;
+		// same factor for both axes so the world scales instead of stretching/squishing
+		// on a window that isn't 16:9
+		float zoom = Math.min((float) screenWidth / 1920, (float) screenHeight / 1080);
+		ZoomWindowX = zoom;
+		ZoomWindowY = zoom;
 		Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
 		Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
+
+		// RC caches its own copy of screen size at construction time and never
+		// re-reads Main.screenWidth/Height after that - refresh it too, then
+		// let zoom_const() redo the stuff that's derived from it (this is
+		// also why the aim was off: the camera math used the stale numbers)
+		if (RC != null) {
+			RC.width_2 = screenWidth / 2f;
+			RC.height_2 = screenHeight / 2f;
+			RC.WidthRender = screenWidth;
+			RC.HeightRender = screenHeight;
+		}
+		if (KeyboardObj != null) {
+			KeyboardObj.zoom_const();
+		}
 	}
 	@Override final
 	public void render () {
