@@ -25,7 +25,6 @@ import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.menu.button.ButtonTank.TankChoice.TankChoiceList;
 import static com.mygdx.game.menu.button.MapLoad.MapChoiceList;
-import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.unit.Unit.IDList;
 
 public class ActionMenu extends ActionGame {
@@ -178,7 +177,7 @@ public class ActionMenu extends ActionGame {
         switch (ConfigMenu) {
             case 0:{
                 SliderSound.AllAction();
-                SoundProcent = SliderSound.PercentageGet() * 0.2f;
+                com.mygdx.game.ui.GameSettings.INSTANCE.setSoundVolume(SliderSound.PercentageGet());
             }
             break;
             case 1:{
@@ -201,7 +200,7 @@ public class ActionMenu extends ActionGame {
             }break;
             case 4:
                 SliderSound.AllAction();
-                SoundProcent = SliderSound.PercentageGet() * 0.2f;
+                com.mygdx.game.ui.GameSettings.INSTANCE.setSoundVolume(SliderSound.PercentageGet());
                 if(Keyboard.ClickEsc){
                     Main.ActionGameMain = ActionGameTotal;
                 }

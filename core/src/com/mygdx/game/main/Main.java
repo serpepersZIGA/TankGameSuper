@@ -285,6 +285,7 @@ public class Main extends ApplicationAdapter {
 		Main.Zoom = 1;
 		Gdx.input.setInputProcessor(KeyboardObj);
 		Option = new Option();
+		com.mygdx.game.ui.GameSettings.INSTANCE.load();
 		Ai = new AI();
 		UnitsParser.Pars();
 		TransportRegister.Create();
@@ -294,6 +295,7 @@ public class Main extends ApplicationAdapter {
         MapSize("Map/maps/MapBase.mapt");
 		spawn_object();
 		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
+		ButtonList.add(new com.mygdx.game.menu.button.SettingsButton(600,600,400,120,"SETTINGS",(byte)0));
 		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));
 		ButtonList.add(new PlayClient(100,600,400,120,"CONNECT",(byte)1));
 		ButtonList.add(new Cancel(100,400,400,120,"CANCEL",(byte)1));
