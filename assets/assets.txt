@@ -90,8 +90,8 @@ sound/motor_back.wav
 sound/motor_helicopter.wav
 sound/motors.ogg
 i18n/strings.properties
-i18n/strings_en.properties
 i18n/strings_ru.properties
+i18n/strings_en.properties
 ContentGlobal/Block/Asphalt.json
 ContentGlobal/Block/Void.json
 ContentGlobal/Block/Dirt.json

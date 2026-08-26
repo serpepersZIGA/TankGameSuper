@@ -30,7 +30,12 @@ public class GameStart {
 
 		config.setWindowedMode(WidthWindow,HeightWindow);
 		config.useVsync(true);
-		config.setForegroundFPS(120);
+		// 0 = uncapped - paired with vsync so the monitor's own refresh is the
+		// only thing pacing frames here. Main.create() re-applies the user's
+		// saved vsync preference (and the matching FPS-cap pairing) right
+		// after the window exists, via GraphicsSettings.setVsync - see there
+		// for why a mismatched hard FPS cap alongside vsync causes stutter.
+		config.setForegroundFPS(0);
 		config.setTitle("Game");
 		config.setWindowIcon("image/player/tower_player.png");
 		new Lwjgl3Application(new Main(WidthWindow,HeightWindow,120), config);

@@ -21,12 +21,22 @@ object GameSettings {
     private const val KEY_RES_WIDTH = "resWidth"
     private const val KEY_RES_HEIGHT = "resHeight"
     private const val KEY_VSYNC = "vsync"
+    private const val KEY_FRAME_LIMIT_MODE = "frameLimitMode"
+    private const val KEY_SHOW_FPS = "showFps"
+    private const val KEY_PROCEDURAL_VOLUME = "proceduralVolume"
     private const val DEFAULT_SOUND_VOLUME = 0.5f
     private const val MAX_RECENT_SERVERS = 6
 
     private val prefs get() = Gdx.app.getPreferences(PREFS_NAME)
 
     var soundVolume: Float = DEFAULT_SOUND_VOLUME
+        private set
+    // separate volume for the procedural audio (engine, tracks, gunfire,
+    // impacts, explosions - see com.mygdx.game.Sound.Procedural) - it never
+    // went through soundVolume/Option.SoundProcent at all, so without its
+    // own control it was stuck at a fixed level no matter what the main
+    // sound slider was set to
+    var proceduralVolume: Float = DEFAULT_SOUND_VOLUME
         private set
 
     var recentServers: List<RecentServer> = emptyList()
@@ -38,7 +48,9 @@ object GameSettings {
         private set
     var resolutionHeight: Int = 1080
         private set
-    var vsync: Boolean = true
+    var frameLimitMode: FrameLimitMode = FrameLimitMode.VSYNC
+        private set
+    var showFps: Boolean = false
         private set
 
     /** Loads persisted settings and applies them. Call once during startup. */
@@ -51,7 +63,16 @@ object GameSettings {
             .getOrDefault(WindowMode.FULLSCREEN)
         resolutionWidth = prefs.getInteger(KEY_RES_WIDTH, 1920)
         resolutionHeight = prefs.getInteger(KEY_RES_HEIGHT, 1080)
-        vsync = prefs.getBoolean(KEY_VSYNC, true)
+        // migrate the old plain on/off vsync flag if that's all that's there yet
+        val legacyVsync = if (prefs.contains(KEY_FRAME_LIMIT_MODE)) null else prefs.getBoolean(KEY_VSYNC, true)
+        frameLimitMode = when {
+            prefs.contains(KEY_FRAME_LIMIT_MODE) -> FrameLimitMode.fromOrdinalSafe(prefs.getInteger(KEY_FRAME_LIMIT_MODE, 0))
+            legacyVsync == false -> FrameLimitMode.FPS_120
+            else -> FrameLimitMode.VSYNC
+        }
+        showFps = prefs.getBoolean(KEY_SHOW_FPS, false)
+        proceduralVolume = prefs.getFloat(KEY_PROCEDURAL_VOLUME, DEFAULT_SOUND_VOLUME)
+        applyProceduralVolume()
     }
 
     fun setWindowMode(mode: WindowMode, width: Int, height: Int) {
@@ -64,9 +85,15 @@ object GameSettings {
         prefs.flush()
     }
 
-    fun setVsync(on: Boolean) {
-        vsync = on
-        prefs.putBoolean(KEY_VSYNC, on)
+    fun setFrameLimitMode(mode: FrameLimitMode) {
+        frameLimitMode = mode
+        prefs.putInteger(KEY_FRAME_LIMIT_MODE, mode.ordinal)
+        prefs.flush()
+    }
+
+    fun setShowFps(on: Boolean) {
+        showFps = on
+        prefs.putBoolean(KEY_SHOW_FPS, on)
         prefs.flush()
     }
 
@@ -75,6 +102,14 @@ object GameSettings {
         soundVolume = value.coerceIn(0f, 1f)
         applySoundVolume()
         prefs.putFloat(KEY_SOUND_VOLUME, soundVolume)
+        prefs.flush()
+    }
+
+    /** Updates, applies and persists the procedural-audio volume (0..1). */
+    fun setProceduralVolume(value: Float) {
+        proceduralVolume = value.coerceIn(0f, 1f)
+        applyProceduralVolume()
+        prefs.putFloat(KEY_PROCEDURAL_VOLUME, proceduralVolume)
         prefs.flush()
     }
 
@@ -105,5 +140,9 @@ object GameSettings {
         // Option.SoundProcent is the field the rest of the game already reads
         // to scale sound effect volume; 0.2f matches the old sound slider's range.
         Option.SoundProcent = soundVolume * 0.2f
+    }
+
+    private fun applyProceduralVolume() {
+        com.mygdx.game.Sound.Procedural.AudioMixer.masterVolume = proceduralVolume
     }
 }

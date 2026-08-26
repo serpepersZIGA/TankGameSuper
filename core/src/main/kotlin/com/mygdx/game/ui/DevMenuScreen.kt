@@ -35,7 +35,6 @@ object DevMenuScreen : MenuScreen() {
 
         addToggleRow(table, skin, "menu.dev.godmode", { DevFlags.godMode }, { DevFlags.godMode = it })
         addToggleRow(table, skin, "menu.dev.freezedaynight", { DevFlags.freezeDayNight }, { DevFlags.freezeDayNight = it })
-        addToggleRow(table, skin, "menu.dev.showfps", { DevFlags.showFps }, { DevFlags.showFps = it })
         addToggleRow(table, skin, "menu.dev.uncappedparticles", { DevFlags.uncappedParticles }, { DevFlags.uncappedParticles = it })
 
         val backButton = TextButton(Localization.tr("menu.dev.back"), skin.buttonStyle)

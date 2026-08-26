@@ -6,12 +6,14 @@ import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
+import com.badlogic.gdx.utils.Align
 import com.mygdx.game.main.Main
 
 /** The game's front door: Play, Settings, Exit. */
 object MainMenuScreen : MenuScreen() {
 
     override fun buildContent(skin: GameSkin): Table {
+        val root = Table()
         val table = Table()
         table.center()
 
@@ -52,6 +54,10 @@ object MainMenuScreen : MenuScreen() {
         table.add(devButton).width(320f).height(72f).padBottom(16f).row()
         table.add(exitButton).width(320f).height(72f)
 
-        return table
+        root.add(table).expand().row()
+        val versionLabel = Label("v${GameVersion.VERSION}", skin.hintLabelStyle)
+        root.add(versionLabel).expand(false, false).align(Align.bottomRight).pad(16f)
+
+        return root
     }
 }
