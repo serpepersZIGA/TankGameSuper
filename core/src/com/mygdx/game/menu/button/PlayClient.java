@@ -1,6 +1,7 @@
 package com.mygdx.game.menu.button;
 
 import com.mygdx.game.main.Main;
+import com.mygdx.game.menu.InputWindow;
 
 public class PlayClient extends Button{
     public PlayClient(int x, int y, int width, int height, String txt,byte ConfigMenu){
@@ -22,6 +23,11 @@ public class PlayClient extends Button{
     }
     protected void ActionButton(){
         if(condition) {
+            if (Main.InputWindow == null) {
+                Main.InputWindow = new InputWindow();
+            } else {
+                Main.InputWindow.frame.setVisible(true);
+            }
             Main.GameStart = true;
             Main.GameHost = false;
             condition = false;
