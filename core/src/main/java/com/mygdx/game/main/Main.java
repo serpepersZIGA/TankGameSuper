@@ -29,8 +29,6 @@ import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.bull.Updater.UpdateRegister;
-import com.mygdx.game.menu.InputWindow;
-import com.mygdx.game.menu.MapAllLoad;
 import com.mygdx.game.menu.button.*;
 import com.mygdx.game.method.*;
 import com.mygdx.game.object_map.MapObject;
@@ -42,7 +40,6 @@ import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
-import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
 import com.mygdx.game.unit.moduleUnit.*;
@@ -109,7 +106,6 @@ public class Main extends ApplicationAdapter {
 	public static float TickBlock,TickBlockMax = 600;
 	public static BitmapFont font,font2,font3;
 	public static byte ConfigMenu;
-	public static InputWindow InputWindow;
 	public static int xMap,yMap,i;
 	public static EventRegister EventData;
 	public static int IDClient;
@@ -149,7 +145,6 @@ public class Main extends ApplicationAdapter {
 		//PlayerList.add(new PlayerCannonFlame(200,200, PlayerList,true));
 		//SoldatList.add(new SoldatBull(1200,200, UnitList));
 		MapScan.MapInput("Map/maps/MapBase.mapt");
-		MapAllLoad.MapCount();
 //		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
         //TrackSoldatT1.UnitAdd(1200,1200,true, (byte) 2,
@@ -294,22 +289,14 @@ public class Main extends ApplicationAdapter {
 		//field(120, 120);
         MapSize("Map/maps/MapBase.mapt");
 		spawn_object();
-		ButtonList.add(new Play(100,600,400,120,"PLAY",(byte)0));
-		ButtonList.add(new com.mygdx.game.menu.button.SettingsButton(600,600,400,120,"SETTINGS",(byte)0));
-		ButtonList.add(new PlayHost(100,800,400,120,"HOST",(byte)1));
-		ButtonList.add(new PlayClient(100,600,400,120,"CONNECT",(byte)1));
-		ButtonList.add(new Cancel(100,400,400,120,"CANCEL",(byte)1));
-		ButtonList.add(new Maps(100,400,400,120,"MAPS",(byte)0));
-		ButtonList.add(new Exit(100,200,400,120,"Exit",(byte)0));
-		ButtonList.add(new Cancel(100,400,400,120,"CANCEL",(byte)3));
+		// The old pre-game menu screens (main menu, tank select, map select,
+		// host/join) have been replaced by the Scene2D screens in
+		// com.mygdx.game.ui. Only the in-game pause overlay (ConfigMenu 4)
+		// still uses this old Button-based system.
 		ButtonList.add(new Play2(100,600,400,120,"PLAYS",(byte)4));
-
-
 		ButtonList.add(new ExitPlay(100,400,400,120,"ExitPlay",(byte)4));
-
 		ButtonList.add(new Exit(100,200,400,120,"Exit",(byte)4));
-		PlayerAllLoad.PlayerCount();
-		ActionGameMain = com.mygdx.game.main.ActionGame.ActionMenu;
+		ActionGameMain = com.mygdx.game.ui.MainMenuScreen.INSTANCE;
 		xMap = Main.BlockList2D.get(0).size();
 		yMap = Main.BlockList2D.size();
 		SpawnPlayer = PlayerSpawnCannonVoid;

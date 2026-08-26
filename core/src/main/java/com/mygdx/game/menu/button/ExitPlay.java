@@ -12,7 +12,6 @@ import com.mygdx.game.main.ServerMain;
 import static com.mygdx.game.MapFunction.MapScan.MapSize;
 
 import static com.mygdx.game.main.ActionGame.ActionGameH;
-import static com.mygdx.game.main.ActionGame.ActionMenu;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.nConnect;
 import static com.mygdx.game.method.RenderCenter.IndBuilding;
@@ -47,9 +46,9 @@ public class ExitPlay extends Button{
                 ClientMain.Client.close();
                 ClientMain.Client = null;
             }
-            ActionGameMain = ActionMenu;
+            ActionGameMain = com.mygdx.game.ui.MainMenuScreen.INSTANCE;
+            com.mygdx.game.ui.MainMenuScreen.INSTANCE.show();
             ActionGameTotal = null;
-            Main.ConfigMenu = 0;
             IndBuilding.clear();
             Block.passability_detected2();
             UnitList.clear();
