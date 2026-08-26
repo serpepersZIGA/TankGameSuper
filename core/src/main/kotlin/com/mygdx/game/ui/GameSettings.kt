@@ -17,6 +17,10 @@ object GameSettings {
     private const val KEY_SOUND_VOLUME = "soundVolume"
     private const val KEY_LANGUAGE = "language"
     private const val KEY_RECENT_SERVERS = "recentServers"
+    private const val KEY_WINDOW_MODE = "windowMode"
+    private const val KEY_RES_WIDTH = "resWidth"
+    private const val KEY_RES_HEIGHT = "resHeight"
+    private const val KEY_VSYNC = "vsync"
     private const val DEFAULT_SOUND_VOLUME = 0.5f
     private const val MAX_RECENT_SERVERS = 6
 
@@ -28,12 +32,42 @@ object GameSettings {
     var recentServers: List<RecentServer> = emptyList()
         private set
 
+    var windowMode: WindowMode = WindowMode.FULLSCREEN
+        private set
+    var resolutionWidth: Int = 1920
+        private set
+    var resolutionHeight: Int = 1080
+        private set
+    var vsync: Boolean = true
+        private set
+
     /** Loads persisted settings and applies them. Call once during startup. */
     fun load() {
         soundVolume = prefs.getFloat(KEY_SOUND_VOLUME, DEFAULT_SOUND_VOLUME)
         applySoundVolume()
         Localization.init(GameLanguage.fromCode(prefs.getString(KEY_LANGUAGE, GameLanguage.RUSSIAN.locale.language)))
         recentServers = parseRecentServers(prefs.getString(KEY_RECENT_SERVERS, ""))
+        windowMode = runCatching { WindowMode.valueOf(prefs.getString(KEY_WINDOW_MODE, WindowMode.FULLSCREEN.name)) }
+            .getOrDefault(WindowMode.FULLSCREEN)
+        resolutionWidth = prefs.getInteger(KEY_RES_WIDTH, 1920)
+        resolutionHeight = prefs.getInteger(KEY_RES_HEIGHT, 1080)
+        vsync = prefs.getBoolean(KEY_VSYNC, true)
+    }
+
+    fun setWindowMode(mode: WindowMode, width: Int, height: Int) {
+        windowMode = mode
+        resolutionWidth = width
+        resolutionHeight = height
+        prefs.putString(KEY_WINDOW_MODE, mode.name)
+        prefs.putInteger(KEY_RES_WIDTH, width)
+        prefs.putInteger(KEY_RES_HEIGHT, height)
+        prefs.flush()
+    }
+
+    fun setVsync(on: Boolean) {
+        vsync = on
+        prefs.putBoolean(KEY_VSYNC, on)
+        prefs.flush()
     }
 
     /** Updates, applies and persists the sound volume (0..1). */

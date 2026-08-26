@@ -22,6 +22,15 @@ object SettingsScreen : MenuScreen() {
         show()
     }
 
+    init {
+        onEscape = { goBack() }
+    }
+
+    private fun goBack() {
+        Main.ActionGameMain = returnTo
+        returnTo.show()
+    }
+
     override fun buildContent(skin: GameSkin): Table {
         val table = Table()
         table.center()
@@ -56,11 +65,55 @@ object SettingsScreen : MenuScreen() {
             languageRow.add(button).width(140f).height(48f).pad(4f)
         }
 
+        val windowModeCaption = Label(Localization.tr("menu.settings.windowmode"), skin.bodyLabelStyle)
+        val windowModeRow = Table()
+        val windowModeGroup = ButtonGroup<TextButton>()
+        windowModeGroup.setMinCheckCount(1)
+        windowModeGroup.setMaxCheckCount(1)
+        for (mode in WindowMode.entries) {
+            val label = Localization.tr("menu.settings.windowmode.${mode.name.lowercase()}")
+            val button = TextButton(label, skin.toggleButtonStyle)
+            button.isChecked = mode == GameSettings.windowMode
+            windowModeGroup.add(button)
+            button.addListener(object : ChangeListener() {
+                override fun changed(event: ChangeEvent?, actor: Actor?) {
+                    if (button.isChecked) GraphicsSettings.apply(mode, GameSettings.resolutionWidth, GameSettings.resolutionHeight)
+                }
+            })
+            windowModeRow.add(button).width(150f).height(48f).pad(4f)
+        }
+
+        val resolutionCaption = Label(Localization.tr("menu.settings.resolution"), skin.bodyLabelStyle)
+        val resolutionRow = Table()
+        val resolutionGroup = ButtonGroup<TextButton>()
+        resolutionGroup.setMinCheckCount(1)
+        resolutionGroup.setMaxCheckCount(1)
+        for ((w, h) in COMMON_RESOLUTIONS) {
+            val button = TextButton("${w}x$h", skin.toggleButtonStyle)
+            button.isChecked = w == GameSettings.resolutionWidth && h == GameSettings.resolutionHeight
+            resolutionGroup.add(button)
+            button.addListener(object : ChangeListener() {
+                override fun changed(event: ChangeEvent?, actor: Actor?) {
+                    if (button.isChecked) GraphicsSettings.apply(GameSettings.windowMode, w, h)
+                }
+            })
+            resolutionRow.add(button).width(120f).height(44f).pad(3f)
+        }
+
+        val vsyncCaption = Label(Localization.tr("menu.settings.vsync"), skin.bodyLabelStyle)
+        val vsyncButton = TextButton(stateText(GameSettings.vsync), skin.toggleButtonStyle)
+        vsyncButton.isChecked = GameSettings.vsync
+        vsyncButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GraphicsSettings.setVsync(vsyncButton.isChecked)
+                vsyncButton.setText(stateText(vsyncButton.isChecked))
+            }
+        })
+
         val backButton = TextButton(Localization.tr("menu.settings.back"), skin.buttonStyle)
         backButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = returnTo
-                returnTo.show()
+                goBack()
             }
         })
 
@@ -70,10 +123,17 @@ object SettingsScreen : MenuScreen() {
         table.add(volumeSlider).colspan(2).width(420f).padTop(8f).padBottom(32f).row()
         table.add(languageCaption).align(Align.right).padRight(20f)
         table.add(languageRow).row()
+        table.add(windowModeCaption).align(Align.right).padRight(20f).padTop(20f)
+        table.add(windowModeRow).padTop(20f).row()
+        table.add(resolutionCaption).align(Align.right).padRight(20f)
+        table.add(resolutionRow).row()
+        table.add(vsyncCaption).align(Align.right).padRight(20f)
+        table.add(vsyncButton).width(120f).height(48f).row()
         table.add(backButton).colspan(2).width(220f).height(64f).padTop(40f)
 
         return table
     }
 
     private fun volumePercentText(value: Float) = "${Math.round(value * 100)}%"
+    private fun stateText(on: Boolean) = Localization.tr(if (on) "menu.dev.on" else "menu.dev.off")
 }

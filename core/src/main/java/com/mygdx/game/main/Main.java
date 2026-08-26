@@ -307,6 +307,12 @@ public class Main extends ApplicationAdapter {
 		Gdx.input.setInputProcessor(KeyboardObj);
 		Option = new Option();
 		com.mygdx.game.ui.GameSettings.INSTANCE.load();
+		com.mygdx.game.ui.GraphicsSettings.INSTANCE.setVsync(com.mygdx.game.ui.GameSettings.INSTANCE.getVsync());
+		if (com.mygdx.game.ui.GameSettings.INSTANCE.getWindowMode() != com.mygdx.game.ui.WindowMode.FULLSCREEN) {
+			// only re-apply if not the boot default - GameStart already opens a fullscreen-sized window
+			com.mygdx.game.ui.GraphicsSettings.INSTANCE.apply(com.mygdx.game.ui.GameSettings.INSTANCE.getWindowMode(),
+					com.mygdx.game.ui.GameSettings.INSTANCE.getResolutionWidth(), com.mygdx.game.ui.GameSettings.INSTANCE.getResolutionHeight());
+		}
 		Ai = new AI();
 		UnitsParser.Pars();
 		TransportRegister.Create();
