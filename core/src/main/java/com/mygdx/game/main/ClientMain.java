@@ -128,21 +128,29 @@ public class ClientMain extends Listener {
             i = 0;
 //            ArrayList<PacketInventory> InventoryPack = ((PackerServer) p).inventory;
 //            ArrayList<PacketInventory> InventoryPack2 = ((PackerServer) p).equipment;
-            if(UnitList.size() == PacketUnit.size()) {
-                for (Unit unit : UnitList) {
-                    player_data(unit,PacketUnit.get(i));
-                    if(PacketUnit.get(i).IDClient== IDClient) {
-                        unit.inventory = ItemSynchronization(unit.inventory, PacketUnit.get(i).inventory);
-                        unit.equipment = ItemSynchronization(unit.equipment, PacketUnit.get(i).equipment);
-                        inventoryMain.SlotGeneration();
-                        equipmentMain.SlotGeneration();
-                    }
+            // This runs on Kryonet's network thread, while UnitList is also
+            // read/written from the render/game thread - needs the same lock
+            // Unit.UnitAdd() takes when it mutates the list.
+            Main.R_LOCK.lock();
+            try {
+                if (UnitList.size() == PacketUnit.size()) {
+                    for (Unit unit : UnitList) {
+                        player_data(unit,PacketUnit.get(i));
+                        if(PacketUnit.get(i).IDClient== IDClient) {
+                            unit.inventory = ItemSynchronization(unit.inventory, PacketUnit.get(i).inventory);
+                            unit.equipment = ItemSynchronization(unit.equipment, PacketUnit.get(i).equipment);
+                            inventoryMain.SlotGeneration();
+                            equipmentMain.SlotGeneration();
+                        }
 
-                    i++;
+                        i++;
+                    }
                 }
-            }
-            else {
-                UnitCreate();
+                else {
+                    UnitCreate();
+                }
+            } finally {
+                Main.R_LOCK.unlock();
             }
 
 //            ItemPackList = ((PackerServer) p).item;

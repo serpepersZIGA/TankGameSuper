@@ -58,7 +58,7 @@ public abstract class Particle {
     }
     protected void spawn_flame(){
         if(Main.flame_spawn_time <=0){
-            Main.FlameList.add(new Flame((int)((this.x+ -20+rand.rand(40))),(int)((this.y+-20+rand.rand(40)))));
+            Main.addParticle(Main.FlameList, new Flame((int)((this.x+ -20+rand.rand(40))),(int)((this.y+-20+rand.rand(40)))));
         }
     }
     protected void sound_play(){
@@ -206,7 +206,7 @@ public abstract class Particle {
     protected void create_flame_particle(LinkedList<Particle>obj){
         this.time_spawn -= 1;
         if(this.time_spawn <= 0){
-            obj.add(new FlameParticle(this.x,this.y));
+            Main.addParticle(obj, new FlameParticle(this.x,this.y));
             this.time_spawn = time_spawn_max;
         }
     }

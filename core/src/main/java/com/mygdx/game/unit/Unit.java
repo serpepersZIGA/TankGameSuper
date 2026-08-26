@@ -1217,15 +1217,22 @@ public abstract class Unit implements Cloneable{
             Unit unit2 = null;
             float radius = 0;
             //System.out.println("eeeeeee1008");
-            for (Unit unitSupport : UnitList) {
-                if(this != unitSupport && unitSupport.classUnit == SupportTransport) {
-                    g = (float) sqrt(pow2(unitSupport.x - this.x) + pow2(unitSupport.y - this.y));
-                    if (radius == 0 || radius > g) {
-                        unit2 = unitSupport;
-                        radius = g;
+            // See hill_bot() - UnitList is shared with other threads, so this
+            // read needs the same lock the writers take.
+            R_LOCK.lock();
+            try {
+                for (Unit unitSupport : UnitList) {
+                    if(this != unitSupport && unitSupport.classUnit == SupportTransport) {
+                        g = (float) sqrt(pow2(unitSupport.x - this.x) + pow2(unitSupport.y - this.y));
+                        if (radius == 0 || radius > g) {
+                            unit2 = unitSupport;
+                            radius = g;
 
+                        }
                     }
                 }
+            } finally {
+                R_LOCK.unlock();
             }
             if(unit2 != null){
                 return new Object[]{unit2,radius};
@@ -1496,15 +1503,25 @@ public abstract class Unit implements Cloneable{
         }
     }
     public void hill_bot(ArrayList<Unit> obj){
-        for (Unit unit : obj) {
-            if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < 230 && unit.max_hp > unit.hp
-                    & unit.team == this.team) {
-                unit.hp += this.HillHp;
-                unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
-                if(unit.hp >= unit.max_hp -20 && unit.crite_life){
-                    unit.crite_life = false;
+        // obj is Main.UnitList, which is also mutated (add/remove) from other
+        // threads (see Unit.UnitAdd, ActionGameHost's unit thread) - iterating
+        // it without R_LOCK risks a ConcurrentModificationException the moment
+        // a unit spawns or dies while this runs, which is exactly what combat
+        // does a lot of.
+        R_LOCK.lock();
+        try {
+            for (Unit unit : obj) {
+                if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < 230 && unit.max_hp > unit.hp
+                        & unit.team == this.team) {
+                    unit.hp += this.HillHp;
+                    unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                    if(unit.hp >= unit.max_hp -20 && unit.crite_life){
+                        unit.crite_life = false;
+                    }
                 }
             }
+        } finally {
+            R_LOCK.unlock();
         }
     }
     public void bypass_hiller() {
