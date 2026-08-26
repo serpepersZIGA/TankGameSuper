@@ -244,8 +244,14 @@ public class Keyboard extends InputAdapter{
         return false;
     }
     public void zoom_const(){
-        for(Particle particle : Main.FlameParticleList){
-            particle.size_render = (int)(particle.size* Main.Zoom);
+        // FlameParticleList is also touched from other threads, same story as UnitList elsewhere
+        Main.R_LOCK.lock();
+        try {
+            for(Particle particle : Main.FlameParticleList){
+                particle.size_render = (int)(particle.size* Main.Zoom);
+            }
+        } finally {
+            Main.R_LOCK.unlock();
         }
         ItemObject.widthRender = (int)(ItemObject.width* Main.Zoom);
         ItemObject.heightRender = (int)(ItemObject.height* Main.Zoom);

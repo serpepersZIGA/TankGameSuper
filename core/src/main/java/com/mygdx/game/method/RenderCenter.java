@@ -113,12 +113,14 @@ public class RenderCenter {
 
         render_x = (int)(x2/Main.width_block);
         render_y = (int)(y2/Main.width_block);
+        // these need to be two separate ifs, not if/else-if - both edges can
+        // need clamping in the same frame (e.g. a tiny/zoomed-out map)
         if(render_x_min <0){render_x_min =0;}
-        else if(render_x_max >Main.xMap){render_x_max = Main.xMap;}
+        if(render_x_max >Main.xMap){render_x_max = Main.xMap;}
         render_y_max = (int)((y2+ HeightRenderZoom)/Main.width_block+2);
         render_y_min = (int)(y2/Main.width_block-2);
         if(render_y_min <0){render_y_min = 0;}
-        else if(render_y_max >Main.yMap){render_y_max = Main.yMap;}
+        if(render_y_max >Main.yMap){render_y_max = Main.yMap;}
         BuildingConst();
         LightSystem.lightsRender.clear();
         for(int i = 0;i<LightSystem.lights.size();i++){
