@@ -141,28 +141,36 @@ public class ServerMain extends Listener {
         if(p instanceof Packet_client) {
             Packet_client pack = (Packet_client)p;
             Inventory.Money -= pack.MoneyAdd;
-            for (Unit unit : UnitList) {
-                //System.out.println(IDClient+" "+unit.nConnect );
-                if (pack.IDClient == unit.nConnect) {
+            // This runs on Kryonet's network thread, while UnitList is also
+            // read/written from the render/game thread - needs the same lock
+            // Unit.UnitAdd() takes when it mutates the list.
+            Main.R_LOCK.lock();
+            try {
+                for (Unit unit : UnitList) {
+                    //System.out.println(IDClient+" "+unit.nConnect );
+                    if (pack.IDClient == unit.nConnect) {
 
-                    unit.left_mouse = pack.left_mouse;
-                    unit.right_mouse = pack.right_mouse;
-                    unit.press_w = pack.press_w;
-                    unit.press_a = pack.press_a;
-                    unit.press_s = pack.press_s;
-                    unit.press_d = pack.press_d;
-                    unit.press_f = pack.press_f;
-                    unit.TargetX = pack.mouse_x;
-                    unit.TargetY = pack.mouse_y;
-                    //unit.FireControl();
-                    for (Unit Tower : unit.TowerUnitList) {
-                        Tower.left_mouse = pack.left_mouse;
-                        Tower.TargetX = unit.TargetX+ Tower.tower_x;
-                        Tower.TargetY = unit.TargetY+ Tower.tower_y;
+                        unit.left_mouse = pack.left_mouse;
+                        unit.right_mouse = pack.right_mouse;
+                        unit.press_w = pack.press_w;
+                        unit.press_a = pack.press_a;
+                        unit.press_s = pack.press_s;
+                        unit.press_d = pack.press_d;
+                        unit.press_f = pack.press_f;
+                        unit.TargetX = pack.mouse_x;
+                        unit.TargetY = pack.mouse_y;
+                        //unit.FireControl();
+                        for (Unit Tower : unit.TowerUnitList) {
+                            Tower.left_mouse = pack.left_mouse;
+                            Tower.TargetX = unit.TargetX+ Tower.tower_x;
+                            Tower.TargetY = unit.TargetY+ Tower.tower_y;
+                        }
+                        return;
                     }
-                    return;
-                }
 
+                }
+            } finally {
+                Main.R_LOCK.unlock();
             }
         }
         else if(p instanceof SpawnPlayerPack){

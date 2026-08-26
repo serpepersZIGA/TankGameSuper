@@ -5,6 +5,7 @@ import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
+import static com.mygdx.game.main.Main.R_LOCK;
 import static com.mygdx.game.main.Main.UnitList;
 import static java.lang.Math.cos;
 import static java.lang.Math.sin;
@@ -49,18 +50,28 @@ public class Method {
         tower_y = difference_rotation_cos(tower_y,difference_2,rotationX);
         return new float[]{tower_x,tower_y};
     }
+    // These four "find nearest unit" helpers are called constantly from bot AI
+    // and iterate Main.UnitList, which is also mutated (spawn/death) from other
+    // threads - see Unit.hill_bot()/less_hp_bot() for the same fix and why it's
+    // needed (an unprotected foreach here throws ConcurrentModificationException
+    // the moment a unit spawns or dies while one of these runs).
     public static Unit detection_near_transport_i(Unit objBot) {
         Unit ind = null;
         int radius = 0;
-        for (Unit unit : UnitList) {
-            if(unit.team !=objBot.team) {
-                int g = (int) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
-                if (radius == 0 || radius > g) {
-                    ind = unit;
-                    radius = g;
+        R_LOCK.lock();
+        try {
+            for (Unit unit : UnitList) {
+                if(unit.team !=objBot.team) {
+                    int g = (int) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                    if (radius == 0 || radius > g) {
+                        ind = unit;
+                        radius = g;
 
+                    }
                 }
             }
+        } finally {
+            R_LOCK.unlock();
         }
         return ind;
     }
@@ -68,15 +79,20 @@ public class Method {
         Unit ind = null;
         float g;
         float radius = 0;
-        for (Unit unit : UnitList) {
-            if(unit.team !=objBot.team) {
-                g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
-                if (radius == 0 || radius > g) {
-                    ind = unit;
-                    radius = g;
+        R_LOCK.lock();
+        try {
+            for (Unit unit : UnitList) {
+                if(unit.team !=objBot.team) {
+                    g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                    if (radius == 0 || radius > g) {
+                        ind = unit;
+                        radius = g;
 
+                    }
                 }
             }
+        } finally {
+            R_LOCK.unlock();
         }
         return new Object[]{ind,radius};
     }
@@ -84,15 +100,20 @@ public class Method {
         Unit ind = null;
         int radius = 0;
         float g;
-        for (Unit unit : UnitList) {
-            if(unit.team != objBot.team) {
-                g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
-                if (radius > g || radius == 0) {
-                    ind = unit;
-                    radius = (int) g;
+        R_LOCK.lock();
+        try {
+            for (Unit unit : UnitList) {
+                if(unit.team != objBot.team) {
+                    g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                    if (radius > g || radius == 0) {
+                        ind = unit;
+                        radius = (int) g;
 
+                    }
                 }
             }
+        } finally {
+            R_LOCK.unlock();
         }
         return new Object[]{ind,radius};
     }
@@ -100,16 +121,21 @@ public class Method {
         Unit ind = null;
         float radius = 0;
         float g;
-        for (Unit unit : UnitList) {
-            if(unit.team == objBot.team & unit != objBot) {
-                g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
-                //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
-                if (radius > g || radius == 0) {
-                    ind = unit;
-                    radius = g;
+        R_LOCK.lock();
+        try {
+            for (Unit unit : UnitList) {
+                if(unit.team == objBot.team & unit != objBot) {
+                    g = (float) sqrt(pow2.pow2(objBot.x - unit.x) + pow2.pow2(objBot.y - unit.y));
+                    //float rad = (float) sqrt(pow2((x - Target.x)) + pow2(y - Target.y));
+                    if (radius > g || radius == 0) {
+                        ind = unit;
+                        radius = g;
 
+                    }
                 }
             }
+        } finally {
+            R_LOCK.unlock();
         }
         return new Object[]{ind,radius};
     }

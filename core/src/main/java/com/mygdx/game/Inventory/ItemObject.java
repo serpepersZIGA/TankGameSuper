@@ -59,19 +59,26 @@ public class ItemObject{
 
     }
     protected void Press(){
-        for (Unit unit : UnitList) {
-            if (unit.press_f & sqrt(pow2(this.x-unit.x)+pow2(this.y-unit.y))<LineSelection) {
-                if(unit.inventory.ItemAdd(this.item)) {
-                    if(unit.inventory== inventoryMain.inventory){
-                        inventoryMain.SlotGeneration();
+        // UnitList is shared with other threads (see Unit.hill_bot()), so
+        // reading it here needs the same lock the writers take.
+        Main.R_LOCK.lock();
+        try {
+            for (Unit unit : UnitList) {
+                if (unit.press_f & sqrt(pow2(this.x-unit.x)+pow2(this.y-unit.y))<LineSelection) {
+                    if(unit.inventory.ItemAdd(this.item)) {
+                        if(unit.inventory== inventoryMain.inventory){
+                            inventoryMain.SlotGeneration();
+                        }
+                        ConfSentPackItem = true;
+                        ItemList.remove(this);
+                        PacketAdd();
                     }
-                    ConfSentPackItem = true;
-                    ItemList.remove(this);
-                    PacketAdd();
+                    //unit.press_f = false;
+                        //unit.inventory.ItemAdd(item);
                 }
-                //unit.press_f = false;
-                    //unit.inventory.ItemAdd(item);
             }
+        } finally {
+            Main.R_LOCK.unlock();
         }
     }
     protected void CenterRender(){

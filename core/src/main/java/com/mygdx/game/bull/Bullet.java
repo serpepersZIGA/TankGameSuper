@@ -269,7 +269,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         if(1 == rand.rand(16)){
             R_LOCK.lock();
             try {
-                Main.FlameSpawnList.add(new FlameSpawn(this.x, this.y));
+                Main.addParticle(Main.FlameSpawnList, new FlameSpawn(this.x, this.y));
             }
             finally {
                 R_LOCK.unlock();
@@ -286,7 +286,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         if(1 == rand.rand(3)){
             R_LOCK.lock();
             try {
-                Main.LiquidList.add(new Acid(this.x, this.y));
+                Main.addParticle(Main.LiquidList, new Acid(this.x, this.y));
             }
             finally {R_LOCK.unlock();}
         }

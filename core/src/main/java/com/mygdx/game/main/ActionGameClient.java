@@ -191,9 +191,16 @@ public class ActionGameClient extends ActionGame {
         WeatherIteration(Batch);
         LightSystem.begin(Batch);
         //PackUpdateUnit();
-        while (ThreadIterationBullet.isAlive()||ThreadIterationUnit.isAlive()||ThreadIterationDebris.isAlive()){
-
-        };
+        // This used to be an empty-body busy-wait loop spinning on isAlive(),
+        // burning a full CPU core every frame instead of actually blocking -
+        // join() waits for the same condition properly.
+        try {
+            ThreadIterationBullet.join();
+            ThreadIterationUnit.join();
+            ThreadIterationDebris.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
     }
     private class IterationDebris implements Runnable{
         public void run() {

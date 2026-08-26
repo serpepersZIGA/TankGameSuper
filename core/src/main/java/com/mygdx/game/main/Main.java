@@ -78,6 +78,19 @@ public class Main extends ApplicationAdapter {
 	public static LinkedList<Particle> FlameSpawnList = new LinkedList<>();
 	public static ArrayList<Unit> DebrisList = new ArrayList<>();
 
+	// Combat (bullet impacts, deaths, fire) used to spawn particles onto these
+	// lists with no upper bound at all, so a big enough fight would spawn
+	// thousands of them and start visibly lagging the game. Capping each list
+	// and dropping the oldest particle to make room keeps the effect visually
+	// dense without letting it grow unbounded.
+	private static final int MAX_PARTICLES_PER_LIST = 300;
+	public static void addParticle(LinkedList<Particle> list, Particle particle) {
+		if (list.size() >= MAX_PARTICLES_PER_LIST) {
+			list.removeFirst();
+		}
+		list.add(particle);
+	}
+
 	public static DataSound ContentSound;
 	public static ArrayList<ArrayList<Block>> BlockList2D = new ArrayList<>();
 
