@@ -106,6 +106,10 @@ gradle-app.setting
 .DS_Store
 Thumbs.db
 
+## runtime replay logs (author confirmed safe to ignore)
+replay_pid*.log
+/desktop/replay_pid*.log
+
 ## iOS
 /ios/xcode/*.xcodeproj/*
 !/ios/xcode/*.xcodeproj/xcshareddata

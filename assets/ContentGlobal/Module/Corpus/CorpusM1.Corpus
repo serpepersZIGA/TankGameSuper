@@ -1,0 +1,14 @@
+MaxHP = 200;
+ArmorFront = 5;
+ArmorCenter = 5;
+ArmorBack = 5;
+CorpusWidth = 18;
+CorpusHeight = 45;
+Difference = 5;
+Image = CorpusM1;
+CorrectX = 0;
+CorrectY = 0;
+
+func.Add ComponentTowerIteration;
+func.Add ComponentBuildingCollision;
+func.Add ComponentTowerXY;
