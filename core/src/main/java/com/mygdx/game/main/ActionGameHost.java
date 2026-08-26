@@ -343,7 +343,7 @@ public class ActionGameHost extends ActionGame{
             Thread.currentThread().interrupt();
         }
         server_packet();
-
+        com.mygdx.game.ui.DevOverlay.INSTANCE.render();
 
         //executor.shutdown();
         //executor.close();

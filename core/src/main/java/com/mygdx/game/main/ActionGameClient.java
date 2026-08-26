@@ -223,6 +223,7 @@ public class ActionGameClient extends ActionGame {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        com.mygdx.game.ui.DevOverlay.INSTANCE.render();
     }
     private class IterationDebris implements Runnable{
         public void run() {

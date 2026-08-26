@@ -528,7 +528,8 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     protected final void armor_damage(Unit unit,float armor){
         int DamageTotal = (int) (this.damage-((this.damage*0.01f*(armor-this.penetration))));
-        if(DamageTotal>0) {
+        boolean godMode = com.mygdx.game.ui.DevFlags.INSTANCE.getGodMode() && unit == Main.RC.MainUnit;
+        if(DamageTotal>0 && !godMode) {
             unit.hp -= DamageTotal;
         }
         unit.t += this.t_damage;

@@ -46,6 +46,7 @@ public class CycleTimeDay {
         lightColorGlobal = lightGlobal*8f;
         LightSystem.setAmbientColor(new Color(0,0,0,lightTotal));
         LightSystem.setMinLightness(lightTotal);
+        if (com.mygdx.game.ui.DevFlags.INSTANCE.getFreezeDayNight()) return; // dev toggle: stop the clock, keep current lighting
 
         totalTime += 1;
         if (MaxTime < totalTime) {

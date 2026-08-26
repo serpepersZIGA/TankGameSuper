@@ -32,6 +32,13 @@ object MainMenuScreen : MenuScreen() {
             }
         })
 
+        val devButton = TextButton(Localization.tr("menu.dev.title"), skin.buttonStyle)
+        devButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                DevMenuScreen.openFrom(MainMenuScreen)
+            }
+        })
+
         val exitButton = TextButton(Localization.tr("menu.main.exit"), skin.buttonStyle)
         exitButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -42,6 +49,7 @@ object MainMenuScreen : MenuScreen() {
         table.add(title).padBottom(64f).row()
         table.add(playButton).width(320f).height(72f).padBottom(16f).row()
         table.add(settingsButton).width(320f).height(72f).padBottom(16f).row()
+        table.add(devButton).width(320f).height(72f).padBottom(16f).row()
         table.add(exitButton).width(320f).height(72f)
 
         return table
