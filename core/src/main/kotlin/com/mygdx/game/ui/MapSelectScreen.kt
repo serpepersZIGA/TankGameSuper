@@ -120,5 +120,5 @@ object MapSelectScreen : MenuScreen() {
     }
 
     private fun procedureSeed(name: String): Long? =
-        Regex("^Procedural(-?\\d+)$").find(name)?.groupValues?.get(1)?.toLongOrNull()
+        Regex("^Procedural_(-?\\d+)$").find(name)?.groupValues?.get(1)?.toLongOrNull()
 }
