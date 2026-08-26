@@ -6,11 +6,17 @@ import org.lwjgl.glfw.GLFW
 
 enum class WindowMode { FULLSCREEN, WINDOWED, BORDERLESS }
 
-// common resolutions to offer in the windowed dropdown
-val COMMON_RESOLUTIONS = listOf(1280 to 720, 1600 to 900, 1920 to 1080, 2560 to 1440, 3840 to 2160)
-
 // actually applies a display mode/resolution/vsync change, and persists it
 object GraphicsSettings {
+
+    /** Resolutions the monitor the window is actually on supports right now -
+     * not a hardcoded 16:9 list, so ultrawide/16:10/multi-monitor setups get
+     * their real options instead of made-up ones. */
+    fun availableResolutions(): List<Pair<Int, Int>> =
+        Gdx.graphics.getDisplayModes()
+            .map { it.width to it.height }
+            .distinct()
+            .sortedByDescending { (w, h) -> w * h }
 
     fun apply(mode: WindowMode, width: Int, height: Int) {
         val windowHandle = (Gdx.graphics as? Lwjgl3Graphics)?.window?.windowHandle

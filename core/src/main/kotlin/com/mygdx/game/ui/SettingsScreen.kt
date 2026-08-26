@@ -3,6 +3,7 @@ package com.mygdx.game.ui
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup
 import com.badlogic.gdx.scenes.scene2d.ui.Label
+import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
 import com.badlogic.gdx.scenes.scene2d.ui.Slider
 import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
@@ -80,15 +81,17 @@ object SettingsScreen : MenuScreen() {
                     if (button.isChecked) GraphicsSettings.apply(mode, GameSettings.resolutionWidth, GameSettings.resolutionHeight)
                 }
             })
-            windowModeRow.add(button).width(150f).height(48f).pad(4f)
+            windowModeRow.add(button).width(190f).height(52f).pad(4f)
         }
 
+        // real resolutions of the monitor the window is actually on, not a guessed 16:9 list -
+        // a monitor can offer a lot of these (every refresh rate variant), so it scrolls
         val resolutionCaption = Label(Localization.tr("menu.settings.resolution"), skin.bodyLabelStyle)
-        val resolutionRow = Table()
+        val resolutionList = Table()
         val resolutionGroup = ButtonGroup<TextButton>()
         resolutionGroup.setMinCheckCount(1)
         resolutionGroup.setMaxCheckCount(1)
-        for ((w, h) in COMMON_RESOLUTIONS) {
+        for ((w, h) in GraphicsSettings.availableResolutions()) {
             val button = TextButton("${w}x$h", skin.toggleButtonStyle)
             button.isChecked = w == GameSettings.resolutionWidth && h == GameSettings.resolutionHeight
             resolutionGroup.add(button)
@@ -97,8 +100,11 @@ object SettingsScreen : MenuScreen() {
                     if (button.isChecked) GraphicsSettings.apply(GameSettings.windowMode, w, h)
                 }
             })
-            resolutionRow.add(button).width(120f).height(44f).pad(3f)
+            resolutionList.add(button).width(220f).height(56f).pad(4f).row()
         }
+        val resolutionScroll = ScrollPane(resolutionList, skin.scrollPaneStyle)
+        resolutionScroll.setScrollingDisabled(true, false)
+        resolutionScroll.setFadeScrollBars(false)
 
         val vsyncCaption = Label(Localization.tr("menu.settings.vsync"), skin.bodyLabelStyle)
         val vsyncButton = TextButton(stateText(GameSettings.vsync), skin.toggleButtonStyle)
@@ -126,7 +132,7 @@ object SettingsScreen : MenuScreen() {
         table.add(windowModeCaption).align(Align.right).padRight(20f).padTop(20f)
         table.add(windowModeRow).padTop(20f).row()
         table.add(resolutionCaption).align(Align.right).padRight(20f)
-        table.add(resolutionRow).row()
+        table.add(resolutionScroll).width(240f).height(240f).row()
         table.add(vsyncCaption).align(Align.right).padRight(20f)
         table.add(vsyncButton).width(120f).height(48f).row()
         table.add(backButton).colspan(2).width(220f).height(64f).padTop(40f)
