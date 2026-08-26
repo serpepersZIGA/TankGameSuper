@@ -14,6 +14,7 @@ public class GameStart {
 	public static Lwjgl3ApplicationConfiguration config;
 	public static int WidthWindow,HeightWindow;
 	public static void main (String[] arg) {
+		KotlinToolchainInfo.logStartupInfo();
 		config = new Lwjgl3ApplicationConfiguration();
         config.setOpenGLEmulation(Lwjgl3ApplicationConfiguration.GLEmulation.GL30, 3, 0);
 		//WindowSize("WindowSize/SizeWindow.txt");
