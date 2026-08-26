@@ -91,6 +91,9 @@ project(":core") {
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-box2d:$gdxBox2dVersion"
+        // needed to toggle borderless windowed mode at runtime (see ui/GraphicsSettings.kt) -
+        // this game only ever ships on desktop, so it's fine for core to know about the lwjgl3 backend
+        compileOnly "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 
 
         implementation "tools.jackson.core:jackson-databind:$jacksonVersion"
