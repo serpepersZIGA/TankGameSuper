@@ -2,7 +2,6 @@ package com.mygdx.game.unit.CollisionUnit;
 
 import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Unit;
 
@@ -52,7 +51,11 @@ public class CollisionMethodGlobal {
         if(unit1.height == unit2.height) {
             if (abs(unit1.XMap-unit2.XMap)<3 & abs(unit1.YMap-unit2.YMap)<3) {
                 if (CollisionRectRect(unit1, unit2)) {
-                    SoundPlay.soundPlay(unit1.x_rend, unit1.y_rend, (int) unit1.x, (int) unit1.y, 7, Main.ContentSound.hit);
+                    if (Main.RC.MainUnit == unit1 || Main.RC.MainUnit == unit2) {
+                        Main.RC.MainUnit.playImpact(true);
+                    } else {
+                        CollisionFunctional.playCollisionSound(unit1, (int) unit1.x, (int) unit1.y, 7, Main.ContentSound.hit);
+                    }
                     if (unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
                         CollisionFunctional.physicCollision(unit1, unit2);
                         CollisionFunctional.MethodCollisionTransport(unit1, unit2);

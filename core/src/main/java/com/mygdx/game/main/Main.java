@@ -92,6 +92,11 @@ public class Main extends ApplicationAdapter {
 	}
 
 	public static DataSound ContentSound;
+	public static final com.mygdx.game.Sound.Procedural.AudioMixer Audio = new com.mygdx.game.Sound.Procedural.AudioMixer();
+	// how far away (world units) a tank's engine/tracks are still audible at
+	// all - beyond this we don't even bother creating voices for it
+	private static final float ENGINE_HEARING_RADIUS = 900f;
+	private static boolean audioStarted = false;
 	public static ArrayList<ArrayList<Block>> BlockList2D = new ArrayList<>();
 
 	public static RenderCenter RC;
@@ -395,6 +400,40 @@ public class Main extends ApplicationAdapter {
 	public void render () {
         TimeGlobal+= Gdx.graphics.getDeltaTime();
         TimeGlobalBullet = TimeGlobal*50;
+        com.mygdx.game.unit.CollisionUnit.CollisionFunctional.tickHitSoundCooldown();
+        if (RC != null && RC.MainUnit != null) {
+            if (!audioStarted) {
+                Audio.start();
+                audioStarted = true;
+            }
+            Unit listener = RC.MainUnit;
+            // every tank on the map gets its own engine/track pair, lazily
+            // created only once it's actually close enough to be worth
+            // hearing, and faded by distance from the listener the same way
+            // - so a tank rolling in from far off is heard approaching,
+            // instead of every tank on the map playing at once in a pile
+            R_LOCK.lock();
+            try {
+                for (Unit unit : UnitList) {
+                    if (unit.classUnit != ClassUnit.Transport) continue;
+                    float dx = unit.x-listener.x, dy = unit.y-listener.y;
+                    float dist = (float) Math.sqrt(dx*dx+dy*dy);
+                    float attenuation = Math.max(0f, 1f-dist/ENGINE_HEARING_RADIUS);
+                    if (unit.engineVoice == null) {
+                        if (attenuation <= 0f) continue;
+                        long seed = System.identityHashCode(unit);
+                        unit.engineVoice = new com.mygdx.game.Sound.Procedural.EngineVoice(seed);
+                        unit.trackVoice = new com.mygdx.game.Sound.Procedural.TrackVoice(seed);
+                        Audio.playPersistent(unit.engineVoice);
+                        Audio.playPersistent(unit.trackVoice);
+                    }
+                    unit.engineVoice.setState(unit.speed, unit.press_w || unit.press_s, attenuation);
+                    unit.trackVoice.setState(unit.speed, attenuation);
+                }
+            } finally {
+                R_LOCK.unlock();
+            }
+        }
 //		if(TimeGlobalBullet <0.1f){
 //			TimeGlobalBullet = 0.3f;
 //		}
@@ -410,6 +449,7 @@ public class Main extends ApplicationAdapter {
 	}
 	@Override final
 	public void dispose () {
+		Audio.stop();
 		ContentSound.dispose();
 		BlockList2D.clear();
 		BuildingList.clear();

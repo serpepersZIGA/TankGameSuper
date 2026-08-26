@@ -5,6 +5,8 @@ import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.block.Block;
+import com.mygdx.game.unit.CollisionUnit.CollisionFunctional;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
@@ -92,6 +94,11 @@ public abstract class Unit implements Cloneable{
     public static int ai_sost = 200;
     public float SpeedMaxInertion,SpeedInertionX,SpeedInertionY,SpeedMaxInertionX,SpeedMaxInertionY,
             speedX,speedY,speedTrack;
+    // lazily created the first time this tank is close enough to be worth
+    // hearing (see Main.render()) - stopped in transportDelete() so the
+    // mixer drops them instead of looping this tank's engine/tracks forever
+    public com.mygdx.game.Sound.Procedural.EngineVoice engineVoice;
+    public com.mygdx.game.Sound.Procedural.TrackVoice trackVoice;
     public EventGame EventClear = EventData.eventDeadTransport;
     public ArrayList<int[]>path;
     public ArrayList<Unit> TowerUnitList,TrackUnitList;
@@ -501,7 +508,10 @@ public abstract class Unit implements Cloneable{
         }
         if(!this.crite_life) {
             if (this.press_w) {
-                if (this.time_sound_motor < 0) {
+                // the locally-controlled tank gets a real synthesized engine
+                // drone instead (see Main.EngineSound) - other units keep the
+                // sampled one-shot for now
+                if (this.time_sound_motor < 0 && RC.MainUnit != this) {
                     SoundPlay.soundPlay(x_rend, y_rend, (int) x, (int) y, 1, ContentSound.motor_back);
                     this.time_sound_motor = this.time_max_sound_motor;
 
@@ -511,7 +521,7 @@ public abstract class Unit implements Cloneable{
                 }
             }
             if (this.press_s) {
-                if (this.time_sound_motor < 0) {
+                if (this.time_sound_motor < 0 && RC.MainUnit != this) {
                     SoundPlay.soundPlay(x_rend, y_rend, (int) x, (int) y, 0, ContentSound.motor);
                     this.time_sound_motor = this.time_max_sound_motor;
                 }
@@ -1248,7 +1258,11 @@ public abstract class Unit implements Cloneable{
                 if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height,this.rotation_corpus,
                         (int) unit.x,(int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus)
                         && unit.priority_paint == this.priority_paint) {
-                    SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7, ContentSound.hit);
+                    if (RC.MainUnit == this || RC.MainUnit == unit) {
+                        RC.MainUnit.playImpact(true);
+                    } else {
+                        CollisionFunctional.playCollisionSound(this, (int) x, (int) y, 7, ContentSound.hit);
+                    }
 
                     physicCollision(this,unit);
                     MethodCollisionTransport(this,unit);
@@ -1256,6 +1270,14 @@ public abstract class Unit implements Cloneable{
                 }
             }
         }
+    }
+    // a synthesized thud instead of the sampled hit/break_wooden clips, for
+    // any impact involving the locally-controlled tank - metallic adds a
+    // touch of ring on top, for tank/debris hits vs a plain wall thud
+    public void playImpact(boolean metallic){
+        if (!CollisionFunctional.canPlayCollisionSound()) return;
+        Main.Audio.start();
+        Main.Audio.play(new com.mygdx.game.Sound.Procedural.ImpactVoice(0.55f, metallic));
     }
 
 
@@ -1274,6 +1296,8 @@ public abstract class Unit implements Cloneable{
     public void transportDelete(){
         if(this.hp>0)return;
         if(this.crite_life){
+            if (engineVoice != null) engineVoice.stop();
+            if (trackVoice != null) trackVoice.stop();
 //            Main.DebrisList.add(new DebrisTransport(this.x,this.y,this.rotation_corpus,this.speed,this.RotationInert,this.SpeedInert,
 //                    this.corpus_img,this.corpus_width,this.corpus_height,this.type_unit));
             R_LOCK.lock();
@@ -1283,6 +1307,17 @@ public abstract class Unit implements Cloneable{
             //PacketServer.MoneyAdd += money;
             Inventory.Money += money;
             PacketServer.Money = Inventory.Money;
+            if (RC.MainUnit != null) {
+                // explosions carry further than an engine/track would - a
+                // bigger hearing radius than ENGINE_HEARING_RADIUS in Main
+                float dx = this.x-RC.MainUnit.x, dy = this.y-RC.MainUnit.y;
+                float dist = (float) sqrt(pow2(dx)+pow2(dy));
+                float attenuation = Math.max(0f, 1f-dist/1400f);
+                if (attenuation > 0f) {
+                    Main.Audio.start();
+                    Main.Audio.play(new com.mygdx.game.Sound.Procedural.ExplosionVoice(0.7f*attenuation));
+                }
+            }
             eventDead();
             PacketServer.unitConf = true;
             ClearUnitList.add(this);
@@ -1405,87 +1440,69 @@ public abstract class Unit implements Cloneable{
     }
     public int render_x_max,render_x_min,render_y_max,render_y_min;
     public int XMap,YMap;
+    // Building/wall collision, rewritten around SAT (exact rotated-rect overlap,
+    // no blind spots) instead of the old "which side is the center on" guess.
+    // Two things were objectively wrong with the old version, not a matter of
+    // feel:
+    //  1) it resolved against EVERY occupied block you were touching this
+    //     frame, so a multi-block building fired one push (and one sound) per
+    //     cell - hugging a wide wall meant several simultaneous corrections
+    //     fighting each other, which is what made it feel like the wall was
+    //     grabbing you and is also what was reaching the camera as jitter
+    //     (the camera reads unit position with no smoothing of its own).
+    //  2) the push was a flat 2 units regardless of how deep you'd actually
+    //     penetrated, and killed speed on both axes rather than just the one
+    //     driving into the wall - so it could never let you slide along a
+    //     wall you were hitting at an angle.
+    // Fix: resolve only the single deepest-overlapping block, close a modest
+    // slice (not all) of that overlap each frame so it can't ever snap in one
+    // step, and only cancel the velocity component pointed into the wall -
+    // the part running along it is untouched, so you slide instead of sticking.
+    private static final float WALL_POSITION_CORRECTION = 0.2f;
     public void build_corpus(){
-
+        int hitIx = -1, hitIy = -1;
+        float bestPushX = 0, bestPushY = 0, bestOverlap = -1;
         for (int iy = render_y_min; iy < render_y_max; iy++) {
             for (int ix = render_x_min; ix < render_x_max; ix++) {
-                if (BlockList2D.get(iy).get(ix).passability) {
-                    if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
-                            width_block, width_block, 0)) {
-                        if (this.speed > 2 || this.speed < -2) {
-                            SoundPlay.soundPlay(x_rend,y_rend, BlockList2D.get(iy).get(ix).x_center,
-                                    BlockList2D.get(iy).get(ix).y_center,3, ContentSound.break_wooden);
+                Block block = BlockList2D.get(iy).get(ix);
+                if (block.passability) {
+                    float[] push = CollisionFunctional.satPush(this.x, this.y, this.corpus_width, this.corpus_height, this.rotation_corpus,
+                            block.x, block.y, width_block, width_block, 0);
+                    if (push != null) {
+                        float overlap = pow2(push[0])+pow2(push[1]);
+                        if (overlap > bestOverlap) {
+                            bestOverlap = overlap;
+                            bestPushX = push[0];
+                            bestPushY = push[1];
+                            hitIx = ix; hitIy = iy;
                         }
-                        MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
                     }
                 } else {
-                    BlockList2D.get(iy).get(ix).objMap.Collision.collision(this, ix, iy);
+                    block.objMap.Collision.collision(this, ix, iy);
                 }
             }
         }
-    }
-    private void MethodCollision(Unit unit){
-        //this.SpeedInertionX = 0;
-        //this.SpeedInertionY = 0;
-
-        if(SpeedMaxInertion-abs(SpeedInertionX)>0) {
-            this.SpeedInertionX -= unit.SpeedInertionX * 0.5f;
-        }
-        if(SpeedMaxInertion-abs(SpeedInertionY)>0) {
-            this.SpeedInertionY -= unit.SpeedInertionY * 0.5f;
-        }
-        if(unit.SpeedMaxInertion-abs(unit.SpeedInertionX)>0) {
-            unit.SpeedInertionX -= this.SpeedInertionX * 0.5f;
-        }
-        if(unit.SpeedMaxInertion-abs(unit.SpeedInertionY)>0) {
-            unit.SpeedInertionY -= this.SpeedInertionY * 0.5f;
-        }
-        this.speed *= -0.8f;
-        unit.speed *= -0.8f;
-
-        if(this.x< unit.x) {
-            this.x -= 2f;
-            unit.x += 2f;
-            //this.SpeedInert += unit.speed*0.5f;
-            //unit.SpeedInert += this.speed*0.5f;
-            //this.RotationInert = unit.rotation_corpus;
-            //unit.RotationInert = this.rotation_corpus;
-        }
-        else if(this.x> unit.x) {
-            this.x += 2;
-            unit.x -= 2;
-            //this.SpeedInert += unit.speed*0.5f;
-            //unit.SpeedInert += this.speed*0.5f;
-            //this.RotationInert = unit.rotation_corpus;
-            //unit.RotationInert = this.rotation_corpus;
-        }
-        if(this.y< unit.y) {
-            this.y -= 2f;
-            unit.y += 2f;
-        }
-        else if(this.y> unit.y) {
-            this.y += 2f;
-            unit.y -= 2f;
-        }
-    }
-    private void MethodCollision(int x, int y){
-        //this.SpeedInertionX = 0;
-        //this.SpeedInertionY = 0;
-        this.SpeedInertionX *= -0.15f;
-        this.SpeedInertionY *= -0.15f;
-        if(this.x<x) {
-            this.x -= 2f;
-            this.speed *= -0.8f;
-        }
-        else if(this.x>x) {
-            this.x += 2f;
-            this.speed *= -0.8f;
-        }
-        if(this.y<y) {
-            this.y -= 2f;
-        }
-        else if(this.y>y) {
-            this.y += 2f;
+        if (hitIx >= 0) {
+            this.x += bestPushX*WALL_POSITION_CORRECTION;
+            this.y += bestPushY*WALL_POSITION_CORRECTION;
+            float len = (float) sqrt(pow2(bestPushX)+pow2(bestPushY));
+            if (len > 0.0001f) {
+                float nx = bestPushX/len, ny = bestPushY/len;
+                float into = SpeedInertionX*nx + SpeedInertionY*ny;
+                if (into < 0f) {
+                    SpeedInertionX -= into*nx;
+                    SpeedInertionY -= into*ny;
+                }
+            }
+            float speedNow = (float) sqrt(pow2(SpeedInertionX)+pow2(SpeedInertionY));
+            if (speedNow > 2) {
+                Block block = BlockList2D.get(hitIy).get(hitIx);
+                if (RC.MainUnit == this) {
+                    RC.MainUnit.playImpact(false);
+                } else {
+                    CollisionFunctional.playCollisionSound(this, block.x_center, block.y_center, 3, ContentSound.break_wooden);
+                }
+            }
         }
     }
     public void move_debris(){
@@ -1660,8 +1677,16 @@ public abstract class Unit implements Cloneable{
     }
     public void clearSoldat(){
         if(this.hp <0){
-            for(int i1 =0;i1<12;i1++){
-                BloodList.add(new Blood(this.x+i1, this.y));}
+            // same cross-thread hazard as LiquidShader's Acid list - matches
+            // it in locking too, since BloodShaderIteration reads this list
+            // without a lock of its own otherwise
+            R_LOCK.lock();
+            try {
+                for(int i1 =0;i1<12;i1++){
+                    BloodList.add(new Blood(this.x+i1, this.y));}
+            } finally {
+                R_LOCK.unlock();
+            }
             PacketServer.unitConf = true;
             ClearUnitList.add(this);
             //UnitList.remove(this);

@@ -532,6 +532,10 @@ public abstract class Bullet implements Serializable,Cloneable {
         if(DamageTotal>0 && !godMode) {
             unit.hp -= DamageTotal;
         }
+        if (unit == Main.RC.MainUnit && com.mygdx.game.unit.CollisionUnit.CollisionFunctional.canPlayBulletHit()) {
+            Main.Audio.start();
+            Main.Audio.play(new com.mygdx.game.Sound.Procedural.BulletHitVoice(0.5f, DamageTotal>0));
+        }
         unit.t += this.t_damage;
         this.clear_sost = true;
     }

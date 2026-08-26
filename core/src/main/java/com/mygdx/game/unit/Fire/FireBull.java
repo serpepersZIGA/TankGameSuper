@@ -5,7 +5,9 @@ import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.bull.BulletRegister;
+import com.mygdx.game.Sound.Procedural.GunfireVoice;
 import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Method;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.unit.Unit;
@@ -21,7 +23,14 @@ import static java.lang.StrictMath.*;
 public class FireBull extends Fire {
     public void FireIteration(Unit unit){
         rotationTower = -unit.rotation_tower-90;
-        SoundPlay.soundPlay(unit.x_rend,unit.y_rend, (int) unit.x, (int) unit.y,10, unit.sound_fire);
+        // the locally-controlled tank's own cannon gets a synthesized crack
+        // instead of the sampled one - other units keep the sample for now
+        if (Main.RC.MainUnit != null && Main.RC.MainUnit.TowerUnitList.contains(unit)) {
+            Main.Audio.start();
+            Main.Audio.play(new GunfireVoice(0.5f));
+        } else {
+            SoundPlay.soundPlay(unit.x_rend,unit.y_rend, (int) unit.x, (int) unit.y,10, unit.sound_fire);
+        }
 //        float[] xy = Method.tower_xy_2(unit.tower_x+unit.const_tower_x,
 //                unit.tower_y+unit.const_tower_y
 //                ,unit.TowerFireConstY,unit.TowerFireConstX,-unit.rotation_tower);
