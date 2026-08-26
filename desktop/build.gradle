@@ -1,7 +1,8 @@
 apply plugin: "application"
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.kotlin.srcDirs = [ "src/" ]
+// Java sources live under src/main/java, Kotlin sources under src/main/kotlin -
+// the standard Gradle/Kotlin layout. Only resources still need pointing at the
+// shared top-level assets folder.
 sourceSets.main.resources.srcDirs = ["../assets"]
 
 application {

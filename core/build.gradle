@@ -7,10 +7,9 @@ dependencies {
 }
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
-sourceSets.main.kotlin.srcDirs = [ "src/" ]
-sourceSets.test.java.srcDirs = [ "test/" ]
-sourceSets.test.kotlin.srcDirs = [ "test/" ]
+// Java sources live under src/main/java, Kotlin sources under src/main/kotlin,
+// tests under src/test/kotlin - the standard Gradle/Kotlin layout, so no
+// custom sourceSets overrides are needed any more.
 
 test {
     useJUnitPlatform()
