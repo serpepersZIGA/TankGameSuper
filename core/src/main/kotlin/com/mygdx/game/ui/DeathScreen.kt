@@ -24,7 +24,16 @@ object DeathScreen : MenuScreen() {
         val respawnButton = TextButton(Localization.tr("death.respawn"), skin.buttonStyle)
         respawnButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                com.mygdx.game.main.ActionMenu.SpawnPlayer()
+                if (Main.GameHost) {
+                    // The host is authoritative over units, so it can just
+                    // create one directly.
+                    com.mygdx.game.main.ActionMenu.SpawnPlayer()
+                } else {
+                    // A client doesn't own the unit list - it has to ask the
+                    // server for a new unit the same way it did when first
+                    // joining.
+                    com.mygdx.game.main.ActionGameClient.ActionGameClientIteration()
+                }
                 Main.ActionGameMain = Main.ActionGameTotal
                 Gdx.input.setInputProcessor(Main.KeyboardObj)
             }

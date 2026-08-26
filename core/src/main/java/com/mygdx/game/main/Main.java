@@ -262,7 +262,12 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleCorpus.Create();
 		RegisterModuleSoldat.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
-		CycleDayNight = new CycleTimeDay(10,10,5,5,0.12f,0.72f);
+		// A 30-second full day/night cycle (10s day, 10s night, 5s each
+		// transition) made the lighting change feel like it was snapping
+		// rather than a smooth cycle, and night was very dark (0.72 alpha
+		// darkness). Stretched out to a ~3.5-minute cycle with much longer
+		// transitions, and eased off the night darkness a bit.
+		CycleDayNight = new CycleTimeDay(90,60,25,25,0.12f,0.55f);
 		PacketBuildingServer = new PacketBuildingServer();
 		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
 		Render = new RenderPrimitive();
