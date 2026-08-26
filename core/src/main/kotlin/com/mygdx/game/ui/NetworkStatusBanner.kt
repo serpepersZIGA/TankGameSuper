@@ -30,6 +30,7 @@ object NetworkStatusBanner {
         val alpha = remaining.coerceAtMost(1f)
         val previousColor = font.color.cpy()
         font.setColor(1f, 0.35f, 0.35f, alpha)
+        Main.Batch.shader = null // world render leaves the lighting shader attached, don't draw text through it
         Main.Batch.begin()
         font.draw(Main.Batch, text, 40f, Gdx.graphics.height - 40f)
         Main.Batch.end()
