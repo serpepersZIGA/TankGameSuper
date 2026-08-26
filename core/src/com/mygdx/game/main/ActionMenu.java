@@ -246,6 +246,7 @@ public class ActionMenu extends ActionGame {
 
                 } catch (Exception e) {
                     Gdx.app.error("ActionMenu", "Failed to start hosting a game, returning to menu.", e);
+                    com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.show("Failed to start hosting a game.");
                     started = false;
                 }
             } else {
@@ -260,6 +261,7 @@ public class ActionMenu extends ActionGame {
                     started = true;
                 } catch (Exception e) {
                     Gdx.app.error("ActionMenu", "Failed to connect to the server, returning to menu.", e);
+                    com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.show("Failed to connect to the server.");
                     started = false;
                 }
             }
@@ -271,6 +273,7 @@ public class ActionMenu extends ActionGame {
                 ActionGameMain.ThreadAllAdd();
             }
         }
+        com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.render();
         Keyboard.LeftMouseClick = false;
         CycleDayNight.WorkTime();
         //Batch.setShader(null);
