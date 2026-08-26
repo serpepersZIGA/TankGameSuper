@@ -16,25 +16,17 @@ import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.menu.button.Button;
-import com.mygdx.game.menu.slider.Slider;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.menu.button.ButtonTank.TankChoice.TankChoiceList;
-import static com.mygdx.game.menu.button.MapLoad.MapChoiceList;
 import static com.mygdx.game.unit.Unit.IDList;
 
 public class ActionMenu extends ActionGame {
     private int i;
     private int timer = 0;
-    private static final Slider SliderSound = new Slider(1200,500,300,35,(byte) 0,"Sound",true);
-    private static final Slider SliderListTank = new Slider(1460,0,35,980,(byte) 1,"",false);
-    private static final Slider SliderListMap = new Slider(1460,0,35,980,(byte) 3,"",false);
-    public static int LenghtListTank,LenghtListMap;
-    public static int TotalPointListTank,TotalPointListMap;
     public static boolean ActionGameChoiceConf;
     @Override final
     public void action() {
@@ -174,37 +166,12 @@ public class ActionMenu extends ActionGame {
                 but.render(i);
             }
         }
-        switch (ConfigMenu) {
-            case 0:{
-                SliderSound.AllAction();
-                com.mygdx.game.ui.GameSettings.INSTANCE.setSoundVolume(SliderSound.PercentageGet());
-            }
-            break;
-            case 1:{
-                SliderListTank.AllAction2();
-                TotalPointListTank = (int) (LenghtListTank * SliderListTank.PercentageGet() * 0.5F);
-                for (Button button : TankChoiceList) {
-                    button.YTXT = button.YTxTConst - TotalPointListTank;
-                    button.y = button.yConst - TotalPointListTank;
-                    button.heightXY = button.yConst + button.height - TotalPointListTank;
-                }
-            }break;
-            case 3:{
-                SliderListMap.AllAction2();
-                TotalPointListMap = (int) (LenghtListMap * SliderListMap.PercentageGet() * 0.5F);
-                for (Button button : MapChoiceList) {
-                    button.YTXT = button.YTxTConst - TotalPointListMap;
-                    button.y = button.yConst - TotalPointListMap;
-                    button.heightXY = button.yConst + button.height - TotalPointListMap;
-                }
-            }break;
-            case 4:
-                SliderSound.AllAction();
-                com.mygdx.game.ui.GameSettings.INSTANCE.setSoundVolume(SliderSound.PercentageGet());
-                if(Keyboard.ClickEsc){
-                    Main.ActionGameMain = ActionGameTotal;
-                }
-                break;
+        // ConfigMenu 4 is the in-game pause overlay (Play2/ExitPlay); the old
+        // pre-game menu screens (main menu/tank select/map select) have been
+        // replaced by the Scene2D screens in com.mygdx.game.ui and no longer
+        // run through this switch.
+        if (ConfigMenu == 4 && Keyboard.ClickEsc) {
+            Main.ActionGameMain = ActionGameTotal;
         }
 //        for (i = 0;i< ButtonList.size();i++){
 //            Button but = ButtonList.get(i);
@@ -246,7 +213,7 @@ public class ActionMenu extends ActionGame {
 
                 } catch (Exception e) {
                     Gdx.app.error("ActionMenu", "Failed to start hosting a game, returning to menu.", e);
-                    com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.show("Failed to start hosting a game.");
+                    com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.show(com.mygdx.game.ui.Localization.INSTANCE.tr("network.hostfailed"));
                     started = false;
                 }
             } else {
@@ -261,7 +228,7 @@ public class ActionMenu extends ActionGame {
                     started = true;
                 } catch (Exception e) {
                     Gdx.app.error("ActionMenu", "Failed to connect to the server, returning to menu.", e);
-                    com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.show("Failed to connect to the server.");
+                    com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.show(com.mygdx.game.ui.Localization.INSTANCE.tr("network.joinfailed"));
                     started = false;
                 }
             }
@@ -271,6 +238,12 @@ public class ActionMenu extends ActionGame {
             if (started) {
                 ActionGameChoiceConf = true;
                 ActionGameMain.ThreadAllAdd();
+            } else {
+                // Send the player back to a screen they can actually interact
+                // with - otherwise they'd be stuck staring at the world with
+                // no menu and no input processor pointed at any UI.
+                ActionGameMain = com.mygdx.game.ui.HostJoinScreen.INSTANCE;
+                com.mygdx.game.ui.HostJoinScreen.INSTANCE.show();
             }
         }
         com.mygdx.game.ui.NetworkStatusBanner.INSTANCE.render();
