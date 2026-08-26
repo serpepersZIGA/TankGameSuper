@@ -15,6 +15,15 @@ import com.mygdx.game.menu.button.ButtonTank.ListTankPlayerAdd
  * of hand-computed pixel offsets, so it can never end up positioned off-screen. */
 object TankSelectScreen : MenuScreen() {
 
+    init {
+        onEscape = { goBack() }
+    }
+
+    private fun goBack() {
+        Main.ActionGameMain = MainMenuScreen
+        MainMenuScreen.show()
+    }
+
     private fun tankIds(): List<String> {
         var files = Gdx.files.internal("PlayerAllSpawnList").list()
         if (files.isEmpty()) {
@@ -62,8 +71,7 @@ object TankSelectScreen : MenuScreen() {
         val backButton = TextButton(Localization.tr("menu.tank.back"), skin.buttonStyle)
         backButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = MainMenuScreen
-                MainMenuScreen.show()
+                goBack()
             }
         })
 

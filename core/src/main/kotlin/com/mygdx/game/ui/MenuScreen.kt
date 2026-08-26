@@ -1,6 +1,7 @@
 package com.mygdx.game.ui
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.graphics.GL20
 import com.badlogic.gdx.scenes.scene2d.Stage
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -28,7 +29,13 @@ abstract class MenuScreen : ActionGame() {
         Localization.onLanguageChanged { invalidate() }
     }
 
+    /** What Esc does on this screen - go back, resume, whatever. Null = nothing. */
+    protected var onEscape: (() -> Unit)? = null
+
     final override fun action() {
+        if (onEscape != null && Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            onEscape?.invoke()
+        }
         update()
         Gdx.gl.glClearColor(0.05f, 0.06f, 0.08f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)

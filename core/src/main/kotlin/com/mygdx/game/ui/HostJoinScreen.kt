@@ -22,6 +22,15 @@ object HostJoinScreen : MenuScreen() {
 
     private const val DEFAULT_PORT = 27950
 
+    init {
+        onEscape = { goBack() }
+    }
+
+    private fun goBack() {
+        Main.ActionGameMain = MapSelectScreen
+        MapSelectScreen.show()
+    }
+
     override fun buildContent(skin: GameSkin): Table {
         val root = Table()
         root.center()
@@ -86,8 +95,7 @@ object HostJoinScreen : MenuScreen() {
         val backButton = TextButton(Localization.tr("menu.hostjoin.back"), skin.buttonStyle)
         backButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = MapSelectScreen
-                MapSelectScreen.show()
+                goBack()
             }
         })
 
