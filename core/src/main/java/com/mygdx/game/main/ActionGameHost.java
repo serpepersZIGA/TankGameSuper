@@ -87,6 +87,20 @@ public class ActionGameHost extends ActionGame{
 
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
+        if (RC.MainUnit != null) {
+            boolean alive;
+            R_LOCK.lock();
+            try {
+                alive = UnitList.contains(RC.MainUnit);
+            } finally {
+                R_LOCK.unlock();
+            }
+            if (!alive) {
+                com.mygdx.game.ui.DeathScreen.INSTANCE.show();
+                ActionGameMain = com.mygdx.game.ui.DeathScreen.INSTANCE;
+                return;
+            }
+        }
         //if(RC.UnitCamera==null){
             if(Keyboard.PressW){
                 Main.RC.y += 10;

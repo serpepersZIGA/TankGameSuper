@@ -251,7 +251,7 @@ public class ActionMenu extends ActionGame {
         CycleDayNight.WorkTime();
         //Batch.setShader(null);
     }
-    public void SpawnPlayer(){
+    public static void SpawnPlayer(){
 
         Inventory inventory = new Inventory(new Item[4][4],1);
         Inventory equipment = new Inventory(new Item[4][2],1);
