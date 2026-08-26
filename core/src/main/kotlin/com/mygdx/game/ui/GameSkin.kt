@@ -24,9 +24,11 @@ private val SUPPORTED_CHARS = FreeTypeFontGenerator.DEFAULT_CHARS + CYRILLIC_CHA
 
 /**
  * A small set of Scene2D widget styles, generated at runtime instead of a
- * hand-authored texture atlas: layered, bordered nine-patches for buttons and
- * panels (not flat, empty rectangles), and BitmapFonts that include Cyrillic
- * glyphs so Russian text actually renders.
+ * hand-authored texture atlas. Visual language is "armor plating" rather
+ * than the generic rounded-rectangle web-app button look: panels and
+ * buttons are octagons with their corners chamfered off like cut steel
+ * plate, with a warning-yellow accent stripe standing in for a hazard
+ * marking, on a gunmetal base instead of the ubiquitous fantasy-UI green.
  */
 class GameSkin : Disposable {
 
@@ -48,63 +50,58 @@ class GameSkin : Disposable {
         val bodyFont = generateFont(24)
         val hintFont = generateFont(18)
 
-        titleLabelStyle = Label.LabelStyle(titleFont, Color.WHITE)
-        bodyLabelStyle = Label.LabelStyle(bodyFont, Color.WHITE)
-        hintLabelStyle = Label.LabelStyle(hintFont, Color(0.75f, 0.78f, 0.8f, 1f))
-
-        val accent = Color(0.30f, 0.62f, 0.32f, 1f)
-        val accentDark = Color(0.14f, 0.30f, 0.16f, 1f)
-        val neutral = Color(0.28f, 0.30f, 0.34f, 1f)
-        val neutralDark = Color(0.14f, 0.15f, 0.17f, 1f)
+        titleLabelStyle = Label.LabelStyle(titleFont, AMBER)
+        bodyLabelStyle = Label.LabelStyle(bodyFont, Color(0.86f, 0.87f, 0.83f, 1f))
+        hintLabelStyle = Label.LabelStyle(hintFont, Color(0.55f, 0.57f, 0.52f, 1f))
 
         buttonStyle = TextButton.TextButtonStyle().apply {
-            up = raisedPatch(accent, accentDark)
-            down = pressedPatch(accentDark, Color.BLACK)
-            over = raisedPatch(accent.cpy().lerp(Color.WHITE, 0.15f), accentDark)
-            disabled = raisedPatch(Color(0.3f, 0.3f, 0.3f, 1f), Color(0.15f, 0.15f, 0.15f, 1f))
+            up = raisedPlate(STEEL, STEEL_DARK, accentStripe = AMBER)
+            down = pressedPlate(STEEL_DARK, Color.BLACK, accentStripe = AMBER_DARK)
+            over = raisedPlate(STEEL.cpy().lerp(Color.WHITE, 0.12f), STEEL_DARK, accentStripe = AMBER)
+            disabled = raisedPlate(Color(0.32f, 0.32f, 0.30f, 1f), Color(0.16f, 0.16f, 0.15f, 1f), accentStripe = null)
             font = bodyFont
-            fontColor = Color.WHITE
-            disabledFontColor = Color(0.6f, 0.6f, 0.6f, 1f)
+            fontColor = Color(0.92f, 0.93f, 0.90f, 1f)
+            disabledFontColor = Color(0.55f, 0.55f, 0.53f, 1f)
         }
 
         toggleButtonStyle = TextButton.TextButtonStyle().apply {
-            up = raisedPatch(neutral, neutralDark)
-            down = pressedPatch(neutralDark, Color.BLACK)
-            over = raisedPatch(neutral.cpy().lerp(Color.WHITE, 0.15f), neutralDark)
-            checked = pressedPatch(accentDark, Color.BLACK)
+            up = raisedPlate(STEEL, STEEL_DARK, accentStripe = null)
+            down = pressedPlate(STEEL_DARK, Color.BLACK, accentStripe = null)
+            over = raisedPlate(STEEL.cpy().lerp(Color.WHITE, 0.12f), STEEL_DARK, accentStripe = null)
+            checked = pressedPlate(RUST_DARK, Color.BLACK, accentStripe = RUST)
             font = bodyFont
-            fontColor = Color.WHITE
+            fontColor = Color(0.92f, 0.93f, 0.90f, 1f)
         }
 
         sliderStyle = Slider.SliderStyle().apply {
-            background = grooveNinePatch(Color(0.12f, 0.13f, 0.15f, 1f), Color(0.35f, 0.37f, 0.4f, 1f))
-            knob = raisedPatch(accent, accentDark, size = 20, inset = 6)
-            knobOver = raisedPatch(accent.cpy().lerp(Color.WHITE, 0.15f), accentDark, size = 20, inset = 6)
-            knobDown = pressedPatch(accentDark, Color.BLACK, size = 20, inset = 6)
+            background = groovePlate(Color(0.09f, 0.10f, 0.09f, 1f), STEEL_DARK)
+            knob = raisedPlate(AMBER, AMBER_DARK, accentStripe = null, size = 22, chamfer = 6, inset = 8)
+            knobOver = raisedPlate(AMBER.cpy().lerp(Color.WHITE, 0.15f), AMBER_DARK, accentStripe = null, size = 22, chamfer = 6, inset = 8)
+            knobDown = pressedPlate(AMBER_DARK, Color.BLACK, accentStripe = null, size = 22, chamfer = 6, inset = 8)
         }
 
         textFieldStyle = TextField.TextFieldStyle().apply {
             font = bodyFont
-            fontColor = Color.WHITE
-            background = grooveNinePatch(Color(0.10f, 0.11f, 0.13f, 1f), Color(0.35f, 0.37f, 0.4f, 1f))
-            cursor = solid(Color.WHITE)
-            selection = solid(Color(0.30f, 0.45f, 0.75f, 0.6f))
-            messageFontColor = Color(0.55f, 0.57f, 0.6f, 1f)
+            fontColor = Color(0.92f, 0.93f, 0.90f, 1f)
+            background = groovePlate(Color(0.08f, 0.09f, 0.08f, 1f), STEEL_DARK)
+            cursor = solid(AMBER)
+            selection = solid(Color(0.55f, 0.42f, 0.16f, 0.55f))
+            messageFontColor = Color(0.5f, 0.51f, 0.48f, 1f)
         }
 
-        panelStyle = Window.WindowStyle(titleFont, Color.WHITE, panelNinePatch())
+        panelStyle = Window.WindowStyle(titleFont, AMBER, panelPlate())
 
         scrollPaneStyle = ScrollPane.ScrollPaneStyle().apply {
             background = null
-            vScrollKnob = raisedPatch(neutral, neutralDark, size = 16, inset = 5)
-            vScroll = grooveNinePatch(Color(0.10f, 0.11f, 0.13f, 1f), Color(0.25f, 0.27f, 0.3f, 1f))
+            vScrollKnob = raisedPlate(STEEL, STEEL_DARK, accentStripe = null, size = 16, chamfer = 3, inset = 6)
+            vScroll = groovePlate(Color(0.08f, 0.09f, 0.08f, 1f), Color(0.22f, 0.24f, 0.21f, 1f))
         }
 
         listStyle = GdxList.ListStyle().apply {
             font = bodyFont
-            fontColorSelected = Color.WHITE
-            fontColorUnselected = Color(0.82f, 0.84f, 0.86f, 1f)
-            selection = raisedPatch(accent, accentDark, size = 16, inset = 4)
+            fontColorSelected = Color(0.10f, 0.09f, 0.06f, 1f)
+            fontColorUnselected = Color(0.82f, 0.84f, 0.80f, 1f)
+            selection = raisedPlate(AMBER, AMBER_DARK, accentStripe = null, size = 16, chamfer = 3, inset = 5)
         }
     }
 
@@ -125,55 +122,79 @@ class GameSkin : Disposable {
         return drawableFrom(pixmap)
     }
 
-    /** A bordered rectangle with a subtle top-lit gradient, for an "unpressed" raised look. */
-    private fun raisedPatch(base: Color, border: Color, size: Int = 32, inset: Int = 10): NinePatchDrawable =
-        gradientPatch(base, border, size, inset, lighterAtTop = true)
+    /** A chamfered "armor plate" with a subtle top-lit gradient and an optional
+     * hazard-stripe accent along its top edge, for an "unpressed" raised look. */
+    private fun raisedPlate(base: Color, border: Color, accentStripe: Color?, size: Int = 32, chamfer: Int = 8, inset: Int = 12): NinePatchDrawable =
+        platePixmap(base, border, accentStripe, size, chamfer, inset, lighterAtTop = true)
 
     /** The same shape but darker and lit from the bottom, for a "pushed in" look. */
-    private fun pressedPatch(base: Color, border: Color, size: Int = 32, inset: Int = 10): NinePatchDrawable =
-        gradientPatch(base, border, size, inset, lighterAtTop = false)
+    private fun pressedPlate(base: Color, border: Color, accentStripe: Color?, size: Int = 32, chamfer: Int = 8, inset: Int = 12): NinePatchDrawable =
+        platePixmap(base, border, accentStripe, size, chamfer, inset, lighterAtTop = false)
 
-    private fun gradientPatch(base: Color, border: Color, size: Int, inset: Int, lighterAtTop: Boolean): NinePatchDrawable {
+    private fun platePixmap(base: Color, border: Color, accentStripe: Color?, size: Int, chamfer: Int, inset: Int, lighterAtTop: Boolean): NinePatchDrawable {
         val pixmap = Pixmap(size, size, Pixmap.Format.RGBA8888)
-        pixmap.setColor(border)
-        pixmap.fillRectangle(0, 0, size, size)
         val borderWidth = 2
-        val innerSize = size - borderWidth * 2
-        for (y in 0 until innerSize) {
-            val t = if (lighterAtTop) y / (innerSize - 1f) else 1f - y / (innerSize - 1f)
-            val shade = base.cpy().lerp(Color.BLACK, t * 0.35f)
-            pixmap.setColor(shade)
-            pixmap.drawLine(borderWidth, borderWidth + y, size - borderWidth - 1, borderWidth + y)
+        val shade = if (lighterAtTop) base.cpy().lerp(Color.WHITE, 0.08f) else base.cpy().lerp(Color.BLACK, 0.15f)
+        fillOctagon(pixmap, size, chamfer, border)
+        fillOctagonInset(pixmap, size, chamfer, borderWidth, shade)
+
+        if (accentStripe != null) {
+            pixmap.setColor(accentStripe)
+            pixmap.fillRectangle(chamfer, borderWidth, size - chamfer * 2, borderWidth + 1)
         }
+
         val texture = Texture(pixmap)
         pixmap.dispose()
         ownedTextures.add(texture)
         return NinePatchDrawable(NinePatch(texture, inset, inset, inset, inset))
     }
 
-    /** A recessed/inset look for sliders, text fields and scrollbar tracks. */
-    private fun grooveNinePatch(base: Color, border: Color, size: Int = 24, inset: Int = 8): NinePatchDrawable {
+    /** A recessed/inset chamfered look for sliders, text fields and scrollbar tracks. */
+    private fun groovePlate(base: Color, border: Color, size: Int = 24, chamfer: Int = 5, inset: Int = 9): NinePatchDrawable {
         val pixmap = Pixmap(size, size, Pixmap.Format.RGBA8888)
-        pixmap.setColor(border)
-        pixmap.fillRectangle(0, 0, size, size)
+        fillOctagon(pixmap, size, chamfer, border)
         pixmap.setColor(base)
-        pixmap.fillRectangle(1, 1, size - 2, size - 2)
+        fillOctagonInset(pixmap, size, chamfer, 1, base)
         val texture = Texture(pixmap)
         pixmap.dispose()
         ownedTextures.add(texture)
         return NinePatchDrawable(NinePatch(texture, inset, inset, inset, inset))
     }
 
-    private fun panelNinePatch(size: Int = 40, inset: Int = 16): NinePatchDrawable {
+    private fun panelPlate(size: Int = 44, chamfer: Int = 14, inset: Int = 18): NinePatchDrawable {
         val pixmap = Pixmap(size, size, Pixmap.Format.RGBA8888)
-        pixmap.setColor(Color(0.35f, 0.37f, 0.40f, 1f))
-        pixmap.fillRectangle(0, 0, size, size)
-        pixmap.setColor(Color(0.09f, 0.10f, 0.12f, 0.94f))
-        pixmap.fillRectangle(2, 2, size - 4, size - 4)
+        fillOctagon(pixmap, size, chamfer, STEEL_DARK)
+        fillOctagonInset(pixmap, size, chamfer, 3, Color(0.07f, 0.08f, 0.07f, 0.95f))
         val texture = Texture(pixmap)
         pixmap.dispose()
         ownedTextures.add(texture)
         return NinePatchDrawable(NinePatch(texture, inset, inset, inset, inset))
+    }
+
+    /** Fills an octagon (a square with its four corners chamfered at 45 degrees). */
+    private fun fillOctagon(pixmap: Pixmap, size: Int, chamfer: Int, color: Color) {
+        pixmap.setColor(color)
+        pixmap.fillRectangle(chamfer, 0, size - chamfer * 2, size)
+        pixmap.fillRectangle(0, chamfer, size, size - chamfer * 2)
+        pixmap.fillTriangle(chamfer, 0, chamfer, chamfer, 0, chamfer)
+        pixmap.fillTriangle(size - chamfer, 0, size, chamfer, size - chamfer, chamfer)
+        pixmap.fillTriangle(0, size - chamfer, chamfer, size - chamfer, chamfer, size)
+        pixmap.fillTriangle(size - chamfer, size, size - chamfer, size - chamfer, size, size - chamfer)
+    }
+
+    /** Fills a smaller octagon inset by [border] pixels inside an existing bordered octagon. */
+    private fun fillOctagonInset(pixmap: Pixmap, size: Int, chamfer: Int, border: Int, color: Color) {
+        val innerSize = size - border * 2
+        val innerChamfer = (chamfer - border).coerceAtLeast(1)
+        pixmap.setColor(color)
+        pixmap.fillRectangle(border + innerChamfer, border, innerSize - innerChamfer * 2, innerSize)
+        pixmap.fillRectangle(border, border + innerChamfer, innerSize, innerSize - innerChamfer * 2)
+        val x0 = border
+        val y0 = border
+        pixmap.fillTriangle(x0 + innerChamfer, y0, x0 + innerChamfer, y0 + innerChamfer, x0, y0 + innerChamfer)
+        pixmap.fillTriangle(x0 + innerSize - innerChamfer, y0, x0 + innerSize, y0 + innerChamfer, x0 + innerSize - innerChamfer, y0 + innerChamfer)
+        pixmap.fillTriangle(x0, y0 + innerSize - innerChamfer, x0 + innerChamfer, y0 + innerSize - innerChamfer, x0 + innerChamfer, y0 + innerSize)
+        pixmap.fillTriangle(x0 + innerSize - innerChamfer, y0 + innerSize, x0 + innerSize - innerChamfer, y0 + innerSize - innerChamfer, x0 + innerSize, y0 + innerSize - innerChamfer)
     }
 
     private fun drawableFrom(pixmap: Pixmap): TextureRegionDrawable {
@@ -189,5 +210,16 @@ class GameSkin : Disposable {
         hintLabelStyle.font.dispose()
         ownedTextures.forEach { it.dispose() }
         ownedTextures.clear()
+    }
+
+    companion object {
+        // Gunmetal + warning-amber "armor plate" palette, instead of the
+        // default-feeling green/neutral UI-kit look.
+        private val STEEL = Color(0.29f, 0.31f, 0.27f, 1f)
+        private val STEEL_DARK = Color(0.12f, 0.13f, 0.11f, 1f)
+        private val AMBER = Color(0.85f, 0.65f, 0.20f, 1f)
+        private val AMBER_DARK = Color(0.55f, 0.40f, 0.10f, 1f)
+        private val RUST = Color(0.72f, 0.32f, 0.16f, 1f)
+        private val RUST_DARK = Color(0.40f, 0.16f, 0.08f, 1f)
     }
 }
