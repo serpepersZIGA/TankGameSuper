@@ -11,6 +11,7 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MapFunction.MapBaseAdd
 import com.mygdx.game.MapFunction.MapScan
+import com.mygdx.game.MapFunction.ProceduralMapGenerator
 import com.mygdx.game.main.Main
 
 /** Map selection: same scrollable-list approach as TankSelectScreen. */
@@ -74,6 +75,16 @@ object MapSelectScreen : MenuScreen() {
             }
         })
 
+        val generateButton = TextButton(Localization.tr("menu.map.generate"), skin.buttonStyle)
+        generateButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                val seed = System.currentTimeMillis()
+                val path = ProceduralMapGenerator.generateAndSave(seed, 110, 110, "Map/maps/Procedural_$seed.mapt")
+                selected = Gdx.files.internal(path)
+                invalidate()
+            }
+        })
+
         val continueButton = TextButton(Localization.tr("menu.map.continue"), skin.buttonStyle)
         continueButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -91,7 +102,8 @@ object MapSelectScreen : MenuScreen() {
         buttonRow.add(continueButton).width(220f).height(64f)
 
         root.add(title).padBottom(32f).row()
-        root.add(scrollPane).width(420f).height(420f).padBottom(32f).row()
+        root.add(scrollPane).width(420f).height(420f).padBottom(16f).row()
+        root.add(generateButton).height(56f).padBottom(24f).row()
         root.add(buttonRow)
 
         return root
