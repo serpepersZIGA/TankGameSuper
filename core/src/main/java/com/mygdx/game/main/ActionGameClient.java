@@ -150,9 +150,17 @@ public class ActionGameClient extends ActionGame {
                 }
             }
         }
-        for(Unit unit : DebrisList) {
-            unit.UpdateUnit();
+        // Same reasoning as UnitList (see Unit.hill_bot()): DebrisList is
+        // also mutated from other threads, so an unprotected foreach can
+        // throw ConcurrentModificationException.
+        R_LOCK.lock();
+        try {
+            for(Unit unit : DebrisList) {
+                unit.UpdateUnit();
 
+            }
+        } finally {
+            R_LOCK.unlock();
         }
 
         soundPlayClient();

@@ -179,6 +179,10 @@ public class ClientMain extends Listener {
             PacketDebris = ((PackerServer) p).debris;
             i = 0;
 
+            // This runs on Kryonet's network thread, while DebrisList is also
+            // read/written from the render/game thread.
+            Main.R_LOCK.lock();
+            try {
             if(DebrisList.size() == PacketDebris.size()) {
                 for (Unit debris : DebrisList) {
                     debris_data(debris);
@@ -193,6 +197,9 @@ public class ClientMain extends Listener {
                 }
                 KeyboardObj.ZoomConstTransport();
                 PacketServer.debrisConf = false;
+            }
+            } finally {
+                Main.R_LOCK.unlock();
             }
             //ActionGameClient.PackUpdateUnit();
 
