@@ -1,9 +1,10 @@
-sourceCompatibility = 1.8
 dependencies {
-    implementation 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.46'
+    annotationProcessor 'org.projectlombok:lombok:1.18.46'
 }
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
 sourceSets.main.java.srcDirs = [ "src/" ]
+sourceSets.main.kotlin.srcDirs = [ "src/" ]
 
 eclipse.project.name = appName + "-core"
