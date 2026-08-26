@@ -93,8 +93,15 @@ class GameSkin : Disposable {
 
         scrollPaneStyle = ScrollPane.ScrollPaneStyle().apply {
             background = null
-            vScrollKnob = raisedPlate(STEEL, STEEL_DARK, accentStripe = null, size = 16, chamfer = 3, inset = 6)
-            vScroll = groovePlate(Color(0.08f, 0.09f, 0.08f, 1f), Color(0.22f, 0.24f, 0.21f, 1f))
+            // the track and the knob need matching size/chamfer/inset, or the
+            // knob's nine-patch just doesn't fill the width the track claims -
+            // that mismatch (16 vs the track's default 24) is what made the
+            // knob look like a crooked little blob floating in a wider groove
+            val scrollbarSize = 18
+            val scrollbarChamfer = 4
+            val scrollbarInset = 7
+            vScroll = groovePlate(Color(0.08f, 0.09f, 0.08f, 1f), Color(0.22f, 0.24f, 0.21f, 1f), scrollbarSize, scrollbarChamfer, scrollbarInset)
+            vScrollKnob = raisedPlate(STEEL, STEEL_DARK, accentStripe = null, size = scrollbarSize, chamfer = scrollbarChamfer, inset = scrollbarInset)
         }
 
         listStyle = GdxList.ListStyle().apply {
