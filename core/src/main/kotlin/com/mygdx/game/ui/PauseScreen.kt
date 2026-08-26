@@ -45,6 +45,13 @@ object PauseScreen : MenuScreen() {
             }
         })
 
+        val devButton = TextButton(Localization.tr("menu.dev.title"), skin.buttonStyle)
+        devButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                DevMenuScreen.openFrom(PauseScreen)
+            }
+        })
+
         val exitButton = TextButton(Localization.tr("pause.exit"), skin.buttonStyle)
         exitButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
@@ -62,6 +69,7 @@ object PauseScreen : MenuScreen() {
         table.add(title).padBottom(48f).row()
         table.add(resumeButton).width(280f).height(64f).padBottom(16f).row()
         table.add(settingsButton).width(280f).height(64f).padBottom(16f).row()
+        table.add(devButton).width(280f).height(64f).padBottom(16f).row()
         table.add(exitButton).width(280f).height(64f).padBottom(16f).row()
         table.add(quitButton).width(280f).height(64f)
 

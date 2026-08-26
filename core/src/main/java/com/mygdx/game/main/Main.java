@@ -85,7 +85,7 @@ public class Main extends ApplicationAdapter {
 	// dense without letting it grow unbounded.
 	private static final int MAX_PARTICLES_PER_LIST = 300;
 	public static void addParticle(LinkedList<Particle> list, Particle particle) {
-		if (list.size() >= MAX_PARTICLES_PER_LIST) {
+		if (!com.mygdx.game.ui.DevFlags.INSTANCE.getUncappedParticles() && list.size() >= MAX_PARTICLES_PER_LIST) {
 			list.removeFirst();
 		}
 		list.add(particle);
