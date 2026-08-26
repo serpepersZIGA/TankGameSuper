@@ -29,14 +29,20 @@ abstract class MenuScreen : ActionGame() {
     }
 
     final override fun action() {
+        update()
         Gdx.gl.glClearColor(0.05f, 0.06f, 0.08f, 1f)
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT)
         val activeStage = stage ?: buildStage()
-        activeStage.viewport.apply()
+        // keep the viewport synced to the actual window size every frame -
+        // there's no resize() callback wired up for these screens
+        activeStage.viewport.update(Gdx.graphics.width, Gdx.graphics.height, true)
         activeStage.act(Gdx.graphics.deltaTime)
         activeStage.draw()
         NetworkStatusBanner.render()
     }
+
+    /** Runs every frame before the stage updates. Override for e.g. key shortcuts. */
+    protected open fun update() {}
 
     /** Called whenever this screen becomes active again, to (re)claim input focus. */
     fun show() {

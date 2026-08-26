@@ -1,6 +1,7 @@
 package com.mygdx.game.ui
 
 import com.badlogic.gdx.Gdx
+import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -17,6 +18,13 @@ import com.mygdx.game.method.RenderCenter
 // Esc menu during a match. Replaces the old Play2/ExitPlay/Exit buttons.
 object PauseScreen : MenuScreen() {
 
+    // esc again while paused = resume, like most games do
+    override fun update() {
+        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
+            resume()
+        }
+    }
+
     override fun buildContent(skin: GameSkin): Table {
         val table = Table()
         table.center()
@@ -26,8 +34,14 @@ object PauseScreen : MenuScreen() {
         val resumeButton = TextButton(Localization.tr("pause.resume"), skin.buttonStyle)
         resumeButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = Main.ActionGameTotal
-                Gdx.input.setInputProcessor(Main.KeyboardObj)
+                resume()
+            }
+        })
+
+        val settingsButton = TextButton(Localization.tr("menu.main.settings"), skin.buttonStyle)
+        settingsButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                SettingsScreen.openFrom(PauseScreen)
             }
         })
 
@@ -47,10 +61,16 @@ object PauseScreen : MenuScreen() {
 
         table.add(title).padBottom(48f).row()
         table.add(resumeButton).width(280f).height(64f).padBottom(16f).row()
+        table.add(settingsButton).width(280f).height(64f).padBottom(16f).row()
         table.add(exitButton).width(280f).height(64f).padBottom(16f).row()
         table.add(quitButton).width(280f).height(64f)
 
         return table
+    }
+
+    private fun resume() {
+        Main.ActionGameMain = Main.ActionGameTotal
+        Gdx.input.setInputProcessor(Main.KeyboardObj)
     }
 
     // tears down the running match (host or client) and drops back to the main menu

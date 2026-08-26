@@ -347,6 +347,20 @@ public class Main extends ApplicationAdapter {
 		generator.dispose();
 		return font;
 	}
+	@Override
+	public void resize(int width, int height) {
+		// window got resized - screenWidth/height and the zoom factors were
+		// only ever set once in the constructor, so nothing adapted when the
+		// window changed size (squished tank, mouse aim off, menus half
+		// off-screen if the window wasn't at its final size yet on the first
+		// frame). Recompute the same way create() originally did.
+		screenWidth = width;
+		screenHeight = height;
+		ZoomWindowX = (float) screenWidth / 1920;
+		ZoomWindowY = (float) screenHeight / 1080;
+		Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
+		Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
+	}
 	@Override final
 	public void render () {
         TimeGlobal+= Gdx.graphics.getDeltaTime();

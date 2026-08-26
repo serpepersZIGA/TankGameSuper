@@ -13,6 +13,15 @@ import com.mygdx.game.main.Main
 /** Options screen: sound volume and interface language, both persisted. */
 object SettingsScreen : MenuScreen() {
 
+    // wherever we were opened from - main menu or the pause menu - so Back goes there
+    private var returnTo: MenuScreen = MainMenuScreen
+
+    fun openFrom(caller: MenuScreen) {
+        returnTo = caller
+        Main.ActionGameMain = this
+        show()
+    }
+
     override fun buildContent(skin: GameSkin): Table {
         val table = Table()
         table.center()
@@ -50,8 +59,8 @@ object SettingsScreen : MenuScreen() {
         val backButton = TextButton(Localization.tr("menu.settings.back"), skin.buttonStyle)
         backButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = MainMenuScreen
-                MainMenuScreen.show()
+                Main.ActionGameMain = returnTo
+                returnTo.show()
             }
         })
 

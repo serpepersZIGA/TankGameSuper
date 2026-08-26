@@ -28,8 +28,7 @@ object MainMenuScreen : MenuScreen() {
         val settingsButton = TextButton(Localization.tr("menu.main.settings"), skin.buttonStyle)
         settingsButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = SettingsScreen
-                SettingsScreen.show()
+                SettingsScreen.openFrom(MainMenuScreen)
             }
         })
 
