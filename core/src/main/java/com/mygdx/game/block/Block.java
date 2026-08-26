@@ -18,6 +18,17 @@ public abstract class Block {
     public MapObject objMap;
     public static HashMap<Integer,UpdateBlock>BlockID = new HashMap<>();
     public boolean passability,AiClose;
+    // set by ProceduralTerrainPainter instead of a PNG render_block - a flat
+    // color computed from continuous noise rather than a tile lookup, so
+    // neighboring cells blend into each other with no visible tile seam.
+    // terrainSpeedMultiplier/terrainFrictionMultiplier are read directly by
+    // Unit.build_corpus() for the cell under the tank's own center, not
+    // through the objMap.Collision mechanism (that's for discrete placed
+    // objects, not a value that varies every single cell).
+    public boolean hasTerrainPaint;
+    public float terrainColorBits;
+    public float terrainSpeedMultiplier = 1f;
+    public float terrainFrictionMultiplier = 1f;
     public int iBuilding;
     public static void passability_detected() {
         for (int i = 0; i < Main.BuildingList.size(); i++) {
@@ -69,10 +80,27 @@ public abstract class Block {
         return !area1.isEmpty();
     }
     private static int[]xy;
+    private static com.badlogic.gdx.graphics.Texture whitePixel;
+    private static com.badlogic.gdx.graphics.Texture whitePixel(){
+        if (whitePixel == null) {
+            com.badlogic.gdx.graphics.Pixmap pm = new com.badlogic.gdx.graphics.Pixmap(1, 1, com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
+            pm.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+            pm.fill();
+            whitePixel = new com.badlogic.gdx.graphics.Texture(pm);
+            pm.dispose();
+        }
+        return whitePixel;
+    }
 
     public void update(){
         xy = Main.RC.render_objZoom(this.x,this.y);
-        render_block.render(xy[0],xy[1]);
+        if (hasTerrainPaint) {
+            Main.Batch.setPackedColor(terrainColorBits);
+            Main.Batch.draw(whitePixel(), xy[0], xy[1], Main.width_block_zoom, Main.height_block_zoom);
+            Main.Batch.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+        } else {
+            render_block.render(xy[0],xy[1]);
+        }
         this.objMap.render();
     }
     public void updateTick(int ix,int iy){

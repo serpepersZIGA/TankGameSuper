@@ -85,6 +85,10 @@ public class ActionGameHost extends ActionGame{
 
 
 
+        // whatever's past the map's edge falls through to this instead of the
+        // block grid - a plain black void read as "nothing's there" rather
+        // than "the world continues, you just can't drive further"
+        Gdx.gl.glClearColor(0.08f, 0.09f, 0.07f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
         if (RC.MainUnit != null) {

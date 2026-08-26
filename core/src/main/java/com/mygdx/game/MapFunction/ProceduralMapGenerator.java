@@ -8,64 +8,46 @@ import java.util.List;
 import java.util.Random;
 import java.util.Set;
 
-// Generates a new .mapt file in exactly the sparse command format hand-made
-// maps already use (BuildAdd/BlockAdd/MapObject - see an existing map or
-// .str structure for reference) - MapScan.MapInput loads whatever this
-// produces the same way it loads a hand-authored map, no parser changes
-// needed, and the result is a normal file you can keep, share or re-edit
-// by hand afterward.
+// Generates a new .mapt file with just the layout (buildings + decoration -
+// see an existing map or .str structure for the sparse BuildAdd/MapObject
+// command format hand-made maps already use). The actual ground - color,
+// material, road surface - is NOT baked into this file at all: it's repainted
+// by ProceduralTerrainPainter every time the map loads, straight onto the
+// live BlockList2D, using nothing but noise keyed off the same seed. That
+// split is what lets the ground be a smooth, seamless noise field instead of
+// a grid of PNG tiles, while buildings/decor stay ordinary placed objects.
 //
-// The road network is a handful of hub points connected by a minimum
+// computeRoadCells() is the one piece both this class and the painter need
+// in exactly the same form: it always starts from a fresh Random(seed) and
+// touches no other state, so calling it twice - once here (to keep
+// buildings/decor off the road) and once from the painter (to know which
+// cells are asphalt) - reproduces the identical path both times without
+// having to save it anywhere.
+//
+// The road network itself is a handful of hub points connected by a minimum
 // spanning tree (so everything's reachable without a dense mesh), with one
 // extra edge added for a loop; each connection is a fractal "midpoint
-// displacement" path (repeatedly nudging each segment's midpoint sideways
-// by a shrinking random amount) rather than a straight line, which is what
-// gives it a winding, organic look instead of ruler-straight roads.
-// Dirt patches use the same kind of noise-wobbled blob for their edges, so
-// they don't read as perfect circles either.
+// displacement" path (repeatedly nudging each segment's midpoint sideways by
+// a shrinking random amount) rather than a straight line, for a winding,
+// organic look instead of a ruler-straight road.
 public class ProceduralMapGenerator {
     private static final String[] BUILDINGS = {"BigBuildingWood1", "Building2"};
     private static final int BUILDING_CLEARANCE = 12;
     private static final int ROAD_WIDTH = 2;
 
-    public static String generate(long seed, int width, int height){
-        Random rand = new Random(seed);
+    /** Default size for a freshly-generated map - see MapSelectScreen. */
+    public static final int DEFAULT_SIZE = 260;
+
+    public static String generateLayout(long seed, int width, int height){
+        Random rand = new Random(seed+1);
         StringBuilder sb = new StringBuilder();
         sb.append("^Procedural").append(seed).append(";\n");
         sb.append("/x ").append(width).append(":y ").append(height).append(":;\n\n");
 
-        boolean[][] road = new boolean[height][width];
-        boolean[][] dirt = new boolean[height][width];
-
-        int biomeCount = 2 + rand.nextInt(2);
-        for (int b = 0; b < biomeCount; b++){
-            int cx = margin(rand, width);
-            int cy = margin(rand, height);
-            int radius = 10 + rand.nextInt(12);
-            paintBlob(dirt, width, height, cx, cy, radius);
-        }
-
-        int hubCount = 3 + rand.nextInt(2);
-        List<int[]> hubs = new ArrayList<>();
-        for (int h = 0; h < hubCount; h++){
-            hubs.add(pickHub(rand, width, height, hubs));
-        }
-
-        List<int[]> edges = minimumSpanningTree(hubs);
-        if (hubs.size() > 2) edges.add(new int[]{0, hubs.size()-1});
-        for (int[] edge : edges){
-            tracePath(road, width, height, hubs.get(edge[0]), hubs.get(edge[1]), rand);
-        }
-
-        emitRuns(sb, dirt, width, height, "Dirt");
-        for (int y = 0; y < height; y++){
-            for (int x = 0; x < width; x++){
-                if (road[y][x]) sb.append("BlockAdd:*Asphalt:x").append(x).append(":y").append(y).append(":;\n");
-            }
-        }
+        boolean[][] road = computeRoadCells(seed, width, height);
 
         List<int[]> placedBuildings = new ArrayList<>();
-        int buildingTarget = 6 + rand.nextInt(6);
+        int buildingTarget = 10 + rand.nextInt(10);
         int attempts = 0;
         while (placedBuildings.size() < buildingTarget && attempts < buildingTarget*20){
             attempts++;
@@ -80,7 +62,7 @@ public class ProceduralMapGenerator {
             placedBuildings.add(new int[]{x, y});
         }
 
-        int decorTarget = (width*height)/120;
+        int decorTarget = (width*height)/150;
         int decorAttempts = 0, decorPlaced = 0;
         while (decorPlaced < decorTarget && decorAttempts < decorTarget*10){
             decorAttempts++;
@@ -95,31 +77,35 @@ public class ProceduralMapGenerator {
         return sb.toString();
     }
 
-    /** Generates and writes the map to disk, returning the path passed in. */
-    public static String generateAndSave(long seed, int width, int height, String path) throws IOException {
-        String content = generate(seed, width, height);
+    /** Generates the layout and writes it to disk, returning the path passed in. */
+    public static String generateLayoutAndSave(long seed, int width, int height, String path) throws IOException {
+        String content = generateLayout(seed, width, height);
         try (FileWriter writer = new FileWriter(path)) {
             writer.write(content);
         }
         return path;
     }
 
+    /** The road cell grid for this seed/size - always deterministic, see class comment. */
+    public static boolean[][] computeRoadCells(long seed, int width, int height){
+        Random rand = new Random(seed);
+        boolean[][] road = new boolean[height][width];
+        int hubCount = 3 + rand.nextInt(2);
+        List<int[]> hubs = new ArrayList<>();
+        for (int h = 0; h < hubCount; h++){
+            hubs.add(pickHub(rand, width, height, hubs));
+        }
+        List<int[]> edges = minimumSpanningTree(hubs);
+        if (hubs.size() > 2) edges.add(new int[]{0, hubs.size()-1});
+        for (int[] edge : edges){
+            tracePath(road, width, height, hubs.get(edge[0]), hubs.get(edge[1]), rand);
+        }
+        return road;
+    }
+
     private static int margin(Random rand, int size){
         int m = Math.max(size/10, 8);
         return m + rand.nextInt(Math.max(size-2*m, 1));
-    }
-
-    private static void paintBlob(boolean[][] grid, int width, int height, int cx, int cy, int radius){
-        for (int y = Math.max(1, cy-radius); y < Math.min(height-1, cy+radius); y++){
-            for (int x = Math.max(1, cx-radius); x < Math.min(width-1, cx+radius); x++){
-                float dx = x-cx, dy = y-cy;
-                float dist = (float) Math.sqrt(dx*dx+dy*dy);
-                // per-cell wobble on the effective radius, so the patch edge
-                // looks organic instead of a perfect circle
-                float wobble = radius*0.25f*((float) Math.sin(x*0.3f+cy)+(float) Math.cos(y*0.3f+cx));
-                if (dist < radius+wobble) grid[y][x] = true;
-            }
-        }
     }
 
     private static int[] pickHub(Random rand, int width, int height, List<int[]> existing){
@@ -200,22 +186,6 @@ public class ProceduralMapGenerator {
                     if (px >= 1 && px < width-1 && py >= 1 && py < height-1){
                         road[py][px] = true;
                     }
-                }
-            }
-        }
-    }
-
-    private static void emitRuns(StringBuilder sb, boolean[][] grid, int width, int height, String blockName){
-        for (int y = 0; y < height; y++){
-            int runStart = -1;
-            for (int x = 0; x <= width; x++){
-                boolean set = x < width && grid[y][x];
-                if (set && runStart < 0) runStart = x;
-                else if (!set && runStart >= 0){
-                    int len = x-runStart;
-                    sb.append("BlockAdd:*").append(blockName).append(":x").append(runStart).append(":y").append(y)
-                            .append(":X").append(len).append(":;\n");
-                    runStart = -1;
                 }
             }
         }

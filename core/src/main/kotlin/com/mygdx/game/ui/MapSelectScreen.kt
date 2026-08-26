@@ -12,6 +12,7 @@ import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.mygdx.game.MapFunction.MapBaseAdd
 import com.mygdx.game.MapFunction.MapScan
 import com.mygdx.game.MapFunction.ProceduralMapGenerator
+import com.mygdx.game.MapFunction.ProceduralTerrainPainter
 import com.mygdx.game.main.Main
 
 /** Map selection: same scrollable-list approach as TankSelectScreen. */
@@ -79,7 +80,8 @@ object MapSelectScreen : MenuScreen() {
         generateButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
                 val seed = System.currentTimeMillis()
-                val path = ProceduralMapGenerator.generateAndSave(seed, 110, 110, "Map/maps/Procedural_$seed.mapt")
+                val size = ProceduralMapGenerator.DEFAULT_SIZE
+                val path = ProceduralMapGenerator.generateLayoutAndSave(seed, size, size, "Map/maps/Procedural_$seed.mapt")
                 selected = Gdx.files.internal(path)
                 invalidate()
             }
@@ -91,6 +93,14 @@ object MapSelectScreen : MenuScreen() {
                 selected?.let { file ->
                     MapScan.MapSize(file.path())
                     MapScan.MapInput(file.path())
+                    // a procedurally-generated map's ground was never baked into
+                    // the file - repaint it now from the seed in its own name,
+                    // deterministically reproducing the same terrain every time
+                    // this particular file is loaded
+                    val seed = procedureSeed(file.nameWithoutExtension())
+                    if (seed != null) {
+                        ProceduralTerrainPainter.paint(seed, Main.xMap, Main.yMap)
+                    }
                 }
                 Main.ActionGameMain = HostJoinScreen
                 HostJoinScreen.show()
@@ -108,4 +118,7 @@ object MapSelectScreen : MenuScreen() {
 
         return root
     }
+
+    private fun procedureSeed(name: String): Long? =
+        Regex("^Procedural(-?\\d+)$").find(name)?.groupValues?.get(1)?.toLongOrNull()
 }

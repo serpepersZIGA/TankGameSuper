@@ -94,6 +94,12 @@ public abstract class Unit implements Cloneable{
     public static int ai_sost = 200;
     public float SpeedMaxInertion,SpeedInertionX,SpeedInertionY,SpeedMaxInertionX,SpeedMaxInertionY,
             speedX,speedY,speedTrack;
+    // how much grip the ground under this tank has right now (1 = normal,
+    // set every frame in build_corpus() from whatever cell the tank's own
+    // center is over) - move_xy_transport() scales its steering/friction
+    // terms by this, so ice doesn't just make you slower, it makes the tank
+    // keep coasting/sliding instead of responding to input right away
+    public float terrainFriction = 1f;
     // lazily created the first time this tank is close enough to be worth
     // hearing (see Main.render()) - stopped in transportDelete() so the
     // mixer drops them instead of looping this tank's engine/tracks forever
@@ -587,8 +593,8 @@ public abstract class Unit implements Cloneable{
         float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
         SpeedMaxInertion = abs(speed);
         //SpeedMaxInertionY = this.SpeedInertionY*0.3f;
-        float SpeedInertion = this.SpeedInertionX*0.035f;
-        float SpeedInertion2 = this.SpeedInertionY*0.035f;
+        float SpeedInertion = this.SpeedInertionX*0.035f*terrainFriction;
+        float SpeedInertion2 = this.SpeedInertionY*0.035f*terrainFriction;
         speedX = (speedX+move.move_sin2(speed, rotation_corpus2))*0.5f;
         speedY = (speedY+move.move_cos2(speed, rotation_corpus2))*0.5f;
         SpeedMaxInertionX = abs(speedX);
@@ -600,8 +606,12 @@ public abstract class Unit implements Cloneable{
         //if(SpeedMaxInertionY-abs(SpeedInertionY)>0) {
             //this.SpeedInertionY -= speedY;
         //}
-        this.SpeedInertionX -= speedX*0.08f;
-        this.SpeedInertionY -= speedY*0.08f;
+        // low grip (ice) also blunts how hard steering pulls you back toward
+        // the throttle direction, not just the general decay above - that's
+        // the part that actually makes a skid feel like one instead of just
+        // being generically slippery
+        this.SpeedInertionX -= speedX*0.08f*terrainFriction;
+        this.SpeedInertionY -= speedY*0.08f*terrainFriction;
 
         this.SpeedInertionX -= SpeedInertion;
         this.SpeedInertionY -= SpeedInertion2;
@@ -1504,6 +1514,25 @@ public abstract class Unit implements Cloneable{
                 }
             }
         }
+        applyTerrainUnderfoot();
+    }
+    // whatever ProceduralTerrainPainter painted onto the cell under this
+    // tank's own center right now, if anything - a plain cheap lookup, not a
+    // rect-overlap test, since this is "what surface am I standing on" and
+    // not a solid-obstacle collision
+    private void applyTerrainUnderfoot(){
+        terrainFriction = 1f;
+        int cellX = (int) ((this.x+this.corpus_width/2f)/width_block);
+        int cellY = (int) ((this.y+this.corpus_height/2f)/width_block);
+        if (cellY < 0 || cellY >= BlockList2D.size() || cellX < 0 || cellX >= BlockList2D.get(cellY).size()) return;
+        Block underfoot = BlockList2D.get(cellY).get(cellX);
+        if (!underfoot.hasTerrainPaint) return;
+        if (underfoot.terrainSpeedMultiplier < 1f) {
+            this.speed *= underfoot.terrainSpeedMultiplier;
+            SpeedInertionX *= underfoot.terrainSpeedMultiplier;
+            SpeedInertionY *= underfoot.terrainSpeedMultiplier;
+        }
+        terrainFriction = underfoot.terrainFrictionMultiplier;
     }
     public void move_debris(){
         if(speed != 0) {

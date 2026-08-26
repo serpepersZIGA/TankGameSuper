@@ -110,6 +110,10 @@ Thumbs.db
 replay_pid*.log
 /desktop/replay_pid*.log
 
+## maps made by the in-game "generate a new map" button - a runtime
+## artifact of playing, not source content
+assets/Map/maps/Procedural_*.mapt
+
 ## iOS
 /ios/xcode/*.xcodeproj/*
 !/ios/xcode/*.xcodeproj/xcshareddata

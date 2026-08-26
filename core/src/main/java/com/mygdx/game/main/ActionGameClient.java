@@ -44,6 +44,7 @@ public class ActionGameClient extends ActionGame {
         ThreadIterationDebris.start();
         ThreadIterationUnit.start();
 
+        Gdx.gl.glClearColor(0.08f, 0.09f, 0.07f, 1f);
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
         if (RC.MainUnit != null) {
