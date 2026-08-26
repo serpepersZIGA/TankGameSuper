@@ -18,6 +18,15 @@ object MapSelectScreen : MenuScreen() {
 
     private var selected: FileHandle? = null
 
+    init {
+        onEscape = { goBack() }
+    }
+
+    private fun goBack() {
+        Main.ActionGameMain = TankSelectScreen
+        TankSelectScreen.show()
+    }
+
     private fun mapFiles(): List<FileHandle> {
         var files = Gdx.files.internal("Map/maps").list()
         if (files.isEmpty()) {
@@ -61,8 +70,7 @@ object MapSelectScreen : MenuScreen() {
         val backButton = TextButton(Localization.tr("menu.map.back"), skin.buttonStyle)
         backButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = TankSelectScreen
-                TankSelectScreen.show()
+                goBack()
             }
         })
 

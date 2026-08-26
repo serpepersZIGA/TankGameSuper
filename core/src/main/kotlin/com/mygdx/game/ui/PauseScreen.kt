@@ -1,7 +1,6 @@
 package com.mygdx.game.ui
 
 import com.badlogic.gdx.Gdx
-import com.badlogic.gdx.Input
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.Table
@@ -18,11 +17,8 @@ import com.mygdx.game.method.RenderCenter
 // Esc menu during a match. Replaces the old Play2/ExitPlay/Exit buttons.
 object PauseScreen : MenuScreen() {
 
-    // esc again while paused = resume, like most games do
-    override fun update() {
-        if (Gdx.input.isKeyJustPressed(Input.Keys.ESCAPE)) {
-            resume()
-        }
+    init {
+        onEscape = { resume() } // esc again while paused = resume
     }
 
     override fun buildContent(skin: GameSkin): Table {

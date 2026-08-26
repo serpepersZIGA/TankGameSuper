@@ -18,6 +18,15 @@ object DevMenuScreen : MenuScreen() {
         show()
     }
 
+    init {
+        onEscape = { goBack() }
+    }
+
+    private fun goBack() {
+        Main.ActionGameMain = returnTo
+        returnTo.show()
+    }
+
     override fun buildContent(skin: GameSkin): Table {
         val table = Table()
         table.center()
@@ -32,8 +41,7 @@ object DevMenuScreen : MenuScreen() {
         val backButton = TextButton(Localization.tr("menu.dev.back"), skin.buttonStyle)
         backButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = returnTo
-                returnTo.show()
+                goBack()
             }
         })
         table.add(backButton).width(220f).height(64f).padTop(24f)
