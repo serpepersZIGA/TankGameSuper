@@ -62,7 +62,7 @@ public class CycleTimeDay {
                 }
                 case 1: {
                     MaxTime = timeTransitionDay;
-                    lightPurpose = timeNight;
+                    lightPurpose = lightNight;
                     break;
                 }
                 case 2: {
