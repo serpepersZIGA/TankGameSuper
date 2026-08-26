@@ -15,7 +15,6 @@ import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.bull.Bullet;
-import com.mygdx.game.menu.button.Button;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
@@ -154,25 +153,7 @@ public class ActionMenu extends ActionGame {
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action();}
 
-        for (i = 0;i< ButtonList.size();i++){
-            Button but = ButtonList.get(i);
-            if(Main.ConfigMenu == but.ConfigMenu) {
-                if (but.TypeFont) {
-                    but.TXTRender2();
-                }
-                else{
-                    but.TXTRender();
-                }
-                but.render(i);
-            }
-        }
-        // ConfigMenu 4 is the in-game pause overlay (Play2/ExitPlay); the old
-        // pre-game menu screens (main menu/tank select/map select) have been
-        // replaced by the Scene2D screens in com.mygdx.game.ui and no longer
-        // run through this switch.
-        if (ConfigMenu == 4 && Keyboard.ClickEsc) {
-            Main.ActionGameMain = ActionGameTotal;
-        }
+        // menus (incl. pause) all live in com.mygdx.game.ui now
 //        for (i = 0;i< ButtonList.size();i++){
 //            Button but = ButtonList.get(i);
 //            if(Main.ConfigMenu == but.ConfigMenu) {

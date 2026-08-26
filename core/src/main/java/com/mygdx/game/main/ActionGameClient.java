@@ -73,8 +73,8 @@ public class ActionGameClient extends ActionGame {
         if(Keyboard.PressD){
             RC.x += 10;}
         if(Keyboard.ClickEsc){
-            ActionGameMain = ActionMenu;
-            ConfigMenu = 4;
+            ActionGameMain = com.mygdx.game.ui.PauseScreen.INSTANCE;
+            com.mygdx.game.ui.PauseScreen.INSTANCE.show();
         }
 //        try {
 //                if(timer <= 0) {
