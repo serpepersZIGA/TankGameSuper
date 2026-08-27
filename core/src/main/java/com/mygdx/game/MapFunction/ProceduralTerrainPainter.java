@@ -69,8 +69,33 @@ public class ProceduralTerrainPainter {
                 float friction = (bl[4]+tl[4]+tr[4]+br[4])/4f;
                 block.terrainSpeedMultiplier = speed;
                 block.terrainFrictionMultiplier = friction;
+                // classified at the cell center regardless of road status -
+                // a road through a cold region is still a cold region for
+                // weather purposes, it just also happens to be paved
+                block.climate = classifyClimate(noise, x*blockSize+blockSize*0.5f, y*blockSize+blockSize*0.5f);
             }
         }
+    }
+
+    /** Whatever climate was painted at this world position, or TEMPERATE if out of bounds/unpainted. */
+    public static Block.Climate climateAt(float worldX, float worldY){
+        int blockSize = Main.width_block;
+        int cellX = (int) (worldX/blockSize);
+        int cellY = (int) (worldY/blockSize);
+        if (cellY < 0 || cellY >= Main.BlockList2D.size() || cellX < 0 || cellX >= Main.BlockList2D.get(cellY).size())
+            return Block.Climate.TEMPERATE;
+        return Main.BlockList2D.get(cellY).get(cellX).climate;
+    }
+
+    /** Same temperature/moisture thresholds as cornerBlend, just for weather to pick snow vs rain vs nothing by. */
+    private static Block.Climate classifyClimate(TerrainNoise noise, float wx, float wy){
+        float temp = noise.fbm(wx, wy, 0, 3, BIOME_FREQ, 0.5f);
+        float moisture = noise.fbm(wx, wy, 1, 3, BIOME_FREQ, 0.5f);
+        float cold = smoothstep(-0.22f, -0.42f, temp);
+        float hotDry = smoothstep(0.18f, 0.38f, temp) * smoothstep(0.15f, -0.15f, moisture);
+        if (cold > 0.5f) return Block.Climate.COLD;
+        if (hotDry > 0.5f) return Block.Climate.ARID;
+        return Block.Climate.TEMPERATE;
     }
 
     /** {r, g, b, speedMultiplier, frictionMultiplier} at one exact world point. */

@@ -35,6 +35,12 @@ public abstract class Block {
     public float terrainColorBL, terrainColorTL, terrainColorTR, terrainColorBR;
     public float terrainSpeedMultiplier = 1f;
     public float terrainFrictionMultiplier = 1f;
+    // classification only (not used for rendering/physics) - lets weather
+    // pick snow vs rain vs nothing based on what climate the player is
+    // currently standing in. Defaults to TEMPERATE for any map that was
+    // never procedurally painted.
+    public enum Climate { TEMPERATE, COLD, ARID }
+    public Climate climate = Climate.TEMPERATE;
     public int iBuilding;
     public static void passability_detected() {
         for (int i = 0; i < Main.BuildingList.size(); i++) {

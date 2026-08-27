@@ -3,8 +3,8 @@ ShaderList/Fire/Fire.frag
 ShaderList/Fire/Fire.vert
 ShaderList/Grass/Grass.frag
 ShaderList/Grass/Grass.vert
-ShaderList/Lighting/Lighting.frag
 ShaderList/Lighting/Lighting.vert
+ShaderList/Lighting/Lighting.frag
 ShaderList/Liquid/Blood.frag
 ShaderList/Liquid/Liquid.frag
 ShaderList/Liquid/Liquid.vert
@@ -14,6 +14,8 @@ ShaderList/Rain/Rain.frag
 ShaderList/Rain/Rain.vert
 ShaderList/Ripple/Ripple.frag
 ShaderList/Ripple/Ripple.vert
+ShaderList/Snow/Snow.vert
+ShaderList/Snow/Snow.frag
 font/Base/$R6CPHTE.ttf
 font/Base/$RHIQTLR.ttf
 font/Base/$RHYMSL5.ttf
@@ -130,7 +132,7 @@ ContentGlobal/Unit/Pz-2M.json
 ContentGlobal/ObjectMap/pepper.json
 Map/maps/MapBase.mapt
 Map/maps/MapCentral.mapt
-Map/maps/Procedural_1787786421288.mapt
+Map/maps/Procedural_1787793223937.mapt
 Map/Structure/street1.str
 Map/Structure/streetPoselok.str
 Map/Structure/pepper1.str
