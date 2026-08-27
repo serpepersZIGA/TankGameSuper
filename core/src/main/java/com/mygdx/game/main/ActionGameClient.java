@@ -191,19 +191,9 @@ public class ActionGameClient extends ActionGame {
                 }
             }
         }
-        shopMain.InventoryIterationClient();
-        equipmentMain.InventoryIterationClient();
-        inventoryMain.InventoryIterationClient();
-
-
-        if(InventoryInterface.SlotBuffer != null){
-            InventoryInterface.SlotBuffer.SlotXY();
-            InventoryInterface.SlotBuffer.SlotRender();
-            InventoryInterface.SlotBuffer.SlotPasteClient();
-        }
-        if(InventoryInterface.WindowName.conf){
-            InventoryInterface.WindowName.RenderWindow();
-        }
+        // Inventory/Equipment/Shop all render through here now (Scene2D,
+        // proper drag-and-drop, touchpad friendly)
+        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
 
         for (i= 0; i< BangList.size(); i++){
             BangList.get(i).all_action();
@@ -226,6 +216,7 @@ public class ActionGameClient extends ActionGame {
         }
         com.mygdx.game.ui.DevOverlay.INSTANCE.render();
         com.mygdx.game.ui.PlayerHud.INSTANCE.render();
+        com.mygdx.game.ui.Minimap.INSTANCE.render();
     }
     private class IterationDebris implements Runnable{
         public void run() {

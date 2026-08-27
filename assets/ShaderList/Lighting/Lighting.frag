@@ -33,11 +33,9 @@ in vec2 v_worldPos;
 
 
 void main() {
-    vec4 color;
     vec4 texColor = texture(u_texture, v_texCoords) * v_color;
     float dist;
     float attenuation;
-    vec4 lightEffect;
     vec4 finalColor;
     int i;
     if (texColor.a <= 0.0) discard;
@@ -48,19 +46,14 @@ void main() {
         dist = distance(v_worldPos, light.position);
         if (dist > light.radius) continue;
 
-        attenuation = 1.0 - smoothstep(light.radius
-       * 0.15 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
+        // was: smoothstep with an inner plateau + a colorless "glow" term
+        // multiplied AGAIN by the color's own alpha - that's why a lamp read
+        // as a flat tinted disc instead of actual light. Just add the
+        // light's own color, scaled by intensity and a plain smooth falloff.
+        attenuation = 1.0 - smoothstep(0.0, light.radius, dist);
+        attenuation = pow(attenuation, 2.0);
         attenuation *= (1.0 - light.transparency);
-        attenuation = pow(attenuation, 1.5);
-        // the old (radius/dist)*0.05 glow term diverges to infinity as dist
-        // approaches 0 - any pixel sitting right on/near a light's own
-        // position got an unbounded additive blowout, which is why a lamp's
-        // own texture always read as a flat white blob no matter the
-        // brightness setting. Clamping dist to a floor keeps the same
-        // "brighter close up" shape without the singularity.
-        lightEffect = (light.color * light.intensity * attenuation) + ((light.radius / max(dist, light.radius*0.2)) * 0.05);
-        accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
-        accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
+        accumulatedLight.rgb += light.color.rgb * light.intensity * attenuation;
     }
     // a safety ceiling so a pile of overlapping lights (a dense flamethrower
     // stream, several lamps close together) degrades to "very bright" rather

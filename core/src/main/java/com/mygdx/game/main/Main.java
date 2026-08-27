@@ -97,6 +97,17 @@ public class Main extends ApplicationAdapter {
 	// all - beyond this we don't even bother creating voices for it
 	private static final float ENGINE_HEARING_RADIUS = 900f;
 	private static boolean audioStarted = false;
+	// exiting a match back to the main menu (see PauseScreen.exitToMenu())
+	// used to only clear game-state lists (UnitList etc.) - the per-tank
+	// engine/track voices already handed to Audio.playPersistent() aren't
+	// referenced from there, they live inside AudioMixer's own list, so they
+	// kept playing forever with no game left to belong to. audioStarted also
+	// has to go back to false, or the render() guard below never calls
+	// Audio.start() again for the next match.
+	public static void stopProceduralAudio(){
+		Audio.stop();
+		audioStarted = false;
+	}
 	public static ArrayList<ArrayList<Block>> BlockList2D = new ArrayList<>();
 
 	public static RenderCenter RC;
@@ -358,10 +369,20 @@ public class Main extends ApplicationAdapter {
 //		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
 	}
+	// FreeTypeFontGenerator.DEFAULT_CHARS is ASCII only - any Cyrillic text
+	// drawn with this font (world-overlay text like DevOverlay/NetworkStatusBanner/
+	// PlayerHud, not the Scene2D menus - those use GameSkin.kt's own font,
+	// which already adds this same range) renders as missing-glyph squares
+	// without it. Same fix GameSkin.kt already has for its own fonts.
+	private static String cyrillicChars(){
+		StringBuilder sb = new StringBuilder();
+		for (int c = 0x0400; c <= 0x04FF; c++) sb.append((char) c);
+		return sb.toString();
+	}
 	public static BitmapFont TXTFont(int size,String fontPath){
 		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
 		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
-		parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS;
+		parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + cyrillicChars();
 		parameter.size = size;
 		BitmapFont font = generator.generateFont(parameter);
 		generator.dispose();
@@ -476,6 +497,12 @@ public class Main extends ApplicationAdapter {
 		font2.dispose();
 		if(ServerMain.Server != null) {
 			try {
+				// stop() first: it sets the flag the server's own background
+				// thread checks before each update() call. Without it,
+				// dispose()/close() can close the network selector while
+				// that thread is still mid-loop, and its next update() call
+				// throws an uncaught ClosedSelectorException on shutdown.
+				ServerMain.Server.stop();
 				ServerMain.Server.dispose();
 			} catch (IOException e) {
 				throw new RuntimeException(e);

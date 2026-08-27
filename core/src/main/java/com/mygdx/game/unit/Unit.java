@@ -832,7 +832,10 @@ public abstract class Unit implements Cloneable{
                 ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
         fire_x = xy[0];
         fire_y = xy[1];
-        if(this.reload_bot() && this.left_mouse){
+        // right_mouse was declared but never actually checked here - only
+        // left_mouse was, so no tower could ever fire from the right button
+        // even once ControllerPlayer started assigning it to one
+        if(this.reload_bot() && (this.left_mouse || this.right_mouse)){
             R_LOCK.lock();
             try {
                 fire.FireIteration(this);
@@ -842,6 +845,7 @@ public abstract class Unit implements Cloneable{
             }
             reload = reload_max;
             this.left_mouse = false;
+            this.right_mouse = false;
         }
     }
 
@@ -1101,6 +1105,19 @@ public abstract class Unit implements Cloneable{
         }
     }
     public static float[] findIntersection(float x0, float y0, float dx, float dy) {
+        // this scans BlockList2D cell-by-cell between the two endpoints with
+        // no bounds check anywhere in the loop below - if either endpoint is
+        // itself outside the grid (a unit that ended up off the map,
+        // possible before the clampToMapBounds() fix, or from anything else
+        // that can put a unit out of bounds in the future), it indexes past
+        // the array and crashes the whole game. clampToMapBounds() is the
+        // real fix; this is a second line of defense.
+        int gridX = (int) (x0/width_block)-1, gridY = (int) (y0/width_block)-1;
+        int gridDx = (int) (dx/width_block)-1, gridDy = (int) (dy/width_block)-1;
+        if (gridX < 0 || gridX >= xMap || gridY < 0 || gridY >= yMap
+                || gridDx < 0 || gridDx >= xMap || gridDy < 0 || gridDy >= yMap) {
+            return null;
+        }
         float x = dx/width_block-1;
         float y = dy/ width_block -1;
         dx = x0/width_block-1;
@@ -1301,7 +1318,14 @@ public abstract class Unit implements Cloneable{
 
     private void damage_temperature(){
         if(abs(this.t) > 25){
-            this.hp -= (int) abs(this.t*0.1f);
+            // godMode (dev tools) only ever guarded bullet damage
+            // (Bullet.java) - burning/fire damage-over-time had no such
+            // check at all, so "immortality" didn't actually stop fire from
+            // still killing you
+            boolean godMode = com.mygdx.game.ui.DevFlags.INSTANCE.getGodMode() && this == Main.RC.MainUnit;
+            if (!godMode) {
+                this.hp -= (int) abs(this.t*0.1f);
+            }
             this.t -=this.t*0.02f;
             this.green_len = ((float) this.hp / this.max_hp) * Option.size_x_indicator;
 
@@ -1396,7 +1420,25 @@ public abstract class Unit implements Cloneable{
         //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
         return !area1.isEmpty();
     }
+    // called every frame for every unit (player and bots alike) from
+    // ActionGameClient/ActionGameHost's unit iteration - the natural place
+    // for a safety net that nothing else provides: a procedurally generated
+    // map gets a solid cliff wall at its border (ProceduralTerrainPainter),
+    // but a hand-made map might not have anything blocking its edge at all,
+    // and once ANY unit's position ends up far outside the valid grid,
+    // findIntersection() (a line-of-sight scan between two units) indexes
+    // BlockList2D out of bounds and crashes the whole game - not just a
+    // cosmetic "drove off the map" issue.
+    private void clampToMapBounds(){
+        float maxX = xMap*width_block - 1;
+        float maxY = yMap*width_block - 1;
+        if (this.x < 0) this.x = 0;
+        else if (this.x > maxX) this.x = maxX;
+        if (this.y < 0) this.y = 0;
+        else if (this.y > maxY) this.y = maxY;
+    }
     public void XYMapCord(){
+        clampToMapBounds();
         XMap = (int) (tower_x/ width_block)-1;
         YMap = (int) (tower_y/ width_block)-1;
         if(XMap<0){
@@ -1425,6 +1467,7 @@ public abstract class Unit implements Cloneable{
 
     }
     public void XYMapCordDebris(){
+        clampToMapBounds();
         XMap = (int) (x/ width_block)-1;
         YMap = (int) (y/ width_block)-1;
         if(XMap<0){
@@ -1497,8 +1540,24 @@ public abstract class Unit implements Cloneable{
             }
         }
         if (hitIx >= 0) {
-            this.x += bestPushX*WALL_POSITION_CORRECTION;
-            this.y += bestPushY*WALL_POSITION_CORRECTION;
+            // the modest per-frame nudge above is right for a normal shallow
+            // wall touch (that's the whole point - it's what lets you align
+            // along a wall instead of snapping/sticking). But if the tank's
+            // own CENTER is genuinely embedded in solid ground - only really
+            // reachable by driving hard into a multi-cell-thick wall like
+            // the map border - that same gentle nudge can't keep up, and
+            // whichever neighboring cell counts as "deepest" keeps shifting
+            // frame to frame, so smooth diagonal input just fights itself
+            // (only escapable before this fix by moving one axis at a time).
+            // A deeply-embedded tank needs a full, decisive push out instead.
+            int centerIx = (int) (this.x/width_block);
+            int centerIy = (int) (this.y/width_block);
+            boolean embedded = centerIy >= 0 && centerIy < BlockList2D.size() && centerIx >= 0
+                    && centerIx < BlockList2D.get(centerIy).size()
+                    && BlockList2D.get(centerIy).get(centerIx).passability;
+            float correction = embedded ? 1f : WALL_POSITION_CORRECTION;
+            this.x += bestPushX*correction;
+            this.y += bestPushY*correction;
             float len = (float) sqrt(pow2(bestPushX)+pow2(bestPushY));
             if (len > 0.0001f) {
                 float nx = bestPushX/len, ny = bestPushY/len;

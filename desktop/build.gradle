@@ -19,6 +19,10 @@ tasks.named('run', JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+    // silences "WARNING: A restricted method in java.lang.System has been
+    // called" from LWJGL's native library loading - just quiets the
+    // warning, doesn't change what the JVM actually allows
+    jvmArgs += "--enable-native-access=ALL-UNNAMED"
 
     if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
         // Required to run on macOS

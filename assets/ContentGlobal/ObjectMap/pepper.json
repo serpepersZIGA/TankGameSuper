@@ -7,6 +7,6 @@
   "height":20,
   "HP":120,
   "LightingConf":true,
-  "Lighting":600,
+  "Lighting":180,
   "SpawnUnit": false
 }

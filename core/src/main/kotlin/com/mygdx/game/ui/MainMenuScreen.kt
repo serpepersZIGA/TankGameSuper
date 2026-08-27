@@ -60,12 +60,21 @@ object MainMenuScreen : MenuScreen() {
             }
         })
 
+        // a fixed 320f clipped text longer than "Играть" (e.g. "Инструменты
+        // разработчика"). Giving each button its own minWidth fixed the
+        // clipping but broke the uniform column look instead - whichever
+        // button had the longest label just grew wider than all the others.
+        // One shared width, sized to fit the longest label of the bunch,
+        // keeps every button the same size and never clips.
+        val commonWidth = listOf(playButton, networkButton, settingsButton, devButton, exitButton)
+            .maxOf { it.prefWidth }
+            .coerceAtLeast(320f)
         table.add(title).padBottom(64f).row()
-        table.add(playButton).width(320f).height(72f).padBottom(16f).row()
-        table.add(networkButton).width(320f).height(72f).padBottom(16f).row()
-        table.add(settingsButton).width(320f).height(72f).padBottom(16f).row()
-        table.add(devButton).width(320f).height(72f).padBottom(16f).row()
-        table.add(exitButton).width(320f).height(72f)
+        table.add(playButton).width(commonWidth).height(72f).padBottom(16f).row()
+        table.add(networkButton).width(commonWidth).height(72f).padBottom(16f).row()
+        table.add(settingsButton).width(commonWidth).height(72f).padBottom(16f).row()
+        table.add(devButton).width(commonWidth).height(72f).padBottom(16f).row()
+        table.add(exitButton).width(commonWidth).height(72f)
 
         root.add(table).expand().row()
         val versionLabel = Label("v${GameVersion.VERSION}", skin.hintLabelStyle)

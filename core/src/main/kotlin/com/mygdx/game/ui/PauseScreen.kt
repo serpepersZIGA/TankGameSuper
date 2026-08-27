@@ -74,11 +74,19 @@ object PauseScreen : MenuScreen() {
 
     private fun resume() {
         Main.ActionGameMain = Main.ActionGameTotal
+        // same reasoning as DeathScreen - whatever was held when Esc opened
+        // the pause menu never got a matching release while this screen's
+        // own Stage was the input processor
+        com.mygdx.game.method.Keyboard.resetHeldInputState()
         Gdx.input.setInputProcessor(Main.KeyboardObj)
     }
 
     // tears down the running match (host or client) and drops back to the main menu
     private fun exitToMenu() {
+        // per-tank engine/track sounds live in AudioMixer's own list, not in
+        // anything cleared below - without this they just kept playing at
+        // the main menu since nothing ever told them the match was over
+        Main.stopProceduralAudio()
         if (Main.ActionGameTotal === ActionGame.ActionGameH) {
             ServerMain.Server.close()
             ServerMain.nConnect = 0

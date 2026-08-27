@@ -20,6 +20,21 @@ import static com.mygdx.game.main.Main.*;
 public class Keyboard extends InputAdapter{
     public static boolean PressW,PressA,PressS,PressD,PressE,PressUP,PressDown,PressF,PressEsc,ClickEsc,PressB,PressZ;
     public static boolean LeftMouse, RightMouse,LeftMouseClick, RightMouseClick,MiddleMouse;
+
+    // whenever a UI screen takes over the input processor from this class
+    // (death screen, pause menu, opening the inventory...) while a key or
+    // mouse button happens to be held down, the matching "release" event
+    // goes to that OTHER processor instead of here - so the flag never
+    // clears and stays stuck true. Most visible case: die while holding
+    // fire, respawn, and the new tank just keeps firing on its own until
+    // you press fire again (which finally gives a matched down+up pair).
+    // Call this whenever control is about to be handed to something else.
+    public static void resetHeldInputState(){
+        PressW = false; PressA = false; PressS = false; PressD = false;
+        PressE = false; PressUP = false; PressDown = false; PressF = false;
+        PressB = false; PressZ = false;
+        LeftMouse = false; RightMouse = false; MiddleMouse = false;
+    }
     public static int MouseX,MouseY;
     public static float ZoomMax;
     public static float ZoomMin;
@@ -145,28 +160,10 @@ public class Keyboard extends InputAdapter{
             }
             case Input.Buttons.MIDDLE:
             {
-                if(inventoryMain.InventoryConf) {
-                    inventoryMain.CollisionMouseItem();
-                }
-                if(shopMain.InventoryConf) {
-                    shopMain.CollisionMouseItem();
-                }
-                if(equipmentMain.InventoryConf){
-                    equipmentMain.CollisionMouseItem();
-                }
                 MiddleMouse = true;
                 break;
             }
             case Input.Buttons.RIGHT:{
-                if(inventoryMain.InventoryConf & inventoryMain.CollisionMouseInvert()){
-                    inventoryMain.InventoryConfMoving = true;
-                }
-                else if(equipmentMain.InventoryConf & equipmentMain.CollisionMouseInvert()){
-                    equipmentMain.InventoryConfMoving = true;
-                }
-                else if(shopMain.InventoryConf & shopMain.CollisionMouseInvert()){
-                    shopMain.InventoryConfMoving = true;
-                }
                 RightMouse = true;
                 break;
             }
@@ -188,15 +185,6 @@ public class Keyboard extends InputAdapter{
                 break;
             }
             case Input.Buttons.RIGHT:{
-                if(inventoryMain.InventoryConfMoving){
-                    inventoryMain.InventoryConfMoving = false;
-                }
-                else if(shopMain.InventoryConfMoving){
-                    shopMain.InventoryConfMoving = false;
-                }
-                else if(equipmentMain.InventoryConfMoving){
-                    equipmentMain.InventoryConfMoving = false;
-                }
                 RightMouse = false;
                 RightMouseClick = true;
                 break;

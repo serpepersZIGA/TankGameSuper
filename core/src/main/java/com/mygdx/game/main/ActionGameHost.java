@@ -300,17 +300,9 @@ public class ActionGameHost extends ActionGame{
                 }
             }
         }
-        shopMain.InventoryIteration();
-        equipmentMain.InventoryIteration();
-        inventoryMain.InventoryIteration();
-        if(InventoryInterface.SlotBuffer != null){
-            InventoryInterface.SlotBuffer.SlotXY();
-            InventoryInterface.SlotBuffer.SlotRender();
-            InventoryInterface.SlotBuffer.SlotPaste();
-        }
-        if(InventoryInterface.WindowName.conf){
-            InventoryInterface.WindowName.RenderWindow();
-        }
+        // Inventory/Equipment/Shop all render through here now (Scene2D,
+        // proper drag-and-drop, touchpad friendly)
+        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
 
 //        Map<Thread,StackTraceElement[]> threads = Thread.getAllStackTraces();
 //        for (Map.Entry<Thread, StackTraceElement[]> entry : threads.entrySet()) {
@@ -349,6 +341,7 @@ public class ActionGameHost extends ActionGame{
         server_packet();
         com.mygdx.game.ui.DevOverlay.INSTANCE.render();
         com.mygdx.game.ui.PlayerHud.INSTANCE.render();
+        com.mygdx.game.ui.Minimap.INSTANCE.render();
 
         //executor.shutdown();
         //executor.close();

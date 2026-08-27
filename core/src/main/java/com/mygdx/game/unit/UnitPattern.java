@@ -129,10 +129,21 @@ public class UnitPattern extends Unit {
     }
     public void update(){
         //indicator_reload();
-        indicator_hp_2();
+        // the player's own HP/reload now live in the dedicated HUD panel
+        // (PlayerHud.kt) - drawing these old bars over the player's own tank
+        // too was just a leftover duplicate, and they had a real bug where
+        // they render far too long right after spawn. Still drawn over
+        // everyone else's tank (allies/enemies), where an at-a-glance bar is
+        // actually useful.
+        if(this != com.mygdx.game.main.Main.RC.MainUnit) {
+            indicator_hp_2();
+        }
     }
     public void updateTower(){
-        indicator_reload();
+        if(com.mygdx.game.main.Main.RC.MainUnit == null
+                || !com.mygdx.game.main.Main.RC.MainUnit.TowerUnitList.contains(this)) {
+            indicator_reload();
+        }
     }
     public void UpdateTower(){
         //this.x = tower_x;

@@ -42,6 +42,10 @@ public class ProceduralMapGenerator {
     // footprint (10 cells wide) extending out from its anchor point
     private static final int BUILDING_EDGE_CLEARANCE = 22;
     private static final int ROAD_WIDTH = 2;
+    // clearance from the road for scattered decor - enough to clear a tank's
+    // own width while it drives down a ROAD_WIDTH=2 road, not just the exact
+    // cell the road occupies
+    private static final int DECOR_ROAD_CLEARANCE = 3;
 
     /** Default size for a freshly-generated map - see MapSelectScreen. */
     public static final int DEFAULT_SIZE = 260;
@@ -77,7 +81,15 @@ public class ProceduralMapGenerator {
             // otherwise part of a building could land on/past the border
             if (x < BUILDING_EDGE_CLEARANCE || x >= width-BUILDING_EDGE_CLEARANCE
                     || y < BUILDING_EDGE_CLEARANCE || y >= height-BUILDING_EDGE_CLEARANCE) continue;
-            if (!clearOfRoad(road, width, height, x, y, 4)) continue;
+            // 4 only checked clearance right around the anchor point, but a
+            // building's footprint extends up to 10 cells out from its
+            // anchor (BigBuildingWood1 is 10x6) - anchored only 6-16 cells
+            // from a road cell (BUILDING_ROAD_OFFSET_MIN/MAX), that footprint
+            // could reach right back onto the road and block it outright.
+            // A radius bigger than the largest footprint dimension is a safe
+            // (if occasionally over-cautious) way to catch that without
+            // modeling the exact rotated rectangle.
+            if (!clearOfRoad(road, width, height, x, y, 11)) continue;
             if (!clearOfBuildings(placedBuildings, x, y, BUILDING_CLEARANCE)) continue;
             String building = BUILDINGS[rand.nextInt(BUILDINGS.length)];
             int rotation = rand.nextInt(4);
@@ -114,7 +126,12 @@ public class ProceduralMapGenerator {
             decorAttempts++;
             int x = margin(rand, width);
             int y = margin(rand, height);
-            if (road[y][x]) continue;
+            // was an exact-cell check only - a decor object one cell off the
+            // road still has its collision box reachable by a tank's own
+            // (much wider than one cell) body while driving down a road
+            // that's only ROAD_WIDTH=2 cells wide, which is exactly what
+            // read as "decor sitting in the middle of the asphalt".
+            if (!clearOfRoad(road, width, height, x, y, DECOR_ROAD_CLEARANCE)) continue;
             if (!clearOfBuildings(placedBuildings, x, y, 6)) continue;
             sb.append("MapObject:o pepper:x").append(x).append(":y").append(y).append(":;\n");
             decorPlaced++;

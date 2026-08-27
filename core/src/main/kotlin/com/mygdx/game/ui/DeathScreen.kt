@@ -35,6 +35,12 @@ object DeathScreen : MenuScreen() {
                     com.mygdx.game.main.ActionGameClient.ActionGameClientIteration()
                 }
                 Main.ActionGameMain = Main.ActionGameTotal
+                // whatever was held (most commonly fire) when the player
+                // died never got a matching release - the death screen's own
+                // Stage was the input processor by then, not Keyboard - so
+                // without this the new tank starts up already firing/driving
+                // on its own
+                com.mygdx.game.method.Keyboard.resetHeldInputState()
                 Gdx.input.setInputProcessor(Main.KeyboardObj)
             }
         })
