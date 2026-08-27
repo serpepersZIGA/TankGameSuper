@@ -47,7 +47,7 @@ public class ProceduralMapGenerator {
         boolean[][] road = computeRoadCells(seed, width, height);
 
         List<int[]> placedBuildings = new ArrayList<>();
-        int buildingTarget = 10 + rand.nextInt(10);
+        int buildingTarget = 18 + rand.nextInt(15);
         int attempts = 0;
         while (placedBuildings.size() < buildingTarget && attempts < buildingTarget*20){
             attempts++;
@@ -62,7 +62,11 @@ public class ProceduralMapGenerator {
             placedBuildings.add(new int[]{x, y});
         }
 
-        int decorTarget = (width*height)/150;
+        // was /150 - a 260x260 map only got ~450 decor objects scattered
+        // across it, which read as an almost-empty map. This is still the
+        // only decor asset there is (see pepper.json) - more variety needs
+        // actual new art, not just a density change.
+        int decorTarget = (width*height)/45;
         int decorAttempts = 0, decorPlaced = 0;
         while (decorPlaced < decorTarget && decorAttempts < decorTarget*10){
             decorAttempts++;
