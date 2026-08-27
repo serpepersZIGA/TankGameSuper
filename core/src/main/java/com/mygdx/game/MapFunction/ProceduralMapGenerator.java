@@ -38,6 +38,9 @@ public class ProceduralMapGenerator {
     // road", not a trek across the map
     private static final int BUILDING_ROAD_OFFSET_MIN = 6;
     private static final int BUILDING_ROAD_OFFSET_MAX = 16;
+    // covers the impassable border ring (10) plus the largest building
+    // footprint (10 cells wide) extending out from its anchor point
+    private static final int BUILDING_EDGE_CLEARANCE = 22;
     private static final int ROAD_WIDTH = 2;
 
     /** Default size for a freshly-generated map - see MapSelectScreen. */
@@ -68,7 +71,12 @@ public class ProceduralMapGenerator {
             int offset = BUILDING_ROAD_OFFSET_MIN + rand.nextInt(BUILDING_ROAD_OFFSET_MAX-BUILDING_ROAD_OFFSET_MIN);
             int x = roadCell[0] + Math.round((float) Math.cos(angle)*offset);
             int y = roadCell[1] + Math.round((float) Math.sin(angle)*offset);
-            if (x < 4 || x >= width-4 || y < 4 || y >= height-4) continue;
+            // clearance needs to cover both the impassable cliff ring at the
+            // map edge (ProceduralTerrainPainter.BORDER_MARGIN) and the
+            // building's own footprint extending out from this anchor point -
+            // otherwise part of a building could land on/past the border
+            if (x < BUILDING_EDGE_CLEARANCE || x >= width-BUILDING_EDGE_CLEARANCE
+                    || y < BUILDING_EDGE_CLEARANCE || y >= height-BUILDING_EDGE_CLEARANCE) continue;
             if (!clearOfRoad(road, width, height, x, y, 4)) continue;
             if (!clearOfBuildings(placedBuildings, x, y, BUILDING_CLEARANCE)) continue;
             String building = BUILDINGS[rand.nextInt(BUILDINGS.length)];
@@ -117,6 +125,10 @@ public class ProceduralMapGenerator {
 
     private static final int SPAWN_ZONE_RADIUS = 18;
     private static final int SPAWN_POINTS_PER_ZONE = 6;
+    // must stay >= ProceduralTerrainPainter.BORDER_MARGIN - a spawn point
+    // any closer to the edge than that could land inside the impassable
+    // cliff ring and spawn the player stuck in a wall
+    private static final int SPAWN_EDGE_CLEARANCE = 14;
 
     /** Scatters a handful of spawn-marker points (see playerspawn.json/enemyspawn.json) in a small radius around a hub. */
     private static void appendSpawnZone(StringBuilder sb, String assetName, int[] hub, int width, int height, Random rand){
@@ -127,7 +139,8 @@ public class ProceduralMapGenerator {
             int r = rand.nextInt(SPAWN_ZONE_RADIUS);
             int x = hub[0] + Math.round((float) Math.cos(angle)*r);
             int y = hub[1] + Math.round((float) Math.sin(angle)*r);
-            if (x < 3 || x >= width-3 || y < 3 || y >= height-3) continue;
+            if (x < SPAWN_EDGE_CLEARANCE || x >= width-SPAWN_EDGE_CLEARANCE
+                    || y < SPAWN_EDGE_CLEARANCE || y >= height-SPAWN_EDGE_CLEARANCE) continue;
             sb.append("MapObject:o ").append(assetName).append(":x").append(x).append(":y").append(y).append(":;\n");
             placed++;
         }

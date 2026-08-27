@@ -22,7 +22,11 @@ public enum TerrainMaterial {
     // the worn dirt trail connecting a building to the road network - a real
     // path, not just an ordinary patch of ground, but not a paved road
     // either
-    PATH(new Color(0.45f, 0.37f, 0.26f, 1f), 1.1f, 1f);
+    PATH(new Color(0.45f, 0.37f, 0.26f, 1f), 1.1f, 1f),
+    // the impassable rock belt around the map edge - see
+    // ProceduralTerrainPainter's BORDER_MARGIN. Physics values are unused
+    // (it's solid), kept at 1 just so the enum stays well-formed.
+    CLIFF(new Color(0.33f, 0.31f, 0.30f, 1f), 1f, 1f);
 
     public final Color color;
     public final float speedMultiplier;

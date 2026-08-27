@@ -29,10 +29,16 @@ import java.util.Random;
 // as an organic gradient instead of a line. Road cells (from the same
 // seeded path the layout generator traced - recomputed here from the same
 // seed, not stored anywhere) are pure asphalt with no blend - a real road
-// edge is reasonably sharp, unlike a biome-to-biome transition. Border and
-// building-footprint cells are painted the same as everything else (a
-// building's own sprite just draws over its footprint) so the map edge
-// doesn't read as a leftover ring of the old default grass tile.
+// edge is reasonably sharp, unlike a biome-to-biome transition. Building-
+// footprint cells are painted the same as everything else (a building's
+// own sprite just draws over its footprint).
+//
+// A ring of cells around the map edge is forced to CLIFF and marked
+// impassable directly (see BORDER_MARGIN) - there used to be nothing at
+// all stopping a tank from just driving straight off the edge of the
+// defined map (the collision-check window silently stops expanding past
+// the last real cell, but nothing ever stopped the tank's own position),
+// so the map needed an actual wall there, not just a different color.
 public class ProceduralTerrainPainter {
     // lower = bigger biome regions. Also lowered from an earlier pass since
     // biomes still read as a scattered mess - see cornerBlend for the other
@@ -43,6 +49,10 @@ public class ProceduralTerrainPainter {
     private static final float DETAIL_FREQ = 0.006f;
     private static final float PATCH_FREQ = 0.0015f;
     private static final float GRAVEL_PATCH_FREQ = 0.001f;
+    // width of the impassable cliff ring around the map edge, in cells -
+    // well inside the margin the layout generator already keeps buildings/
+    // decor clear of, so it never eats into real content
+    private static final int BORDER_MARGIN = 10;
 
     private static final TerrainMaterial[] MATERIALS = {
             TerrainMaterial.GRASS, TerrainMaterial.SNOW, TerrainMaterial.ICE,
@@ -60,7 +70,14 @@ public class ProceduralTerrainPainter {
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
                 Block block = Main.BlockList2D.get(y).get(x);
-                TerrainMaterial surface = road[y][x] ? TerrainMaterial.ASPHALT
+                // an actual road cell inside the border margin (rare, but
+                // the fractal road path can wander close to an edge) still
+                // wins - never wall off a road that legitimately reaches
+                // out there
+                boolean isBorder = !road[y][x] && (x < BORDER_MARGIN || x >= width-BORDER_MARGIN
+                        || y < BORDER_MARGIN || y >= height-BORDER_MARGIN);
+                TerrainMaterial surface = isBorder ? TerrainMaterial.CLIFF
+                        : road[y][x] ? TerrainMaterial.ASPHALT
                         : (path[y][x] ? TerrainMaterial.PATH : null);
                 float[] bl = cornerBlend(noise, x*blockSize, y*blockSize, surface);
                 float[] tl = cornerBlend(noise, x*blockSize, (y+1)*blockSize, surface);
@@ -77,6 +94,12 @@ public class ProceduralTerrainPainter {
                 float friction = (bl[4]+tl[4]+tr[4]+br[4])/4f;
                 block.terrainSpeedMultiplier = speed;
                 block.terrainFrictionMultiplier = friction;
+                // this is what actually stops a tank at the edge - not just
+                // a visual difference. Nothing else clears this flag once
+                // set here (Block.passability_detected() only ever touches
+                // building-footprint cells, never resets the rest), so this
+                // sticks until the next map load.
+                if (isBorder) block.passability = true;
                 // classified at the cell center regardless of road status -
                 // a road through a cold region is still a cold region for
                 // weather purposes, it just also happens to be paved.
