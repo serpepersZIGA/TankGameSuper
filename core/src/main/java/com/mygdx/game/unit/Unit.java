@@ -100,6 +100,10 @@ public abstract class Unit implements Cloneable{
     // terms by this, so ice doesn't just make you slower, it makes the tank
     // keep coasting/sliding instead of responding to input right away
     public float terrainFriction = 1f;
+    // how much the ground under this tank is dragging on it right now (0 =
+    // normal, higher = more bogged down) - set alongside terrainFriction,
+    // read by Main.java to make the engine sound strained on soft terrain
+    public float terrainLoad = 0f;
     // lazily created the first time this tank is close enough to be worth
     // hearing (see Main.render()) - stopped in transportDelete() so the
     // mixer drops them instead of looping this tank's engine/tracks forever
@@ -1522,6 +1526,7 @@ public abstract class Unit implements Cloneable{
     // not a solid-obstacle collision
     private void applyTerrainUnderfoot(){
         terrainFriction = 1f;
+        terrainLoad = 0f;
         int cellX = (int) ((this.x+this.corpus_width/2f)/width_block);
         int cellY = (int) ((this.y+this.corpus_height/2f)/width_block);
         if (cellY < 0 || cellY >= BlockList2D.size() || cellX < 0 || cellX >= BlockList2D.get(cellY).size()) return;
@@ -1539,6 +1544,7 @@ public abstract class Unit implements Cloneable{
             if (this.speed > cap) this.speed -= (this.speed-cap)*0.15f;
             float capBack = SpeedDown*underfoot.terrainSpeedMultiplier;
             if (this.speed < capBack) this.speed -= (this.speed-capBack)*0.15f;
+            terrainLoad = 1f-underfoot.terrainSpeedMultiplier;
         }
         terrainFriction = underfoot.terrainFrictionMultiplier;
     }

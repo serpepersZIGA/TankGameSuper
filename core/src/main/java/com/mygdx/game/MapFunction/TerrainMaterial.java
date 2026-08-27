@@ -16,7 +16,7 @@ public enum TerrainMaterial {
     ICE(new Color(0.78f, 0.88f, 0.90f, 1f), 1f, 0.15f),
     SAND(new Color(0.76f, 0.68f, 0.46f, 1f), 0.82f, 1f),
     GRAVEL(new Color(0.52f, 0.50f, 0.46f, 1f), 0.88f, 0.85f),
-    SWAMP(new Color(0.28f, 0.27f, 0.17f, 1f), 0.8f, 0.9f),
+    SWAMP(new Color(0.28f, 0.27f, 0.17f, 1f), 0.6f, 0.8f),
     PUDDLE(new Color(0.22f, 0.27f, 0.26f, 1f), 0.75f, 0.5f),
     ASPHALT(new Color(0.24f, 0.24f, 0.25f, 1f), 1f, 1f);
 

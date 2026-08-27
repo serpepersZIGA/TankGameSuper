@@ -428,7 +428,7 @@ public class Main extends ApplicationAdapter {
                         Audio.playPersistent(unit.engineVoice);
                         Audio.playPersistent(unit.trackVoice);
                     }
-                    unit.engineVoice.setState(unit.speed, unit.press_w || unit.press_s, attenuation);
+                    unit.engineVoice.setState(unit.speed, unit.press_w || unit.press_s, attenuation, unit.terrainLoad);
                     unit.trackVoice.setState(unit.speed, attenuation);
                 }
             } finally {

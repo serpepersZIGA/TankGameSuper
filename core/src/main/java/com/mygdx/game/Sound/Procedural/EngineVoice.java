@@ -28,13 +28,20 @@ public class EngineVoice implements Voice {
     private static final float DRIVE = 2.2f;
     private static final float GROWL_RATE = 13f;
     private static final float GROWL_DEPTH = 0.12f;
+    // how much harder the engine sounds like it's working when the terrain
+    // underneath is dragging on it (mud etc, see Unit.terrainLoad) - more
+    // distortion drive and more noise grit, not just louder
+    private static final float LOAD_DRIVE = 1.6f;
+    private static final float LOAD_NOISE = 0.25f;
 
     private final float pitchScale;
     private volatile float targetFreq;
     private volatile float targetVolume = 0f;
+    private volatile float targetLoad = 0f;
     private volatile boolean finished = false;
     private float curFreq;
     private float curVolume = 0f;
+    private float curLoad = 0f;
     private float phase = 0f;
     private float pulseEnv = 0f;
     private float noiseFilter = 0f;
@@ -55,9 +62,15 @@ public class EngineVoice implements Voice {
     }
 
     public void setState(Float speed, boolean throttling, float attenuation){
+        setState(speed, throttling, attenuation, 0f);
+    }
+    // load: 0 = normal ground, higher = the terrain is dragging on the tank
+    // (see Unit.terrainLoad) - makes the engine sound strained, not just slow
+    public void setState(Float speed, boolean throttling, float attenuation, float load){
         if (speed == null || attenuation <= 0f) { targetVolume = 0f; return; }
         targetFreq = (IDLE_FREQ + Math.abs(speed)*FREQ_PER_SPEED)*pitchScale;
         targetVolume = (throttling ? THROTTLE_VOLUME : IDLE_VOLUME)*attenuation;
+        targetLoad = load;
     }
     public void stop(){
         finished = true;
@@ -67,6 +80,7 @@ public class EngineVoice implements Voice {
     public float nextSample(float sampleRate){
         curFreq += (targetFreq-curFreq)*SMOOTHING;
         curVolume += (targetVolume-curVolume)*SMOOTHING;
+        curLoad += (targetLoad-curLoad)*SMOOTHING;
         phase += curFreq/sampleRate;
         if (phase >= 1f) {
             phase -= 1f;
@@ -81,7 +95,7 @@ public class EngineVoice implements Voice {
         float h2 = (float) Math.sin(phase*Math.PI*4)*0.45f;
         float h3 = (float) Math.sin(phase*Math.PI*6)*0.3f;
         float h4 = (float) Math.sin(phase*Math.PI*8)*0.18f;
-        float tone = (float) Math.tanh((sub+h1+h2+h3+h4)*DRIVE);
+        float tone = (float) Math.tanh((sub+h1+h2+h3+h4)*(DRIVE+curLoad*LOAD_DRIVE));
 
         float noise = rand.nextFloat()*2f-1f;
         noiseFilter += (noise-noiseFilter)*0.2f;
@@ -90,7 +104,7 @@ public class EngineVoice implements Voice {
         float growl = 1f + (float) Math.sin(growlPhase*Math.PI*2)*GROWL_DEPTH;
 
         float chug = CHUG_FLOOR + (1f-CHUG_FLOOR)*pulseEnv;
-        return (tone*chug*growl*0.85f + noiseFilter*0.15f)*curVolume;
+        return (tone*chug*growl*0.85f + noiseFilter*(0.15f+curLoad*LOAD_NOISE))*curVolume;
     }
     @Override
     public boolean isFinished(){
