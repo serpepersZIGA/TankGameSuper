@@ -52,7 +52,13 @@ void main() {
        * 0.15 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
         attenuation *= (1.0 - light.transparency);
         attenuation = pow(attenuation, 1.5);
-        lightEffect = (light.color * light.intensity * attenuation) + ((light.radius / dist) * 0.05);
+        // the old (radius/dist)*0.05 glow term diverges to infinity as dist
+        // approaches 0 - any pixel sitting right on/near a light's own
+        // position got an unbounded additive blowout, which is why a lamp's
+        // own texture always read as a flat white blob no matter the
+        // brightness setting. Clamping dist to a floor keeps the same
+        // "brighter close up" shape without the singularity.
+        lightEffect = (light.color * light.intensity * attenuation) + ((light.radius / max(dist, light.radius*0.2)) * 0.05);
         accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
         accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
     }
@@ -60,12 +66,14 @@ void main() {
     if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
         finalColor.rgb += ((((accumulatedLight.r+texColor.r)*0.1) + (accumulatedLight.g+texColor.g)*0.5 + (accumulatedLight.b+texColor.b)*0.5) * 0.3333) * 0.25;
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
-    // this used to multiply the already-lit color by texColor again and then
-    // double it - squaring near-white pixels (snow, sky) slams them straight
-    // into the 1.0 clip while darker pixels get crushed the other way, which
-    // is why bright surfaces read as a flat white screen with barely any
-    // texture showing through. finalColor is already texColor*lighting, so
-    // that's the actual output - no second multiply.
+    // soft highlight rolloff instead of a hard 1.0 clip: below the knee
+    // nothing changes, above it the value eases toward white asymptotically
+    // instead of getting flattened the instant it crosses 1.0 - keeps some
+    // texture/detail visible even in a very bright spot instead of a flat
+    // white patch.
+    const float knee = 0.8;
+    vec3 excess = max(finalColor.rgb-knee, 0.0);
+    finalColor.rgb = min(finalColor.rgb, vec3(knee)) + (1.0-knee)*(1.0-exp(-excess/(1.0-knee)));
     finalColor.rgb *= u_brightness;
     finalColor.rgb = (finalColor.rgb-0.5)*u_contrast+0.5;
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
