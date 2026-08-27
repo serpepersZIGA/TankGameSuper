@@ -18,7 +18,11 @@ public enum TerrainMaterial {
     GRAVEL(new Color(0.52f, 0.50f, 0.46f, 1f), 0.88f, 0.85f),
     SWAMP(new Color(0.28f, 0.27f, 0.17f, 1f), 0.6f, 0.8f),
     PUDDLE(new Color(0.22f, 0.27f, 0.26f, 1f), 0.75f, 0.5f),
-    ASPHALT(new Color(0.24f, 0.24f, 0.25f, 1f), 1.3f, 1f);
+    ASPHALT(new Color(0.24f, 0.24f, 0.25f, 1f), 1.3f, 1f),
+    // the worn dirt trail connecting a building to the road network - a real
+    // path, not just an ordinary patch of ground, but not a paved road
+    // either
+    PATH(new Color(0.45f, 0.37f, 0.26f, 1f), 1.1f, 1f);
 
     public final Color color;
     public final float speedMultiplier;

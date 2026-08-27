@@ -2,7 +2,10 @@ package com.mygdx.game.MapFunction;
 
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.block.Block;
+import com.mygdx.game.build.Building;
 import com.mygdx.game.main.Main;
+
+import java.util.Random;
 
 // Paints ground color + movement effects directly onto the already-loaded
 // BlockList2D, using nothing but continuous noise fields keyed off the same
@@ -49,15 +52,20 @@ public class ProceduralTerrainPainter {
     public static void paint(long seed, int width, int height){
         TerrainNoise noise = new TerrainNoise(seed);
         boolean[][] road = ProceduralMapGenerator.computeRoadCells(seed, width, height);
+        // every building gets a short worn dirt path back to the nearest
+        // road cell - reads as "turn off here" instead of a building that
+        // just happens to sit near a road with no way to actually reach it
+        boolean[][] path = computePathCells(seed, width, height, road);
         int blockSize = Main.width_block;
         for (int y = 0; y < height; y++){
             for (int x = 0; x < width; x++){
                 Block block = Main.BlockList2D.get(y).get(x);
-                boolean isRoad = road[y][x];
-                float[] bl = cornerBlend(noise, x*blockSize, y*blockSize, isRoad);
-                float[] tl = cornerBlend(noise, x*blockSize, (y+1)*blockSize, isRoad);
-                float[] tr = cornerBlend(noise, (x+1)*blockSize, (y+1)*blockSize, isRoad);
-                float[] br = cornerBlend(noise, (x+1)*blockSize, y*blockSize, isRoad);
+                TerrainMaterial surface = road[y][x] ? TerrainMaterial.ASPHALT
+                        : (path[y][x] ? TerrainMaterial.PATH : null);
+                float[] bl = cornerBlend(noise, x*blockSize, y*blockSize, surface);
+                float[] tl = cornerBlend(noise, x*blockSize, (y+1)*blockSize, surface);
+                float[] tr = cornerBlend(noise, (x+1)*blockSize, (y+1)*blockSize, surface);
+                float[] br = cornerBlend(noise, (x+1)*blockSize, y*blockSize, surface);
 
                 block.hasTerrainPaint = true;
                 block.terrainColorBL = new Color(bl[0], bl[1], bl[2], 1f).toFloatBits();
@@ -94,6 +102,36 @@ public class ProceduralTerrainPainter {
         return new float[]{block.coldFactor, block.aridFactor};
     }
 
+    /** One dirt-path cell grid per building in Main.BuildingList, each traced to its nearest road cell. */
+    private static boolean[][] computePathCells(long seed, int width, int height, boolean[][] road){
+        boolean[][] path = new boolean[height][width];
+        Random rand = new Random(seed+2);
+        for (Building building : Main.BuildingList){
+            int[] from = {building.xMatrix, building.yMatrix};
+            int[] nearestRoad = nearestRoadCell(road, width, height, from);
+            if (nearestRoad == null) continue;
+            // width 1 (a footpath, not a two-lane road) and much less
+            // fractal wander than the main roads - a path to a specific
+            // building reads as a deliberate shortcut, not a winding trail
+            ProceduralMapGenerator.tracePath(path, width, height, from, nearestRoad, rand, 1, 0.2f);
+        }
+        return path;
+    }
+
+    private static int[] nearestRoadCell(boolean[][] road, int width, int height, int[] from){
+        int bestX = -1, bestY = -1;
+        long bestDist = Long.MAX_VALUE;
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if (!road[y][x]) continue;
+                long dx = x-from[0], dy = y-from[1];
+                long d = dx*dx+dy*dy;
+                if (d < bestDist){ bestDist = d; bestX = x; bestY = y; }
+            }
+        }
+        return bestX < 0 ? null : new int[]{bestX, bestY};
+    }
+
     /** Same temperature/moisture/moisture-patch noise as cornerBlend - {coldFactor, aridFactor, wetFactor}. */
     private static float[] classifyClimate(TerrainNoise noise, float wx, float wy){
         float temp = noise.fbm(wx, wy, 0, 3, BIOME_FREQ, 0.5f);
@@ -104,11 +142,11 @@ public class ProceduralTerrainPainter {
         return new float[]{cold, hotDry, wet};
     }
 
-    /** {r, g, b, speedMultiplier, frictionMultiplier} at one exact world point. */
-    private static float[] cornerBlend(TerrainNoise noise, float wx, float wy, boolean road){
-        if (road) {
-            Color c = TerrainMaterial.ASPHALT.color;
-            return new float[]{c.r, c.g, c.b, TerrainMaterial.ASPHALT.speedMultiplier, TerrainMaterial.ASPHALT.frictionMultiplier};
+    /** {r, g, b, speedMultiplier, frictionMultiplier} at one exact world point. surface overrides the biome blend entirely (road/path), null for normal ground. */
+    private static float[] cornerBlend(TerrainNoise noise, float wx, float wy, TerrainMaterial surface){
+        if (surface != null) {
+            Color c = surface.color;
+            return new float[]{c.r, c.g, c.b, surface.speedMultiplier, surface.frictionMultiplier};
         }
 
         float temp = noise.fbm(wx, wy, 0, 3, BIOME_FREQ, 0.5f);
