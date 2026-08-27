@@ -83,7 +83,13 @@ public class ProceduralTerrainPainter {
 
         float cold = smoothstep(-0.15f, -0.5f, temp);
         float hotDry = smoothstep(0.15f, 0.45f, temp) * smoothstep(0.1f, -0.3f, moisture);
-        float wet = smoothstep(0.05f, 0.4f, moisture) * (1f-hotDry);
+        // wet used to only depend on moisture/hotDry, not temperature - so a
+        // moisture noise spike deep inside a cold zone (temp and moisture are
+        // independent channels) could paint a swamp/puddle patch right in the
+        // middle of a snow biome. Gating it by (1-cold) the same way rough
+        // already is keeps moisture-driven biomes out of cold regions, so
+        // each biome stays a single coherent region instead of a mix.
+        float wet = smoothstep(0.05f, 0.4f, moisture) * (1f-hotDry) * (1f-cold);
         float rough = smoothstep(-0.1f, 0.35f, roughness) * (1f-cold) * (1f-hotDry) * (1f-wet);
         float ice = cold * smoothstep(0.3f, 0.6f, icePatch);
         float puddle = wet * smoothstep(0.35f, 0.6f, puddlePatch);

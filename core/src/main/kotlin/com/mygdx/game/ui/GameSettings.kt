@@ -1,6 +1,7 @@
 package com.mygdx.game.ui
 
 import com.badlogic.gdx.Gdx
+import com.mygdx.game.main.Main
 import com.mygdx.game.method.Option
 
 data class RecentServer(val address: String, val port: Int) {
@@ -24,6 +25,9 @@ object GameSettings {
     private const val KEY_FRAME_LIMIT_MODE = "frameLimitMode"
     private const val KEY_SHOW_FPS = "showFps"
     private const val KEY_PROCEDURAL_VOLUME = "proceduralVolume"
+    private const val KEY_GAMMA = "gamma"
+    private const val KEY_BRIGHTNESS = "brightness"
+    private const val KEY_CONTRAST = "contrast"
     private const val DEFAULT_SOUND_VOLUME = 0.5f
     private const val MAX_RECENT_SERVERS = 6
 
@@ -52,6 +56,14 @@ object GameSettings {
         private set
     var showFps: Boolean = false
         private set
+    // color correction for the lighting shader (see LightingMainSystem) - 1.0
+    // is neutral/no change on all three
+    var gamma: Float = 1f
+        private set
+    var brightness: Float = 1f
+        private set
+    var contrast: Float = 1f
+        private set
 
     /** Loads persisted settings and applies them. Call once during startup. */
     fun load() {
@@ -73,6 +85,10 @@ object GameSettings {
         showFps = prefs.getBoolean(KEY_SHOW_FPS, false)
         proceduralVolume = prefs.getFloat(KEY_PROCEDURAL_VOLUME, DEFAULT_SOUND_VOLUME)
         applyProceduralVolume()
+        gamma = prefs.getFloat(KEY_GAMMA, 1f)
+        brightness = prefs.getFloat(KEY_BRIGHTNESS, 1f)
+        contrast = prefs.getFloat(KEY_CONTRAST, 1f)
+        applyColorCorrection()
     }
 
     fun setWindowMode(mode: WindowMode, width: Int, height: Int) {
@@ -113,6 +129,30 @@ object GameSettings {
         prefs.flush()
     }
 
+    /** Updates, applies and persists gamma correction (0.5..2.0, 1.0 = neutral). */
+    fun setGamma(value: Float) {
+        gamma = value.coerceIn(0.5f, 2f)
+        applyColorCorrection()
+        prefs.putFloat(KEY_GAMMA, gamma)
+        prefs.flush()
+    }
+
+    /** Updates, applies and persists brightness (0.5..1.5, 1.0 = neutral). */
+    fun setBrightness(value: Float) {
+        brightness = value.coerceIn(0.5f, 1.5f)
+        applyColorCorrection()
+        prefs.putFloat(KEY_BRIGHTNESS, brightness)
+        prefs.flush()
+    }
+
+    /** Updates, applies and persists contrast (0.5..1.5, 1.0 = neutral). */
+    fun setContrast(value: Float) {
+        contrast = value.coerceIn(0.5f, 1.5f)
+        applyColorCorrection()
+        prefs.putFloat(KEY_CONTRAST, contrast)
+        prefs.flush()
+    }
+
     fun setLanguage(language: GameLanguage) {
         prefs.putString(KEY_LANGUAGE, language.locale.language)
         prefs.flush()
@@ -144,5 +184,11 @@ object GameSettings {
 
     private fun applyProceduralVolume() {
         com.mygdx.game.Sound.Procedural.AudioMixer.masterVolume = proceduralVolume
+    }
+
+    private fun applyColorCorrection() {
+        Main.LightSystem.setGamma(gamma)
+        Main.LightSystem.setBrightness(brightness)
+        Main.LightSystem.setContrast(contrast)
     }
 }

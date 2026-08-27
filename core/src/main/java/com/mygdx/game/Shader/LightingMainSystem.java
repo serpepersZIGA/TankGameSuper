@@ -26,6 +26,7 @@ public class LightingMainSystem implements Disposable {
     public final ArrayList<Light> lightsRender;
     private Color ambientColor;
     private float minLightness;
+    private float gamma = 1f, brightness = 1f, contrast = 1f;
     public int limitLightingRender = 650;
     public static FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth()
             , Gdx.graphics.getHeight(), false);
@@ -133,6 +134,9 @@ public class LightingMainSystem implements Disposable {
         shader.setUniformf("u_ambientColor", ambientColor.r, ambientColor.g, ambientColor.b
                 ,ambientColor.a);
         shader.setUniformf("u_minLightness", minLightness);
+        shader.setUniformf("u_gamma", gamma);
+        shader.setUniformf("u_brightness", brightness);
+        shader.setUniformf("u_contrast", contrast);
         shader.setUniformf("u_resolution", screenWidth, screenHeight);
         shader.setUniformi("u_activeLights", lightsRender.size());
 //        for (int i = 0;i<lights.size();i++) {
@@ -179,6 +183,18 @@ public class LightingMainSystem implements Disposable {
 
     public void setMinLightness(float value) {
         minLightness = value;
+    }
+
+    public void setGamma(float value) {
+        gamma = value;
+    }
+
+    public void setBrightness(float value) {
+        brightness = value;
+    }
+
+    public void setContrast(float value) {
+        contrast = value;
     }
 
     public void clearLights() {

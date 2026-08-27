@@ -1527,10 +1527,18 @@ public abstract class Unit implements Cloneable{
         if (cellY < 0 || cellY >= BlockList2D.size() || cellX < 0 || cellX >= BlockList2D.get(cellY).size()) return;
         Block underfoot = BlockList2D.get(cellY).get(cellX);
         if (!underfoot.hasTerrainPaint) return;
+        // NOTE: this used to multiply this.speed directly every single frame.
+        // That compounds against the constant per-frame Acceleration add: the
+        // steady-state speed under a repeated "(speed+accel)*mult" isn't
+        // anywhere near mult*topSpeed, it collapses far lower (e.g. 0.85 ended
+        // up as ~28% of top speed, not 85%) - that's why snow felt like a wall.
+        // Capping the throttle ceiling instead (and easing down to it, not
+        // snapping) keeps the terrain values meaning what they look like.
         if (underfoot.terrainSpeedMultiplier < 1f) {
-            this.speed *= underfoot.terrainSpeedMultiplier;
-            SpeedInertionX *= underfoot.terrainSpeedMultiplier;
-            SpeedInertionY *= underfoot.terrainSpeedMultiplier;
+            float cap = SpeedUp*underfoot.terrainSpeedMultiplier;
+            if (this.speed > cap) this.speed -= (this.speed-cap)*0.15f;
+            float capBack = SpeedDown*underfoot.terrainSpeedMultiplier;
+            if (this.speed < capBack) this.speed -= (this.speed-capBack)*0.15f;
         }
         terrainFriction = underfoot.terrainFrictionMultiplier;
     }

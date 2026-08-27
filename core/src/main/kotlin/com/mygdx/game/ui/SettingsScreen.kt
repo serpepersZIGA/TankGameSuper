@@ -177,13 +177,55 @@ object SettingsScreen : MenuScreen() {
             }
         })
 
+        val gammaCaption = Label(Localization.tr("menu.settings.gamma"), skin.bodyLabelStyle)
+        val gammaValueLabel = Label(decimalText(GameSettings.gamma), skin.bodyLabelStyle)
+        val gammaSlider = Slider(0.5f, 2f, 0.05f, false, skin.sliderStyle)
+        gammaSlider.value = GameSettings.gamma
+        gammaSlider.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GameSettings.setGamma(gammaSlider.value)
+                gammaValueLabel.setText(decimalText(gammaSlider.value))
+            }
+        })
+
+        val brightnessCaption = Label(Localization.tr("menu.settings.brightness"), skin.bodyLabelStyle)
+        val brightnessValueLabel = Label(decimalText(GameSettings.brightness), skin.bodyLabelStyle)
+        val brightnessSlider = Slider(0.5f, 1.5f, 0.05f, false, skin.sliderStyle)
+        brightnessSlider.value = GameSettings.brightness
+        brightnessSlider.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GameSettings.setBrightness(brightnessSlider.value)
+                brightnessValueLabel.setText(decimalText(brightnessSlider.value))
+            }
+        })
+
+        val contrastCaption = Label(Localization.tr("menu.settings.contrast"), skin.bodyLabelStyle)
+        val contrastValueLabel = Label(decimalText(GameSettings.contrast), skin.bodyLabelStyle)
+        val contrastSlider = Slider(0.5f, 1.5f, 0.05f, false, skin.sliderStyle)
+        contrastSlider.value = GameSettings.contrast
+        contrastSlider.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                GameSettings.setContrast(contrastSlider.value)
+                contrastValueLabel.setText(decimalText(contrastSlider.value))
+            }
+        })
+
         table.add(windowModeCaption).align(Align.right).padRight(20f)
         table.add(windowModeRow).row()
         table.add(resolutionCaption).align(Align.right).padRight(20f).padTop(20f)
         table.add(resolutionScroll).width(240f).height(200f).padTop(20f).row()
         table.add(fpsCaption).align(Align.right).padRight(20f).padTop(20f)
         table.add(fpsValueLabel).padTop(20f).row()
-        table.add(fpsSlider).colspan(2).width(420f).padTop(8f)
+        table.add(fpsSlider).colspan(2).width(420f).padTop(8f).padBottom(24f).row()
+        table.add(gammaCaption).align(Align.right).padRight(20f)
+        table.add(gammaValueLabel).width(60f).row()
+        table.add(gammaSlider).colspan(2).width(420f).padTop(8f).padBottom(16f).row()
+        table.add(brightnessCaption).align(Align.right).padRight(20f)
+        table.add(brightnessValueLabel).width(60f).row()
+        table.add(brightnessSlider).colspan(2).width(420f).padTop(8f).padBottom(16f).row()
+        table.add(contrastCaption).align(Align.right).padRight(20f)
+        table.add(contrastValueLabel).width(60f).row()
+        table.add(contrastSlider).colspan(2).width(420f).padTop(8f)
     }
 
     private fun buildInterfaceTab(table: Table, skin: GameSkin) {
@@ -222,6 +264,7 @@ object SettingsScreen : MenuScreen() {
     }
 
     private fun percentText(value: Float) = "${Math.round(value * 100)}%"
+    private fun decimalText(value: Float) = String.format("%.2f", value)
     private fun stateText(on: Boolean) = Localization.tr(if (on) "menu.dev.on" else "menu.dev.off")
     private fun frameLimitText(mode: FrameLimitMode): String = when (mode) {
         FrameLimitMode.VSYNC -> Localization.tr("menu.settings.vsync")

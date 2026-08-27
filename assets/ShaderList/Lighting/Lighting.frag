@@ -12,6 +12,9 @@ out vec4 fragColor;
 uniform sampler2D u_texture;
 uniform vec4 u_ambientColor;
 uniform float u_minLightness;
+uniform float u_gamma;
+uniform float u_brightness;
+uniform float u_contrast;
 
 struct Light {
     vec2 position;
@@ -57,7 +60,17 @@ void main() {
     if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
         finalColor.rgb += ((((accumulatedLight.r+texColor.r)*0.1) + (accumulatedLight.g+texColor.g)*0.5 + (accumulatedLight.b+texColor.b)*0.5) * 0.3333) * 0.25;
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
+    // this used to multiply the already-lit color by texColor again and then
+    // double it - squaring near-white pixels (snow, sky) slams them straight
+    // into the 1.0 clip while darker pixels get crushed the other way, which
+    // is why bright surfaces read as a flat white screen with barely any
+    // texture showing through. finalColor is already texColor*lighting, so
+    // that's the actual output - no second multiply.
+    finalColor.rgb *= u_brightness;
+    finalColor.rgb = (finalColor.rgb-0.5)*u_contrast+0.5;
+    finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
+    finalColor.rgb = pow(finalColor.rgb, vec3(1.0/u_gamma));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);
-    fragColor = finalColor*texColor*2.0;
+    fragColor = finalColor;
 }
