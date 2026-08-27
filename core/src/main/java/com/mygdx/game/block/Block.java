@@ -18,15 +18,21 @@ public abstract class Block {
     public MapObject objMap;
     public static HashMap<Integer,UpdateBlock>BlockID = new HashMap<>();
     public boolean passability,AiClose;
-    // set by ProceduralTerrainPainter instead of a PNG render_block - a flat
-    // color computed from continuous noise rather than a tile lookup, so
-    // neighboring cells blend into each other with no visible tile seam.
+    // set by ProceduralTerrainPainter instead of a PNG render_block - one
+    // color PER CORNER (sampled from continuous noise at that exact world
+    // point) instead of one flat fill, so the quad gets drawn with the GPU's
+    // own per-vertex color interpolation across it. A flat single-color
+    // quad always shows a hard edge against its neighbor no matter how
+    // close the two colors are; since adjacent cells sample the exact same
+    // world coordinate at their shared corner, they get the identical color
+    // there and the whole grid becomes one continuous gradient with no seam,
+    // not an approximation of one.
     // terrainSpeedMultiplier/terrainFrictionMultiplier are read directly by
     // Unit.build_corpus() for the cell under the tank's own center, not
     // through the objMap.Collision mechanism (that's for discrete placed
     // objects, not a value that varies every single cell).
     public boolean hasTerrainPaint;
-    public float terrainColorBits;
+    public float terrainColorBL, terrainColorTL, terrainColorTR, terrainColorBR;
     public float terrainSpeedMultiplier = 1f;
     public float terrainFrictionMultiplier = 1f;
     public int iBuilding;
@@ -91,13 +97,58 @@ public abstract class Block {
         }
         return whitePixel;
     }
+    // a small tileable speckle pattern (short light/dark marks - meant to
+    // read as grass blades/twigs/pebbles at a glance, not real art) drawn
+    // faintly on top of the smooth gradient so a biome's surface isn't
+    // perfectly flat - generated once from a fixed pattern seed, not part
+    // of the per-map noise, since this is just texture, not terrain data
+    private static com.badlogic.gdx.graphics.Texture speckleTexture;
+    private static com.badlogic.gdx.graphics.Texture speckleTexture(){
+        if (speckleTexture == null) {
+            int size = 64;
+            com.badlogic.gdx.graphics.Pixmap pm = new com.badlogic.gdx.graphics.Pixmap(size, size, com.badlogic.gdx.graphics.Pixmap.Format.RGBA8888);
+            java.util.Random rnd = new java.util.Random(1337);
+            int fleckCount = size*size/10;
+            for (int i = 0; i < fleckCount; i++){
+                int px = rnd.nextInt(size);
+                int py = rnd.nextInt(size);
+                boolean light = rnd.nextBoolean();
+                float a = 0.10f + rnd.nextFloat()*0.10f;
+                pm.setColor(light ? 1f : 0f, light ? 1f : 0f, light ? 1f : 0f, a);
+                int len = 1+rnd.nextInt(2);
+                if (rnd.nextBoolean()) pm.drawLine(px, py, Math.min(px+len,size-1), py);
+                else pm.drawLine(px, py, px, Math.min(py+len,size-1));
+            }
+            speckleTexture = new com.badlogic.gdx.graphics.Texture(pm);
+            speckleTexture.setWrap(com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat, com.badlogic.gdx.graphics.Texture.TextureWrap.Repeat);
+            pm.dispose();
+        }
+        return speckleTexture;
+    }
+    private static final float[] terrainVertices = new float[20];
 
     public void update(){
         xy = Main.RC.render_objZoom(this.x,this.y);
         if (hasTerrainPaint) {
-            Main.Batch.setPackedColor(terrainColorBits);
-            Main.Batch.draw(whitePixel(), xy[0], xy[1], Main.width_block_zoom, Main.height_block_zoom);
+            float w = Main.width_block_zoom, h = Main.height_block_zoom;
+            // bottom-left, top-left, top-right, bottom-right - each with its
+            // own corner color, so the GPU interpolates the fill smoothly
+            // across the quad instead of one flat tint
+            terrainVertices[0]=xy[0];   terrainVertices[1]=xy[1];   terrainVertices[2]=terrainColorBL; terrainVertices[3]=0f; terrainVertices[4]=0f;
+            terrainVertices[5]=xy[0];   terrainVertices[6]=xy[1]+h; terrainVertices[7]=terrainColorTL; terrainVertices[8]=0f; terrainVertices[9]=1f;
+            terrainVertices[10]=xy[0]+w;terrainVertices[11]=xy[1]+h;terrainVertices[12]=terrainColorTR;terrainVertices[13]=1f;terrainVertices[14]=1f;
+            terrainVertices[15]=xy[0]+w;terrainVertices[16]=xy[1];  terrainVertices[17]=terrainColorBR;terrainVertices[18]=1f;terrainVertices[19]=0f;
+            Main.Batch.draw(whitePixel(), terrainVertices, 0, 20);
+
+            // faint tiled speckle on top, offset per-cell so it doesn't read
+            // as an obviously repeating grid
+            com.badlogic.gdx.graphics.g2d.TextureRegion speckle = new com.badlogic.gdx.graphics.g2d.TextureRegion(speckleTexture());
+            float tile = 3f;
+            float uOff = (this.x%997)/997f, vOff = (this.y%997)/997f;
+            speckle.setU(uOff); speckle.setV(vOff);
+            speckle.setU2(uOff+tile); speckle.setV2(vOff+tile);
             Main.Batch.setColor(com.badlogic.gdx.graphics.Color.WHITE);
+            Main.Batch.draw(speckle, xy[0], xy[1], w, h);
         } else {
             render_block.render(xy[0],xy[1]);
         }
