@@ -91,8 +91,8 @@ sound/motor.wav
 sound/motor_back.wav
 sound/motor_helicopter.wav
 sound/motors.ogg
-i18n/strings.properties
 i18n/strings_ru.properties
+i18n/strings.properties
 i18n/strings_en.properties
 ContentGlobal/Block/Asphalt.json
 ContentGlobal/Block/Void.json
@@ -132,7 +132,7 @@ ContentGlobal/Unit/Pz-2M.json
 ContentGlobal/ObjectMap/pepper.json
 Map/maps/MapBase.mapt
 Map/maps/MapCentral.mapt
-Map/maps/Procedural_1787793223937.mapt
+Map/maps/Procedural_1787794073901.mapt
 Map/Structure/street1.str
 Map/Structure/streetPoselok.str
 Map/Structure/pepper1.str

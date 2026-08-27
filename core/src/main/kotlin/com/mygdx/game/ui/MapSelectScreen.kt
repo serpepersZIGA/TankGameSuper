@@ -14,6 +14,7 @@ import com.mygdx.game.MapFunction.MapBaseAdd
 import com.mygdx.game.MapFunction.MapScan
 import com.mygdx.game.MapFunction.ProceduralMapGenerator
 import com.mygdx.game.MapFunction.ProceduralTerrainPainter
+import com.mygdx.game.main.ActionGame
 import com.mygdx.game.main.Main
 
 /** Map selection: same scrollable-list approach as TankSelectScreen. */
@@ -109,8 +110,13 @@ object MapSelectScreen : MenuScreen() {
                         ProceduralTerrainPainter.paint(seed, Main.xMap, Main.yMap)
                     }
                 }
-                Main.ActionGameMain = HostJoinScreen
-                HostJoinScreen.show()
+                // this is the last step of both the local-game and the
+                // network-game flow - Main.GameHost was already decided back
+                // at the main menu (local) or HostJoinScreen (host/join), and
+                // for a join it also already has the address/port to use
+                Main.GameStart = true
+                Main.ActionGameMain = ActionGame.ActionMenu
+                Gdx.input.setInputProcessor(Main.KeyboardObj)
             }
         })
 

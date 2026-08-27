@@ -15,13 +15,23 @@ import com.mygdx.game.menu.button.ButtonTank.ListTankPlayerAdd
  * of hand-computed pixel offsets, so it can never end up positioned off-screen. */
 object TankSelectScreen : MenuScreen() {
 
+    // reached either straight from the main menu (local game) or from
+    // HostJoinScreen (network game) - Back needs to return to whichever one
+    private var returnTo: MenuScreen = MainMenuScreen
+
+    fun openFrom(caller: MenuScreen) {
+        returnTo = caller
+        Main.ActionGameMain = this
+        show()
+    }
+
     init {
         onEscape = { goBack() }
     }
 
     private fun goBack() {
-        Main.ActionGameMain = MainMenuScreen
-        MainMenuScreen.show()
+        Main.ActionGameMain = returnTo
+        returnTo.show()
     }
 
     private fun tankIds(): List<String> {

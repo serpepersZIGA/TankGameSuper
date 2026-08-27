@@ -22,8 +22,20 @@ object MainMenuScreen : MenuScreen() {
         val playButton = TextButton(Localization.tr("menu.main.play"), skin.buttonStyle)
         playButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.ActionGameMain = TankSelectScreen
-                TankSelectScreen.show()
+                // "local" game is really just self-hosting without ever
+                // showing the address/port screen - it's still joinable over
+                // the network by anyone who knows the IP, it just doesn't
+                // make the player who's starting it deal with that screen
+                Main.GameHost = true
+                TankSelectScreen.openFrom(MainMenuScreen)
+            }
+        })
+
+        val networkButton = TextButton(Localization.tr("menu.main.network"), skin.buttonStyle)
+        networkButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                Main.ActionGameMain = HostJoinScreen
+                HostJoinScreen.show()
             }
         })
 
@@ -50,6 +62,7 @@ object MainMenuScreen : MenuScreen() {
 
         table.add(title).padBottom(64f).row()
         table.add(playButton).width(320f).height(72f).padBottom(16f).row()
+        table.add(networkButton).width(320f).height(72f).padBottom(16f).row()
         table.add(settingsButton).width(320f).height(72f).padBottom(16f).row()
         table.add(devButton).width(320f).height(72f).padBottom(16f).row()
         table.add(exitButton).width(320f).height(72f)

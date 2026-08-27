@@ -1,6 +1,5 @@
 package com.mygdx.game.ui
 
-import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.Label
 import com.badlogic.gdx.scenes.scene2d.ui.ScrollPane
@@ -8,7 +7,6 @@ import com.badlogic.gdx.scenes.scene2d.ui.Table
 import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.ui.TextField
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
-import com.mygdx.game.main.ActionGame
 import com.mygdx.game.main.ClientMain
 import com.mygdx.game.main.Main
 
@@ -27,8 +25,8 @@ object HostJoinScreen : MenuScreen() {
     }
 
     private fun goBack() {
-        Main.ActionGameMain = MapSelectScreen
-        MapSelectScreen.show()
+        Main.ActionGameMain = MainMenuScreen
+        MainMenuScreen.show()
     }
 
     override fun buildContent(skin: GameSkin): Table {
@@ -40,10 +38,11 @@ object HostJoinScreen : MenuScreen() {
         val hostButton = TextButton(Localization.tr("menu.hostjoin.host"), skin.buttonStyle)
         hostButton.addListener(object : ChangeListener() {
             override fun changed(event: ChangeEvent?, actor: Actor?) {
-                Main.GameStart = true
+                // still need a tank and a map before the world can actually
+                // start - the game only actually launches once those are
+                // picked, at the end of MapSelectScreen
                 Main.GameHost = true
-                Main.ActionGameMain = ActionGame.ActionMenu
-                Gdx.input.setInputProcessor(Main.KeyboardObj)
+                TankSelectScreen.openFrom(HostJoinScreen)
             }
         })
 
@@ -63,10 +62,8 @@ object HostJoinScreen : MenuScreen() {
                 Main.tcpPort = port
                 Main.udpPort = port
                 GameSettings.rememberServer(address, port)
-                Main.GameStart = true
                 Main.GameHost = false
-                Main.ActionGameMain = ActionGame.ActionMenu
-                Gdx.input.setInputProcessor(Main.KeyboardObj)
+                TankSelectScreen.openFrom(HostJoinScreen)
             }
         })
 
