@@ -111,10 +111,14 @@ public class ProceduralMapGenerator {
         Random rand = new Random(seed);
         boolean[][] road = new boolean[height][width];
         int hubCount = 4 + rand.nextInt(3);
-        List<int[]> hubs = new ArrayList<>();
-        for (int h = 0; h < hubCount; h++){
-            hubs.add(pickHub(rand, width, height, hubs));
-        }
+        // hubs used to be dropped anywhere with just a pairwise minimum
+        // distance from each other - nothing stopped them all landing in
+        // the same half of a big map by chance, leaving the other half with
+        // no road at all. One hub per cell of a grid over the whole map
+        // (with jitter within that cell) guarantees the network actually
+        // reaches every region instead of clustering wherever the RNG
+        // happened to put the first few points.
+        List<int[]> hubs = pickHubsAcrossMap(rand, width, height, hubCount);
         List<int[]> edges = minimumSpanningTree(hubs);
         // a lone bonus edge (the old approach) gives at most one accidental
         // loop - real road networks fork wherever two hubs just happen to be
@@ -164,17 +168,26 @@ public class ProceduralMapGenerator {
         return m + rand.nextInt(Math.max(size-2*m, 1));
     }
 
-    private static int[] pickHub(Random rand, int width, int height, List<int[]> existing){
-        for (int attempt = 0; attempt < 50; attempt++){
-            int x = margin(rand, width);
-            int y = margin(rand, height);
-            boolean farEnough = true;
-            for (int[] h : existing){
-                if (dist(h, new int[]{x, y}) < Math.min(width, height)*0.25) { farEnough = false; break; }
+    private static List<int[]> pickHubsAcrossMap(Random rand, int width, int height, int hubCount){
+        int cols = (int) Math.ceil(Math.sqrt(hubCount));
+        int rows = (int) Math.ceil((double) hubCount/cols);
+        int cellW = width/cols, cellH = height/rows;
+        List<int[]> cellOrigin = new ArrayList<>();
+        for (int r = 0; r < rows; r++){
+            for (int c = 0; c < cols; c++){
+                cellOrigin.add(new int[]{c*cellW, r*cellH});
             }
-            if (farEnough) return new int[]{x, y};
         }
-        return new int[]{margin(rand, width), margin(rand, height)};
+        java.util.Collections.shuffle(cellOrigin, rand);
+        List<int[]> hubs = new ArrayList<>();
+        for (int i = 0; i < hubCount && i < cellOrigin.size(); i++){
+            int[] origin = cellOrigin.get(i);
+            int mx = Math.max(cellW/10, 6), my = Math.max(cellH/10, 6);
+            int x = origin[0] + mx + rand.nextInt(Math.max(cellW-2*mx, 1));
+            int y = origin[1] + my + rand.nextInt(Math.max(cellH-2*my, 1));
+            hubs.add(new int[]{x, y});
+        }
+        return hubs;
     }
 
     private static double dist(int[] a, int[] b){
