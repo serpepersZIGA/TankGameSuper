@@ -71,31 +71,35 @@ public class ProceduralTerrainPainter {
                 block.terrainFrictionMultiplier = friction;
                 // classified at the cell center regardless of road status -
                 // a road through a cold region is still a cold region for
-                // weather purposes, it just also happens to be paved
-                block.climate = classifyClimate(noise, x*blockSize+blockSize*0.5f, y*blockSize+blockSize*0.5f);
+                // weather purposes, it just also happens to be paved.
+                // Stored as continuous 0..1 factors (not a discrete pick) so
+                // weather can cross-fade snow/rain smoothly across a biome
+                // boundary instead of snapping the instant you cross a line.
+                float[] climate = classifyClimate(noise, x*blockSize+blockSize*0.5f, y*blockSize+blockSize*0.5f);
+                block.coldFactor = climate[0];
+                block.aridFactor = climate[1];
             }
         }
     }
 
-    /** Whatever climate was painted at this world position, or TEMPERATE if out of bounds/unpainted. */
-    public static Block.Climate climateAt(float worldX, float worldY){
+    /** {coldFactor, aridFactor}, both 0 if out of bounds/unpainted. */
+    public static float[] climateAt(float worldX, float worldY){
         int blockSize = Main.width_block;
         int cellX = (int) (worldX/blockSize);
         int cellY = (int) (worldY/blockSize);
         if (cellY < 0 || cellY >= Main.BlockList2D.size() || cellX < 0 || cellX >= Main.BlockList2D.get(cellY).size())
-            return Block.Climate.TEMPERATE;
-        return Main.BlockList2D.get(cellY).get(cellX).climate;
+            return new float[]{0f, 0f};
+        Block block = Main.BlockList2D.get(cellY).get(cellX);
+        return new float[]{block.coldFactor, block.aridFactor};
     }
 
-    /** Same temperature/moisture thresholds as cornerBlend, just for weather to pick snow vs rain vs nothing by. */
-    private static Block.Climate classifyClimate(TerrainNoise noise, float wx, float wy){
+    /** Same temperature/moisture noise as cornerBlend - {coldFactor, aridFactor}, for weather to blend snow/rain/nothing by. */
+    private static float[] classifyClimate(TerrainNoise noise, float wx, float wy){
         float temp = noise.fbm(wx, wy, 0, 3, BIOME_FREQ, 0.5f);
         float moisture = noise.fbm(wx, wy, 1, 3, BIOME_FREQ, 0.5f);
         float cold = smoothstep(-0.22f, -0.42f, temp);
         float hotDry = smoothstep(0.18f, 0.38f, temp) * smoothstep(0.15f, -0.15f, moisture);
-        if (cold > 0.5f) return Block.Climate.COLD;
-        if (hotDry > 0.5f) return Block.Climate.ARID;
-        return Block.Climate.TEMPERATE;
+        return new float[]{cold, hotDry};
     }
 
     /** {r, g, b, speedMultiplier, frictionMultiplier} at one exact world point. */

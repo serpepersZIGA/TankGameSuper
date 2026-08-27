@@ -65,10 +65,22 @@ public class WeatherMainSystem {
     public static void  WeatherCycle(){
         WeatherGlobal = rand.rand(2);
     }
-    /** What climate the local player is currently standing in - TEMPERATE (and so "rain") if there's no local player or no procedural terrain here. */
-    private static com.mygdx.game.block.Block.Climate currentClimate(){
-        if (Main.RC == null || Main.RC.MainUnit == null) return com.mygdx.game.block.Block.Climate.TEMPERATE;
+    // {coldFactor, aridFactor} at the local player's current position, both 0
+    // (plain temperate) if there's no local player or no procedural terrain
+    // here - continuous, not a discrete pick, so crossing a biome boundary
+    // cross-fades what's falling instead of snapping between rain and snow
+    private static float[] currentClimate(){
+        if (Main.RC == null || Main.RC.MainUnit == null) return new float[]{0f, 0f};
         return com.mygdx.game.MapFunction.ProceduralTerrainPainter.climateAt(Main.RC.MainUnit.x, Main.RC.MainUnit.y);
+    }
+    private static float rainAlpha(float[] climate){
+        return clamp01(1f-climate[0]-climate[1]);
+    }
+    private static float snowAlpha(float[] climate){
+        return clamp01(climate[0]);
+    }
+    private static float clamp01(float v){
+        return Math.max(0f, Math.min(1f, v));
     }
     public static void  RippleIteration(SpriteBatch batch){
         switch (WeatherGlobal){
@@ -77,8 +89,9 @@ public class WeatherMainSystem {
             }
             break;
             case 1:{
-                // splashes only make sense for actual rain, not snow/desert
-                if (currentClimate() == com.mygdx.game.block.Block.Climate.TEMPERATE) {
+                // splashes only make sense once it's raining meaningfully,
+                // not during the cross-fade sliver near a cold/arid boundary
+                if (rainAlpha(currentClimate()) > 0.5f) {
                     WeatherRipple(batch);
                 }
             }
@@ -112,6 +125,10 @@ public class WeatherMainSystem {
 //        batch.end();
 
     }
+    // below this, don't even bother running/drawing that particle system -
+    // it would be practically invisible anyway
+    private static final float MIN_VISIBLE_ALPHA = 0.03f;
+
     public static void  WeatherIteration(SpriteBatch batch){
         switch (WeatherGlobal){
             case 0:{
@@ -119,32 +136,36 @@ public class WeatherMainSystem {
             }
             break;
             case 1:{
-                // biome under the local player decides what falls: snow in
-                // the cold biome, rain in the temperate one, nothing in the
-                // arid one - a desert storm can wait for another day
-                switch (currentClimate()){
-                    case COLD: WeatherSnow(batch); break;
-                    case TEMPERATE: WeatherRain(batch); break;
-                    case ARID: default: break;
-                }
+                // biome under the local player decides the MIX of what
+                // falls: snow weight = how cold, rain weight = however much
+                // is left once cold+arid are accounted for. Both can be
+                // partially active at once near a boundary, so crossing one
+                // fades between them instead of snapping.
+                float[] climate = currentClimate();
+                float rain = rainAlpha(climate);
+                float snow = snowAlpha(climate);
+                if (snow > MIN_VISIBLE_ALPHA) WeatherSnow(batch, snow);
+                if (rain > MIN_VISIBLE_ALPHA) WeatherRain(batch, rain);
             }
             break;
         }
     }
-    public static void WeatherRain(SpriteBatch batch) {
+    public static void WeatherRain(SpriteBatch batch, float alpha) {
         batch.begin();
         batch.setShader(shader);
         shader.setUniformf("u_resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shader.setUniformf("u_alphaScale", alpha);
         for (int i = 0; i < RainList.size(); i++) {
             Rain rain = RainList.get(i);
             rain.RainIteration();
         }
         batch.end();
     }
-    public static void WeatherSnow(SpriteBatch batch) {
+    public static void WeatherSnow(SpriteBatch batch, float alpha) {
         batch.begin();
         batch.setShader(shaderSnow);
         shaderSnow.setUniformf("u_resolution", Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+        shaderSnow.setUniformf("u_alphaScale", alpha);
         for (int i = 0; i < SnowList.size(); i++) {
             SnowList.get(i).SnowIteration();
         }

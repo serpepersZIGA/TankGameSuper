@@ -36,11 +36,11 @@ public abstract class Block {
     public float terrainSpeedMultiplier = 1f;
     public float terrainFrictionMultiplier = 1f;
     // classification only (not used for rendering/physics) - lets weather
-    // pick snow vs rain vs nothing based on what climate the player is
-    // currently standing in. Defaults to TEMPERATE for any map that was
-    // never procedurally painted.
-    public enum Climate { TEMPERATE, COLD, ARID }
-    public Climate climate = Climate.TEMPERATE;
+    // cross-fade between snow/rain/nothing based on how cold/arid the
+    // player's current position is, continuously rather than as a hard
+    // switch at some boundary line (see WeatherMainSystem). Both default to
+    // 0 (plain temperate) for any map that was never procedurally painted.
+    public float coldFactor, aridFactor;
     public int iBuilding;
     public static void passability_detected() {
         for (int i = 0; i < Main.BuildingList.size(); i++) {
