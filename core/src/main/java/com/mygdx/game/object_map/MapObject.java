@@ -72,6 +72,7 @@ public class MapObject implements Cloneable{
                 obj.light = LightSystem.addLight().set(obj.x,obj.y
                         ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
                         4f,distance_lighting,0.2f);
+                obj.light.isStreetLamp = true;
                 //light.radius = distance_lighting;
 
             }
@@ -103,6 +104,7 @@ public class MapObject implements Cloneable{
                 obj.light = LightSystem.addLight().set(obj.x,obj.y
                         ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
                         4f,distance_lighting,0.2f);
+                obj.light.isStreetLamp = true;
                 //light.radius = distance_lighting;
 
             }

@@ -280,7 +280,13 @@ public class Main extends ApplicationAdapter {
 		RegisterModuleSoldat.Create();
 		InventoryPack = new ArrayList<>();//new PacketInventory();
 		// day/night light values, longer cycle + real day/night brightness (see shader: higher = brighter)
-		CycleDayNight = new CycleTimeDay(90,60,25,25,0.9f,0.3f);
+		// nightLight used to be 0.3 - only a third dimmer than full day, not
+		// dark enough to actually feel like night or to make a lamp's own
+		// glow stand out against its surroundings. 0.12 is properly dark
+		// while the lamp-exclusion threshold (see LightingMainSystem.DAY_THRESHOLD)
+		// still crosses well before it gets this dark, so lamps are lit
+		// before it's pitch black outside, not right at the darkest moment.
+		CycleDayNight = new CycleTimeDay(90,60,25,25,0.9f,0.12f);
 		PacketBuildingServer = new PacketBuildingServer();
 		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
 		Render = new RenderPrimitive();

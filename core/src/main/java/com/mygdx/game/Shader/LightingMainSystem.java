@@ -20,6 +20,8 @@ import static com.mygdx.game.main.Main.screenWidth;
 import static com.mygdx.game.method.CycleTimeDay.lightTotal;
 
 
+
+
 public class LightingMainSystem implements Disposable {
     public final ShaderProgram shader;
     public final ArrayList<Light> lights;
@@ -35,12 +37,22 @@ public class LightingMainSystem implements Disposable {
     public static Texture texture;
     public static OrthographicCamera camera;
 
+    // lightTotal >= this counts as "daytime" - street lamps (see isStreetLamp)
+    // switch off above it and back on below it, instead of just being hard
+    // to notice against the bright daytime floor. Transient combat lights
+    // (muzzle flashes, fire, explosions) are never gated by this - a fire's
+    // glow should still show up in broad daylight.
+    private static final float DAY_THRESHOLD = 0.6f;
+
     public static class Light {
         public final Vector2 position = new Vector2();
         public final Color color = new Color();
         public float intensity = 1f;
         public float radius = 100f,radiusZoom,radiusZoom2;
         public boolean work = true;
+        // static decorative lighting (street lamps, building lanterns) -
+        // excluded from rendering during the day, unlike combat/fire lights
+        public boolean isStreetLamp = false;
         public float XRender,YRender;
         public float transparency;
 
@@ -62,7 +74,8 @@ public class LightingMainSystem implements Disposable {
             if(XRender+LightSystem.limitLightingRender >0 &
                     YRender+LightSystem.limitLightingRender >0&
                     XRender-LightSystem.limitLightingRender < Main.screenWidth &
-                    YRender-LightSystem.limitLightingRender <Main.screenHeight
+                    YRender-LightSystem.limitLightingRender <Main.screenHeight &
+                    !(isStreetLamp && lightTotal >= DAY_THRESHOLD)
             ){
                 LightSystem.lightsRender.add(this);
 
@@ -124,7 +137,8 @@ public class LightingMainSystem implements Disposable {
                         light.YRender + LightSystem.limitLightingRender > 0 &
                         light.XRender - LightSystem.limitLightingRender < Main.screenWidth &
                         light.YRender - LightSystem.limitLightingRender < Main.screenHeight &
-                        light.work
+                        light.work &&
+                        !(light.isStreetLamp && lightTotal >= DAY_THRESHOLD)
                 ) {
                     LightSystem.lightsRender.add(light);
 
