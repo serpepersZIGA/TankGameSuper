@@ -18,8 +18,14 @@ public class FlameSpawn extends Particle {
         this.time_delete = 400;
         grass_delete();
         rgb = RGBFlame;
+        // radius used to be 420 - six times this particle's own 70-unit size,
+        // so a dense flamethrower stream (many of these alive at once) had
+        // every light's glow radius overlapping every neighbor's, and all
+        // those overlapping contributions summed into one big white patch.
+        // A radius closer to the particle's own visual size still glows, but
+        // doesn't blanket half the stream in overlapping light.
         light = LightSystem.addLight().set(this.x,this.y,new Color(RGBFlame[0],RGBFlame[1]
-                ,RGBFlame[2],0.3f),3.2f,420,0.2f);
+                ,RGBFlame[2],0.3f),1.8f,150,0.2f);
 
     }
     @Override final

@@ -62,6 +62,12 @@ void main() {
         accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
         accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
     }
+    // a safety ceiling so a pile of overlapping lights (a dense flamethrower
+    // stream, several lamps close together) degrades to "very bright" rather
+    // than growing without bound - the soft-knee rolloff below only has so
+    // much headroom to work with before everything above it is equally
+    // indistinguishable-white anyway.
+    accumulatedLight.rgb = min(accumulatedLight.rgb, vec3(3.0));
     finalColor = texColor;
     if ((finalColor.r + finalColor.g + finalColor.b) * 0.3333 < 0.1)
         finalColor.rgb += ((((accumulatedLight.r+texColor.r)*0.1) + (accumulatedLight.g+texColor.g)*0.5 + (accumulatedLight.b+texColor.b)*0.5) * 0.3333) * 0.25;
