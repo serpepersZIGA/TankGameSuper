@@ -31,9 +31,15 @@ import com.mygdx.game.main.Main;
 // building's own sprite just draws over its footprint) so the map edge
 // doesn't read as a leftover ring of the old default grass tile.
 public class ProceduralTerrainPainter {
-    private static final float BIOME_FREQ = 0.00045f;
+    // lower = bigger biome regions. Also lowered from an earlier pass since
+    // biomes still read as a scattered mess - see cornerBlend for the other
+    // half of that fix (rough/gravel used to be its own full biome-scale
+    // axis independent of temperature/moisture, so it kept adding a third
+    // kind of blend everywhere instead of just accenting one region).
+    private static final float BIOME_FREQ = 0.00028f;
     private static final float DETAIL_FREQ = 0.006f;
     private static final float PATCH_FREQ = 0.0015f;
+    private static final float GRAVEL_PATCH_FREQ = 0.001f;
 
     private static final TerrainMaterial[] MATERIALS = {
             TerrainMaterial.GRASS, TerrainMaterial.SNOW, TerrainMaterial.ICE,
@@ -76,26 +82,40 @@ public class ProceduralTerrainPainter {
 
         float temp = noise.fbm(wx, wy, 0, 3, BIOME_FREQ, 0.5f);
         float moisture = noise.fbm(wx, wy, 1, 3, BIOME_FREQ, 0.5f);
-        float roughness = noise.fbm(wx, wy, 2, 2, BIOME_FREQ*1.7f, 0.5f);
+        // gravel used to be its own full biome-scale axis (same frequency
+        // class as temp/moisture, independent of both) - that gave every
+        // point on the map a THIRD independently-varying blend contributor,
+        // so almost nowhere sat clearly inside one dominant material and it
+        // all read as a constant scattered mix. Now it's a patchy accent
+        // (same style as the ice/puddle patches below) confined to whatever
+        // ground is left over once temperature/moisture claim their share -
+        // gravel/rocky ground shows up as occasional patches within that
+        // "neutral" ground instead of its own competing biome everywhere.
+        float gravelPatch = noise.fbm(wx, wy, 2, 2, GRAVEL_PATCH_FREQ, 0.5f);
         float detail = noise.fbm(wx, wy, 3, 2, DETAIL_FREQ, 0.5f);
         float icePatch = noise.fbm(wx, wy, 4, 2, PATCH_FREQ, 0.5f);
         float puddlePatch = noise.fbm(wx, wy, 5, 2, PATCH_FREQ, 0.5f);
 
-        float cold = smoothstep(-0.15f, -0.5f, temp);
-        float hotDry = smoothstep(0.15f, 0.45f, temp) * smoothstep(0.1f, -0.3f, moisture);
+        // narrower transition bands than before so more of the map sits
+        // clearly inside one dominant biome instead of a constant partial
+        // blend of two or three candidates - boundaries are still a smooth
+        // gradient, just a shorter one, so it doesn't read as a hard line.
+        float cold = smoothstep(-0.22f, -0.42f, temp);
+        float hotDry = smoothstep(0.18f, 0.38f, temp) * smoothstep(0.15f, -0.15f, moisture);
         // wet used to only depend on moisture/hotDry, not temperature - so a
         // moisture noise spike deep inside a cold zone (temp and moisture are
         // independent channels) could paint a swamp/puddle patch right in the
-        // middle of a snow biome. Gating it by (1-cold) the same way rough
-        // already is keeps moisture-driven biomes out of cold regions, so
-        // each biome stays a single coherent region instead of a mix.
-        float wet = smoothstep(0.05f, 0.4f, moisture) * (1f-hotDry) * (1f-cold);
-        float rough = smoothstep(-0.1f, 0.35f, roughness) * (1f-cold) * (1f-hotDry) * (1f-wet);
+        // middle of a snow biome. Gating it by (1-cold) keeps moisture-driven
+        // biomes out of cold regions, so each biome stays a single coherent
+        // region instead of a mix.
+        float wet = smoothstep(0.1f, 0.35f, moisture) * (1f-hotDry) * (1f-cold);
         float ice = cold * smoothstep(0.3f, 0.6f, icePatch);
         float puddle = wet * smoothstep(0.35f, 0.6f, puddlePatch);
         float snow = Math.max(0f, cold-ice);
         float swamp = Math.max(0f, wet-puddle);
-        float grass = Math.max(0f, 1f - cold - hotDry - wet - rough);
+        float neutral = Math.max(0f, 1f-cold-hotDry-wet);
+        float rough = neutral * smoothstep(0.25f, 0.55f, gravelPatch);
+        float grass = Math.max(0f, neutral-rough);
 
         float[] weights = {grass, snow, ice, hotDry, rough, swamp, puddle};
 
