@@ -225,6 +225,7 @@ public class ActionGameClient extends ActionGame {
             Thread.currentThread().interrupt();
         }
         com.mygdx.game.ui.DevOverlay.INSTANCE.render();
+        com.mygdx.game.ui.PlayerHud.INSTANCE.render();
     }
     private class IterationDebris implements Runnable{
         public void run() {

@@ -348,6 +348,7 @@ public class ActionGameHost extends ActionGame{
         }
         server_packet();
         com.mygdx.game.ui.DevOverlay.INSTANCE.render();
+        com.mygdx.game.ui.PlayerHud.INSTANCE.render();
 
         //executor.shutdown();
         //executor.close();
