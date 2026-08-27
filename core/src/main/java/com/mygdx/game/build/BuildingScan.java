@@ -206,13 +206,19 @@ public class BuildingScan {
         // the door used to be false in every row of columns 4-5 - a solid
         // corridor running straight through the whole building from the top
         // edge to the bottom edge, so a tank could just drive through
-        // instead of around. A door only needs to open on the one edge it's
-        // actually on.
+        // instead of around. A single door on one edge isn't enough either
+        // though: buildings get placed with a random rotation, and the
+        // rotation code transposes the matrix rather than doing a true
+        // rotation, so a fixed single-edge door can end up facing away from
+        // wherever the connecting path actually approaches from. A small
+        // door on all 4 edges (never touching across the middle, so still
+        // no drive-through) means there's always a way in regardless of
+        // which side the path reaches.
         String dataMap = "Asset = big_build_wood_1;\n" +
-                "Struct = true,true,true,true,true,true,true,true,true,true:\n" +
+                "Struct = true,true,true,true,false,false,true,true,true,true:\n" +
                 "         true,true,true,true,true,true,true,true,true,true:\n" +
-                "         true,true,true,true,true,true,true,true,true,true:\n" +
-                "         true,true,true,true,true,true,true,true,true,true:\n" +
+                "         false,true,true,true,true,true,true,true,true,false:\n" +
+                "         false,true,true,true,true,true,true,true,true,false:\n" +
                 "         true,true,true,true,true,true,true,true,true,true:\n" +
                 "         true,true,true,true,false,false,true,true,true,true;\n" +
                 "FlameStatus = true;";
@@ -223,15 +229,16 @@ public class BuildingScan {
         } catch (IOException ignored) {
         }
         // same fix as BigBuildingWood1 - rows 3-4 used to be false across
-        // every column, a corridor connecting the left edge to the right
-        // edge straight through the middle instead of a door on one side
+        // every column (a straight-through corridor); now a small door on
+        // all 4 edges instead, so it's reachable regardless of which side
+        // the connecting path/rotation ends up facing
         String dataStr =
-                "Struct = true,true,true,true,true,true:\n" +
+                "Struct = true,true,false,false,true,true:\n" +
                         "true,true,true,true,true,true:\n" +
+                        "false,true,true,true,true,false:\n" +
+                        "false,true,true,true,true,false:\n" +
                         "true,true,true,true,true,true:\n" +
-                        "false,true,true,true,true,true:\n" +
-                        "false,true,true,true,true,true:\n" +
-                        "true,true,true,true,true,true;\n" +
+                        "true,true,false,false,true,true;\n" +
                         "Asset = Build2;\n" +
                         "FlameStatus = true;";
         try {
