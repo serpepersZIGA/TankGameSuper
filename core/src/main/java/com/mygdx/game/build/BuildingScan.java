@@ -203,12 +203,17 @@ public class BuildingScan {
             MapFile.createNewFile();
         } catch (IOException ignored) {
         }
+        // the door used to be false in every row of columns 4-5 - a solid
+        // corridor running straight through the whole building from the top
+        // edge to the bottom edge, so a tank could just drive through
+        // instead of around. A door only needs to open on the one edge it's
+        // actually on.
         String dataMap = "Asset = big_build_wood_1;\n" +
-                "Struct = true,true,true,true,false,false,true,true,true,true:\n" +
-                "         true,true,true,true,false,false,true,true,true,true:\n" +
-                "         true,true,true,true,false,false,true,true,true,true:\n" +
-                "         true,true,true,true,false,false,true,true,true,true:\n" +
-                "         true,true,true,true,false,false,true,true,true,true:\n" +
+                "Struct = true,true,true,true,true,true,true,true,true,true:\n" +
+                "         true,true,true,true,true,true,true,true,true,true:\n" +
+                "         true,true,true,true,true,true,true,true,true,true:\n" +
+                "         true,true,true,true,true,true,true,true,true,true:\n" +
+                "         true,true,true,true,true,true,true,true,true,true:\n" +
                 "         true,true,true,true,false,false,true,true,true,true;\n" +
                 "FlameStatus = true;";
         try {
@@ -217,12 +222,15 @@ public class BuildingScan {
             out.close();
         } catch (IOException ignored) {
         }
+        // same fix as BigBuildingWood1 - rows 3-4 used to be false across
+        // every column, a corridor connecting the left edge to the right
+        // edge straight through the middle instead of a door on one side
         String dataStr =
                 "Struct = true,true,true,true,true,true:\n" +
                         "true,true,true,true,true,true:\n" +
                         "true,true,true,true,true,true:\n" +
-                        "false,false,false,false,false,false:\n" +
-                        "false,false,false,false,false,false:\n" +
+                        "false,true,true,true,true,true:\n" +
+                        "false,true,true,true,true,true:\n" +
                         "true,true,true,true,true,true;\n" +
                         "Asset = Build2;\n" +
                         "FlameStatus = true;";
