@@ -1,5 +1,6 @@
 package Content.Particle;
 import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.MapFunction.WaterCheck;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.rand;
 import com.mygdx.game.particle.Particle;
@@ -26,7 +27,12 @@ public class FlameStatic extends Particle {
     }
     @Override final
     public void all_action(){
-        create_flame_particle(Main.FlameParticleList);
+        // fire doesn't keep burning once it's standing in water/mud
+        if (WaterCheck.isTooWetToBurn(this.x, this.y)) {
+            this.time_delete = 0;
+        } else {
+            create_flame_particle(Main.FlameParticleList);
+        }
         this.update();
         timer(Main.FlameStaticList);
 

@@ -40,7 +40,7 @@ public abstract class Block {
     // player's current position is, continuously rather than as a hard
     // switch at some boundary line (see WeatherMainSystem). Both default to
     // 0 (plain temperate) for any map that was never procedurally painted.
-    public float coldFactor, aridFactor;
+    public float coldFactor, aridFactor, wetFactor;
     public int iBuilding;
     public static void passability_detected() {
         for (int i = 0; i < Main.BuildingList.size(); i++) {

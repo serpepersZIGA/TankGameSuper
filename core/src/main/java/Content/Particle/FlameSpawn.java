@@ -1,5 +1,6 @@
 package Content.Particle;
 import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.MapFunction.WaterCheck;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.particle.Particle;
 
@@ -31,6 +32,11 @@ public class FlameSpawn extends Particle {
     @Override final
     public void all_action(){
         //spawn_flame();
+        // pouring flamethrower fire onto water/mud shouldn't just keep
+        // burning there like it's dry ground
+        if (WaterCheck.isTooWetToBurn(this.x, this.y)) {
+            this.time_delete = 0;
+        }
         sound_play();
         center_render();//Block.LightingAir(x_rend,y_rend,rgb);
         Batch.draw(TextureAtl.createSprite("Buffer"),this.x_rend-size_render2,this.y_rend-size_render2

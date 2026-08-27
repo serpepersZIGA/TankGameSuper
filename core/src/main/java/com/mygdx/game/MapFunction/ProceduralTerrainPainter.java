@@ -78,6 +78,7 @@ public class ProceduralTerrainPainter {
                 float[] climate = classifyClimate(noise, x*blockSize+blockSize*0.5f, y*blockSize+blockSize*0.5f);
                 block.coldFactor = climate[0];
                 block.aridFactor = climate[1];
+                block.wetFactor = climate[2];
             }
         }
     }
@@ -93,13 +94,14 @@ public class ProceduralTerrainPainter {
         return new float[]{block.coldFactor, block.aridFactor};
     }
 
-    /** Same temperature/moisture noise as cornerBlend - {coldFactor, aridFactor}, for weather to blend snow/rain/nothing by. */
+    /** Same temperature/moisture/moisture-patch noise as cornerBlend - {coldFactor, aridFactor, wetFactor}. */
     private static float[] classifyClimate(TerrainNoise noise, float wx, float wy){
         float temp = noise.fbm(wx, wy, 0, 3, BIOME_FREQ, 0.5f);
         float moisture = noise.fbm(wx, wy, 1, 3, BIOME_FREQ, 0.5f);
         float cold = smoothstep(-0.22f, -0.42f, temp);
         float hotDry = smoothstep(0.18f, 0.38f, temp) * smoothstep(0.15f, -0.15f, moisture);
-        return new float[]{cold, hotDry};
+        float wet = smoothstep(0.1f, 0.35f, moisture) * (1f-hotDry) * (1f-cold);
+        return new float[]{cold, hotDry, wet};
     }
 
     /** {r, g, b, speedMultiplier, frictionMultiplier} at one exact world point. */
