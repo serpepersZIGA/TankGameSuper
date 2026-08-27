@@ -117,7 +117,7 @@ object MapSelectScreen : MenuScreen() {
         val buttonRow = Table()
         buttonRow.add(backButton).width(220f).height(64f).padRight(20f)
         buttonRow.add(continueButton).width(220f).height(64f)
-
+ 
         root.add(title).padBottom(32f).row()
         root.add(scrollPane).width(420f).height(420f).padBottom(16f).row()
         root.add(generateButton).height(56f).padBottom(24f).row()
@@ -142,7 +142,11 @@ object MapSelectScreen : MenuScreen() {
             val deleteButton = TextButton(Localization.tr("menu.map.delete"), skin.buttonStyle)
             deleteButton.addListener(object : ChangeListener() {
                 override fun changed(event: ChangeEvent?, actor: Actor?) {
-                    file.delete()
+                    // file.delete() always throws for an Internal FileHandle
+                    // (that's what Gdx.files.internal(...).list() returns) -
+                    // wrapping the same underlying java.io.File in a plain
+                    // FileHandle sidesteps that type check
+                    FileHandle(file.file()).delete()
                     if (selected?.path() == file.path()) selected = null
                     invalidate()
                 }
