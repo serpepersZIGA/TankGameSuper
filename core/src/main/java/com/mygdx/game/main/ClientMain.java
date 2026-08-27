@@ -92,22 +92,24 @@ public class ClientMain extends Listener {
         //Клиент начинает подключатся к серверу
 
         //Клиент подключается к серверу
-        portConst = 0;
-        SearchPort(tcpPort,udpPort);
-        UnitList.clear();
-        Client.addListener(Main.Main_client);
-    }
-    private void SearchPort(int tcpPort, int udpPort){
-        System.out.println(tcpPort);
         try {
             Client.connect(5000, IP, tcpPort, udpPort);
         } catch (IOException e) {
-            if(portConst>16){
-                throw new RuntimeException(e);
-            }
-            portConst++;
-            SearchPort(tcpPort+portConst, udpPort+portConst);
+            // this used to catch the failure and retry on a DIFFERENT,
+            // incrementing port (tcpPort+1, then +3, +6, ... up to 17
+            // attempts) instead of just failing - a server that isn't
+            // listening on the port the user actually typed would never get
+            // a clean, prompt failure, it would sit there scanning nearby
+            // ports for up to a minute-plus before finally throwing. A
+            // single attempt at the requested port, reported honestly, is
+            // what "connect to this address" should mean. Stop() releases
+            // the network thread Client.start() spun up, since it's not
+            // going to be reused after a failed connect.
+            Client.stop();
+            throw new RuntimeException(e);
         }
+        UnitList.clear();
+        Client.addListener(Main.Main_client);
     }
 
     @Override
