@@ -98,8 +98,8 @@ ContentGlobal/Block/Asphalt.json
 ContentGlobal/Block/Void.json
 ContentGlobal/Block/Dirt.json
 ContentGlobal/Block/Grass.json
-ContentGlobal/Building/Building2.bld
 ContentGlobal/Building/BigBuildingWood1.bld
+ContentGlobal/Building/Building2.bld
 ContentGlobal/Module/Corpus/At2E.Corpus
 ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus
 ContentGlobal/Module/Corpus/Panzer1.Corpus
@@ -130,6 +130,8 @@ ContentGlobal/Unit/Pz-2AC.json
 ContentGlobal/Unit/Pz-2F.json
 ContentGlobal/Unit/Pz-2M.json
 ContentGlobal/ObjectMap/pepper.json
+ContentGlobal/ObjectMap/playerspawn.json
+ContentGlobal/ObjectMap/enemyspawn.json
 Map/maps/MapBase.mapt
 Map/maps/MapCentral.mapt
 Map/maps/Procedural_1787796386697.mapt

@@ -16,6 +16,8 @@ import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.method.rand;
+import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
@@ -237,7 +239,21 @@ public class ActionMenu extends ActionGame {
         Inventory inventory = new Inventory(new Item[4][4],1);
         Inventory equipment = new Inventory(new Item[4][2],1);
         Unit unit = IDList.get(SpawnIDPlayer);
-        unit = unit.UnitAdd(200,200,true,(byte)1,
+        // (200,200) was a fixed point on every map regardless of seed/size -
+        // maps that define player-spawn markers (see MapObject.PlayerSpawnList,
+        // procedurally generated maps place several of them clustered well
+        // away from the enemy zone) get a random one instead each time this
+        // runs, so every respawn lands somewhere fresh within that zone
+        // instead of the exact same spot. Falls back to the old fixed point
+        // for maps that don't define any (hand-made maps without markers).
+        int spawnX = 200, spawnY = 200;
+        if (!MapObject.PlayerSpawnList.isEmpty()){
+            int[] cell = MapObject.PlayerSpawnList.get(rand.rand(MapObject.PlayerSpawnList.size()));
+            Block block = BlockList2D.get(cell[0]).get(cell[1]);
+            spawnX = block.x;
+            spawnY = block.y;
+        }
+        unit = unit.UnitAdd(spawnX,spawnY,true,(byte)1,
                 RegisterControl.controllerPlayer,inventory,equipment);
         unit.inventory.ItemAdd(ItemRegister.MedicineT1);
         unit.inventory.ItemAdd(ItemRegister.MedicineT1);

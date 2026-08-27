@@ -78,6 +78,24 @@ public class ProceduralMapGenerator {
             placedBuildings.add(new int[]{x, y});
         }
 
+        // team spawn zones: pick the two hubs farthest apart from each other
+        // (not just any two hubs) so the player and enemy teams start on
+        // opposite sides of the map instead of a couple seconds' drive
+        // apart, and scatter several candidate points around each hub so
+        // every spawn/respawn lands somewhere fresh within that zone
+        // instead of always the exact same point.
+        List<int[]> hubs = computeHubs(seed, width, height);
+        int[] playerHub = hubs.get(0), enemyHub = hubs.get(0);
+        double bestPairDist = -1;
+        for (int a = 0; a < hubs.size(); a++){
+            for (int b = a+1; b < hubs.size(); b++){
+                double d = dist(hubs.get(a), hubs.get(b));
+                if (d > bestPairDist){ bestPairDist = d; playerHub = hubs.get(a); enemyHub = hubs.get(b); }
+            }
+        }
+        appendSpawnZone(sb, "playerspawn", playerHub, width, height, rand);
+        appendSpawnZone(sb, "enemyspawn", enemyHub, width, height, rand);
+
         // was /150 - a 260x260 map only got ~450 decor objects scattered
         // across it, which read as an almost-empty map. This is still the
         // only decor asset there is (see pepper.json) - more variety needs
@@ -95,6 +113,24 @@ public class ProceduralMapGenerator {
         }
 
         return sb.toString();
+    }
+
+    private static final int SPAWN_ZONE_RADIUS = 18;
+    private static final int SPAWN_POINTS_PER_ZONE = 6;
+
+    /** Scatters a handful of spawn-marker points (see playerspawn.json/enemyspawn.json) in a small radius around a hub. */
+    private static void appendSpawnZone(StringBuilder sb, String assetName, int[] hub, int width, int height, Random rand){
+        int placed = 0, attempts = 0;
+        while (placed < SPAWN_POINTS_PER_ZONE && attempts < SPAWN_POINTS_PER_ZONE*10){
+            attempts++;
+            float angle = rand.nextFloat()*(float)(Math.PI*2);
+            int r = rand.nextInt(SPAWN_ZONE_RADIUS);
+            int x = hub[0] + Math.round((float) Math.cos(angle)*r);
+            int y = hub[1] + Math.round((float) Math.sin(angle)*r);
+            if (x < 3 || x >= width-3 || y < 3 || y >= height-3) continue;
+            sb.append("MapObject:o ").append(assetName).append(":x").append(x).append(":y").append(y).append(":;\n");
+            placed++;
+        }
     }
 
     /** Generates the layout and writes it to disk, returning the path passed in. */
@@ -145,6 +181,13 @@ public class ProceduralMapGenerator {
             tracePath(road, width, height, hubs.get(edge[0]), hubs.get(edge[1]), rand);
         }
         return road;
+    }
+
+    /** The same hub points computeRoadCells() itself uses internally, computed independently from a fresh Random(seed) - see class comment on computeRoadCells for why that reproduces identically. */
+    public static List<int[]> computeHubs(long seed, int width, int height){
+        Random rand = new Random(seed);
+        int hubCount = 4 + rand.nextInt(3);
+        return pickHubsAcrossMap(rand, width, height, hubCount);
     }
 
     private static long pairKey(int a, int b){

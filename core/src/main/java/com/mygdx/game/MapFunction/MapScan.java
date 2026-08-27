@@ -26,6 +26,11 @@ public class MapScan {
         LightSystem.lightsRender.clear();
         LightSystem.lights.clear();
         BuildingList.clear();
+        // these used to never get cleared, so loading a second map in the
+        // same run (back to map select, pick another) would just keep
+        // appending to whatever the previous map had already registered
+        com.mygdx.game.object_map.MapObject.SpawnerList.clear();
+        com.mygdx.game.object_map.MapObject.PlayerSpawnList.clear();
         BlockDelete();
         String TxT;
         StringBuilder result = new StringBuilder();

@@ -11,5 +11,6 @@ public class buffObjMap {
     public String Image, Collision;
     public int X,Y,width,height,HP;
     public boolean LightingConf,SpawnUnit;
+    public boolean PlayerSpawn;
     public int Lighting;
 }

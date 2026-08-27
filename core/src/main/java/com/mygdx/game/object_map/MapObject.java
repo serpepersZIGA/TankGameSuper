@@ -25,11 +25,15 @@ import static com.mygdx.game.unit.Unit.IDList;
 public class MapObject implements Cloneable{
     public static ArrayList<PacketMapObject> PacketMapObjects = new ArrayList<>();
     public static ArrayList<int[]>SpawnerList = new ArrayList<>();
+    // {iy,ix} block-grid points where the local player can spawn/respawn -
+    // see ActionMenu.SpawnPlayer(), which picks a random one instead of the
+    // old hardcoded (200,200) whenever a map defines any
+    public static ArrayList<int[]>PlayerSpawnList = new ArrayList<>();
     public int width,height,hp,y,x,ix,iy;
     public int width_render,height_render;
     public String img,CollisionBuff;
     public float distance_lighting,distance_lighting_2;
-    public boolean lighting,SpawnUnit;
+    public boolean lighting,SpawnUnit,PlayerSpawn;
     public ComponentCollisionSystem Collision;
     public String assets;
     public LightingMainSystem.Light light;
@@ -37,7 +41,7 @@ public class MapObject implements Cloneable{
     public MapObject(){
     }
     public MapObject(String img, int width, int height, int hp, int ix, int iy,
-                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,String assets){
+                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,boolean PlayerSpawn,String assets){
         this.ix = ix;
         this.iy = iy;
         this.width = width;
@@ -47,6 +51,7 @@ public class MapObject implements Cloneable{
         this.height_render = (int) (height*Main.Zoom);
         this.distance_lighting = distance_lighting;
         this.SpawnUnit = SpawnUnit;
+        this.PlayerSpawn = PlayerSpawn;
         this.hp = hp;
         this.img = img;
         this.assets = assets;
@@ -87,6 +92,9 @@ public class MapObject implements Cloneable{
             if(this.SpawnUnit){
                 SpawnerList.add(new int[]{y,x});
             }
+            if(this.PlayerSpawn){
+                PlayerSpawnList.add(new int[]{y,x});
+            }
 
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -118,6 +126,9 @@ public class MapObject implements Cloneable{
             }
             if(SpawnUnit){
                 SpawnerList.add(new int[]{iy,ix});
+            }
+            if(PlayerSpawn){
+                PlayerSpawnList.add(new int[]{iy,ix});
             }
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
