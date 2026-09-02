@@ -51,7 +51,7 @@ public abstract class CollisionFunctional{
 
         if (hit) {
             if (torque != 0) {
-                inertion = (abs(unit2.speed) + 1f) * v;
+                inertion = (abs(unit2.speed) + 0.2f) * v;
                 TowerRotate(unit1, Math.signum(torque) * inertion);
             }
                // ровно один раз

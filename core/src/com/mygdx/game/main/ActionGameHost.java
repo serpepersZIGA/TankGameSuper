@@ -245,6 +245,9 @@ public class ActionGameHost extends ActionGame{
                 }
             }
         }
+        shopMain.InventoryIteration();
+        equipmentMain.InventoryIteration();
+        inventoryMain.InventoryIteration();
         if(InventoryInterface.SlotBuffer != null){
             InventoryInterface.SlotBuffer.SlotXY();
             InventoryInterface.SlotBuffer.SlotRender();
@@ -262,10 +265,6 @@ public class ActionGameHost extends ActionGame{
         LightSystem.begin(Batch);
         if(flame_spawn_time <= 0){flame_spawn_time=flame_spawn_time_max;}
         CycleDayNight.WorkTime();
-
-        shopMain.InventoryIteration();
-        equipmentMain.InventoryIteration();
-        inventoryMain.InventoryIteration();
         while (ThreadIterationBullet.isAlive()||ThreadIterationUnit.isAlive()||ThreadIterationDebris.isAlive()){
 
         }
