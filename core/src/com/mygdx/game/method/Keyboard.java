@@ -296,37 +296,51 @@ public class Keyboard extends InputAdapter{
 //            }
 //        }
         for(Building building : Main.BuildingList){
-            building.width_render = (int)(building.width* Main.Zoom);
-            building.height_render = (int)(building.height* Main.Zoom);
-            building.width_render2 = (int) (building.width_render*0.5f);
-            building.height_render2 = (int) (building.height_render*0.5f);
+            building.width_render = (int) (building.width * Main.Zoom);
+            building.height_render = (int) (building.height * Main.Zoom);
+            building.width_render2 = (int) (building.width_render * 0.5f);
+            building.height_render2 = (int) (building.height_render * 0.5f);
         }
         for(Particle particle : Main.FlameList){
-           particle.size_render = (int)(particle.size* Main.Zoom);
+            if(particle!= null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+            }
         }
         for(Particle particle : Main.FlameStaticList){
-            particle.size_render = (int)(particle.size* Main.Zoom);
+            if(particle!= null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+            }
         }
         for(Particle particle : Main.LiquidList){
-            particle.size_render = (int)(particle.size* Main.Zoom);
+            if(particle!= null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+            }
         }
         for(Particle particle : Main.BangList){
-            particle.size_render = (int)(particle.size* Main.Zoom);
+            if(particle!= null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+            }
         }
         for(Particle particle : Main.FlameParticleList){
             particle.size_render = (int)(particle.size* Main.Zoom);
         }
         for(Particle particle : Main.BangList){
-            particle.size_render = (int)(particle.size* Main.Zoom);
+            if(particle!= null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+            }
         }
 
         for(Particle particle : FlameList){
-            particle.size_render = (int)(particle.size* Main.Zoom);
+            if(particle!= null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+            }
         }
         for(int i = 0;i<FlameSpawnList.size();i++){
             Particle particle = FlameSpawnList.get(i);
-            particle.size_render = (int)(particle.size* Main.Zoom);
-            particle.size_render2 = (int) (particle.size_render*0.5f);
+            if(particle != null) {
+                particle.size_render = (int) (particle.size * Main.Zoom);
+                particle.size_render2 = (int) (particle.size_render * 0.5f);
+            }
         }
 
         for(Bullet bull : Main.BulletList){

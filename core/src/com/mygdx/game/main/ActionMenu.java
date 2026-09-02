@@ -250,6 +250,8 @@ public class ActionMenu extends ActionGame {
             } else {
                 try {
                     LightSystem.lights.clear();
+                    equipmentMain = new EquipmentInterface(new Inventory(new Item[7][2],1));
+                    inventoryMain = new InventoryInterface(new Inventory(new Item[4][4],1));
                     Main_client = new ClientMain();
                     Main_client.create();
                     ActionGameMain = ActionGameCl;
@@ -282,6 +284,7 @@ public class ActionMenu extends ActionGame {
         RC.MainUnit = unit;
         equipmentMain = new EquipmentInterface(equipment);
         inventoryMain = new InventoryInterface(inventory);
+        InventoryInterface.Team = (byte) 1;
 
 //    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
 //            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));

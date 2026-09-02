@@ -15,6 +15,7 @@ import com.mygdx.game.unit.CollisionUnit.TypeCollision;
 import com.mygdx.game.unit.Controller.Controller;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
+import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.unit.moduleUnit.*;
 
 import java.awt.*;
@@ -29,8 +30,7 @@ import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.ClassUnit.SupportTransport;
-import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.MethodCollisionTransport;
-import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.physicCollision;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.*;
 import static com.mygdx.game.unit.Fire.FireRegister.FireVoid;
 import static com.mygdx.game.unit.TransportRegister.*;
 import static java.lang.StrictMath.*;
@@ -60,6 +60,7 @@ public abstract class Unit implements Cloneable{
     public static int time_max_sound_motor = 20;
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
+    public byte TeamKill = 0;
     public float fire_y;
     public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage, armorFront,armorCenter,armorBack,reload_max, Acceleration =0.2f,speed, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
@@ -67,13 +68,14 @@ public abstract class Unit implements Cloneable{
              width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
             ArmorFrontBase,ArmorCenterBase,ArmorBackBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,MaxRotate2,RotateBase
             ,TowerFireConstX,TowerFireConstY;
-    protected float slowing = 0.05f;
+    protected static float slowing = 0.05f;
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0,HillHp;
     public float x_relocation,y_relocation,rotation_relocation,priority_paint = 0,ai_x_const = 24f,ai_y_const = 62f;
     public static int range_see=2000,range_see_2 = (int)(range_see*1.5),time_trigger_bull_bot,time_trigger_bull = 700;
     public boolean PlayerConf;
     public float AngleTarget,RadiusTarget;
+    public float differenceTotal,RotationDifference;
 
     public byte behavior,behavior_buffer, medic_help, team,height = 1,trigger_drive,Side;
     private static float g;
@@ -86,7 +88,7 @@ public abstract class Unit implements Cloneable{
     protected static int distance_target = 200;
     public float SpeedCollision = 10;
     protected static int distance_target_2 = 230;
-    public float green_len,green_len_reload;
+    public float green_len,green_len_reload,RotationInertion,RotationInertionTimeSyncrone;
     public float rotation_fire;
     public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
     public static int ai_sost = 200;
@@ -108,6 +110,7 @@ public abstract class Unit implements Cloneable{
     public boolean ConfSquad;
     public Unit TargetUnit,EnemyFire;
     public Squad SquadAlly;
+    public float TargetConstX,TargetConstY;
     public Unit(){
     }
     public Unit(float x, float y, float rotation, float speed,
@@ -231,6 +234,7 @@ public abstract class Unit implements Cloneable{
             unitAdd.const_x_tower = (int)(unitAdd.const_tower_x* Zoom);
             unitAdd.speedTrack = unitAdd.speed_rotation*2f;
 
+
             unitAdd.TowerFireConstX = -this.const_tower_x;
             unitAdd.TowerFireConstY = -this.const_tower_y;
             this.const_y_tower = (int)(unitAdd.const_tower_y* Zoom);
@@ -240,6 +244,25 @@ public abstract class Unit implements Cloneable{
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
                 tower.team = team;
+                int size = 0;
+                if(this.fire == FireRegister.FireAcid){
+                    size= 13;
+                }
+                else if(this.fire == FireRegister.FireBullet){
+                    size = 6;
+                }else if(this.fire == FireRegister.FireMortar){
+                    size = 8;
+                }
+                else if(this.fire == FireRegister.FireFlame){
+                    size = 15;
+                }
+
+
+                tower.TowerFireConstX = -tower.const_tower_x;
+                tower.TowerFireConstY = -tower.const_tower_y*0.5f+size;
+
+
+
             }
 
             for(Unit Track : unitAdd.TrackUnitList){
@@ -287,6 +310,9 @@ public abstract class Unit implements Cloneable{
                 if(unitAdd.classUnit == ClassUnit.Transport) {
                     AI.SquadList.add(new Squad(unitAdd));
                 }
+            }
+            if(PacketServer != null) {
+                PacketServer.unitConf = true;
             }
             return unitAdd;
         } catch (CloneNotSupportedException e) {
@@ -344,6 +370,10 @@ public abstract class Unit implements Cloneable{
 
 
             }
+
+
+
+
             return unitAdd;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -359,13 +389,13 @@ public abstract class Unit implements Cloneable{
         this.HpBase = this.max_hp;
         this.HPTriggerHill = (int) (this.max_hp*0.4f);
         this.time_spawn_soldat = this.time_spawn_soldat_max;
-        this.corpus_width_2 = this.corpus_width/2;
-        this.corpus_height_2 = this.corpus_height/2;
+        this.corpus_width_2 = this.corpus_width*0.5f;
+        this.corpus_height_2 = this.corpus_height*0.5f;
         corpus_height_3 = (float) (corpus_height_2/1.5);
         corpus_width_3 = (float)(corpus_width_2*1.2);
         if(tower_img != null){
-            this.tower_width_2 = this.width_tower/2;
-            this.tower_height_2 = this.height_tower/2;
+            this.tower_width_2 = this.width_tower*0.5f;
+            this.tower_height_2 = this.height_tower*0.5f;
             this.const_x_tower = (int)(const_tower_x* Zoom);
             this.const_y_tower = (int)(const_tower_y* Zoom);}
         this.corpus_width_zoom = (int)(corpus_width* Zoom);
@@ -434,10 +464,9 @@ public abstract class Unit implements Cloneable{
     public void UpdateUnitMenu(){
 
     }
-    public final void tower_iteration(Unit unit){
+    public final void TowerIterationClient(Unit unit){
         for (Unit Tower : TowerUnitList){
             //Tower.tower_action();
-            Tower.functional.FunctionalIterationAnHost(Tower);
             Tower.x = unit.x;
             Tower.y = unit.y;
             Tower.rotation_corpus = unit.rotation_corpus;
@@ -519,11 +548,11 @@ public abstract class Unit implements Cloneable{
                     this.speed -= this.Acceleration;
                 }
             }
-
+            float speed = this.speed_rotation * TimeGlobalBullet;
             if (this.press_a) {
-                float speed = this.speed_rotation * TimeGlobalBullet;
                 for (Unit Tower : TowerUnitList) {
                     Tower.rotation_tower += speed;
+                    //Tower.RotateNotTower -= speed;
                 }
                 for (Unit Track : TrackUnitList) {
                     switch (Track.Side){
@@ -538,9 +567,9 @@ public abstract class Unit implements Cloneable{
                 this.rotation_corpus += speed;
             }
             if (this.press_d) {
-                float speed = this.speed_rotation * TimeGlobalBullet;
                 for (Unit Tower : TowerUnitList) {
                     Tower.rotation_tower -= speed;
+                    //Tower.RotateNotTower += speed;
                 }
                 for (Unit Track : TrackUnitList) {
                     switch (Track.Side){
@@ -555,7 +584,7 @@ public abstract class Unit implements Cloneable{
                 this.rotation_corpus -= speed;
             }
         }
-        if(!this.press_w && !this.press_s) {
+        if((!this.press_w && !this.press_s)|| this.crite_life) {
             if (this.speed > 0.1f) {
                 this.speed -= this.slowing;
                 //if (this.speed< Unit.speed_minimum){this.speed = 0;}
@@ -574,15 +603,15 @@ public abstract class Unit implements Cloneable{
     }
     public final void move_xy_transport(){
         float speed = this.speed*TimeGlobalBullet;
-        float rotation_corpus2 = (float) (-this.rotation_corpus*3.1415/180);
-        SpeedMaxInertion = abs(speed);
+        float rotation_corpus2 = -this.rotation_corpus*PR;
+        //SpeedMaxInertion = abs(speed);
         //SpeedMaxInertionY = this.SpeedInertionY*0.3f;
         float SpeedInertion = this.SpeedInertionX*0.035f;
         float SpeedInertion2 = this.SpeedInertionY*0.035f;
         speedX = (speedX+move.move_sin2(speed, rotation_corpus2))*0.5f;
         speedY = (speedY+move.move_cos2(speed, rotation_corpus2))*0.5f;
-        SpeedMaxInertionX = abs(speedX);
-        SpeedMaxInertionY = abs(speedY);
+        //SpeedMaxInertionX = abs(speedX);
+        //SpeedMaxInertionY = abs(speedY);
 
         //if(SpeedMaxInertionX-abs(SpeedInertionX)>0) {
             //this.SpeedInertionX -= speedX;
@@ -599,45 +628,63 @@ public abstract class Unit implements Cloneable{
         this.y += (SpeedInertionY);
 
     }
+    public void InertionRotate(){
+        float SpeedInertion = this.RotationInertion*0.035f;
+        this.RotationInertion -= SpeedInertion;
+        this.RotationInertionTimeSyncrone = RotationInertion * TimeGlobalBullet;
+        this.rotation_corpus += RotationInertionTimeSyncrone;
+    }
+    public void InertionTowerRotate(Unit unit){
+        this.rotation_tower += unit.RotationInertionTimeSyncrone;
+    }
     public final void move_xy_soldat(){
         float speed = this.speed*TimeGlobalBullet;
-        float rotation_corpus2 = (float) (-this.rotation_corpus*RP);
+        float rotation_corpus2 = -this.rotation_corpus*PR;
         this.x -= move.move_sin2(speed, rotation_corpus2);
         this.y -= move.move_cos2(speed, rotation_corpus2);
     }
     public void TowerControl() {
-        float[] xy = Method.tower_xy_2(this.tower_x+this.const_tower_x,
-                this.tower_y+this.const_tower_y
-                ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
-        this.fire_x = xy[0];
-        this.fire_y = xy[1];
-        tower(xy[0],xy[1],TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+//        float[] xy = Method.tower_xy_2(this.tower_x+const_tower_x-const_x_tower,
+//                this.tower_y+const_tower_y-const_y_tower
+//                ,this.const_tower_y-const_y_tower,
+//                this.const_tower_x-const_x_tower,-this.rotation_tower);
+        TowerXYTarget();
+        tower(fire_x,fire_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void NotTowerControl() {
-        float[] xy = Method.tower_xy_2(this.tower_x+this.const_tower_x,
-                this.tower_y+this.const_tower_y
-                ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
+        //rotationTower = -this.rotation_tower-90;
+        //SoundPlay.soundPlay(this.x_rend,this.y_rend, (int) this.x, (int) this.y,4, this.sound_fire);
+        TowerXYTarget();
+
+        NotTower(fire_x,fire_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+    }
+    private void TowerXYTarget(){
+//        float[] xy = Method.tower_xy_2(this.x,
+//                this.tower_y
+//                ,0,
+//                0
+//                ,-this.rotation_corpus);
+        float []xy = tower_xy_2(TargetConstX,TargetConstY,this.difference,this.difference_2,-this.rotation_corpus);
+//        this.tower_x = xy[0];this.tower_y = xy[1];
         this.fire_x = xy[0];
         this.fire_y = xy[1];
-
-        NotTower(xy[0],xy[1],TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void tower(float x, float y, float x_2, float y_2, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) * RP);
         if(gh>50 && rotation_tower<-50){
-            gh= -180;
+            gh= -182;
         }
         if(gh<-50 && rotation_tower>50){
-            gh= 180;
+            gh= 182;
         }
-        if (rotation_tower > 179){rotation_tower = -179;}
-        else if (rotation_tower < -179){rotation_tower = 179;}
+        if (rotation_tower > 180F){rotation_tower = -180F;}
+        else if (rotation_tower < -180F){rotation_tower = 180F;}
         if (rotation_tower < gh) {
             rotation_tower += speed_tower;
         } else if (rotation_tower > gh) {
             rotation_tower -= speed_tower;
         }
-        if(abs(rotation_tower-gh)<20 & trigger_fire){
+        if(trigger_fire & abs(rotation_tower-gh)<20){
             left_mouse = true;
         }
 
@@ -648,41 +695,36 @@ public abstract class Unit implements Cloneable{
     public void NotTower(float x, float y, float x_2, float y_2, float speed_tower) {
         int gh = (int) (atan2(y - y_2, x - x_2) *RP);
         if(gh>50 && rotation_tower<-50){
-            gh= -180;
+            gh= -182;
         }
         if(gh<-50 && rotation_tower>50){
-            gh= 180;
+            gh= 182;
         }
-        if (rotation_tower > 180F){rotation_tower = -180F;}
-        else if (rotation_tower < -180F){rotation_tower = 180F;}
+        rotation_tower = RotateBase + rotation_corpus+RotateNotTower;
+//        if (rotation_tower > 180F){rotation_tower = -180F;}
+//        else if (rotation_tower < -180F){rotation_tower = 180F;}
+//        if(abs(abs(rotation_tower)-abs(rotation_corpus))>MaxRotate2){
+//            if(RotateNotTower<-MaxRotate) {
+//                rotation_tower = RotateBase + rotation_corpus-MaxRotate;
+//                RotateNotTower = -MaxRotate;
+//            }
+//            else if(RotateNotTower>MaxRotate){
+//                rotation_tower = RotateBase + rotation_corpus+MaxRotate;
+//                RotateNotTower = MaxRotate;
+////                System.out.println(abs((rotation_tower) - rotation_corpus));
+//            }
+//        }
 
-        //if (RotateNotTower > 179){RotateNotTower = -179;}
-        //else if (RotateNotTower < -179){RotateNotTower = 179;}
-        //float a1 = (float) ((float) cos(rotation_corpus)+cos(MaxRotate));
-        //float a2 = (float) ((float) cos(rotation_corpus)-cos(MaxRotate));
-        //float a3 = (float) cos(-rotation_tower);
-        if(abs(abs(rotation_tower)-abs(rotation_corpus))>MaxRotate2){
-            if(RotateNotTower<0) {
-                rotation_tower = RotateBase + rotation_corpus-MaxRotate;
-                RotateNotTower = -MaxRotate;
-            }
-            else{
-                rotation_tower = RotateBase + rotation_corpus+MaxRotate;
-                RotateNotTower = MaxRotate;
-//                System.out.println(abs((rotation_tower) - rotation_corpus));
-            }
-        }
-
-        if (rotation_tower < gh & RotateNotTower < MaxRotate) {
+        if (rotation_tower < gh & RotateNotTower <= MaxRotate) {
             RotateNotTower += speed_tower;
-            rotation_tower += speed_tower;
+            //rotation_tower += speed_tower;
             //System.out.println(RotateNotTower+"+");
-        }else if (rotation_tower > gh & RotateNotTower >-MaxRotate) {
+        }else if (rotation_tower > gh & RotateNotTower >=-MaxRotate) {
             RotateNotTower -= speed_tower;
-            rotation_tower -= speed_tower;
+            //rotation_tower -= speed_tower;
             //System.out.println(RotateNotTower+"-");
         }
-        if(abs(rotation_tower-gh)<20 & trigger_fire){
+        if(trigger_fire & abs(rotation_tower-gh)<20){
             left_mouse = true;
         }
 
@@ -803,11 +845,6 @@ public abstract class Unit implements Cloneable{
                 Option.size_y_indicator_zoom,new Color(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f));
     }
     public void FireControl(){
-        float[] xy = Method.tower_xy_2(this.tower_x+this.const_tower_x,
-                this.tower_y+this.const_tower_y
-                ,this.TowerFireConstY,this.TowerFireConstX,-this.rotation_tower);
-        fire_x = xy[0];
-        fire_y = xy[1];
         if(this.reload_bot() && this.left_mouse){
             R_LOCK.lock();
             try {
@@ -825,7 +862,9 @@ public abstract class Unit implements Cloneable{
     float []xy = tower_xy(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     public void TowerXY2(){
-        float []xy = tower_xy_2(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
+        //float []xy = tower_xy_2(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
+        float []xy = tower_xy(this.x+this.tower_x_const,this.y+this.tower_y_const,differenceTotal,-this.rotation_corpus+RotationDifference-90);
+        //System.out.println(differenceTotal+" "+RotationDifference);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     protected boolean fire_bot(float obj_x,float obj_y){
         float g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) *RP);
@@ -903,12 +942,12 @@ public abstract class Unit implements Cloneable{
             //this.rotation_corpus = -271;
             //}
         }
-        if (this.rotation_corpus > 90) {
-            this.rotation_corpus = -268;
-        }
-        else if (this.rotation_corpus < -270) {
-            this.rotation_corpus = 88;
-        }
+//        if (this.rotation_corpus > 91) {
+//            this.rotation_corpus = -268;
+//        }
+//        else if (this.rotation_corpus < -271) {
+//            this.rotation_corpus = 88;
+//        }
 
         if (AngleTarget > this.rotation_corpus) {
             press_a = true;
@@ -961,8 +1000,8 @@ public abstract class Unit implements Cloneable{
         else if(!path.isEmpty()) {
             //System.out.println(path.size());
             //float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
-            float RadiusTarget = (abs(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
-                    + abs(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center))*0.5f;
+            float RadiusTarget = (float)sqrt(pow2(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
+                    + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
             AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1])
                     .get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1])
                     .get(path.get(0)[0]).x_center)*RP)-90);
@@ -1041,8 +1080,8 @@ public abstract class Unit implements Cloneable{
         else if(!path.isEmpty()) {
             //System.out.println(path.size());
             //float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
-            float RadiusTarget = (abs(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
-                    + abs(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center))*0.5f;
+            float RadiusTarget = (float) sqrt(pow2(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
+                    + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center))*0.5f;
             AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1])
                     .get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1])
                     .get(path.get(0)[0]).x_center)*RP)-90);
@@ -1242,8 +1281,10 @@ public abstract class Unit implements Cloneable{
                         (int) unit.x,(int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus)
                         && unit.priority_paint == this.priority_paint) {
                     SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7, ContentSound.hit);
+                    PhysicCollision(this,unit);
+                    PhysicCollision(unit,this);
 
-                    physicCollision(this,unit);
+                    //physicCollision(this,unit);
                     MethodCollisionTransport(this,unit);
 
                 }
@@ -1274,8 +1315,9 @@ public abstract class Unit implements Cloneable{
             finally {R_LOCK.unlock();}
             int money = 5+rand.rand(5);
             //PacketServer.MoneyAdd += money;
-            Inventory.Money += money;
-            PacketServer.Money = Inventory.Money;
+            money += TeamGlobal.get(TeamKill);
+            TeamGlobal.replace(TeamKill,money);
+            //PacketServer.Money = Inventory.Money;
             eventDead();
             PacketServer.unitConf = true;
             ClearUnitList.add(this);
@@ -1314,8 +1356,8 @@ public abstract class Unit implements Cloneable{
         SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,9, ContentSound.kill);
 
     }
-    private boolean rectCollision(int x1, int y1, int width, int height, double rotation,
-                                  int x2, int y2, int width2, int height2, double rotation_2){
+    public boolean rectCollision(int x1, int y1, int width, int height, double rotation,
+                                 int x2, int y2, int width2, int height2, double rotation_2){
 
         Rectangle rect1 = new Rectangle(x1,y1,width,height); // Прямоугольник 1
         Rectangle rect2 = new Rectangle(x2,y2,width2,height2); // Прямоугольник 2
@@ -1331,6 +1373,37 @@ public abstract class Unit implements Cloneable{
         area1.transform(transform1);
         Area area2 = new Area(rect2);
         area2.transform(transform2);
+
+        // Вычисление пересечения двух преобразованных прямоугольников
+        area1.intersect(area2);
+
+        // Проверка наличия пересечения
+        //Rectangle intersection = area1.getBounds();
+        //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
+        return !area1.isEmpty();
+    }
+    public boolean rectCollisionCenter(float cx, float cy, float w, float h,
+                                       double rotationDeg, Area area2) {
+        Rectangle2D r = new Rectangle2D.Double(cx - w * 0.5, cy - h * 0.5, w, h);
+        AffineTransform t = new AffineTransform();
+        t.rotate(Math.toRadians(rotationDeg), cx, cy);   // пивот = центр самого квадранта
+        Area a = new Area(t.createTransformedShape(r));
+        a.intersect(area2);
+        return !a.isEmpty();
+    }
+    public boolean rectCollision(int x1, int y1, int width, int height, double rotation,
+                                 Area area2){
+
+        Rectangle rect1 = new Rectangle(x1,y1,width,height); // Прямоугольник 1
+        // Прямоугольник 2
+
+        // Создаем аффинное преобразование для поворота
+        AffineTransform transform1 = new AffineTransform();
+        transform1.rotate(Math.toRadians(rotation), rect1.getCenterX(), rect1.getCenterY());
+
+        // Преобразование прямоугольников с учетом поворота
+        Area area1 = new Area(rect1);
+        area1.transform(transform1);
 
         // Вычисление пересечения двух преобразованных прямоугольников
         area1.intersect(area2);
@@ -1403,12 +1476,20 @@ public abstract class Unit implements Cloneable{
         for (int iy = render_y_min; iy < render_y_max; iy++) {
             for (int ix = render_x_min; ix < render_x_max; ix++) {
                 if (BlockList2D.get(iy).get(ix).passability) {
+
                     if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
                             width_block, width_block, 0)) {
                         if (this.speed > 2 || this.speed < -2) {
                             SoundPlay.soundPlay(x_rend,y_rend, BlockList2D.get(iy).get(ix).x_center,
                                     BlockList2D.get(iy).get(ix).y_center,3, ContentSound.break_wooden);
                         }
+                        Rectangle rect1 = new Rectangle(BlockList2D.get(iy).get(ix).x,BlockList2D.get(iy).get(ix).y,
+                                 width_block, width_block); // Прямоугольник 1
+                        AffineTransform transform1 = new AffineTransform();
+                        transform1.rotate(Math.toRadians(0),rect1.getCenterX(),rect1.getCenterY());
+                        Area area1 = new Area(rect1);
+                        area1.transform(transform1);
+                        PhysicCollisionBuild(this,area1);
                         MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
                     }
                 } else {
@@ -1464,15 +1545,15 @@ public abstract class Unit implements Cloneable{
     private void MethodCollision(int x, int y){
         //this.SpeedInertionX = 0;
         //this.SpeedInertionY = 0;
-        this.SpeedInertionX *= -0.15f;
-        this.SpeedInertionY *= -0.15f;
+        this.SpeedInertionX *= -0.45f;
+        this.SpeedInertionY *= -0.45f;
         if(this.x<x) {
             this.x -= 2f;
-            this.speed *= -0.8f;
+            this.speed *= -0.6f;
         }
         else if(this.x>x) {
             this.x += 2f;
-            this.speed *= -0.8f;
+            this.speed *= -0.6f;
         }
         if(this.y<y) {
             this.y -= 2f;
@@ -1547,11 +1628,11 @@ public abstract class Unit implements Cloneable{
         } else if (AngleTarget < -160 && this.rotation_corpus > 0) {
             AngleTarget = 92;
         }
-        if (this.rotation_corpus > 91) {
-            this.rotation_corpus = -269;
-        } else if (this.rotation_corpus < -271) {
-            this.rotation_corpus = 89;
-        }
+//        if (this.rotation_corpus > 91) {
+//            this.rotation_corpus = -269;
+//        } else if (this.rotation_corpus < -271) {
+//            this.rotation_corpus = 89;
+//        }
         if (AngleTarget > this.rotation_corpus) {
             //this.rotation_corpus += this.speed_rotation;
             //System.out.println(press_a);
@@ -1661,8 +1742,21 @@ public abstract class Unit implements Cloneable{
 
         return area1.intersects(circle.getBounds2D());
     }
+    public boolean rect_bull(Area area1,int x,int y,int size){
+
+        Ellipse2D circle = new Ellipse2D.Double(x,y,size,size);
+
+        return area1.intersects(circle.getBounds2D());
+    }
     public void all_action(){
         damage_temperature();
+        InertionRotate();
+        if (this.rotation_corpus > 91) {
+            this.rotation_corpus = -268;
+        }
+        else if (this.rotation_corpus < -271) {
+            this.rotation_corpus = 88;
+        }
         //inertia_xy();
         functional.FunctionalIterationAnHost(this);
         control.ControllerIteration(this);
@@ -1670,6 +1764,13 @@ public abstract class Unit implements Cloneable{
     }
     public void all_action_client(){
         damage_temperature();
+        InertionRotate();
+        if (this.rotation_corpus > 91) {
+            this.rotation_corpus = -268;
+        }
+        else if (this.rotation_corpus < -271) {
+            this.rotation_corpus = 88;
+        }
         //this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
         functional.FunctionalIterationClientAnHost(this);
         control.ControllerIterationClientAnHost(this);

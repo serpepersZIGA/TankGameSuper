@@ -49,6 +49,7 @@ public class ServerMain extends Listener {
         Server.getKryo().register(SoundPlay.class);
         Server.getKryo().register(DebrisPacket.class);
         Server.getKryo().register(UnitType.class);
+        //Server.getKryo().register(Integer[].class);
 //        Server.getKryo().register(Bang.class);
 //        Server.getKryo().register(FlameSpawn.class);
 //        Server.getKryo().register(Flame.class);
@@ -63,6 +64,7 @@ public class ServerMain extends Listener {
         Server.getKryo().register(ObjectMapAssets.class);
         Server.getKryo().register(PacketUnitUpdate.class);
         Server.getKryo().register(SpawnPlayerPack.class);
+        Server.getKryo().register(ConnectPlayer.class);
 
 
         //Регистрируем порт
@@ -105,7 +107,7 @@ public class ServerMain extends Listener {
         }
         ItemObject.ConfSentPackItem = true;
         ItemObject.PacketAdd();
-
+        PacketServer.unitConf = true;
         PacketBuildingServer.FlameLight = CycleTimeDay.lightFlame;
         Server.sendToAllTCP(PacketBuildingServer);
         PacketBuildingServer.ObjectMapPack.clear();
@@ -135,12 +137,12 @@ public class ServerMain extends Listener {
         PacketBuildingServer.BuildPack.get(i).y = BuildingList.get(i).y;
         PacketBuildingServer.BuildPack.get(i).rotation = BuildingList.get(i).rotate;
     }
+    //private static int yj = 0;
 
     //Используется когда клиент отправляет пакет серверу
     public void received(Connection c, Object p){
         if(p instanceof Packet_client) {
             Packet_client pack = (Packet_client)p;
-            Inventory.Money -= pack.MoneyAdd;
             for (Unit unit : UnitList) {
                 //System.out.println(IDClient+" "+unit.nConnect );
                 if (pack.IDClient == unit.nConnect) {
@@ -169,6 +171,7 @@ public class ServerMain extends Listener {
             //System.out.println("586855");
             nConnect += 1;
             Unit unitBuf;
+
             unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
                     ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1));
             unitBuf.nConnect = nConnect;
@@ -178,6 +181,8 @@ public class ServerMain extends Listener {
             unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
             unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
             unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+
+            PacketServer.InventoryConf = true;
 //            if(!p.equals(new SpawnPlayerVoid())) {
 //                int i2 = Main.UnitList.size();
 //                ((PlayerSpawnData) p).SpawnPlayer(false);
@@ -186,9 +191,14 @@ public class ServerMain extends Listener {
         }
         else if(p instanceof EventUseClient){
             EventUseClient pack = (EventUseClient) p;
-            if(!(pack).MoneyAdd || Inventory.Money>IDListItem.get((pack).str).Price) {
+            //yj++;
+            //System.out.println("zzz"+yj);
+            if(!(pack).MoneyAdd || TeamGlobal.get(InventoryInterface.Team)>IDListItem.get((pack).str).Price) {
+                //System.out.println("eee"+yj);
                 if((pack).MoneyAdd) {
-                    Inventory.Money -= IDListItem.get((pack).str).Price;
+                    TeamGlobal.get(InventoryInterface.Team);
+                    int coin = TeamGlobal.get(InventoryInterface.Team) -IDListItem.get((pack).str).Price;
+                    TeamGlobal.replace(InventoryInterface.Team,coin);
                 }
                 if (!(pack).ConfUse) {
                     if (!(pack).conf) {
@@ -199,13 +209,39 @@ public class ServerMain extends Listener {
                                 , UnitList.get((pack).ID));
                     }
                 } else {
-                    if (!(pack).conf) {
-                        UnitList.get((pack).ID).inventory.ItemAdd(IDListItem.get((pack).str));
-                    } else {
-                        UnitList.get((pack).ID).equipment.ItemAdd(IDListItem.get((pack).str));
+                     if (!(pack).conf) {
+                         UnitList.get((pack).ID).inventory.ItemAdd(IDListItem.get((pack).str));
+                     } else {
+                         UnitList.get((pack).ID).equipment.ItemAdd(IDListItem.get((pack).str));
+                     }
+
+                }
+                if((pack).ConfUseDel){
+                    //System.out.println(UnitList.get((pack).ID).XMap);
+                    if(!(pack).conf & UnitList.get((pack).ID).inventory.
+                            InventorySlots[(pack).x][(pack).y] != null){
+                    if(UnitList.get((pack).ID).inventory.InventorySlots[(pack).x][(pack).y].Use(
+                            UnitList.get((pack).ID))) {
+                        //System.out.println(" eeedsfd");
+                        UnitList.get((pack).ID).inventory.InventorySlots[(pack).x][(pack).y] = null;
+                        UnitList.get((pack).ID).inventory.inventoryStr[(pack).x][(pack).y] = null;
+                        
+                    }
+                    else if((pack).conf & UnitList.get((pack).ID).equipment.
+                            InventorySlots[(pack).x][(pack).y] != null){
+                        if(UnitList.get((pack).ID).equipment.InventorySlots[(pack).x][(pack).y].Use(UnitList.get((pack).ID))) {
+                            UnitList.get((pack).ID).equipment.InventorySlots[(pack).x][(pack).y] = null;
+                            UnitList.get((pack).ID).equipment.inventoryStr[(pack).x][(pack).y] = null;
+                        }
+                    }
+                        //UnitList.get((pack).ID).SlotInventory[(pack).x][(pack).y].item = null;
                     }
                 }
+                PacketServer.InventoryConf = true;
+
+
             }
+            PacketServer.InventoryConf = true;
 
 
             return;
@@ -232,6 +268,8 @@ public class ServerMain extends Listener {
             ItemObject.ConfSentPackItem = true;
             ItemObject.PacketAdd();
             equipmentMain.InventoryReload(unit);
+
+            PacketServer.InventoryConf = true;
             return;
 
 
@@ -258,6 +296,8 @@ public class ServerMain extends Listener {
 
             }
             equipmentMain.InventoryReload(unit);
+
+            PacketServer.InventoryConf = true;
             //packetInventoryServer();
 //            if(UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y]!= null) {
 //                Item itemBuff1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
@@ -273,6 +313,15 @@ public class ServerMain extends Listener {
 //                }
 //                UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2] = itemBuff1.clone();
 //            }
+        }
+        else if(p instanceof ConnectPlayer){
+            for(int i = 0;i<UnitList.size();i++){
+                Unit unit = UnitList.get(i);
+                if(unit.nConnect == ((ConnectPlayer) p).IDPlayerConnect){
+                    PacketServer.unitConf = true;
+                    PacketServer.InventoryConf = true;
+                }
+            }
         }
     }
 

@@ -59,6 +59,11 @@ public class RenderCenter {
         y_obj -= this.y2;
         return new float[]{x_obj*Main.Zoom,y_obj*Main.Zoom};
     }
+    public float[] render_obj(float x_obj,float y_obj){
+        x_obj -= this.x2;
+        y_obj -= this.y2;
+        return new float[]{x_obj,y_obj};
+    }
     public void render_block(){
         Main.TickBlock +=Main.TimeGlobalBullet;
         if(ixCam!= ixCamBuff||iyCam!= iyCamBuff) {
@@ -123,13 +128,15 @@ public class RenderCenter {
         LightSystem.lightsRender.clear();
         for(int i = 0;i<LightSystem.lights.size();i++){
             LightingMainSystem.Light light = LightSystem.lights.get(i);
-            if(light.XRender+LightSystem.limitLightingRender >0 &
-                    light.YRender+LightSystem.limitLightingRender >0&
-                    light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
-                    light.YRender-LightSystem.limitLightingRender <Main.screenHeight
-            ){
-                LightSystem.lightsRender.add(light);
+            if (light != null) {
+                if (light.XRender + LightSystem.limitLightingRender > 0 &
+                        light.YRender + LightSystem.limitLightingRender > 0 &
+                        light.XRender - LightSystem.limitLightingRender < Main.screenWidth &
+                        light.YRender - LightSystem.limitLightingRender < Main.screenHeight
+                ) {
+                    LightSystem.lightsRender.add(light);
 
+                }
             }
         }
 

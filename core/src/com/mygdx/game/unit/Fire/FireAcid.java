@@ -20,17 +20,21 @@ import static java.lang.StrictMath.*;
 public class FireAcid extends Fire{
     public void FireIteration(Unit unit){
         rotationTower = -unit.rotation_tower-90;
+        float[] xy = Method.tower_xy_2(unit.tower_x+unit.const_tower_x,
+                unit.tower_y+unit.const_tower_y
+                ,unit.TowerFireConstY,
+                unit.TowerFireConstX,-unit.rotation_tower);
         SoundPlay.soundPlay(unit.x_rend,unit.y_rend, (int) unit.x, (int) unit.y,2, unit.sound_fire);
 
 //        float[] xy = Method.tower_xy_2(unit.tower_x+unit.const_tower_x,
 //                unit.tower_y+unit.const_tower_y
 //                ,unit.TowerFireConstY,unit.TowerFireConstX,-unit.rotation_tower);
-        BulletRegister.BulletAcid.BulletAdd(unit.fire_x,unit.fire_y,rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,
+        BulletRegister.BulletAcid.BulletAdd(xy[0], xy[1],rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
                 ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
 
 
-        BulletRegister.BulletAcid.BulletAdd(unit.fire_x, unit.fire_y,rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,
+        BulletRegister.BulletAcid.BulletAdd(xy[0], xy[1],rotationTower+ -10+rand.rand(20),unit.damage,unit.penetration,
                 unit.damage_fragment,unit.penetration_fragment,unit.team,unit.height,unit.t_damage,unit.SpeedBullet
                 ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
 

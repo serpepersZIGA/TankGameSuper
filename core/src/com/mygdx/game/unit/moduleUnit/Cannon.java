@@ -1,13 +1,18 @@
 package com.mygdx.game.unit.moduleUnit;
 
 import com.badlogic.gdx.audio.Sound;
+import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
 
 import java.util.Objects;
 
+import static com.mygdx.game.method.Method.RP;
+import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
+import static java.lang.StrictMath.atan2;
+import static java.lang.StrictMath.sqrt;
 
 public class Cannon extends moduleUnit implements Cloneable{
     public Fire fire;
@@ -21,10 +26,10 @@ public class Cannon extends moduleUnit implements Cloneable{
     public int Reload,towerXConst,towerYConst;
     public float RotationTower;
     public boolean FireConf;
-    public float XRend,YRend;
+    public float differenceTotal,RotationDifference;
     public Sound SoundFire;
-    public float fire_x;
-    public float fire_y;
+    public float corpus_width_2;
+    public float corpus_height_2;
     public String ID;
     public FunctionalList functional = new FunctionalList();
     public float damage_fragment, penetration_fragment, TemperatureDamage;
@@ -156,6 +161,16 @@ public class Cannon extends moduleUnit implements Cloneable{
             cannon.differenceX = differenceX;
             cannon.differenceY = differenceY;
 
+
+            cannon.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
+            //float[]xy = Method.tower_xy_2(0,0,)
+            cannon.RotationDifference = (float) (atan2(differenceY,differenceX)*RP);
+
+
+
+            cannon.corpus_width_2 = unit.CorpusUnit.corpus_width_2;
+            cannon.corpus_height_2 = unit.CorpusUnit.corpus_height_2;
+
             cannon.CenterX = unit.CorpusUnit.corpus_width_2-cannon.ConstTowerX;
             cannon.CenterY = unit.CorpusUnit.corpus_height_2-cannon.ConstTowerY;
             //CannonAdd.ConstTowerX = unit.const_tower_x;
@@ -186,6 +201,11 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.reload_max = ReloadMax;
         unit.sound_fire = sound;
         unit.AmountFragment = AmountFragment;
+        unit.corpus_width_2 = corpus_width_2;
+        unit.corpus_height_2 = corpus_height_2;
+
+        unit.differenceTotal = differenceTotal;
+        unit.RotationDifference = RotationDifference;
 
         unit.const_tower_x = ConstTowerX;
         unit.const_tower_y = ConstTowerY;

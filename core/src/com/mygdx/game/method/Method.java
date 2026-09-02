@@ -14,7 +14,7 @@ import static java.lang.StrictMath.sqrt;
 public class Method {
     public static float PR = (float) (3.141559265/180f),RP = (float) (180f/3.141559265);
     public static float tower(float x, float y, float x_2, float y_2, float rotation_tower, float speed_tower) {
-        int gh = (int) (atan2(y - y_2, x - x_2) / 3.1415926535 *180);
+        int gh = (int) (atan2(y - y_2, x - x_2) *RP);
         if(gh>50 && rotation_tower<-50){
             gh= -180;
         }

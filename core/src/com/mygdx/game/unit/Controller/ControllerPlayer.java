@@ -33,8 +33,8 @@ public class ControllerPlayer extends Controller {
         Main.RC.y = unit.tower_y;
         for(Unit Tower : unit.TowerUnitList){
             Tower.left_mouse = LeftMouse;
-            Tower.TargetX = unit.TargetX+Tower.tower_x;
-            Tower.TargetY = unit.TargetY+Tower.tower_y;
+            Tower.TargetX = unit.TargetX+Tower.fire_x;
+            Tower.TargetY = unit.TargetY+Tower.fire_y;
         }
 //        if(Keyboard.PressE){
 //            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);

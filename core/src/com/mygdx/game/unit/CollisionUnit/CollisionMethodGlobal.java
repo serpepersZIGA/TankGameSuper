@@ -3,6 +3,7 @@ package com.mygdx.game.unit.CollisionUnit;
 import com.mygdx.game.Network.SoundPacket;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.ClassUnit;
 import com.mygdx.game.unit.Unit;
 
@@ -16,6 +17,8 @@ import java.util.ArrayList;
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.TowerRotate;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.v;
 import static java.lang.StrictMath.*;
 
 public class CollisionMethodGlobal {
@@ -28,7 +31,7 @@ public class CollisionMethodGlobal {
         for(int i = 0;i<Main.UnitList.size();i++){
             Unit unit = Main.UnitList.get(i);
             for (Unit unit2 : UnitsBuffer){
-                CollisionMethod(unit,unit2);
+                CollisionMethod(unit2,unit);
             }
             UnitsBuffer.add(unit);
 
@@ -49,12 +52,15 @@ public class CollisionMethodGlobal {
 
     }
     public void CollisionMethod(Unit unit1,Unit unit2){
+
         if(unit1.height == unit2.height) {
             if (abs(unit1.XMap-unit2.XMap)<3 & abs(unit1.YMap-unit2.YMap)<3) {
                 if (CollisionRectRect(unit1, unit2)) {
                     SoundPlay.soundPlay(unit1.x_rend, unit1.y_rend, (int) unit1.x, (int) unit1.y, 7, Main.ContentSound.hit);
                     if (unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
-                        CollisionFunctional.physicCollision(unit1, unit2);
+                        CollisionFunctional.PhysicCollision(unit1, unit2);
+                        CollisionFunctional.PhysicCollision(unit2, unit1);
+                        //CollisionFunctional.physicCollision(unit1, unit2);
                         CollisionFunctional.MethodCollisionTransport(unit1, unit2);
                     } else if (unit1.classUnit == ClassUnit.Soldat & unit2.classUnit == ClassUnit.Soldat) {
                         CollisionFunctional.MethodCollisionSoldatSoldat(unit1, unit2);

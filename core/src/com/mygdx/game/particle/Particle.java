@@ -8,6 +8,7 @@ import com.mygdx.game.block.UpdateRegister;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 
+import java.util.ArrayList;
 import java.util.LinkedList;
 
 import static com.mygdx.game.block.Block.BlockID;
@@ -43,13 +44,13 @@ public abstract class Particle {
                     "image/animation/BloodAnimation.png",6,3);
     public float[]rgb;
 
-    protected void timer(LinkedList<Particle> obj){
+    protected void timer(ArrayList<Particle> obj){
         this.time_delete -= 1;
         if(this.time_delete <= 0){
             obj.remove(this);
         }
     }
-    protected void timerFlame(LinkedList<Particle> obj){
+    protected void timerFlame(ArrayList<Particle> obj){
         this.time_delete -= 1;
         if(this.time_delete <= 0){
             obj.remove(this);
@@ -158,7 +159,7 @@ public abstract class Particle {
         this.size_2 = this.size/2;
         this.size_3 = this.size_2/2;
     }
-    protected void size_rise_delete(LinkedList<Particle>particles){
+    protected void size_rise_delete(ArrayList<Particle>particles){
 
         this.size -= this.interval_rise_size;
         if(this.size < 4){
@@ -203,7 +204,7 @@ public abstract class Particle {
             }
         }
     }
-    protected void create_flame_particle(LinkedList<Particle>obj){
+    protected void create_flame_particle(ArrayList<Particle> obj){
         this.time_spawn -= 1;
         if(this.time_spawn <= 0){
             obj.add(new FlameParticle(this.x,this.y));

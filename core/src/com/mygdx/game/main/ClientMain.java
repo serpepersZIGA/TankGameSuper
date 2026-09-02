@@ -4,6 +4,7 @@ import com.esotericsoftware.kryonet.Client;
 
 import java.io.IOException;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Objects;
 
 import com.esotericsoftware.kryonet.Connection;
@@ -12,6 +13,7 @@ import com.mygdx.game.Event.EventDeleteItemClient;
 import com.mygdx.game.Event.EventTransferItemClient;
 import com.mygdx.game.Event.EventUseClient;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Network.*;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.Network.BuildPacket;
@@ -86,6 +88,7 @@ public class ClientMain extends Listener {
 
         Client.getKryo().register(PacketUnitUpdate.class);
         Client.getKryo().register(SpawnPlayerPack.class);
+        Client.getKryo().register(ConnectPlayer.class);
 
         //Запускаем клиент
         Client.start();
@@ -122,28 +125,26 @@ public class ClientMain extends Listener {
             LightSystem.setAmbientColor(new Color(0,0,0,lightTotal));
             LightSystem.setMinLightness(lightTotal);
 
-            Inventory.Money = ((PackerServer) p).Money;
+            ArrayList<Integer> Money = ((PackerServer) p).Money;
+            for (int i = 0;i < Money.size();i++) {
+                TeamGlobal.replace((byte) i, Money.get(i));
+            }
 
             PacketUnit = ((PackerServer) p).player;
             i = 0;
 //            ArrayList<PacketInventory> InventoryPack = ((PackerServer) p).inventory;
 //            ArrayList<PacketInventory> InventoryPack2 = ((PackerServer) p).equipment;
-            if(UnitList.size() == PacketUnit.size()) {
+            //if(UnitList.size() == PacketUnit.size()) {
                 for (Unit unit : UnitList) {
-                    player_data(unit,PacketUnit.get(i));
-                    if(PacketUnit.get(i).IDClient== IDClient) {
-                        unit.inventory = ItemSynchronization(unit.inventory, PacketUnit.get(i).inventory);
-                        unit.equipment = ItemSynchronization(unit.equipment, PacketUnit.get(i).equipment);
-                        inventoryMain.SlotGeneration();
-                        equipmentMain.SlotGeneration();
+                    if(PacketUnit.size() >i) {
+                        player_data(unit, PacketUnit.get(i));
                     }
-
                     i++;
                 }
-            }
-            else {
-                UnitCreate();
-            }
+            //}
+            //else {
+                //UnitCreate();
+            //}
 
 //            ItemPackList = ((PackerServer) p).item;
 //            i = 0;
@@ -207,6 +208,7 @@ public class ClientMain extends Listener {
             PacketBuilding = ((PacketBuildingServer) p).BuildPack;
             BuildingList.clear();
 
+
             //LightSystem.lightsRender.clear();
             for (int i = 0; i < PacketBuilding.size(); i++) {
                 Building_create(i, PacketBuilding.get(i).x - width_block,
@@ -222,32 +224,13 @@ public class ClientMain extends Listener {
                 }
             }
             Block.passability_detected();
+            ConnectPlayer connect = new ConnectPlayer();
+            connect.IDPlayerConnect = IDClient;
+            Client.sendTCP(connect);
 
         }
         else if (p instanceof PacketUnitUpdate) {
             PacketBull = ((PacketUnitUpdate) p).bull;
-            packetUnitUpdate = (PacketUnitUpdate)p;
-            if(packetUnitUpdate.ConfUnit){
-                UnitCreate();
-            }
-            if(packetUnitUpdate.ConfDebris){
-                DebrisList.clear();
-                for (DebrisPacket packetDebris : PacketDebris) {
-                    Main_client.debris_create(packetDebris);
-                    Main_client.debris_data_add(packetDebris);
-                }
-                KeyboardObj.ZoomConstTransport();
-                PacketServer.debrisConf = false;
-                return;
-            }
-            //System.out.println(packetUnitUpdate.ItemPack.size()+" "+packetUnitUpdate.ItemPack.get(0).ID);
-            if(packetUnitUpdate.ConfItem) {
-                //System.out.println(packetUnitUpdate.ItemPack.size()+" "+packetUnitUpdate.ItemPack.get(0).ID);
-                ItemList.clear();
-                for (ItemPacket pack : packetUnitUpdate.ItemPack) {
-                    ItemList.add(new ItemObject(IDListItem.get(pack.ID), pack.x, pack.y));
-                }
-            }
             if(PacketBull != null) {
                 for (BullPacket pack : PacketBull) {
                     for (Object[] obj : IDBullet) {
@@ -259,12 +242,55 @@ public class ClientMain extends Listener {
                     }
                 }
                 return;
-                //PacketBull.clear();
+            }
+            packetUnitUpdate = (PacketUnitUpdate)p;
+            ArrayList<String[][]>inventoryClient = ((PacketUnitUpdate) p).inventory;
+            ArrayList<String[][]>equipmentClient = ((PacketUnitUpdate) p).equipment;
+            int idClient = ((PacketUnitUpdate) p).IDClient;
+
+
+
+
+            if(packetUnitUpdate.ConfUnit){
+                UnitCreate(packetUnitUpdate.packServer.player);
+            }
+//            if(packetUnitUpdate.ConfDebris){
+//                DebrisList.clear();
+//                for (DebrisPacket packetDebris : PacketDebris) {
+//                    Main_client.debris_create(packetDebris);
+//                    Main_client.debris_data_add(packetDebris);
+//                }
+//                KeyboardObj.ZoomConstTransport();
+//                PacketServer.debrisConf = false;
+//                return;
+//            }
+            if(packetUnitUpdate.packServer != null & packetUnitUpdate.ConfInventory) {
+                for (int i = 0; i < packetUnitUpdate.packServer.player.size(); i++) {
+                    TransportPacket packet = packetUnitUpdate.packServer.player.get(i);
+                    UnitList.get(i).inventory
+                            = new Inventory(inventoryClient.get(i));
+                    UnitList.get(i).equipment = new Inventory(equipmentClient.get(i));
+                    if (IDClient == packet.IDClient) {
+                        inventoryMain.inventory = RC.MainUnit.inventory;
+                        equipmentMain.inventory = RC.MainUnit.equipment;
+                        inventoryMain.SlotGenerationClient();
+                        equipmentMain.SlotGenerationClient();
+                    }
+
+                }
+            }
+            //System.out.println(packetUnitUpdate.ItemPack.size()+" "+packetUnitUpdate.ItemPack.get(0).ID);
+            if(packetUnitUpdate.ConfItem) {
+                //System.out.println(packetUnitUpdate.ItemPack.size()+" "+packetUnitUpdate.ItemPack.get(0).ID);
+                ItemList.clear();
+                for (ItemPacket pack : packetUnitUpdate.ItemPack) {
+                    ItemList.add(new ItemObject(IDListItem.get(pack.ID), pack.x, pack.y));
+                }
             }
         }
     }
 
-    private Inventory ItemSynchronization(Inventory inventory,String[][] pack){
+    private Inventory ItemSynchronization(Inventory inventory,String[][] pack,boolean inventoryConf){
 
          if (inventory == null) {
              inventory = new Inventory(new Item[pack.length][pack[0].length],1);
@@ -275,11 +301,23 @@ public class ClientMain extends Listener {
              for (int iy = 0; iy < pack[ix].length; iy++) {
                  if (pack[ix][iy] != null) {
                      inventory.ItemAdd(ix, iy, IDListItem.get(pack[ix][iy]));
+                     if(inventoryConf){
+                         inventoryMain.SlotInventory[ix][iy].item = inventory.InventorySlots[ix][iy];
+                     }
+                     else{
+                         equipmentMain.SlotInventory[ix][iy].item = inventory.InventorySlots[ix][iy];
+                     }
 
 
                  } else {
                      inventory.InventorySlots[ix]
                              [iy] = null;
+                     if(inventoryConf){
+                         inventoryMain.SlotInventory[ix][iy].item = null;
+                     }
+                     else{
+                         equipmentMain.SlotInventory[ix][iy].item = null;
+                     }
                  }
              }
          }
@@ -324,7 +362,7 @@ public class ClientMain extends Listener {
         unit.host = packet.host;
         unit.nConnect = packet.IDClient;
         for (int i2 = 0; i2 < unit.TowerUnitList.size(); i2++) {
-
+            System.out.println(packet.rotation_tower_2.get(i2)+ " "+i2);
             unit.TowerUnitList.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
             unit.TowerUnitList.get(i2).reload = packet.reloadTower.get(i2);
         }
@@ -420,7 +458,7 @@ public class ClientMain extends Listener {
         DebrisList.add(new UnitPattern(unit.CorpusUnit, debris.UnitID,debris.x,debris.y,debris.rotation,0,1));
     }
 
-    public void UnitCreate() {
+    public void UnitCreate(ArrayList<TransportPacket>PacketUnit) {
         UnitList.clear();
         Unit unitBuf;
         for (TransportPacket pack : PacketUnit) {
@@ -444,21 +482,29 @@ public class ClientMain extends Listener {
                 unitBuf.control = RegisterControl.controllerPlayer;
                 unitBuf.nConnect = pack.IDClient;
                 if(unitBuf.nConnect == IDClient){
-
-                    unitBuf.inventory = ItemSynchronization(unitBuf.inventory, PacketUnit.get(i).inventory);
-                    unitBuf.equipment = ItemSynchronization(unitBuf.equipment, PacketUnit.get(i).equipment);
+//                    if (unitBuf.inventory == null) {
+//                        unitBuf.inventory = new Inventory(new Item[pack.inventory.length][pack.inventory[0].length],1);
+//                        //inventory.ItemClear();
+//                    }
+//                    if (unitBuf.equipment == null) {
+//                        unitBuf.equipment = new Inventory(new Item[pack.equipment.length][pack.equipment[0].length],1);
+//                        //inventory.ItemClear();
+//                    }
+//                    inventoryMain.InventoryRefactor(unitBuf.inventory);
+//                    equipmentMain.InventoryRefactor(unitBuf.equipment);
+//                    inventoryMain.SlotGenerationClient();
+//                    equipmentMain.SlotGenerationClient();
+//
+//                    unitBuf.inventory = ItemSynchronization(unitBuf.inventory, PacketUnit.get(i).inventory,true);
+//                    unitBuf.equipment = ItemSynchronization(unitBuf.equipment, PacketUnit.get(i).equipment,false);
 
                     RC.MainUnit = unitBuf;
-                    inventoryMain.InventoryRefactor(unitBuf.inventory);
-                    equipmentMain.InventoryRefactor(unitBuf.equipment);
-                    inventoryMain.SlotGenerationClient();
-                    equipmentMain.SlotGenerationClient();
                 }
 //                if (pack.IDClient == IDClient){
 //                    equipmentMain = new EquipmentInterface(UnitList.get(UnitList.size() - 1).equipment);
 //                }
             }
-            i++;
+            //i++;
         }
         KeyboardObj.ZoomConstTransport();
     }

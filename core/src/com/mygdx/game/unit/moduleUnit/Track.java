@@ -9,8 +9,12 @@ import com.mygdx.game.unit.Unit;
 import java.util.Objects;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister.TowerXY;
+import static com.mygdx.game.method.Method.RP;
+import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleTrack.TrackID;
+import static java.lang.StrictMath.atan2;
+import static java.lang.StrictMath.sqrt;
 
 public class Track implements Cloneable{
     public int WidthTrack, WidthTrack2;
@@ -24,6 +28,7 @@ public class Track implements Cloneable{
     public String image;
     public Animator animator;
     public byte Side;
+    public float differenceTotal,RotationDifference;
 
     public Track(String id,int WidthTrack, int HeightTrack
                   , String image,String imageInvert){
@@ -67,6 +72,10 @@ public class Track implements Cloneable{
             track = (Track) track.clone();
             track.differenceX = differenceX;
             track.differenceY = differenceY;
+
+            track.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
+            //float[]xy = Method.tower_xy_2(0,0,)
+            track.RotationDifference = (float) (atan2(differenceY,differenceX)*RP);
             track.Side = (byte)Side;
 
             track.CenterX = unit.CorpusUnit.corpus_width_2-track.WidthTrack2;
@@ -92,6 +101,9 @@ public class Track implements Cloneable{
         unit.tower_y_const = CenterY;
         unit.difference_2 = differenceX;
         unit.difference = differenceY;
+
+        unit.differenceTotal = differenceTotal;
+        unit.RotationDifference = RotationDifference;
 
 
 

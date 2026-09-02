@@ -1,8 +1,8 @@
 {
   "Engine": "V2A",
   "Corpus": "Panzer1",
-  "Cannon": ["Ack2AL","Ack2AL","Ack2A"],
-  "TowerXY": [[-10,50],[10,50],[1,18]],
+  "Cannon": ["Ack2A"],
+  "TowerXY": [[1,18]],
 
   "Track": ["TrackPz2","TrackPz2"],
   "Side": [0,1],
