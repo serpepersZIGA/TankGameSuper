@@ -42,7 +42,9 @@ public class LightingMainSystem implements Disposable {
     // to notice against the bright daytime floor. Transient combat lights
     // (muzzle flashes, fire, explosions) are never gated by this - a fire's
     // glow should still show up in broad daylight.
-    private static final float DAY_THRESHOLD = 0.6f;
+    // public so MapObject can use the same cutoff to swap a lamp's own
+    // on/off sprite in step with when its actual light switches on
+    public static final float DAY_THRESHOLD = 0.6f;
 
     public static class Light {
         public final Vector2 position = new Vector2();

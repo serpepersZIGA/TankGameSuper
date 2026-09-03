@@ -1,5 +1,6 @@
 package com.mygdx.game.ui
 
+import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.scenes.scene2d.Actor
 import com.badlogic.gdx.scenes.scene2d.ui.ButtonGroup
 import com.badlogic.gdx.scenes.scene2d.ui.Label
@@ -10,6 +11,8 @@ import com.badlogic.gdx.scenes.scene2d.ui.TextButton
 import com.badlogic.gdx.scenes.scene2d.utils.ChangeListener
 import com.badlogic.gdx.utils.Align
 import com.mygdx.game.main.Main
+import com.mygdx.game.method.GameAction
+import com.mygdx.game.method.KeyBindings
 
 /**
  * Options screen, split into tabs (Audio / Display / Interface) so a single
@@ -20,11 +23,16 @@ import com.mygdx.game.main.Main
  */
 object SettingsScreen : MenuScreen() {
 
-    private enum class Tab { AUDIO, DISPLAY, INTERFACE }
+    private enum class Tab { AUDIO, DISPLAY, INTERFACE, CONTROLS }
     private var activeTab: Tab = Tab.AUDIO
 
     // wherever we were opened from - main menu or the pause menu - so Back goes there
     private var returnTo: MenuScreen = MainMenuScreen
+
+    // set while the Controls tab is waiting for the next key press to bind -
+    // see buildControlsTab/update()
+    private var awaitingAction: GameAction? = null
+    private val keyButtons = mutableMapOf<GameAction, TextButton>()
 
     fun openFrom(caller: MenuScreen) {
         returnTo = caller
@@ -33,7 +41,29 @@ object SettingsScreen : MenuScreen() {
     }
 
     init {
-        onEscape = { goBack() }
+        onEscape = {
+            val awaiting = awaitingAction
+            if (awaiting != null) {
+                // cancel the rebind instead of leaving the screen - Esc
+                // during "press any key" means "never mind", not "back"
+                awaitingAction = null
+                keyButtons[awaiting]?.setText(KeyBindings.keyName(awaiting))
+            } else {
+                goBack()
+            }
+        }
+    }
+
+    override fun update() {
+        val awaiting = awaitingAction ?: return
+        for (code in 0..com.badlogic.gdx.Input.Keys.MAX_KEYCODE) {
+            if (Gdx.input.isKeyJustPressed(code)) {
+                KeyBindings.rebind(awaiting, code)
+                keyButtons[awaiting]?.setText(KeyBindings.keyName(awaiting))
+                awaitingAction = null
+                return
+            }
+        }
     }
 
     private fun goBack() {
@@ -60,6 +90,7 @@ object SettingsScreen : MenuScreen() {
                 Tab.AUDIO -> buildAudioTab(body, skin)
                 Tab.DISPLAY -> buildDisplayTab(body, skin)
                 Tab.INTERFACE -> buildInterfaceTab(body, skin)
+                Tab.CONTROLS -> buildControlsTab(body, skin)
             }
         }
 
@@ -261,6 +292,39 @@ object SettingsScreen : MenuScreen() {
         table.add(languageRow).row()
         table.add(showFpsCaption).align(Align.right).padRight(20f).padTop(20f)
         table.add(showFpsButton).height(48f).padTop(20f)
+    }
+
+    private val rebindableActions = listOf(
+        GameAction.MOVE_FORWARD, GameAction.MOVE_BACK, GameAction.MOVE_LEFT, GameAction.MOVE_RIGHT,
+        GameAction.TOGGLE_INVENTORY, GameAction.TOGGLE_EQUIPMENT, GameAction.TOGGLE_SHOP
+    )
+
+    private fun buildControlsTab(table: Table, skin: GameSkin) {
+        awaitingAction = null
+        keyButtons.clear()
+
+        for (action in rebindableActions) {
+            val caption = Label(Localization.tr("menu.settings.controls.${action.name.lowercase()}"), skin.bodyLabelStyle)
+            val keyButton = TextButton(KeyBindings.keyName(action), skin.buttonStyle)
+            keyButtons[action] = keyButton
+            keyButton.addListener(object : ChangeListener() {
+                override fun changed(event: ChangeEvent?, actor: Actor?) {
+                    awaitingAction = action
+                    keyButton.setText(Localization.tr("menu.settings.controls.presskey"))
+                }
+            })
+            table.add(caption).align(Align.right).padRight(20f)
+            table.add(keyButton).width(180f).height(48f).pad(4f).row()
+        }
+
+        val resetButton = TextButton(Localization.tr("menu.settings.controls.reset"), skin.buttonStyle)
+        resetButton.addListener(object : ChangeListener() {
+            override fun changed(event: ChangeEvent?, actor: Actor?) {
+                KeyBindings.resetToDefaults()
+                for ((action, button) in keyButtons) button.setText(KeyBindings.keyName(action))
+            }
+        })
+        table.add(resetButton).colspan(2).padTop(24f)
     }
 
     private fun percentText(value: Float) = "${Math.round(value * 100)}%"

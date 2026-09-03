@@ -37,11 +37,26 @@ public class MapObject implements Cloneable{
     public ComponentCollisionSystem Collision;
     public String assets;
     public LightingMainSystem.Light light;
+    public int lightOffsetY,lightOffsetX;
+    // name of a Sound field on DataSound to play when CollisionBreak crushes
+    // this object (see resolveCrushSound) - null/empty means silent
+    public String crushSound;
+    // true = a solid obstacle (uses Block.passability, same as buildings)
+    // instead of the usual slow-and-pass-through decor collision
+    public boolean solid;
+    // true = picks the metallic clang variant of the solid-wall impact sound
+    public boolean metallic;
+    // lazily worked out on first render (terrain isn't painted yet when
+    // objects are placed, so this can't be baked in at placement time) -
+    // whether a lamp shows its snowed-over sprite instead of the plain one
+    private boolean climateChecked;
+    private boolean isSnowy;
     public static HashMap<String,MapObject> ObjectMapIDList=new HashMap<>();
     public MapObject(){
     }
     public MapObject(String img, int width, int height, int hp, int ix, int iy,
-                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,boolean PlayerSpawn,String assets){
+                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,boolean PlayerSpawn,String assets,
+                     int lightOffsetY,int lightOffsetX,String crushSound,boolean solid,boolean metallic){
         this.ix = ix;
         this.iy = iy;
         this.width = width;
@@ -55,6 +70,11 @@ public class MapObject implements Cloneable{
         this.hp = hp;
         this.img = img;
         this.assets = assets;
+        this.lightOffsetY = lightOffsetY;
+        this.lightOffsetX = lightOffsetX;
+        this.crushSound = crushSound;
+        this.solid = solid;
+        this.metallic = metallic;
         ObjectMapIDList.put(assets,this);
         CollisionBuff = collision;
         //center_render();
@@ -74,7 +94,7 @@ public class MapObject implements Cloneable{
 
             if(this.lighting){
                 obj.lighting = true;
-                obj.light = LightSystem.addLight().set(obj.x,obj.y
+                obj.light = LightSystem.addLight().set(obj.x+lightOffsetX,obj.y+lightOffsetY
                         ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
                         4f,distance_lighting,0.2f);
                 obj.light.isStreetLamp = true;
@@ -82,12 +102,22 @@ public class MapObject implements Cloneable{
 
             }
             switch (this.CollisionBuff){
-                case "CollisionBreak":obj.Collision = new CollisionBreak(obj.x,obj.y,width,height);
-                break;
+                case "CollisionBreak":{
+                    Object[] sound = resolveCrushSound(this.crushSound);
+                    obj.Collision = sound == null ? new CollisionBreak(obj.x,obj.y,width,height)
+                            : new CollisionBreak(obj.x,obj.y,width,height,(com.badlogic.gdx.audio.Sound) sound[0],(int) sound[1]);
+                    break;
+                }
                 case "CollisionSlow":obj.Collision = new CollisionSlow(obj.x,obj.y,width,height);
                     break;
                 case "CollisionVoid":obj.Collision = new CollisionVoid();
                     break;
+            }
+            // a solid obstacle uses the same wall-collision system as
+            // buildings (Block.passability) instead of the per-object
+            // Collision above, which only ever slows/passes through
+            if(this.solid){
+                BlockList2D.get(y).get(x).passability = true;
             }
             if(this.SpawnUnit){
                 SpawnerList.add(new int[]{y,x});
@@ -100,6 +130,16 @@ public class MapObject implements Cloneable{
             throw new RuntimeException(e);
         }
     }
+    /** {Sound, id} for a name like "hit"/"break_wooden"/"hit_not_penetration" - see SoundRegister.IDSound. Null if none/unknown. */
+    private static Object[] resolveCrushSound(String name){
+        if(name == null || name.isEmpty()) return null;
+        switch (name){
+            case "break_wooden": return new Object[]{ContentSound.break_wooden, 3};
+            case "hit": return new Object[]{ContentSound.hit, 7};
+            case "hit_not_penetration": return new Object[]{ContentSound.hit_not_penetration, 8};
+            default: return null;
+        }
+    }
     public void MapObjectAdd(float x,float y){
         try {
             int ix = (int) (x/width_block+1);
@@ -109,7 +149,7 @@ public class MapObject implements Cloneable{
             obj.x = (int) x;
             obj.y = (int) y;
             if(lighting){
-                obj.light = LightSystem.addLight().set(obj.x,obj.y
+                obj.light = LightSystem.addLight().set(obj.x+lightOffsetX,obj.y+lightOffsetY
                         ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
                         4f,distance_lighting,0.2f);
                 obj.light.isStreetLamp = true;
@@ -117,8 +157,12 @@ public class MapObject implements Cloneable{
 
             }
             switch (CollisionBuff){
-                case "CollisionBreak":obj.Collision = new CollisionBreak(obj.x,obj.y,width,height);
+                case "CollisionBreak":{
+                    Object[] sound = resolveCrushSound(this.crushSound);
+                    obj.Collision = sound == null ? new CollisionBreak(obj.x,obj.y,width,height)
+                            : new CollisionBreak(obj.x,obj.y,width,height,(com.badlogic.gdx.audio.Sound) sound[0],(int) sound[1]);
                     break;
+                }
                 case "CollisionSlow":obj.Collision = new CollisionSlow(obj.x,obj.y,width,height);
                     break;
                 case "CollisionVoid":obj.Collision = new CollisionVoid();
@@ -139,7 +183,16 @@ public class MapObject implements Cloneable{
         int[]xy = Main.RC.render_objZoom(this.x,this.y);
         //if(lighting)Block.LightingAirObject(xy[0],xy[1],RGBFlame,distance_lighting*Main.Zoom);
 
-        RenderMethod.transorm_img(xy[0],xy[1],width_render,height_render,TextureAtl.createSprite(img));
+        String spriteName = img;
+        if("lamp".equals(assets)){
+            if(!climateChecked){
+                isSnowy = com.mygdx.game.MapFunction.ProceduralTerrainPainter.climateAt(this.x, this.y)[0] > 0.5f;
+                climateChecked = true;
+            }
+            boolean lit = com.mygdx.game.method.CycleTimeDay.lightTotal < LightingMainSystem.DAY_THRESHOLD;
+            spriteName = (isSnowy ? "Snow-City-light-" : "City-light-") + (lit ? "on" : "off");
+        }
+        RenderMethod.transorm_img(xy[0],xy[1],width_render,height_render,TextureAtl.createSprite(spriteName));
     }
     public static void SpawnWave(){
         for(int[] i : SpawnerList){

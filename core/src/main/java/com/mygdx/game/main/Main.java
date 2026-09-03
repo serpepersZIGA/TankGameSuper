@@ -254,6 +254,9 @@ public class Main extends ApplicationAdapter {
 		LightSystem.setAmbientColor(new Color(0,0,0,1f));
 		ContentSound = new DataSound();
 		ContentImage = new DataImage();
+		// cuts individual decor sprites (rocks, bushes, flowers...) out of a
+		// handful of shared sheets instead of needing one PNG file per variant
+		com.mygdx.game.object_map.DecorSpriteSheets.INSTANCE.register();
 		// Particle's static fields build Animators, which create OpenGL
 		// textures - and textures can only be created on the thread that
 		// owns the GL context. Particle is a plain class, so its static

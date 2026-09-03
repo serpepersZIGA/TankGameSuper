@@ -1,0 +1,16 @@
+{
+  "Image": "City-light-off",
+  "Collision":"CollisionVoid",
+  "X":6,
+  "Y":0,
+  "width":35,
+  "height":130,
+  "HP":9999,
+  "LightingConf":true,
+  "Lighting":220,
+  "LightOffsetY":95,
+  "LightOffsetX":35,
+  "Solid":true,
+  "Metallic":true,
+  "SpawnUnit": false
+}

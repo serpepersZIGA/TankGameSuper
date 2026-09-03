@@ -53,9 +53,14 @@ public class ObjectPars {
         boolean LightingConf = obj.LightingConf;
         boolean SpawnUnit = obj.SpawnUnit;
         boolean PlayerSpawn = obj.PlayerSpawn;
+        int LightOffsetY = obj.LightOffsetY;
+        int LightOffsetX = obj.LightOffsetX;
+        String CrushSound = obj.CrushSound;
+        boolean Solid = obj.Solid;
+        boolean Metallic = obj.Metallic;
 
         new MapObject(Image, width, height,HP,X, Y, Collision,LightingConf,Lighting,SpawnUnit,PlayerSpawn
-                ,file.name().replace(".json", ""));
+                ,file.name().replace(".json", ""),LightOffsetY,LightOffsetX,CrushSound,Solid,Metallic);
 
 
     }

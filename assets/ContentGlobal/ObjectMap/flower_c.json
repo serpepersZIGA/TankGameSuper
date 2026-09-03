@@ -1,0 +1,13 @@
+{
+  "Image": "flower_c",
+  "Collision":"CollisionBreak",
+
+  "X":26,
+  "Y":24,
+  "width":18,
+  "height":21,
+  "HP":9999,
+  "LightingConf":false,
+  "Lighting":0,
+  "SpawnUnit": false
+}

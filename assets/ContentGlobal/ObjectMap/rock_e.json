@@ -1,0 +1,13 @@
+{
+  "Image": "rock_e",
+  "Collision":"CollisionBreak",
+  "CrushSound":"hit",
+  "X":15,
+  "Y":10,
+  "width":38,
+  "height":40,
+  "HP":9999,
+  "LightingConf":false,
+  "Lighting":0,
+  "SpawnUnit": false
+}

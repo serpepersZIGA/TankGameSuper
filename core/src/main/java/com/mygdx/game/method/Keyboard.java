@@ -46,40 +46,24 @@ public class Keyboard extends InputAdapter{
 
     @Override
     public boolean keyDown(int keycode) {
-
+        if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_FORWARD)) {
+            PressW = true;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_BACK)) {
+            PressS = true;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_LEFT)) {
+            PressA = true;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_RIGHT)) {
+            PressD = true;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.TOGGLE_INVENTORY)) {
+            PressE = true;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.TOGGLE_SHOP)) {
+            PressB = true;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.TOGGLE_EQUIPMENT)) {
+            PressZ = true;
+        } else if (keycode == Input.Keys.F) {
+            PressF = true;
+        }
         switch (keycode) {
-            case Input.Keys.W: {
-                PressW = true;
-                break;
-            }
-            case Input.Keys.S: {
-                PressS = true;
-                break;
-            }
-            case Input.Keys.A: {
-                PressA = true;
-                break;
-            }
-            case Input.Keys.D: {
-                PressD = true;
-                break;
-            }
-            case Input.Keys.F: {
-                PressF = true;
-                break;
-            }
-            case Input.Keys.E: {
-                PressE = true;
-                break;
-            }
-            case Input.Keys.B: {
-                PressB = true;
-                break;
-            }
-            case Input.Keys.Z: {
-                PressZ = true;
-                break;
-            }
             case Input.Keys.UP: {
                 Button.YList += 4;
                 PressUP = true;
@@ -101,37 +85,27 @@ public class Keyboard extends InputAdapter{
 
     @Override
     public boolean keyUp(int keycode) {
+        if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_FORWARD)) {
+            PressW = false;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_BACK)) {
+            PressS = false;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_LEFT)) {
+            PressA = false;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.MOVE_RIGHT)) {
+            PressD = false;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.TOGGLE_INVENTORY)) {
+            PressE = false;
+            inventoryMain.InventoryConf = !inventoryMain.InventoryConf;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.TOGGLE_SHOP)) {
+            PressB = false;
+            shopMain.InventoryConf = !shopMain.InventoryConf;
+        } else if (keycode == KeyBindings.INSTANCE.keycodeFor(GameAction.TOGGLE_EQUIPMENT)) {
+            PressZ = false;
+            equipmentMain.InventoryConf = !equipmentMain.InventoryConf;
+        } else if (keycode == Input.Keys.F) {
+            PressF = false;
+        }
         switch (keycode) {
-            case Input.Keys.W:{
-                PressW = false;
-                break;
-            } case Input.Keys.S: {
-                PressS = false;
-                break;
-            } case Input.Keys.A: {
-                PressA = false;
-                break;
-            } case Input.Keys.D: {
-                PressD = false;
-                break;
-            } case Input.Keys.F: {
-                PressF = false;
-                break;
-            } case Input.Keys.E:{
-                PressE = false;
-                inventoryMain.InventoryConf = !inventoryMain.InventoryConf;
-                break;
-            }
-            case Input.Keys.B: {
-                PressB = false;
-                shopMain.InventoryConf = !shopMain.InventoryConf;
-                break;
-            }
-            case Input.Keys.Z: {
-                PressZ = false;
-                equipmentMain.InventoryConf = !equipmentMain.InventoryConf;
-                break;
-            }
             case Input.Keys.UP: {
                 PressUP = false;
                 break;

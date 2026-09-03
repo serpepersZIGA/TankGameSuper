@@ -32,6 +32,15 @@ import java.util.Set;
 // organic look instead of a ruler-straight road.
 public class ProceduralMapGenerator {
     private static final String[] BUILDINGS = {"BigBuildingWood1", "Building2"};
+    // scattered decor pool - rocks/plants/wood/flowers, replacing the old
+    // single reused pepper asset (see DecorSpriteSheets.kt for where these
+    // sprite names come from)
+    private static final String[] DECOR_TYPES = {
+            "rock_a", "rock_b", "rock_c", "rock_d", "rock_e",
+            "plant_a", "plant_b", "plant_c", "plant_d", "plant_e",
+            "wood_a", "wood_b",
+            "flower_a", "flower_b", "flower_c", "flower_d"
+    };
     private static final int BUILDING_CLEARANCE = 12;
     // how far off the road a building sits - close enough that the short
     // dirt path ProceduralTerrainPainter traces to it reads as "just off the
@@ -46,6 +55,11 @@ public class ProceduralMapGenerator {
     // own width while it drives down a ROAD_WIDTH=2 road, not just the exact
     // cell the road occupies
     private static final int DECOR_ROAD_CLEARANCE = 3;
+    // just off the road edge, close enough to read as "lighting this road"
+    private static final int LAMP_ROAD_OFFSET = 3;
+    // gap between lamps along a road - keeps their (much smaller) light
+    // radius from overlapping into one continuous wash again
+    private static final int MIN_LAMP_SPACING = 16;
 
     /** Default size for a freshly-generated map - see MapSelectScreen. */
     public static final int DEFAULT_SIZE = 260;
@@ -116,10 +130,9 @@ public class ProceduralMapGenerator {
         appendSpawnZone(sb, "playerspawn", playerHub, width, height, rand);
         appendSpawnZone(sb, "enemyspawn", enemyHub, width, height, rand);
 
-        // was /150 - a 260x260 map only got ~450 decor objects scattered
-        // across it, which read as an almost-empty map. This is still the
-        // only decor asset there is (see pepper.json) - more variety needs
-        // actual new art, not just a density change.
+        // was pepper (a single reused bush/lamp asset) for every scattered
+        // object - now a real pool of rocks/plants/wood/flowers cut from the
+        // asset sheets (see DecorSpriteSheets.kt), one random variant per spot.
         int decorTarget = (width*height)/45;
         int decorAttempts = 0, decorPlaced = 0;
         while (decorPlaced < decorTarget && decorAttempts < decorTarget*10){
@@ -133,8 +146,33 @@ public class ProceduralMapGenerator {
             // read as "decor sitting in the middle of the asphalt".
             if (!clearOfRoad(road, width, height, x, y, DECOR_ROAD_CLEARANCE)) continue;
             if (!clearOfBuildings(placedBuildings, x, y, 6)) continue;
-            sb.append("MapObject:o pepper:x").append(x).append(":y").append(y).append(":;\n");
+            String decor = DECOR_TYPES[rand.nextInt(DECOR_TYPES.length)];
+            sb.append("MapObject:o ").append(decor).append(":x").append(x).append(":y").append(y).append(":;\n");
             decorPlaced++;
+        }
+
+        // street lamps line the road instead of scattering everywhere like
+        // plain decor does - a real street lamp marks a road, it doesn't
+        // show up in the middle of an open field. Spaced apart so their
+        // (much smaller now) light radius reads as a lit street instead of
+        // overlapping into one wash of light again.
+        int lampTarget = Math.max(6, (width+height)/10);
+        int lampAttempts = 0, lampPlaced = 0;
+        List<int[]> placedLamps = new ArrayList<>();
+        while (lampPlaced < lampTarget && lampAttempts < lampTarget*20 && !roadCells.isEmpty()){
+            lampAttempts++;
+            int[] roadCell = roadCells.get(rand.nextInt(roadCells.size()));
+            float angle = rand.nextFloat()*(float)(Math.PI*2);
+            int x = roadCell[0] + Math.round((float) Math.cos(angle)*LAMP_ROAD_OFFSET);
+            int y = roadCell[1] + Math.round((float) Math.sin(angle)*LAMP_ROAD_OFFSET);
+            if (x < BUILDING_EDGE_CLEARANCE || x >= width-BUILDING_EDGE_CLEARANCE
+                    || y < BUILDING_EDGE_CLEARANCE || y >= height-BUILDING_EDGE_CLEARANCE) continue;
+            if (!clearOfRoad(road, width, height, x, y, 1)) continue;
+            if (!clearOfBuildings(placedBuildings, x, y, 6)) continue;
+            if (!clearOfBuildings(placedLamps, x, y, MIN_LAMP_SPACING)) continue;
+            sb.append("MapObject:o lamp:x").append(x).append(":y").append(y).append(":;\n");
+            placedLamps.add(new int[]{x, y});
+            lampPlaced++;
         }
 
         return sb.toString();

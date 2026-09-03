@@ -1570,8 +1570,14 @@ public abstract class Unit implements Cloneable{
             float speedNow = (float) sqrt(pow2(SpeedInertionX)+pow2(SpeedInertionY));
             if (speedNow > 2) {
                 Block block = BlockList2D.get(hitIy).get(hitIx);
+                // a solid decor object (e.g. a lamp post) marks its own cell
+                // impassable and rides this same wall-collision path - metallic
+                // picks a clang instead of the default wooden wall thud
+                boolean metallic = block.objMap != null && block.objMap.metallic;
                 if (RC.MainUnit == this) {
-                    RC.MainUnit.playImpact(false);
+                    RC.MainUnit.playImpact(metallic);
+                } else if (metallic) {
+                    CollisionFunctional.playCollisionSound(this, block.x_center, block.y_center, 8, ContentSound.hit_not_penetration);
                 } else {
                     CollisionFunctional.playCollisionSound(this, block.x_center, block.y_center, 3, ContentSound.break_wooden);
                 }
@@ -1604,13 +1610,18 @@ public abstract class Unit implements Cloneable{
             float cap = SpeedUp*underfoot.terrainSpeedMultiplier;
             if (underfoot.terrainSpeedMultiplier < 1f) {
                 if (this.speed > cap) this.speed -= (this.speed-cap)*0.15f;
-            } else {
+            } else if (this.press_w) {
+                // a surface can only push you FASTER while the engine's
+                // actually trying to accelerate - without the press_w gate
+                // this kept easing speed up toward the raised asphalt cap
+                // forever once it was above 0, even after letting go of gas,
+                // which is why asphalt read as "runs away until you leave it"
                 if (this.speed < cap && this.speed > 0f) this.speed += (cap-this.speed)*0.15f;
             }
             float capBack = SpeedDown*underfoot.terrainSpeedMultiplier;
             if (underfoot.terrainSpeedMultiplier < 1f) {
                 if (this.speed < capBack) this.speed -= (this.speed-capBack)*0.15f;
-            } else {
+            } else if (this.press_s) {
                 if (this.speed > capBack && this.speed < 0f) this.speed += (capBack-this.speed)*0.15f;
             }
             terrainLoad = Math.max(0f, 1f-underfoot.terrainSpeedMultiplier);
