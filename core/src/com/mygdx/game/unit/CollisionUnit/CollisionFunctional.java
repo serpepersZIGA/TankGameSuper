@@ -105,6 +105,49 @@ public abstract class CollisionFunctional{
 
 
     }
+    public static void PhysicCollisionBullet(Unit unit1,Area area1){
+        // центр корпуса — вокруг него вращается танк
+        float cx = unit1.x + unit1.corpus_width_2;
+        float cy = unit1.y + unit1.corpus_height_2;
+
+// полуразмеры квадранта (квадрант = четверть корпуса)
+        float qw = unit1.corpus_width_2;
+        float qh = unit1.corpus_height_2 * 0.9f;
+
+// в tower_xy_2: d2 -> локальное "вправо", d -> локальное "вниз"
+        float rot = -unit1.rotation_corpus;
+        float[]xy1 = Method.tower_xy_2(cx, cy,  -qh, 0, rot);
+        float[]xy2 = Method.tower_xy_2(cx, cy,  qh,  0, rot);
+//        float[] xy3 = Method.tower_xy_2(cx, cy, -qh, -qw, rot);
+//        float[] xy4 = Method.tower_xy_2(cx, cy, -qh,  qw, rot);
+
+        float inertion;
+
+        float w = qw * 2, h = unit1.corpus_height_2 * 0.2f;
+        float r1 = unit1.rotation_corpus;
+
+        if (unit1.rectCollisionCenter(xy1[0], xy1[1], w, h, r1, area1)){}
+        else if (unit1.rectCollisionCenter(xy2[0], xy2[1], w, h, r1, area1)) {}
+        else{
+
+        }
+//        if (unit1.rectCollisionCenter(xy3[0], xy3[1], w, h, r1, area1)) { torque -= 1; hit = true; }
+//        if (unit1.rectCollisionCenter(xy4[0], xy4[1], w, h, r1, area1)) { torque += 1; hit = true; }
+
+//        if (hit) {
+//            if (torque != 0) {
+//                inertion = (abs(unit1.speed) + 0.2f) * v;
+//                TowerRotate(unit1, Math.signum(torque) * inertion);
+//            }
+//            // ровно один раз
+//        }
+
+
+        unit1.green_len = ((float) unit1.hp / unit1.max_hp) * Option.size_x_indicator;
+        return;
+
+
+    }
     private boolean CollisionRectRect(Unit unit1,Unit unit2){
         Rectangle rect1 = new Rectangle((int) unit1.x, (int) unit1.y, (int) unit1.corpus_width, (int) unit1.corpus_height); // Прямоугольник 1
         Rectangle rect2 = new Rectangle((int) unit2.x, (int) unit2.y, (int) unit2.corpus_width, (int) unit2.corpus_height); // Прямоугольник 2

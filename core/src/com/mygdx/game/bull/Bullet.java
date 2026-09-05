@@ -450,29 +450,36 @@ public abstract class Bullet implements Serializable,Cloneable {
 //            }
 //        }
 //    }
-    protected final void CorpusBullet(){
-        for(int i = 0;i< UnitList.size();i++) {
-            Unit unit = UnitList.get(i);
-            if (this.type_team != unit.team & abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-                if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
-                        (int) unit.corpus_height, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
-                    //int x1 = (int) (unit.x);
-                    unit.TeamKill = type_team;
-                    int y1 = (int) (unit.y+unit.corpus_height_2);
-                    int Height = (int) (unit.corpus_height*0.4f);
-                    int Height2 = (int) (unit.corpus_height*0.2f);
-                    float Height3 =  unit.corpus_height_2*0.2f;
-                    float[]xy1 = Method.tower_xy_2(unit.x, y1-Height3,
-                            -Height,0,-unit.rotation_corpus);
+protected final void CorpusBullet(){
+    for(int i = 0;i< UnitList.size();i++) {
+        Unit unit = UnitList.get(i);
+        if (this.type_team != unit.team & abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
+            if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
+                    (int) unit.corpus_height, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                //int x1 = (int) (unit.x);
+                unit.TeamKill = type_team;
+                int y1 = (int) (unit.y+unit.corpus_height_2);
+                int Height = (int) (unit.corpus_height*0.4f);
+                int Height2 = (int) (unit.corpus_height*0.2f);
+                float Height3 =  unit.corpus_height_2*0.2f;
+                float[]xy1 = Method.tower_xy_2(unit.x, y1-Height3,
+                        -Height,0,-unit.rotation_corpus);
 //                    float[]xy2 = Method.tower_xy_2(unit.x,y1-unit.corpus_height_2*0.6f,
-//                            -unit.corpus_height*0.0f,0,-unit.rotation_corpus);
-                    float[]xy3 = Method.tower_xy_2(unit.x,y1-Height3,
-                            unit.corpus_height,0,-unit.rotation_corpus);
+//                            0.0f,0,-unit.rotation_corpus);
+                float[]xy3 = Method.tower_xy_2(unit.x,y1-Height3,
+                        Height,0,-unit.rotation_corpus);
 
-                    if (rect_bull((int) xy1[0] ,(int) xy1[1], (int) unit.corpus_width,Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
-                        armor_damage(unit,unit.armorBack);
-                        //System.out.println("1");
-                    }
+                if (rect_bull((int) xy1[0] ,(int) xy1[1], (int) unit.corpus_width,Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                    armor_damage(unit,unit.armorBack);
+                    //System.out.println("1");
+                }
+                else if (rect_bull((int) xy3[0],
+                        (int) xy3[1]
+                        , (int) unit.corpus_width,
+                        Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                    armor_damage(unit,unit.armorFront);
+                    //System.out.println("3");
+                }
 //                    else if (rect_bull((int) xy2[0],
 //                            (int) xy2[1]
 //                    , (int) unit.corpus_width,
@@ -480,33 +487,28 @@ public abstract class Bullet implements Serializable,Cloneable {
 //                        armor_damage(unit,unit.armorCenter);
 //                        System.out.println("2");
 //                    }
-                    else if (rect_bull((int) xy3[0],
-                            (int) xy3[1]
-                            , (int) unit.corpus_width,
-                            Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
-                        armor_damage(unit,unit.armorFront);
-                        //System.out.println("3");
-                    }
-                    else{
-                        //System.out.println("4");
-                        armor_damage(unit,unit.armorCenter);
-                    }
-                    unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
-                    return;
+                else{
+                    //System.out.println("4");
+                    armor_damage(unit,unit.armorCenter);
                 }
+                unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                return;
             }
         }
-        for(int i = 0;i< DebrisList.size();i++) {
-            Unit unit = DebrisList.get(i);
-            if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-                if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
-                        this.size, -unit.rotation_corpus)) {
-                    armor_damage(unit,unit.armorFront);
-                    //unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
-                    return;
-                }
+    }
+    for(int i = 0;i< DebrisList.size();i++) {
+        Unit unit = DebrisList.get(i);
+        if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
+            if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
+                    this.size, -unit.rotation_corpus)) {
+                armor_damage(unit,unit.armorFront);
+                //unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                return;
             }
         }
+
+    }
+
     }
     protected final void CorpusBulletClient(){
         for(int i = 0;i< UnitList.size();i++) {
@@ -522,11 +524,11 @@ public abstract class Bullet implements Serializable,Cloneable {
         for(int i = 0;i< DebrisList.size();i++) {
             Unit unit = DebrisList.get(i);
             //if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-                if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
-                        this.size, -unit.rotation_corpus)) {
-                    this.clear_sost = true;
-                    return;
-                }
+            if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
+                    this.size, -unit.rotation_corpus)) {
+                this.clear_sost = true;
+                return;
+            }
             //}
         }
     }
@@ -549,6 +551,73 @@ public abstract class Bullet implements Serializable,Cloneable {
         Ellipse2D circle = new Ellipse2D.Double(x,y,size,size);
         return area1.intersects(circle.getBounds2D());
     }
+    public boolean rectCollisionCenter(float cx, float cy, float w, float h,
+                                       double rotationDeg, Area area2) {
+        Rectangle2D r = new Rectangle2D.Double(cx - w * 0.5, cy - h * 0.5, w, h);
+        AffineTransform t = new AffineTransform();
+        t.rotate(Math.toRadians(rotationDeg), cx, cy);   // пивот = центр самого квадранта
+        Area a = new Area(t.createTransformedShape(r));
+        a.intersect(area2);
+        return !a.isEmpty();
+    }
+    protected final boolean rectBull(
+            int rectCenterX,
+            int rectCenterY,
+            int rectOffsetX,
+            int rectOffsetY,
+            int rectWidth,
+            int rectHeight,
+            int circleX,
+            int circleY,
+            int circleDiameter,
+            double rotation
+    ) {
+        // Центр круга и радиус.
+        // circleX и circleY считаются координатами левого верхнего угла круга.
+        double radius = circleDiameter *0.5;
+
+        double circleCenterX = circleX + radius;
+        double circleCenterY = circleY + radius;
+
+        /*
+         * Переносим центр круга относительно центра прямоугольника
+         */
+        double dx = circleCenterX - rectCenterX;
+        double dy = circleCenterY - rectCenterY;
+
+        /*
+         * Поворачиваем точку обратно на угол прямоугольника.
+         * Так повернутый прямоугольник превращается в обычный.
+         */
+        double angle = Math.toRadians(-rotation);
+
+        double localX = dx * Math.cos(angle) - dy * Math.sin(angle);
+        double localY = dx * Math.sin(angle) + dy * Math.cos(angle);
+
+        /*
+         * Координаты прямоугольника в его локальной системе.
+         */
+        double left   = -rectOffsetX;
+        double top    = -rectOffsetY;
+        double right  = left + rectWidth;
+        double bottom = top + rectHeight;
+
+        /*
+         * Находим ближайшую к центру круга точку прямоугольника.
+         */
+        double closestX = Math.max(left, Math.min(localX, right));
+        double closestY = Math.max(top, Math.min(localY, bottom));
+
+        double distanceX = localX - closestX;
+        double distanceY = localY - closestY;
+
+        /*
+         * Сравниваем квадрат расстояния с квадратом радиуса.
+         */
+        return distanceX * distanceX + distanceY * distanceY
+                <= radius * radius;
+    }
+
     protected final boolean rect_bull2(int x1,int y1,int width,int height,int x,int y,int size,double rotation){
         Rectangle2D rect1 = new Rectangle2D.Double(x1,y1,width,height);
         AffineTransform transform1 = new AffineTransform();

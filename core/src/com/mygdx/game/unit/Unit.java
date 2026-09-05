@@ -1391,6 +1391,15 @@ public abstract class Unit implements Cloneable{
         a.intersect(area2);
         return !a.isEmpty();
     }
+//    public boolean rectCircleCollisionCenter(float cx, float cy, float w, float h,
+//                                       double rotationDeg,float x,float y,float size) {
+//        Rectangle2D r = new Rectangle2D.Double(cx - w * 0.5, cy - h * 0.5, w, h);
+//        AffineTransform t = new AffineTransform();
+//        t.rotate(Math.toRadians(rotationDeg), cx, cy);   // пивот = центр самого квадранта
+//        Area a = new Area(t.createTransformedShape(r));
+//        a.intersect(area2);
+//        return !a.isEmpty();
+//    }
     public boolean rectCollision(int x1, int y1, int width, int height, double rotation,
                                  Area area2){
 
