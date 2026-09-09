@@ -3,7 +3,6 @@ package com.mygdx.game.ui
 import com.badlogic.gdx.Gdx
 import com.badlogic.gdx.graphics.Color
 import com.badlogic.gdx.graphics.g2d.BitmapFont
-import com.mygdx.game.Inventory.Inventory
 import com.mygdx.game.main.Main
 import com.mygdx.game.unit.Unit
 
@@ -53,13 +52,14 @@ object PlayerHud {
         y += ROW_HEIGHT
         drawHpRow(unit, y, font)
         y += ROW_HEIGHT
-        drawMoneyRow(y, font)
+        drawMoneyRow(unit, y, font)
     }
 
-    private fun drawMoneyRow(y: Float, font: BitmapFont) {
+    private fun drawMoneyRow(unit: Unit, y: Float, font: BitmapFont) {
+        val money = Main.TeamGlobal[unit.team] ?: 0
         Main.Batch.shader = null
         Main.Batch.begin()
-        font.draw(Main.Batch, "Деньги: ${Inventory.Money}", PANEL_X, y+BAR_HEIGHT)
+        font.draw(Main.Batch, "Деньги: $money", PANEL_X, y+BAR_HEIGHT)
         Main.Batch.end()
     }
 

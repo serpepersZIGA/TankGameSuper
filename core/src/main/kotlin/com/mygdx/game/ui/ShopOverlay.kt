@@ -17,7 +17,6 @@ import com.badlogic.gdx.scenes.scene2d.utils.TextureRegionDrawable
 import com.badlogic.gdx.utils.Align
 import com.badlogic.gdx.utils.Scaling
 import com.mygdx.game.Event.EventUseClient
-import com.mygdx.game.Inventory.Inventory
 import com.mygdx.game.Inventory.Item
 import com.mygdx.game.main.ClientMain
 import com.mygdx.game.main.Main
@@ -113,10 +112,11 @@ object ShopOverlay {
     }
 
     private fun buy(item: Item?, unit: Unit) {
-        if (item == null || item.Price >= Inventory.Money) return
+        val money = Main.TeamGlobal[unit.team] ?: 0
+        if (item == null || item.Price >= money) return
         if (Main.GameHost) {
             Main.inventoryMain.inventory.ItemAdd(item)
-            Inventory.Money -= item.Price
+            Main.TeamGlobal[unit.team] = money - item.Price
         } else {
             for (i in 0 until Main.UnitList.size) {
                 if (Main.IDClient == Main.UnitList[i].nConnect) {
@@ -129,7 +129,7 @@ object ShopOverlay {
                     ClientMain.Client.sendTCP(event)
 
                     Main.inventoryMain.inventory.ItemAdd(item)
-                    Inventory.Money -= item.Price
+                    Main.TeamGlobal[unit.team] = money - item.Price
                 }
             }
         }

@@ -15,6 +15,8 @@ import java.util.ArrayList;
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.TowerRotate;
+import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.v;
 import static java.lang.StrictMath.*;
 
 public class CollisionMethodGlobal {
@@ -27,7 +29,7 @@ public class CollisionMethodGlobal {
         for(int i = 0;i<Main.UnitList.size();i++){
             Unit unit = Main.UnitList.get(i);
             for (Unit unit2 : UnitsBuffer){
-                CollisionMethod(unit,unit2);
+                CollisionMethod(unit2,unit);
             }
             UnitsBuffer.add(unit);
 
@@ -48,6 +50,7 @@ public class CollisionMethodGlobal {
 
     }
     public void CollisionMethod(Unit unit1,Unit unit2){
+
         if(unit1.height == unit2.height) {
             if (abs(unit1.XMap-unit2.XMap)<3 & abs(unit1.YMap-unit2.YMap)<3) {
                 if (CollisionRectRect(unit1, unit2)) {

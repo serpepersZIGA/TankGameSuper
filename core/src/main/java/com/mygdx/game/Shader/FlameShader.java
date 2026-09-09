@@ -35,7 +35,9 @@ public class FlameShader {
             time = 0;
         }
         for (i= 0; i< Main.FlameSpawnList.size(); i++){
-            Main.FlameSpawnList.get(i).all_action();
+            if(Main.FlameSpawnList.get(i) != null) {
+                Main.FlameSpawnList.get(i).all_action();
+            }
         }
         Batch.setShader(null);
 

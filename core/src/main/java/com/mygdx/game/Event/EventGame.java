@@ -17,6 +17,7 @@ public abstract class EventGame {
         event.ID = i;
         event.x = x;
         event.y = y;
+        event.ConfUseDel = true;
         event.conf = conf;
         ClientMain.Client.sendTCP(event);
     }

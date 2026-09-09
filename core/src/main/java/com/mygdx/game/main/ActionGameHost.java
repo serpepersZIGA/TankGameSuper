@@ -5,14 +5,17 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.ItemObject;
+import com.mygdx.game.Network.PacketUnitUpdate;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.method.Method;
+import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
 import com.mygdx.game.unit.AI;
@@ -20,6 +23,9 @@ import com.mygdx.game.unit.Squad;
 import com.mygdx.game.unit.Unit;
 import com.mygdx.game.Network.TransportPacket;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
 import java.util.ArrayList;
 import java.util.concurrent.*;
 
@@ -35,6 +41,8 @@ import static com.mygdx.game.main.ServerMain.Server;
 import static com.mygdx.game.method.Method.tower_xy;
 import static com.mygdx.game.unit.TransportRegister.*;
 import static com.mygdx.game.unit.Unit.AIScan;
+import static java.lang.StrictMath.cos;
+import static java.lang.StrictMath.sin;
 
 public class ActionGameHost extends ActionGame{
 
@@ -241,8 +249,6 @@ public class ActionGameHost extends ActionGame{
             R_LOCK.unlock();
         }
 
-        //Batch.flush();
-
         RC.BuildingUpdate();
 
         for (i = 0;i< BulletList.size();i++){
@@ -254,44 +260,9 @@ public class ActionGameHost extends ActionGame{
             }
         }
 
-//        for (i = 0; i< Main.BulletList.size(); i++){
-//            if(Main.BulletList.get(i).height == 2) {
-//                Main.BulletList.get(i).all_action();
-//            }
-//        }
 
         for(i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
-//            int x1 = (int) (unit.x);
-//            int y1 = (int) (unit.y+unit.corpus_height_2);
-//            float[]xy1 = Method.tower_xy_2(x1, y1-unit.corpus_height_2*0.2f,
-//                    -unit.corpus_height*0.4f,0,-unit.rotation_corpus);
-//            float[]xy2 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.6f,
-//                    -unit.corpus_height*0.0f,0,-unit.rotation_corpus);
-//            float[]xy3 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.2f,
-//                    unit.corpus_height*0.4f,0,-unit.rotation_corpus);
-//            float[]xy11= RC.render_objZoom(xy1[0],xy1[1]);
-//            float[]xy22 = RC.render_objZoom(xy2[0],xy2[1]);
-//            float[]xy33 = RC.render_objZoom(xy3[0],xy3[1]);
-//            Sprite sprite = TextureAtl.createSprite("corpus_player");
-//            sprite.setRotation(unit.rotation_corpus);
-//            sprite.setOrigin(unit.corpus_width_2* Zoom,(float) ((unit.corpus_height_2*0.2)* Zoom));
-//            sprite.setSize( unit.corpus_width* Zoom, (float) ((unit.corpus_height*0.2)* Zoom));
-//            sprite.setPosition(xy11[0],xy11[1]);
-//            sprite.draw(Batch);
-//            sprite.setPosition(xy33[0],xy33[1]);
-//            sprite.draw(Batch);
-//            sprite.setOrigin(unit.corpus_width_2* Zoom,(float) ((unit.corpus_height_2*0.6)* Zoom));
-//            sprite.setSize( unit.corpus_width* Zoom, (float) (unit.corpus_height*0.6)* Zoom);
-//            sprite.setPosition(xy22[0],xy22[1]);
-//            sprite.draw(Batch);
-
-//            Render.rect(xy11[0],xy11[1],(int) unit.corpus_width* Zoom,
-//                    (int) ((int) unit.corpus_height*0.2)* Zoom, Color.RED);
-//            Render.rect(xy22[0],xy22[1],(int) unit.corpus_width* Zoom,
-//                    (int) ((int) unit.corpus_height*0.6)* Zoom, Color.GREEN);
-//            Render.rect(xy33[0],xy33[1],(int) unit.corpus_width* Zoom,
-//                    (int) ((int) unit.corpus_height*0.2)* Zoom, Color.YELLOW);
             if(unit.height == 2) {
                 unit.UpdateUnit();
                 unit.update();
@@ -300,24 +271,6 @@ public class ActionGameHost extends ActionGame{
                 }
             }
         }
-        // Inventory/Equipment/Shop all render through here now (Scene2D,
-        // proper drag-and-drop, touchpad friendly)
-        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
-
-//        Map<Thread,StackTraceElement[]> threads = Thread.getAllStackTraces();
-//        for (Map.Entry<Thread, StackTraceElement[]> entry : threads.entrySet()) {
-//            System.out.println(entry.getKey());
-//        }
-
-
-        //System.out.println(inventoryMain.SlotInventory.length);
-
-//        for (i = 0; i< Main.BulletList.size(); i++){
-//            if(Main.BulletList.get(i).height == 2) {
-//                Main.BulletList.get(i).all_action();
-//            }
-//        }
-        //Batch.flush();
         for (i= 0; i< Main.BangList.size(); i++){
             Main.BangList.get(i).all_action();}
         Render.polyBatch.end();
@@ -339,6 +292,13 @@ public class ActionGameHost extends ActionGame{
             Thread.currentThread().interrupt();
         }
         server_packet();
+        // Inventory/Equipment/Shop (Scene2D, own Stage) - has to run after
+        // Batch.end() above, not while the world Batch is still buffered and
+        // unflushed. Stage.draw() flushes its own separate SpriteBatch
+        // immediately, so calling it mid-world-batch meant its quads hit the
+        // GPU before the still-buffered building sprites did, landing the
+        // menus underneath buildings drawn earlier in the frame (like the barn).
+        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
         com.mygdx.game.ui.DevOverlay.INSTANCE.render();
         com.mygdx.game.ui.PlayerHud.INSTANCE.render();
         com.mygdx.game.ui.Minimap.INSTANCE.render();
@@ -354,82 +314,82 @@ public class ActionGameHost extends ActionGame{
     }
     private void server_packet() {
 
-            //Server.sendToAllTCP(packetUnitUpdate);
-        //if(PacketServer.unitConf){
-        //R_LOCK.lock();
-        //try {
-            for (Unit unit : ClearUnitList) {
-                for (Squad squad : AI.SquadList) {
-                    if (squad.EnemySquad == unit) {
-                        for(Unit unit2 : squad.UnitSquad){
-                            if(unit2.EnemyFire == unit){
-                                unit2.EnemyFire = null;
-                                unit2.trigger_fire = false;
-                            }
-                            if(unit2.TargetUnit == unit){
-                                unit2.TargetUnit = null;
-                            }
+        for (Unit unit : ClearUnitList) {
+            for (Squad squad : AI.SquadList) {
+                if (squad.EnemySquad == unit) {
+                    for(Unit unit2 : squad.UnitSquad){
+                        if(unit2.EnemyFire == unit){
+                            unit2.EnemyFire = null;
+                            unit2.trigger_fire = false;
                         }
-                        squad.EnemySquad = null;
+                        if(unit2.TargetUnit == unit){
+                            unit2.TargetUnit = null;
+                        }
                     }
+                    squad.EnemySquad = null;
                 }
-                UnitList.remove(unit);
             }
-        //}
-//        finally {
-//            R_LOCK.unlock();
-//        }
+            UnitList.remove(unit);
+        }
         ClearUnitList.clear();
-        //}
-        //else if(PacketServer.debrisConf){
-        //R_LOCK.lock();
-        //try {
             for (Unit unit : ClearDebrisList) {
                 DebrisList.remove(unit);
             }
-        //}
-        //finally {
-            //R_LOCK.unlock();
-        //}
         ClearDebrisList.clear();
-        //}
 
 
-//        if(EnumerationList){
-//            for (i = 0; i < Main.UnitList.size(); i++) {
-                //packet_player_server(Main.UnitList.get(i));
-//            }
-//            PacketUnit.clear();
-//            EnumerationList = false;
-//        }
-        //PacketServer.item = ItemPackList;
         PacketServer.building = PacketBuilding;
         PacketServer.debris = PacketDebris;
         PacketServer.player = PacketUnit;
-        //PacketServer.bull = PacketBull;
         if(!PacketBull.isEmpty()){
             packetUnitUpdate.bull = PacketBull;
             Server.sendToAllTCP(packetUnitUpdate);
             packetUnitUpdate.bull = null;
-            //PacketServer.bull = PacketBull;
         }
-        //packetInventoryServer();
         PacketServer.sound = SoundPack;
         PacketServer.mapObject = MapObject.PacketMapObjects;
         PacketServer.TotalLight = CycleTimeDay.lightTotal;
+
+        // unitConf implies a full inventory sync too, and always wins over a
+        // plain InventoryConf - matches the old two-if version, where the
+        // unitConf branch cleared InventoryConf before it could be checked
+        if(PacketServer.unitConf || PacketServer.InventoryConf){
+            sendUnitUpdatePacket(PacketServer.unitConf);
+            PacketServer.unitConf = false;
+            PacketServer.InventoryConf = false;
+        }
+        //PacketServer.Money = new int[5];
+        for(int i = 0;i<TeamGlobal.size();i++) {
+            PacketServer.Money.add(TeamGlobal.get((byte) i));
+        }
+
         Server.sendToAllUDP(PacketServer);
         SoundPack.clear();
-        //PacketServer.inventory.clear();
         MapObject.PacketMapObjects.clear();
-        PacketServer.unitConf = false;
-        PacketServer.debrisConf = false;
         ItemObject.ConfSentPackItem = false;
         ItemPackList.clear();
-
+        PacketServer.Money.clear();
         PacketDebris.clear();
         PacketBull.clear();
         PacketUnit.clear();
         PacketBuilding.clear();
+    }
+    private void sendUnitUpdatePacket(boolean confUnit) {
+        PacketUnitUpdate pack = new PacketUnitUpdate();
+        pack.inventory = new ArrayList<>();
+        pack.equipment = new ArrayList<>();
+        pack.ConfUnit = confUnit;
+        pack.ConfInventory = true;
+        PacketUnit.clear();
+        for (Unit unit : UnitList){
+            TransportPacket packet = ActionGameHost.packet_player_server(unit);
+            PacketUnit.add(packet);
+            pack.inventory.add(unit.inventory.inventoryStr);
+            pack.equipment.add(unit.equipment.inventoryStr);
+        }
+        PacketServer.player = PacketUnit;
+        pack.packServer = PacketServer;
+        Server.sendToAllTCP(pack);
     }
     public static TransportPacket packet_player_server(Unit unit){
         TransportPacket pack = new TransportPacket();
@@ -447,15 +407,6 @@ public class ActionGameHost extends ActionGame{
         pack.host = unit.host;
         pack.IDClient = unit.nConnect;
         pack.ID = unit.ID;
-        //if(unit.inventory.ConfRefactor) {
-//        pack.inventory = unit.inventory.inventoryStr;
-//        pack.equipment = unit.equipment.inventoryStr;
-            //unit.inventory.ConfRefactor = false;
-        //}
-        //if(unit.equipment.ConfRefactor) {
-//        pack.equipment = unit.equipment.inventoryStr;
-            //unit.equipment.ConfRefactor = false;
-        //}
 
         for (Unit Tower : unit.TowerUnitList){
             pack.reloadTower.add(Tower.reload);
@@ -485,7 +436,6 @@ public class ActionGameHost extends ActionGame{
                 }
             }
             Collision.DebrisCollisionIterationGlobal();
-            //Debris = DebrisList;
         }
     }
     private class IterationBullet implements Runnable {
@@ -523,8 +473,6 @@ public class ActionGameHost extends ActionGame{
                         PacketUnit.add(pack);
                         unit.all_action();
                     } else {
-                        pack.inventory = unit.inventory.inventoryStr;
-                        pack.equipment = unit.equipment.inventoryStr;
                         PacketUnit.add(pack);
                         unit.all_action_client();
                     }

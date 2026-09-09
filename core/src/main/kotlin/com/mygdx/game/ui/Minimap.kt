@@ -7,6 +7,7 @@ import com.badlogic.gdx.graphics.Texture
 import com.badlogic.gdx.math.Rectangle
 import com.badlogic.gdx.scenes.scene2d.utils.ScissorStack
 import com.mygdx.game.main.Main
+import com.mygdx.game.object_map.MapObject
 import com.mygdx.game.unit.ClassUnit
 import com.mygdx.game.unit.Unit
 
@@ -44,6 +45,9 @@ object Minimap {
     // reveals more too
     private const val BASE_VISIBILITY_RADIUS_BLOCKS = 30f
     private const val DOT_RADIUS = 3.2f
+    // spawn zone markers - bigger than a unit dot so a cluster of spawn
+    // points still reads as "a zone", not more team dots
+    private const val SPAWN_MARKER_RADIUS = 5f
 
     private var terrainTexture: Texture? = null
     private var bakedWidth = -1
@@ -53,6 +57,8 @@ object Minimap {
     private val playerColor = Color(0.95f, 0.85f, 0.15f, 1f)
     private val allyColor = Color(0.25f, 0.65f, 0.95f, 1f)
     private val enemyColor = Color(0.9f, 0.2f, 0.2f, 1f)
+    private val playerSpawnMarkerColor = Color(0.3f, 0.9f, 0.4f, 0.8f)
+    private val enemySpawnMarkerColor = Color(0.9f, 0.35f, 0.15f, 0.8f)
     private val unpack = Color()
 
     private fun ensureTerrainTexture(width: Int, height: Int) {
@@ -156,6 +162,23 @@ object Minimap {
                 ScissorStack.popScissors()
             }
         }
+
+        // spawn zone markers - always visible, not fog-gated, since where
+        // your own team spawns (and where the enemy does) isn't something
+        // you need to have scouted to know
+        Main.Render.polyBatch.shader = null
+        Main.Render.polyBatch.begin()
+        for ((iy, ix) in MapObject.PlayerSpawnList) {
+            val block = Main.BlockList2D[iy][ix]
+            val p = toPanel(block.x.toFloat(), block.y.toFloat())
+            Main.Render.rect(p[0]-SPAWN_MARKER_RADIUS, p[1]-SPAWN_MARKER_RADIUS, SPAWN_MARKER_RADIUS*2f, SPAWN_MARKER_RADIUS*2f, playerSpawnMarkerColor)
+        }
+        for ((iy, ix) in MapObject.SpawnerList) {
+            val block = Main.BlockList2D[iy][ix]
+            val p = toPanel(block.x.toFloat(), block.y.toFloat())
+            Main.Render.rect(p[0]-SPAWN_MARKER_RADIUS, p[1]-SPAWN_MARKER_RADIUS, SPAWN_MARKER_RADIUS*2f, SPAWN_MARKER_RADIUS*2f, enemySpawnMarkerColor)
+        }
+        Main.Render.polyBatch.end()
 
         // dots on top: teammates/self, then enemies only within reveal range of any teammate
         Main.Render.polyBatch.shader = null

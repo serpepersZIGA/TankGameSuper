@@ -463,28 +463,31 @@ public abstract class Bullet implements Serializable,Cloneable {
                     float Height3 =  unit.corpus_height_2*0.2f;
                     float[]xy1 = Method.tower_xy_2(unit.x, y1-Height3,
                             -Height,0,-unit.rotation_corpus);
-//                    float[]xy2 = Method.tower_xy_2(x1,y1-unit.corpus_height_2*0.6f,
+//                    float[]xy2 = Method.tower_xy_2(unit.x,y1-unit.corpus_height_2*0.6f,
 //                            -unit.corpus_height*0.0f,0,-unit.rotation_corpus);
                     float[]xy3 = Method.tower_xy_2(unit.x,y1-Height3,
                             Height,0,-unit.rotation_corpus);
 
                     if (rect_bull((int) xy1[0] ,(int) xy1[1], (int) unit.corpus_width,Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
                         armor_damage(unit,unit.armorBack);
+                        //System.out.println("1");
                     }
 //                    else if (rect_bull((int) xy2[0],
 //                            (int) xy2[1]
 //                    , (int) unit.corpus_width,
 //                            (int) ((int) unit.corpus_height*0.6), (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
 //                        armor_damage(unit,unit.armorCenter);
-//                        //System.out.println("2");
+//                        System.out.println("2");
 //                    }
                     else if (rect_bull((int) xy3[0],
                             (int) xy3[1]
                             , (int) unit.corpus_width,
                             Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
                         armor_damage(unit,unit.armorFront);
+                        //System.out.println("3");
                     }
                     else{
+                        //System.out.println("4");
                         armor_damage(unit,unit.armorCenter);
                     }
                     unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
@@ -535,6 +538,13 @@ public abstract class Bullet implements Serializable,Cloneable {
         if (unit == Main.RC.MainUnit && com.mygdx.game.unit.CollisionUnit.CollisionFunctional.canPlayBulletHit()) {
             Main.Audio.start();
             Main.Audio.play(new com.mygdx.game.Sound.Procedural.BulletHitVoice(0.5f, DamageTotal>0));
+        }
+        // only credit the kill-money team when this hit actually did
+        // something (hp damage or heat build-up) - a shot fully stopped by
+        // armor shouldn't be able to steal credit for a kill someone else's
+        // fire finishes off later via damage_temperature()'s DOT
+        if (DamageTotal>0 || this.t_damage>0) {
+            unit.TeamKill = type_team;
         }
         unit.t += this.t_damage;
         this.clear_sost = true;

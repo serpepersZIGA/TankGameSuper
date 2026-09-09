@@ -17,8 +17,11 @@ TowerY = 20;
 Fire = Flame;
 Image = tower_enemy;
 
+MaxRotate = 20;
+RotateBase = 90;
+
 func.Add = ComponentTowerXY;
-func.Add = ComponentTowerControl;
+func.Add = ComponentNotTowerControl;
 func.Add = ComponentFireControl;
 
 Sound = 5;

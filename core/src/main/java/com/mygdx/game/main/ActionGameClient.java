@@ -191,10 +191,6 @@ public class ActionGameClient extends ActionGame {
                 }
             }
         }
-        // Inventory/Equipment/Shop all render through here now (Scene2D,
-        // proper drag-and-drop, touchpad friendly)
-        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
-
         for (i= 0; i< BangList.size(); i++){
             BangList.get(i).all_action();
         }
@@ -214,6 +210,13 @@ public class ActionGameClient extends ActionGame {
         } catch (InterruptedException e) {
             Thread.currentThread().interrupt();
         }
+        // Inventory/Equipment/Shop (Scene2D, own Stage) - has to run after
+        // Batch.end() above, not while the world Batch is still buffered and
+        // unflushed. Stage.draw() flushes its own separate SpriteBatch
+        // immediately, so calling it mid-world-batch meant its quads hit the
+        // GPU before the still-buffered building sprites did, landing the
+        // menus underneath buildings drawn earlier in the frame (like the barn).
+        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
         com.mygdx.game.ui.DevOverlay.INSTANCE.render();
         com.mygdx.game.ui.PlayerHud.INSTANCE.render();
         com.mygdx.game.ui.Minimap.INSTANCE.render();

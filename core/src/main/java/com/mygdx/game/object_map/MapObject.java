@@ -179,9 +179,22 @@ public class MapObject implements Cloneable{
         }
     }
 
+    // ground ring instead of a sprite - these used to reuse pepper_object_map
+    // (a random decor image with nothing to do with spawning) as a placeholder.
+    // Drawn here, alongside the terrain in Block.update(), so it sits under
+    // everything else (units, buildings) like ground paint should.
+    private static final float SPAWN_MARKER_RADIUS = 20f;
+    private static final Color PLAYER_SPAWN_MARKER_COLOR = new Color(0.25f, 0.85f, 0.35f, 0.35f);
+    private static final Color ENEMY_SPAWN_MARKER_COLOR = new Color(0.85f, 0.25f, 0.25f, 0.35f);
     public void render(){
         int[]xy = Main.RC.render_objZoom(this.x,this.y);
         //if(lighting)Block.LightingAirObject(xy[0],xy[1],RGBFlame,distance_lighting*Main.Zoom);
+
+        if (this.PlayerSpawn || this.SpawnUnit) {
+            Main.Render.circle(xy[0], xy[1], SPAWN_MARKER_RADIUS*Main.Zoom,
+                    this.PlayerSpawn ? PLAYER_SPAWN_MARKER_COLOR : ENEMY_SPAWN_MARKER_COLOR);
+            return;
+        }
 
         String spriteName = img;
         if("lamp".equals(assets)){

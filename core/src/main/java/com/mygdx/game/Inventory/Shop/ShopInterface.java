@@ -39,11 +39,14 @@ public class ShopInterface extends InventoryInterface {
                     YCol2 = MouseY - (Slot.y + this.y);
                     if (YCol2 < Slot.height & YCol2 > 0 & XCol2 < Slot.width & XCol2 > 0) {
                         if (SlotInventory[ix][iy].item != null) {
-                            if(Slot.item.Price<Inventory.Money) {
                                 if(GameHost) {
-                                    inventoryMain.inventory.ItemAdd(Slot.item);
-                                    inventoryMain.SlotGeneration();
-                                    Inventory.Money -= Slot.item.Price;
+                                    if(Slot.item.Price<TeamGlobal.get(Team)) {
+                                        inventoryMain.inventory.ItemAdd(Slot.item);
+                                        inventoryMain.SlotGeneration();
+                                        //Inventory.Money -= Slot.item.Price;
+                                        int money = TeamGlobal.get(Team) - Slot.item.Price;
+                                        TeamGlobal.replace(Team, money);
+                                    }
                                 }
                                 else {
                                     for (int i = 0;i<UnitList.size();i++) {
@@ -51,19 +54,23 @@ public class ShopInterface extends InventoryInterface {
                                             EventUseClient event = new EventUseClient();
                                             event.str = Slot.item.ID;
                                             //System.out.println(i);
+                                            //event.x = Slot.IX;
+                                            //event.y = Slot.IY;
                                             event.ID = i;
                                             event.conf = false;
+                                            event.ConfUseDel = false;
                                             event.ConfUse = true;
                                             event.MoneyAdd = true;
                                             ClientMain.Client.sendTCP(event);
 
                                             inventoryMain.inventory.ItemAdd(Slot.item);
                                             inventoryMain.SlotGeneration();
-                                            Inventory.Money -= Slot.item.Price;
+
+                                            //int money = TeamGlobal.get(InventoryInterface.Team)-Slot.item.Price;
+                                            //TeamGlobal.replace(InventoryInterface.Team,money);
                                         }
                                     }
                                 }
-                            }
                         }
                         return;
                     }

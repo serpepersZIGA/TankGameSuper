@@ -24,6 +24,7 @@ public class InventoryInterface {
     public static SlotBuffer SlotBuffer;
     public static Slot slotBuf;
     public Inventory inventory;
+    public static byte Team;
     public static WindowName WindowName = new WindowName();
     public InventoryInterface(Inventory inventory){
         InventoryType = false;
@@ -62,16 +63,17 @@ public class InventoryInterface {
     public void SlotGeneration(){
         for(int ix = 0;ix<inventory.InventorySlots.length;ix++){
             for(int iy = 0;iy<inventory.InventorySlots[ix].length;iy++){
-                SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots);
+                SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots,ix,iy);
                 Slot slot = SlotInventory[ix][iy];
                 slot.item = inventory.InventorySlots[ix][iy];
             }
         }
     }
     public void SlotGenerationClient(){
+        SlotInventory = new Slot[inventory.inventoryStr.length][inventory.inventoryStr[0].length];
         for(int ix = 0;ix<inventory.inventoryStr.length;ix++){
             for(int iy = 0;iy<inventory.inventoryStr[ix].length;iy++){
-                SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots);
+                SlotInventory[ix][iy] = new Slot(XSlots*ix,YSlots*iy,XSlots,YSlots,ix,iy);
                 Slot slot = SlotInventory[ix][iy];
                 slot.item = IDListItem.get(inventory.inventoryStr[ix][iy]);
             }
@@ -204,12 +206,20 @@ public class InventoryInterface {
                 if (YColUs < slot.height & YColUs > 0 & XColUs < slot.width & XColUs > 0) {
                     if (slot.item != null) {
                         for (int i = 0; i < UnitList.size(); i++) {
-                            EventGame.EventGameClient(slot.item.ID, i,ix,iy,this.InventoryType);
-                        }
-                        if(slot.item.Use(unit)) {
-                            inventory.InventorySlots[ix][iy]= null;
-                            SlotInventory[ix][iy].item = null;
-                        }
+                            if(unit == UnitList.get(i)) {
+                                EventGame.EventGameClient(slot.item.ID, i, ix, iy, this.InventoryType);
+                                if(slot.item.Use(unit)) {
+                                    unit.inventory.InventorySlots[ix][iy]= null;
+                                    unit.inventory.inventoryStr[ix][iy] = null;
+
+                                    inventory.InventorySlots[ix][iy]= null;
+                                    inventory.inventoryStr[ix][iy] = null;
+                                    SlotInventory[ix][iy].item = null;
+                                }
+                                return;
+                            }
+                            //System.out.println(ix+" "+iy);
+                       }
                     }
                     return;
                 }

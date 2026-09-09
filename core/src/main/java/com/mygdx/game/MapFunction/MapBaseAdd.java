@@ -14,7 +14,6 @@ public class MapBaseAdd {
         File Str2File = new File("Map/Structure/streetPoselok.str");
         File StrFile = new File("Map/Structure/street1.str");
 
-        File pepper1 = new File("Map/Structure/pepper1.str");
         File CentralSquare = new File("Map/Structure/CentralSquare.str");
         File MapCentral = new File("Map/maps/MapCentral.mapt");
         String dataMap = "^MapLite;\n" +
@@ -25,8 +24,7 @@ public class MapBaseAdd {
                 "(str):street1:x69:y23:;\n" +
                 "(str):street1:x69:y40:;\n" +
                 "(str):streetPoselok:x70:y60:;\n" +
-                "BlockAdd:*Asphalt:x70:y53:Y7:;\n" +
-                "(str):pepper1:x12:y12:;";
+                "BlockAdd:*Asphalt:x70:y53:Y7:;";
         Create(MapFile,dataMap);
         String dataStr =
                 "BuildAdd:B BigBuildingWood1:x0:y1:r0:;\n" +
@@ -64,12 +62,6 @@ public class MapBaseAdd {
                         "BlockAdd:*Asphalt:x0:y0:Y7:;\n" +
                         "BlockAdd:*Asphalt:x28:y0:Y7:;";
         Create(Str2File,dataStr);
-        dataStr =
-                "MapObject:x14:y5:o pepper:;\n" +
-                        "MapObject:x22:y10:o pepper:;\n" +
-                        "MapObject:x14:y10:o pepper:;";
-        Create(pepper1,dataStr);
-
 
         dataStr =
                 "BuildAdd:B BigBuildingWood1:x8:y1:r0:;\n" +

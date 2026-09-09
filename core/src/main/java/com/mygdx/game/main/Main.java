@@ -5,6 +5,7 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
@@ -46,7 +47,7 @@ import com.mygdx.game.unit.moduleUnit.*;
 
 import java.io.IOException;
 import java.util.ArrayList;
-import java.util.LinkedList;
+import java.util.HashMap;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -67,15 +68,15 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<Unit> UnitList = new ArrayList<>();
 	public static ArrayList<Building> BuildingList = new ArrayList<>();
 	public static ArrayList<Bullet> BulletList = new ArrayList<>();
-	public static LinkedList<Particle> FlameStaticList = new LinkedList<>();
+	public static ArrayList<Particle> FlameStaticList = new ArrayList<>();
 	public static ArrayList<Button>ButtonList = new ArrayList<>();
-	public static LinkedList<Particle> FlameList = new LinkedList<>();
-	public static LinkedList<Particle> BangList = new LinkedList<>();
-	public static LinkedList<Particle> FlameParticleList = new LinkedList<>();
-	public static LinkedList<Particle> LiquidList = new LinkedList<>();
-    public static LinkedList<Particle> BloodList = new LinkedList<>();
+	public static ArrayList<Particle> FlameList = new ArrayList<>();
+	public static ArrayList<Particle> BangList = new ArrayList<>();
+	public static ArrayList<Particle> FlameParticleList = new ArrayList<>();
+	public static ArrayList<Particle> LiquidList = new ArrayList<>();
+    public static ArrayList<Particle> BloodList = new ArrayList<>();
 
-	public static LinkedList<Particle> FlameSpawnList = new LinkedList<>();
+	public static ArrayList<Particle> FlameSpawnList = new ArrayList<>();
 	public static ArrayList<Unit> DebrisList = new ArrayList<>();
 
 	// Combat (bullet impacts, deaths, fire) used to spawn particles onto these
@@ -84,7 +85,7 @@ public class Main extends ApplicationAdapter {
 	// and dropping the oldest particle to make room keeps the effect visually
 	// dense without letting it grow unbounded.
 	private static final int MAX_PARTICLES_PER_LIST = 300;
-	public static void addParticle(LinkedList<Particle> list, Particle particle) {
+	public static void addParticle(ArrayList<Particle> list, Particle particle) {
 		if (!com.mygdx.game.ui.DevFlags.INSTANCE.getUncappedParticles() && list.size() >= MAX_PARTICLES_PER_LIST) {
 			list.removeFirst();
 		}
@@ -154,6 +155,7 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
 	public static LightingMainSystem LightSystem;
 	public static RenderPrimitive Render;
+	public static HashMap<Byte,Integer>TeamGlobal = new HashMap<>();
 	public static ActionGame ActionGameTotal;
     public static int udpPort = 27950, tcpPort = 27950;
 
@@ -310,7 +312,11 @@ public class Main extends ApplicationAdapter {
 //		u_projTrans.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
 
 
-
+		TeamGlobal.put((byte)0,0);
+		TeamGlobal.put((byte)1,4);
+		TeamGlobal.put((byte)2,0);
+		TeamGlobal.put((byte)3,0);
+		TeamGlobal.put((byte)4,0);
 		RC = new RenderCenter(0,0);
 		Batch = new SpriteBatch();
         WeatherMainSystem.WeatherMainSystemAdd();
@@ -368,7 +374,8 @@ public class Main extends ApplicationAdapter {
 
 		IDList.get("Gb-1M").UnitAdd(2000,700,true, (byte) 2,
 				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
-
+		UnitList.get(0).crite_life = true;
+		//UnitList.get(0).RotationInertion = 20;
 //		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
 	}

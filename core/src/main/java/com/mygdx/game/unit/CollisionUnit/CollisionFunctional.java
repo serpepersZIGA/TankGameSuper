@@ -5,10 +5,15 @@ import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Unit;
 
+import java.awt.*;
+import java.awt.geom.AffineTransform;
+import java.awt.geom.Area;
+
+import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.main.Main.RC;
 import static com.mygdx.game.method.Method.tower_xy_2;
 import static com.mygdx.game.method.pow2.pow2;
-import static java.lang.StrictMath.abs;
-import static java.lang.StrictMath.sqrt;
+import static java.lang.StrictMath.*;
 
 public abstract class CollisionFunctional{
     public static float v = 4;
@@ -235,11 +240,8 @@ public abstract class CollisionFunctional{
             return;
         }
     }
-    private static void TowerRotate(Unit unit,float inertion){
-        for(Unit tower: unit.TowerUnitList){
-            tower.rotation_tower += inertion;
-        }
-        unit.rotation_corpus += inertion;
+    public static void TowerRotate(Unit unit,float inertion){
+        unit.RotationInertion += inertion;
     }
     // Ram physics, kept deliberately simple after an earlier attempt at a
     // fuller impulse+spin model didn't land after several tuning passes: SAT

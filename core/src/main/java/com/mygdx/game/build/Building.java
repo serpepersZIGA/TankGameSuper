@@ -14,6 +14,7 @@ import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.method.rand;
 import Content.Particle.FlameStatic;
 
+import java.awt.geom.Area;
 import java.io.Serializable;
 import java.util.ArrayList;
 

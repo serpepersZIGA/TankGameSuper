@@ -32,9 +32,8 @@ import java.util.Set;
 // organic look instead of a ruler-straight road.
 public class ProceduralMapGenerator {
     private static final String[] BUILDINGS = {"BigBuildingWood1", "Building2"};
-    // scattered decor pool - rocks/plants/wood/flowers, replacing the old
-    // single reused pepper asset (see DecorSpriteSheets.kt for where these
-    // sprite names come from)
+    // scattered decor pool - rocks/plants/wood/flowers (see DecorSpriteSheets.kt
+    // for where these sprite names come from)
     private static final String[] DECOR_TYPES = {
             "rock_a", "rock_b", "rock_c", "rock_d", "rock_e",
             "plant_a", "plant_b", "plant_c", "plant_d", "plant_e",
@@ -130,9 +129,8 @@ public class ProceduralMapGenerator {
         appendSpawnZone(sb, "playerspawn", playerHub, width, height, rand);
         appendSpawnZone(sb, "enemyspawn", enemyHub, width, height, rand);
 
-        // was pepper (a single reused bush/lamp asset) for every scattered
-        // object - now a real pool of rocks/plants/wood/flowers cut from the
-        // asset sheets (see DecorSpriteSheets.kt), one random variant per spot.
+        // a real pool of rocks/plants/wood/flowers cut from the asset sheets
+        // (see DecorSpriteSheets.kt), one random variant per spot.
         int decorTarget = (width*height)/45;
         int decorAttempts = 0, decorPlaced = 0;
         while (decorPlaced < decorTarget && decorAttempts < decorTarget*10){

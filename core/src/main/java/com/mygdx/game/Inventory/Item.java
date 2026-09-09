@@ -9,6 +9,7 @@ import com.mygdx.game.unit.moduleUnit.Gun;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.mygdx.game.main.Main.GameHost;
 import static com.mygdx.game.main.Main.Option;
 import static com.mygdx.game.unit.Unit.IDList;
 
@@ -119,9 +120,11 @@ public class Item implements Cloneable{
                 }
                 break;
             case Spawner:
-                IDList.get(IDSpawnUnit).UnitAdd((int) unit.x, (int) unit.y,true,unit.team
-                        , Main.RegisterControl.controllerBot,new Inventory(new Item[1][1],1)
-                        ,new Inventory(new Item[1][1],1));
+                if(GameHost) {
+                    IDList.get(IDSpawnUnit).UnitAdd((int) unit.x, (int) unit.y, true, unit.team
+                            , Main.RegisterControl.controllerBot, new Inventory(new Item[1][1], 1)
+                            , new Inventory(new Item[1][1], 1));
+                }
                 return true;
 
 

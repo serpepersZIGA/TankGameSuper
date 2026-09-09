@@ -11,7 +11,6 @@ public class Inventory implements Cloneable{
     public Item[][]InventorySlots;
     public boolean ConfRefactor;
     public static int MoneyAdd;
-    public static int Money;
     public static ArrayList<Item> AssortmentList = new ArrayList<>();
     public String[][]inventoryStr;
     public int xySize;
@@ -47,6 +46,22 @@ public class Inventory implements Cloneable{
                 }
                 break;
 
+        }
+    }
+    public Inventory(String[][]InventorySlots){
+
+        ConfRefactor = true;
+
+        this.inventoryStr = InventorySlots;
+        this.InventorySlots = new Item[InventorySlots.length][InventorySlots[0].length];
+        for (int ix = 0;ix<InventorySlots.length;ix++) {
+            for (int iy = 0;iy<InventorySlots[ix].length;iy++) {
+                //if (InventorySlots[ix][iy] != null) {
+                    this.ItemAdd(ix,iy,InventorySlots[ix][iy]);
+                //}
+
+
+            }
         }
     }
     public static void AssortmentAdd(Item item){

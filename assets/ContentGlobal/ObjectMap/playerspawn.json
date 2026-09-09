@@ -1,5 +1,5 @@
 {
-  "Image": "pepper_object_map",
+  "Image": "spawn_marker",
   "Collision":"CollisionVoid",
   "X":2,
   "Y":2,

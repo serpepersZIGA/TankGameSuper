@@ -86,7 +86,6 @@ image/item/penetration.png
 image/item/health-red.png
 image/item/health-green.png
 image/item/armor.png
-image/object_map/pepper_object_map.png
 image/object_map/City-light-off.png
 image/object_map/City-light-on.png
 image/object_map/Snow-City-light-off.png
@@ -163,9 +162,6 @@ ContentGlobal/Unit/Pz-2A.json
 ContentGlobal/Unit/Pz-2AC.json
 ContentGlobal/Unit/Pz-2F.json
 ContentGlobal/Unit/Pz-2M.json
-ContentGlobal/ObjectMap/playerspawn.json
-ContentGlobal/ObjectMap/enemyspawn.json
-ContentGlobal/ObjectMap/pepper.json
 ContentGlobal/ObjectMap/rock_a.json
 ContentGlobal/ObjectMap/rock_b.json
 ContentGlobal/ObjectMap/rock_c.json
@@ -183,12 +179,13 @@ ContentGlobal/ObjectMap/flower_c.json
 ContentGlobal/ObjectMap/flower_d.json
 ContentGlobal/ObjectMap/lamp.json
 ContentGlobal/ObjectMap/rock_e.json
-Map/maps/MapBase.mapt
+ContentGlobal/ObjectMap/playerspawn.json
+ContentGlobal/ObjectMap/enemyspawn.json
 Map/maps/MapCentral.mapt
-Map/maps/Procedural_1787848116687.mapt
+Map/maps/Procedural_1788471655943.mapt
+Map/maps/MapBase.mapt
 Map/Structure/street1.str
 Map/Structure/streetPoselok.str
-Map/Structure/pepper1.str
 Map/Structure/CentralSquare.str
 PlayerAllSpawnList/Pz-2A
 PlayerAllSpawnList/Pz-2AC

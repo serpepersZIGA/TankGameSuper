@@ -17,4 +17,7 @@ public abstract class Fire implements Cloneable{
             throw new AssertionError();
         }
     }
+    public void FireXY(){
+
+    }
 }

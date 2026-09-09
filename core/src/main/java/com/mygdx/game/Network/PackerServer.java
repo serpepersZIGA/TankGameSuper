@@ -9,13 +9,13 @@ public class PackerServer {
     public ArrayList<TransportPacket>player;
     public ArrayList<BuildPacket>building;
     public ArrayList<DebrisPacket>debris;
-    public boolean debrisConf,unitConf;
+    public boolean debrisConf,unitConf,InventoryConf;
     public ArrayList<PacketMapObject>mapObject = new ArrayList<>();
 
     //public ArrayList<ItemPacket>item = new ArrayList<>();
 
     public ArrayList<SoundPacket>sound = new ArrayList<>();
     public float TotalLight;
-    public int Money;
+    public ArrayList<Integer>Money = new ArrayList<>();
 
 }
