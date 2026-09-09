@@ -1,0 +1,191 @@
+package com.mygdx.game.Parsing;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import tools.jackson.databind.ObjectMapper;
+
+import com.mygdx.game.unit.ClassUnit;
+import com.mygdx.game.unit.UnitPattern;
+
+import java.io.*;
+import java.util.ArrayList;
+
+public class UnitsParser {
+    public static String Engine, Corpus, Soldat;
+    public static ArrayList<String> Cannon;
+    public static ArrayList<String> Track;
+    public static int [][] TowerXY,TrackXY;
+    public static int []Side;
+    public static ClassUnit classUnit;
+    public static int height;
+    public static int HillHp;
+
+    public static void Pars() {
+        FileHandle[] files = Gdx.files.internal("ContentGlobal/Unit").list();
+        if (files.length == 0) {
+            AddBuilding();
+            files = Gdx.files.internal("ContentGlobal/Unit").list();
+        }
+        for (FileHandle file : files) {
+            //System.out.println(file.path());
+            try {
+                JSON(file.path());
+
+            } catch (IOException e) {
+                throw new RuntimeException(e);
+            }
+
+            new UnitPattern(file.name().replace(".json", ""),
+                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY,Side, classUnit, HillHp,height);
+
+
+        }
+
+
+    }
+
+
+    public static void JSON(String JSON) throws IOException {
+        FileHandle file = Gdx.files.internal(JSON);
+        String TxT = file.readString();
+        // Чтение JSON-файла и создание объекта Person
+        ObjectMapper objectMapper = new ObjectMapper();
+
+        buff obj = objectMapper.readValue(TxT, buff.class);
+        Cannon = new ArrayList<>();
+        Cannon.addAll(obj.Cannon);
+        Track = new ArrayList<>();
+        Track.addAll(obj.Track);
+        Engine = obj.Engine;
+        Corpus = obj.Corpus;
+        TrackXY = obj.TrackXY;
+        TowerXY = obj.TowerXY;
+        Side = obj.Side;
+        HillHp = obj.MedicConf;
+        height = obj.Height;
+    }
+    public static void AddBuilding(){
+        new File("ContentGlobal").mkdirs();
+        new File("ContentGlobal/Unit").mkdirs();
+        File Pz2A = new File("ContentGlobal/Unit/Pz-2A.json");
+        File Pz2AC = new File("ContentGlobal/Unit/Pz-2AC.json");
+        File Pz2F = new File("ContentGlobal/Unit/Pz-2F.json");
+        File Pz2M = new File("ContentGlobal/Unit/Pz-2M.json");
+        File Helicopter2Z = new File("ContentGlobal/Unit/Helicopter-2Z.json");
+        File Gb1M = new File("ContentGlobal/Unit/Gb-1M.json");
+        File M1 = new File("ContentGlobal/Unit/M1.json");
+        String data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"HelicopterCorpus1\",\n" +
+                "  \"Cannon\": [\"Blade\",\"DP-27\",\"DP-27\"],\n" +
+                "  \"TowerXY\": [[0,50],[25,50],[-25,50]],\n" +
+                "\n" +
+                "  \"Track\": [],\n" +
+                "  \"Side\": [],\n" +
+                "  \"TrackXY\": [],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 2\n" +
+                "}";
+
+        Create(Helicopter2Z,data);
+
+        data = "{\n" +
+                "  \"Engine\": \"U1M\",\n" +
+                "  \"Corpus\": \"CorpusM1\",\n" +
+                "  \"Cannon\": [\"Kwk12ML\"],\n" +
+                "  \"TowerXY\": [[0,8]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackM1\",\"TrackM1\"],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"TrackXY\": [[-9,0],[9,0]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+
+        Create(M1,data);
+
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"At2E\",\n" +
+                "  \"Cannon\": [\"Kwk24M\",\"Cabine\"],\n" +
+                "  \"TowerXY\": [[0,18],[0,-12]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+
+        Create(Gb1M,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+
+        Create(Pz2A,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+        Create(Pz2AC,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+        Create(Pz2F,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"Panzer1\",\n" +
+                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
+                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "\n" +
+                "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
+                "  \"Side\": [0,1],\n" +
+                "  \"TrackXY\": [[-22,0],[22,0]],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+        Create(Pz2M,data);
+
+
+    }
+    private static void Create(File file, String str){
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
+            out.close();
+        } catch (IOException ignored) {
+        }
+
+    }
+
+
+}

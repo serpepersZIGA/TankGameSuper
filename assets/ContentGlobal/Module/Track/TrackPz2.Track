@@ -1,0 +1,4 @@
+TrackWidth = 15;
+TrackHeight = 130;
+Images = image/animation/AnimationTrackUp.png;
+ImageInvert = image/animation/animationTrack.png;

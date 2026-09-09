@@ -1,0 +1,397 @@
+package com.mygdx.game.MapFunction;
+
+import java.io.FileWriter;
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashSet;
+import java.util.List;
+import java.util.Random;
+import java.util.Set;
+
+// Generates a new .mapt file with just the layout (buildings + decoration -
+// see an existing map or .str structure for the sparse BuildAdd/MapObject
+// command format hand-made maps already use). The actual ground - color,
+// material, road surface - is NOT baked into this file at all: it's repainted
+// by ProceduralTerrainPainter every time the map loads, straight onto the
+// live BlockList2D, using nothing but noise keyed off the same seed. That
+// split is what lets the ground be a smooth, seamless noise field instead of
+// a grid of PNG tiles, while buildings/decor stay ordinary placed objects.
+//
+// computeRoadCells() is the one piece both this class and the painter need
+// in exactly the same form: it always starts from a fresh Random(seed) and
+// touches no other state, so calling it twice - once here (to keep
+// buildings/decor off the road) and once from the painter (to know which
+// cells are asphalt) - reproduces the identical path both times without
+// having to save it anywhere.
+//
+// The road network itself is a handful of hub points connected by a minimum
+// spanning tree (so everything's reachable without a dense mesh), with one
+// extra edge added for a loop; each connection is a fractal "midpoint
+// displacement" path (repeatedly nudging each segment's midpoint sideways by
+// a shrinking random amount) rather than a straight line, for a winding,
+// organic look instead of a ruler-straight road.
+public class ProceduralMapGenerator {
+    private static final String[] BUILDINGS = {"BigBuildingWood1", "Building2"};
+    // scattered decor pool - rocks/plants/wood/flowers (see DecorSpriteSheets.kt
+    // for where these sprite names come from)
+    private static final String[] DECOR_TYPES = {
+            "rock_a", "rock_b", "rock_c", "rock_d", "rock_e",
+            "plant_a", "plant_b", "plant_c", "plant_d", "plant_e",
+            "wood_a", "wood_b",
+            "flower_a", "flower_b", "flower_c", "flower_d"
+    };
+    private static final int BUILDING_CLEARANCE = 12;
+    // how far off the road a building sits - close enough that the short
+    // dirt path ProceduralTerrainPainter traces to it reads as "just off the
+    // road", not a trek across the map
+    private static final int BUILDING_ROAD_OFFSET_MIN = 6;
+    private static final int BUILDING_ROAD_OFFSET_MAX = 16;
+    // covers the impassable border ring (10) plus the largest building
+    // footprint (10 cells wide) extending out from its anchor point
+    private static final int BUILDING_EDGE_CLEARANCE = 22;
+    private static final int ROAD_WIDTH = 2;
+    // clearance from the road for scattered decor - enough to clear a tank's
+    // own width while it drives down a ROAD_WIDTH=2 road, not just the exact
+    // cell the road occupies
+    private static final int DECOR_ROAD_CLEARANCE = 3;
+    // just off the road edge, close enough to read as "lighting this road"
+    private static final int LAMP_ROAD_OFFSET = 3;
+    // gap between lamps along a road - keeps their (much smaller) light
+    // radius from overlapping into one continuous wash again
+    private static final int MIN_LAMP_SPACING = 16;
+
+    /** Default size for a freshly-generated map - see MapSelectScreen. */
+    public static final int DEFAULT_SIZE = 260;
+
+    public static String generateLayout(long seed, int width, int height){
+        Random rand = new Random(seed+1);
+        StringBuilder sb = new StringBuilder();
+        sb.append("^Procedural").append(seed).append(";\n");
+        sb.append("/x ").append(width).append(":y ").append(height).append(":;\n\n");
+
+        boolean[][] road = computeRoadCells(seed, width, height);
+        List<int[]> roadCells = collectRoadCells(road, width, height);
+
+        // buildings used to require a big clearance FROM every road cell -
+        // logical roads with nothing on them, but also no way to reach a
+        // building except driving cross-country. Now each one sits a short
+        // offset from a random point on the actual road network instead, so
+        // ProceduralTerrainPainter can trace a short worn dirt path from it
+        // back to that road - a real "turn off here" instead of nothing.
+        List<int[]> placedBuildings = new ArrayList<>();
+        int buildingTarget = 18 + rand.nextInt(15);
+        int attempts = 0;
+        while (placedBuildings.size() < buildingTarget && attempts < buildingTarget*30 && !roadCells.isEmpty()){
+            attempts++;
+            int[] roadCell = roadCells.get(rand.nextInt(roadCells.size()));
+            float angle = rand.nextFloat()*(float)(Math.PI*2);
+            int offset = BUILDING_ROAD_OFFSET_MIN + rand.nextInt(BUILDING_ROAD_OFFSET_MAX-BUILDING_ROAD_OFFSET_MIN);
+            int x = roadCell[0] + Math.round((float) Math.cos(angle)*offset);
+            int y = roadCell[1] + Math.round((float) Math.sin(angle)*offset);
+            // clearance needs to cover both the impassable cliff ring at the
+            // map edge (ProceduralTerrainPainter.BORDER_MARGIN) and the
+            // building's own footprint extending out from this anchor point -
+            // otherwise part of a building could land on/past the border
+            if (x < BUILDING_EDGE_CLEARANCE || x >= width-BUILDING_EDGE_CLEARANCE
+                    || y < BUILDING_EDGE_CLEARANCE || y >= height-BUILDING_EDGE_CLEARANCE) continue;
+            // 4 only checked clearance right around the anchor point, but a
+            // building's footprint extends up to 10 cells out from its
+            // anchor (BigBuildingWood1 is 10x6) - anchored only 6-16 cells
+            // from a road cell (BUILDING_ROAD_OFFSET_MIN/MAX), that footprint
+            // could reach right back onto the road and block it outright.
+            // A radius bigger than the largest footprint dimension is a safe
+            // (if occasionally over-cautious) way to catch that without
+            // modeling the exact rotated rectangle.
+            if (!clearOfRoad(road, width, height, x, y, 11)) continue;
+            if (!clearOfBuildings(placedBuildings, x, y, BUILDING_CLEARANCE)) continue;
+            String building = BUILDINGS[rand.nextInt(BUILDINGS.length)];
+            int rotation = rand.nextInt(4);
+            sb.append("BuildAdd:B ").append(building).append(":x").append(x).append(":y").append(y)
+                    .append(":r").append(rotation).append(":;\n");
+            placedBuildings.add(new int[]{x, y});
+        }
+
+        // team spawn zones: pick the two hubs farthest apart from each other
+        // (not just any two hubs) so the player and enemy teams start on
+        // opposite sides of the map instead of a couple seconds' drive
+        // apart, and scatter several candidate points around each hub so
+        // every spawn/respawn lands somewhere fresh within that zone
+        // instead of always the exact same point.
+        List<int[]> hubs = computeHubs(seed, width, height);
+        int[] playerHub = hubs.get(0), enemyHub = hubs.get(0);
+        double bestPairDist = -1;
+        for (int a = 0; a < hubs.size(); a++){
+            for (int b = a+1; b < hubs.size(); b++){
+                double d = dist(hubs.get(a), hubs.get(b));
+                if (d > bestPairDist){ bestPairDist = d; playerHub = hubs.get(a); enemyHub = hubs.get(b); }
+            }
+        }
+        appendSpawnZone(sb, "playerspawn", playerHub, width, height, rand);
+        appendSpawnZone(sb, "enemyspawn", enemyHub, width, height, rand);
+
+        // a real pool of rocks/plants/wood/flowers cut from the asset sheets
+        // (see DecorSpriteSheets.kt), one random variant per spot.
+        int decorTarget = (width*height)/45;
+        int decorAttempts = 0, decorPlaced = 0;
+        while (decorPlaced < decorTarget && decorAttempts < decorTarget*10){
+            decorAttempts++;
+            int x = margin(rand, width);
+            int y = margin(rand, height);
+            // was an exact-cell check only - a decor object one cell off the
+            // road still has its collision box reachable by a tank's own
+            // (much wider than one cell) body while driving down a road
+            // that's only ROAD_WIDTH=2 cells wide, which is exactly what
+            // read as "decor sitting in the middle of the asphalt".
+            if (!clearOfRoad(road, width, height, x, y, DECOR_ROAD_CLEARANCE)) continue;
+            if (!clearOfBuildings(placedBuildings, x, y, 6)) continue;
+            String decor = DECOR_TYPES[rand.nextInt(DECOR_TYPES.length)];
+            sb.append("MapObject:o ").append(decor).append(":x").append(x).append(":y").append(y).append(":;\n");
+            decorPlaced++;
+        }
+
+        // street lamps line the road instead of scattering everywhere like
+        // plain decor does - a real street lamp marks a road, it doesn't
+        // show up in the middle of an open field. Spaced apart so their
+        // (much smaller now) light radius reads as a lit street instead of
+        // overlapping into one wash of light again.
+        int lampTarget = Math.max(6, (width+height)/10);
+        int lampAttempts = 0, lampPlaced = 0;
+        List<int[]> placedLamps = new ArrayList<>();
+        while (lampPlaced < lampTarget && lampAttempts < lampTarget*20 && !roadCells.isEmpty()){
+            lampAttempts++;
+            int[] roadCell = roadCells.get(rand.nextInt(roadCells.size()));
+            float angle = rand.nextFloat()*(float)(Math.PI*2);
+            int x = roadCell[0] + Math.round((float) Math.cos(angle)*LAMP_ROAD_OFFSET);
+            int y = roadCell[1] + Math.round((float) Math.sin(angle)*LAMP_ROAD_OFFSET);
+            if (x < BUILDING_EDGE_CLEARANCE || x >= width-BUILDING_EDGE_CLEARANCE
+                    || y < BUILDING_EDGE_CLEARANCE || y >= height-BUILDING_EDGE_CLEARANCE) continue;
+            if (!clearOfRoad(road, width, height, x, y, 1)) continue;
+            if (!clearOfBuildings(placedBuildings, x, y, 6)) continue;
+            if (!clearOfBuildings(placedLamps, x, y, MIN_LAMP_SPACING)) continue;
+            sb.append("MapObject:o lamp:x").append(x).append(":y").append(y).append(":;\n");
+            placedLamps.add(new int[]{x, y});
+            lampPlaced++;
+        }
+
+        return sb.toString();
+    }
+
+    private static final int SPAWN_ZONE_RADIUS = 18;
+    private static final int SPAWN_POINTS_PER_ZONE = 6;
+    // must stay >= ProceduralTerrainPainter.BORDER_MARGIN - a spawn point
+    // any closer to the edge than that could land inside the impassable
+    // cliff ring and spawn the player stuck in a wall
+    private static final int SPAWN_EDGE_CLEARANCE = 14;
+
+    /** Scatters a handful of spawn-marker points (see playerspawn.json/enemyspawn.json) in a small radius around a hub. */
+    private static void appendSpawnZone(StringBuilder sb, String assetName, int[] hub, int width, int height, Random rand){
+        int placed = 0, attempts = 0;
+        while (placed < SPAWN_POINTS_PER_ZONE && attempts < SPAWN_POINTS_PER_ZONE*10){
+            attempts++;
+            float angle = rand.nextFloat()*(float)(Math.PI*2);
+            int r = rand.nextInt(SPAWN_ZONE_RADIUS);
+            int x = hub[0] + Math.round((float) Math.cos(angle)*r);
+            int y = hub[1] + Math.round((float) Math.sin(angle)*r);
+            if (x < SPAWN_EDGE_CLEARANCE || x >= width-SPAWN_EDGE_CLEARANCE
+                    || y < SPAWN_EDGE_CLEARANCE || y >= height-SPAWN_EDGE_CLEARANCE) continue;
+            sb.append("MapObject:o ").append(assetName).append(":x").append(x).append(":y").append(y).append(":;\n");
+            placed++;
+        }
+    }
+
+    /** Generates the layout and writes it to disk, returning the path passed in. */
+    public static String generateLayoutAndSave(long seed, int width, int height, String path) throws IOException {
+        String content = generateLayout(seed, width, height);
+        try (FileWriter writer = new FileWriter(path)) {
+            writer.write(content);
+        }
+        return path;
+    }
+
+    /** The road cell grid for this seed/size - always deterministic, see class comment. */
+    public static boolean[][] computeRoadCells(long seed, int width, int height){
+        Random rand = new Random(seed);
+        boolean[][] road = new boolean[height][width];
+        int hubCount = 4 + rand.nextInt(3);
+        // hubs used to be dropped anywhere with just a pairwise minimum
+        // distance from each other - nothing stopped them all landing in
+        // the same half of a big map by chance, leaving the other half with
+        // no road at all. One hub per cell of a grid over the whole map
+        // (with jitter within that cell) guarantees the network actually
+        // reaches every region instead of clustering wherever the RNG
+        // happened to put the first few points.
+        List<int[]> hubs = pickHubsAcrossMap(rand, width, height, hubCount);
+        List<int[]> edges = minimumSpanningTree(hubs);
+        // a lone bonus edge (the old approach) gives at most one accidental
+        // loop - real road networks fork wherever two hubs just happen to be
+        // near each other anyway. Any hub pair not already connected by the
+        // MST, but not much farther apart than the longest MST edge already
+        // is, gets a direct connection too - that's what actually produces a
+        // proper 3+-way junction instead of a single tree with one extra
+        // link tacked on.
+        double longestMstEdge = 0;
+        for (int[] edge : edges) longestMstEdge = Math.max(longestMstEdge, dist(hubs.get(edge[0]), hubs.get(edge[1])));
+        Set<Long> connectedPairs = new HashSet<>();
+        for (int[] edge : edges) connectedPairs.add(pairKey(edge[0], edge[1]));
+        List<int[]> extraEdges = new ArrayList<>();
+        for (int a = 0; a < hubs.size(); a++){
+            for (int b = a+1; b < hubs.size(); b++){
+                if (connectedPairs.contains(pairKey(a, b))) continue;
+                if (dist(hubs.get(a), hubs.get(b)) <= longestMstEdge*1.35){
+                    extraEdges.add(new int[]{a, b});
+                }
+            }
+        }
+        edges.addAll(extraEdges);
+        for (int[] edge : edges){
+            tracePath(road, width, height, hubs.get(edge[0]), hubs.get(edge[1]), rand);
+        }
+        return road;
+    }
+
+    /** The same hub points computeRoadCells() itself uses internally, computed independently from a fresh Random(seed) - see class comment on computeRoadCells for why that reproduces identically. */
+    public static List<int[]> computeHubs(long seed, int width, int height){
+        Random rand = new Random(seed);
+        int hubCount = 4 + rand.nextInt(3);
+        return pickHubsAcrossMap(rand, width, height, hubCount);
+    }
+
+    private static long pairKey(int a, int b){
+        int lo = Math.min(a, b), hi = Math.max(a, b);
+        return ((long) lo << 32) | hi;
+    }
+
+    /** Every true cell in the road grid, for picking a random point along the road network. */
+    private static List<int[]> collectRoadCells(boolean[][] road, int width, int height){
+        List<int[]> cells = new ArrayList<>();
+        for (int y = 0; y < height; y++){
+            for (int x = 0; x < width; x++){
+                if (road[y][x]) cells.add(new int[]{x, y});
+            }
+        }
+        return cells;
+    }
+
+    private static int margin(Random rand, int size){
+        int m = Math.max(size/10, 8);
+        return m + rand.nextInt(Math.max(size-2*m, 1));
+    }
+
+    private static List<int[]> pickHubsAcrossMap(Random rand, int width, int height, int hubCount){
+        int cols = (int) Math.ceil(Math.sqrt(hubCount));
+        int rows = (int) Math.ceil((double) hubCount/cols);
+        int cellW = width/cols, cellH = height/rows;
+        List<int[]> cellOrigin = new ArrayList<>();
+        for (int r = 0; r < rows; r++){
+            for (int c = 0; c < cols; c++){
+                cellOrigin.add(new int[]{c*cellW, r*cellH});
+            }
+        }
+        java.util.Collections.shuffle(cellOrigin, rand);
+        List<int[]> hubs = new ArrayList<>();
+        for (int i = 0; i < hubCount && i < cellOrigin.size(); i++){
+            int[] origin = cellOrigin.get(i);
+            int mx = Math.max(cellW/10, 6), my = Math.max(cellH/10, 6);
+            int x = origin[0] + mx + rand.nextInt(Math.max(cellW-2*mx, 1));
+            int y = origin[1] + my + rand.nextInt(Math.max(cellH-2*my, 1));
+            hubs.add(new int[]{x, y});
+        }
+        return hubs;
+    }
+
+    private static double dist(int[] a, int[] b){
+        return Math.sqrt(Math.pow(a[0]-b[0], 2) + Math.pow(a[1]-b[1], 2));
+    }
+
+    private static List<int[]> minimumSpanningTree(List<int[]> hubs){
+        List<int[]> edges = new ArrayList<>();
+        if (hubs.size() < 2) return edges;
+        Set<Integer> connected = new HashSet<>();
+        connected.add(0);
+        while (connected.size() < hubs.size()){
+            int bestFrom = -1, bestTo = -1;
+            double bestDist = Double.MAX_VALUE;
+            for (int from : connected){
+                for (int to = 0; to < hubs.size(); to++){
+                    if (connected.contains(to)) continue;
+                    double d = dist(hubs.get(from), hubs.get(to));
+                    if (d < bestDist){ bestDist = d; bestFrom = from; bestTo = to; }
+                }
+            }
+            edges.add(new int[]{bestFrom, bestTo});
+            connected.add(bestTo);
+        }
+        return edges;
+    }
+
+    private static void tracePath(boolean[][] road, int width, int height, int[] from, int[] to, Random rand){
+        tracePath(road, width, height, from, to, rand, ROAD_WIDTH, 0.5f);
+    }
+
+    // package-visible with a width/roughness knob so ProceduralTerrainPainter
+    // can reuse the exact same fractal midpoint-displacement tracer for the
+    // thin dirt paths that connect a building to the road network, instead
+    // of a second copy of this logic
+    static void tracePath(boolean[][] road, int width, int height, int[] from, int[] to, Random rand, int stampWidth, float roughnessStart){
+        List<float[]> points = new ArrayList<>();
+        points.add(new float[]{from[0], from[1]});
+        points.add(new float[]{to[0], to[1]});
+        float roughness = roughnessStart;
+        for (int iteration = 0; iteration < 4; iteration++){
+            List<float[]> next = new ArrayList<>();
+            for (int i = 0; i < points.size()-1; i++){
+                float[] a = points.get(i);
+                float[] b = points.get(i+1);
+                next.add(a);
+                float mx = (a[0]+b[0])/2f, my = (a[1]+b[1])/2f;
+                float dx = b[0]-a[0], dy = b[1]-a[1];
+                float len = Math.max((float) Math.sqrt(dx*dx+dy*dy), 0.001f);
+                float perpX = -dy/len, perpY = dx/len;
+                float displace = (rand.nextFloat()*2f-1f) * len * roughness;
+                next.add(new float[]{mx+perpX*displace, my+perpY*displace});
+            }
+            next.add(points.get(points.size()-1));
+            points = next;
+            roughness *= 0.55f;
+        }
+        for (int i = 0; i < points.size()-1; i++){
+            stampSegment(road, width, height, points.get(i), points.get(i+1), stampWidth);
+        }
+    }
+
+    private static void stampSegment(boolean[][] road, int width, int height, float[] a, float[] b, int stampWidth){
+        float dx = b[0]-a[0], dy = b[1]-a[1];
+        int steps = Math.max((int) Math.sqrt(dx*dx+dy*dy), 1);
+        for (int s = 0; s <= steps; s++){
+            float t = (float) s/steps;
+            int cx = Math.round(a[0]+dx*t);
+            int cy = Math.round(a[1]+dy*t);
+            for (int oy = -stampWidth/2; oy <= stampWidth/2; oy++){
+                for (int ox = -stampWidth/2; ox <= stampWidth/2; ox++){
+                    int px = cx+ox, py = cy+oy;
+                    if (px >= 1 && px < width-1 && py >= 1 && py < height-1){
+                        road[py][px] = true;
+                    }
+                }
+            }
+        }
+    }
+
+    private static boolean clearOfRoad(boolean[][] road, int width, int height, int x, int y, int clearance){
+        for (int oy = -clearance; oy <= clearance; oy++){
+            for (int ox = -clearance; ox <= clearance; ox++){
+                int px = x+ox, py = y+oy;
+                if (px < 0 || px >= width || py < 0 || py >= height) continue;
+                if (road[py][px]) return false;
+            }
+        }
+        return true;
+    }
+
+    private static boolean clearOfBuildings(List<int[]> placed, int x, int y, int clearance){
+        for (int[] b : placed){
+            if (Math.abs(b[0]-x) < clearance && Math.abs(b[1]-y) < clearance) return false;
+        }
+        return true;
+    }
+}

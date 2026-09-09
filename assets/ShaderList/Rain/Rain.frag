@@ -4,6 +4,10 @@ precision mediump float;
 #endif
 
 uniform vec2 u_resolution;  // Разрешение экрана (width, height)
+// how much of this rain's normal opacity to actually use right now (0..1) -
+// lets WeatherMainSystem fade rain in/out smoothly as the player crosses a
+// biome boundary instead of switching it fully on/off at some line
+uniform float u_alphaScale;
 const vec2 u_rectSize =vec2(0.35,0.85);
 const vec4 u_color = vec4(0.07,0.3,0.5,0.45);
 const vec2 u_rectPos = vec2(0.5,0.5);
@@ -30,5 +34,5 @@ void main() {
 
     // Вывод цвета
     //vec3 finalColor = u_color.rgb;
-    fragColor = vec4(u_color);
+    fragColor = vec4(u_color.rgb, u_color.a*u_alphaScale);
 }

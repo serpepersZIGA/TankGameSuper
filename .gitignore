@@ -23,7 +23,8 @@ www-test/
 /android/libs/x86/
 /android/libs/x86_64/
 /android/gen/
-.idea/
+.idea/*
+!.idea/runConfigurations/
 *.ipr
 *.iws
 *.iml
@@ -105,6 +106,14 @@ gradle-app.setting
 .DS_Store
 Thumbs.db
 
+## runtime replay logs (author confirmed safe to ignore)
+replay_pid*.log
+/desktop/replay_pid*.log
+
+## maps made by the in-game "generate a new map" button - a runtime
+## artifact of playing, not source content
+assets/Map/maps/Procedural_*.mapt
+
 ## iOS
 /ios/xcode/*.xcodeproj/*
 !/ios/xcode/*.xcodeproj/xcshareddata
@@ -113,3 +122,5 @@ Thumbs.db
 /ios/IOSLauncher.app
 /ios/IOSLauncher.app.dSYM
 /build/
+/core/build/
+/desktop/build/

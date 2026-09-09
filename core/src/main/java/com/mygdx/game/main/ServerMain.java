@@ -1,0 +1,342 @@
+package com.mygdx.game.main;
+import com.esotericsoftware.kryonet.Connection;
+import com.esotericsoftware.kryonet.Listener;
+import com.esotericsoftware.kryonet.Server;
+import com.mygdx.game.Event.EventDeleteItemClient;
+import com.mygdx.game.Event.EventTransferItemClient;
+import com.mygdx.game.Event.EventUseClient;
+import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Network.*;
+import com.mygdx.game.Network.BuildPacket;
+import com.mygdx.game.Network.PacketBuildingServer;
+import com.mygdx.game.Network.BullPacket;
+import com.mygdx.game.method.CycleTimeDay;
+import com.mygdx.game.Sound.SoundPlay;
+import com.mygdx.game.object_map.ObjectMapAssets;
+import com.mygdx.game.unit.SpawnPlayer.*;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitType;
+
+import java.io.IOException;
+import java.util.ArrayList;
+
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
+import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.Inventory.Item.IDListItem;
+import static com.mygdx.game.unit.Unit.IDList;
+
+public class ServerMain extends Listener {
+    public static Server Server;
+    public static int nConnect = 0;
+    public void create(){
+        System.out.println("Создаем сервер");
+        //Создаем сервер
+        Server = new Server(200000000,200000000);
+
+        //Регистрируем пакет класс
+        Server.getKryo().register(ItemPacket.class);
+        Server.getKryo().register(String[][].class);
+        Server.getKryo().register(String[].class);
+        Server.getKryo().register(EventUseClient.class);
+        Server.getKryo().register(EventDeleteItemClient.class);
+        Server.getKryo().register(EventTransferItemClient.class);
+        Server.getKryo().register(PacketInventory.class);
+        Server.getKryo().register(PackerServer.class);
+        Server.getKryo().register(Packet_client.class);
+        Server.getKryo().register(TransportPacket.class);
+        Server.getKryo().register(BullPacket.class);
+        Server.getKryo().register(ArrayList.class);
+        Server.getKryo().register(SoundPlay.class);
+        Server.getKryo().register(DebrisPacket.class);
+        Server.getKryo().register(UnitType.class);
+        //Server.getKryo().register(Integer[].class);
+//        Server.getKryo().register(Bang.class);
+//        Server.getKryo().register(FlameSpawn.class);
+//        Server.getKryo().register(Flame.class);
+//        Server.getKryo().register(FlameParticle.class);
+//        Server.getKryo().register(Acid.class);
+//        Server.getKryo().register(Blood.class);
+//        Server.getKryo().register(FlameStatic.class);
+        Server.getKryo().register(BuildPacket.class);
+        Server.getKryo().register(PacketBuildingServer.class);
+        Server.getKryo().register(SoundPacket.class);
+        Server.getKryo().register(PacketMapObject.class);
+        Server.getKryo().register(ObjectMapAssets.class);
+        Server.getKryo().register(PacketUnitUpdate.class);
+        Server.getKryo().register(SpawnPlayerPack.class);
+        Server.getKryo().register(ConnectPlayer.class);
+
+
+        //Регистрируем порт
+        portConst = 0;
+        SearchPort(tcpPort, udpPort);
+
+        //Запускаем сервер
+        Server.start();
+
+        Server.addListener(Main.serverMain);
+    }
+    private void SearchPort(int tcpPort, int udpPort){
+        System.out.println(tcpPort);
+        try {
+            Server.bind(tcpPort,udpPort);
+        } catch (IOException e) {
+            if(portConst>16){
+                throw new RuntimeException(e);
+            }
+            portConst++;
+            SearchPort(tcpPort+portConst,udpPort+portConst);
+        }
+    }
+    public void connected(Connection c){
+        System.out.println("На сервер подключился " + c.getRemoteAddressTCP().getHostString());
+
+        for (int i = 0;i<Main.BuildingList.size();i++){
+            PacketBuildServer(i);
+        }
+        for (int iy = 0; iy< BlockList2D.size(); iy++){
+            PacketBuildingServer.ObjectMapPack.add(new ArrayList<>());
+            for (int ix = 0; ix< BlockList2D.get(iy).size(); ix++){
+                PacketObjectMapServer(ix,iy,PacketBuildingServer.ObjectMapPack.get(iy));
+            }
+        }
+        for (int i = 0;i<UnitList.size();i++){
+            Unit unit = UnitList.get(i);
+            unit.inventory.ConfRefactor = true;
+            unit.equipment.ConfRefactor = true;
+        }
+        ItemObject.ConfSentPackItem = true;
+        ItemObject.PacketAdd();
+        PacketServer.unitConf = true;
+        PacketBuildingServer.FlameLight = CycleTimeDay.lightFlame;
+        Server.sendToAllTCP(PacketBuildingServer);
+        PacketBuildingServer.ObjectMapPack.clear();
+        PacketBuildingServer.BuildPack.clear();
+        //KeyboardObj.ZoomConstTransport();
+        //KeyboardObj.zoom_const();
+
+    }
+
+    public void PacketObjectMapServer(int ix,int iy,ArrayList<PacketMapObject>YMap){
+        YMap.add(new PacketMapObject());
+        YMap.get(ix).x = BlockList2D.get(iy).get(ix).objMap.x;
+        YMap.get(ix).y = BlockList2D.get(iy).get(ix).objMap.y;
+        YMap.get(ix).width = BlockList2D.get(iy).get(ix).objMap.width;
+        YMap.get(ix).height = BlockList2D.get(iy).get(ix).objMap.height;
+        YMap.get(ix).ix = ix;
+        YMap.get(ix).iy = iy;
+        YMap.get(ix).lighting = BlockList2D.get(iy).get(ix).objMap.lighting;
+        YMap.get(ix).distance_lighting = BlockList2D.get(iy).get(ix).objMap.distance_lighting;
+        YMap.get(ix).objectAssets = BlockList2D.get(iy).get(ix).objMap.assets;
+
+    }
+    public void PacketBuildServer(int i){
+        PacketBuildingServer.BuildPack.add(new BuildPacket());
+        PacketBuildingServer.BuildPack.get(i).ID = BuildingList.get(i).ID;
+        PacketBuildingServer.BuildPack.get(i).x = BuildingList.get(i).x;
+        PacketBuildingServer.BuildPack.get(i).y = BuildingList.get(i).y;
+        PacketBuildingServer.BuildPack.get(i).rotation = BuildingList.get(i).rotate;
+    }
+    //private static int yj = 0;
+
+    //Используется когда клиент отправляет пакет серверу
+    public void received(Connection c, Object p){
+        if(p instanceof Packet_client) {
+            Packet_client pack = (Packet_client)p;
+            // This runs on Kryonet's network thread, while UnitList is also
+            // read/written from the render/game thread - needs the same lock
+            // Unit.UnitAdd() takes when it mutates the list.
+            Main.R_LOCK.lock();
+            try {
+                for (Unit unit : UnitList) {
+                    //System.out.println(IDClient+" "+unit.nConnect );
+                    if (pack.IDClient == unit.nConnect) {
+
+                        unit.left_mouse = pack.left_mouse;
+                        unit.right_mouse = pack.right_mouse;
+                        unit.press_w = pack.press_w;
+                        unit.press_a = pack.press_a;
+                        unit.press_s = pack.press_s;
+                        unit.press_d = pack.press_d;
+                        unit.press_f = pack.press_f;
+                        unit.TargetX = pack.mouse_x;
+                        unit.TargetY = pack.mouse_y;
+                        //unit.FireControl();
+                        for (Unit Tower : unit.TowerUnitList) {
+                            Tower.left_mouse = pack.left_mouse;
+                            Tower.TargetX = unit.TargetX+ Tower.tower_x;
+                            Tower.TargetY = unit.TargetY+ Tower.tower_y;
+                        }
+                        return;
+                    }
+
+                }
+            } finally {
+                Main.R_LOCK.unlock();
+            }
+        }
+        else if(p instanceof SpawnPlayerPack){
+            //System.out.println("586855");
+            nConnect += 1;
+            Unit unitBuf;
+
+            unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
+                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1));
+            unitBuf.nConnect = nConnect;
+            unitBuf.PlayerConf = true;
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+
+            PacketServer.InventoryConf = true;
+//            if(!p.equals(new SpawnPlayerVoid())) {
+//                int i2 = Main.UnitList.size();
+//                ((PlayerSpawnData) p).SpawnPlayer(false);
+//                Main.UnitList.get(i2).nConnect = nConnect;
+//            }
+        }
+        else if(p instanceof EventUseClient){
+            EventUseClient pack = (EventUseClient) p;
+            //yj++;
+            //System.out.println("zzz"+yj);
+            // was checking/paying out of the static InventoryInterface.Team (the host's own
+            // team) for every buyer - use the actual purchasing unit's team instead
+            byte buyerTeam = UnitList.get((pack).ID).team;
+            if(!(pack).MoneyAdd || TeamGlobal.get(buyerTeam)>IDListItem.get((pack).str).Price) {
+                //System.out.println("eee"+yj);
+                if((pack).MoneyAdd) {
+                    int coin = TeamGlobal.get(buyerTeam) -IDListItem.get((pack).str).Price;
+                    TeamGlobal.replace(buyerTeam,coin);
+                }
+                if (!(pack).ConfUse) {
+                    if (!(pack).conf) {
+                        UnitList.get((pack).ID).inventory.ItemUse(IDListItem.get((pack).str)
+                                , UnitList.get((pack).ID));
+                    } else {
+                        UnitList.get((pack).ID).equipment.ItemUse(IDListItem.get((pack).str)
+                                , UnitList.get((pack).ID));
+                    }
+                } else {
+                     if (!(pack).conf) {
+                         UnitList.get((pack).ID).inventory.ItemAdd(IDListItem.get((pack).str));
+                     } else {
+                         UnitList.get((pack).ID).equipment.ItemAdd(IDListItem.get((pack).str));
+                     }
+
+                }
+                if((pack).ConfUseDel){
+                    //System.out.println(UnitList.get((pack).ID).XMap);
+                    // was nested as "else if" inside the !conf branch above, so pack.conf==true
+                    // (equipment) could never be reached - using an equipped item never deleted it
+                    if(!(pack).conf & UnitList.get((pack).ID).inventory.
+                            InventorySlots[(pack).x][(pack).y] != null){
+                        if(UnitList.get((pack).ID).inventory.InventorySlots[(pack).x][(pack).y].Use(
+                                UnitList.get((pack).ID))) {
+                            //System.out.println(" eeedsfd");
+                            UnitList.get((pack).ID).inventory.InventorySlots[(pack).x][(pack).y] = null;
+                            UnitList.get((pack).ID).inventory.inventoryStr[(pack).x][(pack).y] = null;
+
+                        }
+                    }
+                    else if((pack).conf & UnitList.get((pack).ID).equipment.
+                            InventorySlots[(pack).x][(pack).y] != null){
+                        if(UnitList.get((pack).ID).equipment.InventorySlots[(pack).x][(pack).y].Use(UnitList.get((pack).ID))) {
+                            UnitList.get((pack).ID).equipment.InventorySlots[(pack).x][(pack).y] = null;
+                            UnitList.get((pack).ID).equipment.inventoryStr[(pack).x][(pack).y] = null;
+                        }
+                    }
+                        //UnitList.get((pack).ID).SlotInventory[(pack).x][(pack).y].item = null;
+                }
+                PacketServer.InventoryConf = true;
+
+
+            }
+            PacketServer.InventoryConf = true;
+
+
+            return;
+
+
+        }
+        else if(p instanceof EventDeleteItemClient){
+            EventDeleteItemClient pack = (EventDeleteItemClient) p;
+            Unit unit = UnitList.get(pack.i);
+            if(!pack.conf) {
+                ItemList.add(new ItemObject(
+                        unit.inventory.InventorySlots[pack.x][pack.y],
+                        (int) unit.x, (int) unit.y));
+                unit.inventory.inventoryStr[pack.x][pack.y] = null;
+                unit.inventory.InventorySlots[pack.x][pack.y] = null;
+            }
+            else{
+                ItemList.add(new ItemObject(
+                        unit.equipment.InventorySlots[pack.x][pack.y],
+                        (int) unit.x, (int) unit.y));
+                unit.equipment.inventoryStr[pack.x][pack.y] = null;
+                unit.equipment.InventorySlots[pack.x][pack.y] = null;
+            }
+            ItemObject.ConfSentPackItem = true;
+            ItemObject.PacketAdd();
+            equipmentMain.InventoryReload(unit);
+
+            PacketServer.InventoryConf = true;
+            return;
+
+
+        }
+        else if(p instanceof EventTransferItemClient){
+            EventTransferItemClient pack = (EventTransferItemClient) p;
+            Unit unit = UnitList.get(pack.i);
+            //System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
+//            Item item1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
+//            Item item2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
+            if(!pack.InventoryType){
+                unit.inventory.ItemAdd(pack.x2,pack.y2,pack.item1);
+            }
+            else{
+                unit.equipment.ItemAdd(pack.x2,pack.y2,pack.item1);
+
+
+            }
+            if(!pack.InventoryType2) {
+                unit.inventory.ItemAdd(pack.x, pack.y, pack.item2);
+            }
+            else{
+                unit.equipment.ItemAdd(pack.x, pack.y, pack.item2);
+
+            }
+            equipmentMain.InventoryReload(unit);
+
+            PacketServer.InventoryConf = true;
+            //packetInventoryServer();
+//            if(UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y]!= null) {
+//                Item itemBuff1 = UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y];
+//                Item itemBuff2 = UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2];
+//                System.out.println("x1 "+pack.x+" y1 "+pack.y+" x2 "+pack.x2+" y2 "+pack.y2);
+//                itemBuff1 = itemBuff1.clone();
+//                if (itemBuff2 != null) {
+//                    itemBuff2 = itemBuff2.clone();
+//                    UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = itemBuff2.clone();
+//                }
+//                else{
+//                    UnitList.get(pack.i).inventory.InventorySlots[pack.x][pack.y] = null;
+//                }
+//                UnitList.get(pack.i).inventory.InventorySlots[pack.x2][pack.y2] = itemBuff1.clone();
+//            }
+        }
+        else if(p instanceof ConnectPlayer){
+            for(int i = 0;i<UnitList.size();i++){
+                Unit unit = UnitList.get(i);
+                if(unit.nConnect == ((ConnectPlayer) p).IDPlayerConnect){
+                    PacketServer.unitConf = true;
+                    PacketServer.InventoryConf = true;
+                }
+            }
+        }
+    }
+
+    //Используется когда клиент покидает сервер.
+    public void disconnected(Connection c){System.out.println("Клиент покинул сервер!");}
+}

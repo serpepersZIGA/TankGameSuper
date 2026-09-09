@@ -1,19 +1,28 @@
-sourceCompatibility = 1.8
-sourceSets.main.java.srcDirs = [ "src/" ]
+apply plugin: "application"
+
+// Java sources live under src/main/java, Kotlin sources under src/main/kotlin -
+// the standard Gradle/Kotlin layout. Only resources still need pointing at the
+// shared top-level assets folder.
 sourceSets.main.resources.srcDirs = ["../assets"]
 
-project.ext.mainClassName = "com.mygdx.game.GameStart"
+application {
+    mainClass = "com.mygdx.game.GameStart"
+}
+
 project.ext.assetsDir = new File("../assets")
 
 import org.gradle.internal.os.OperatingSystem
 
-tasks.register('run', JavaExec) {
-    dependsOn classes
-    mainClass = project.mainClassName
-    classpath = sourceSets.main.runtimeClasspath
+// The "run" task is created by the application plugin; point it at the assets
+// folder so the game finds its resources the same way it does when packaged.
+tasks.named('run', JavaExec) {
     standardInput = System.in
     workingDir = project.assetsDir
     ignoreExitValue = true
+    // silences "WARNING: A restricted method in java.lang.System has been
+    // called" from LWJGL's native library loading - just quiets the
+    // warning, doesn't change what the JVM actually allows
+    jvmArgs += "--enable-native-access=ALL-UNNAMED"
 
     if (OperatingSystem.current() == OperatingSystem.MAC_OS) {
         // Required to run on macOS
@@ -23,7 +32,7 @@ tasks.register('run', JavaExec) {
 
 tasks.register('debug', JavaExec) {
     dependsOn classes
-    mainClass = project.mainClassName
+    mainClass = application.mainClass
     classpath = sourceSets.main.runtimeClasspath
     standardInput = System.in
     workingDir = project.assetsDir
@@ -34,7 +43,7 @@ tasks.register('debug', JavaExec) {
 tasks.register('dist', Jar) {
     duplicatesStrategy(DuplicatesStrategy.EXCLUDE)
     manifest {
-        attributes 'Main-Class': project.mainClassName
+        attributes 'Main-Class': application.mainClass.get()
     }
     dependsOn configurations.runtimeClasspath
     from {
