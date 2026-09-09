@@ -1,0 +1,13 @@
+{
+  "Image": "spawn_marker",
+  "Collision":"CollisionVoid",
+  "X":2,
+  "Y":2,
+  "width":20,
+  "height":20,
+  "HP":120,
+  "LightingConf":false,
+  "Lighting":0,
+  "SpawnUnit": false,
+  "PlayerSpawn": true
+}

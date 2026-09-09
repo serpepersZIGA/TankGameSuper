@@ -1,0 +1,5 @@
+MaxSpeed = 1.5;
+MinSpeed = -1.5;
+Acceleration = 0.05;
+SpeedRotation = 1.5;
+ConfControl = true;

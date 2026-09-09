@@ -1,5 +1,5 @@
 buildscript {
-    
+    ext.kotlinVersion = '2.4.10'
 
     repositories {
         mavenLocal()
@@ -9,8 +9,7 @@ buildscript {
         google()
     }
     dependencies {
-        
-
+        classpath "org.jetbrains.kotlin:kotlin-gradle-plugin:$kotlinVersion"
     }
 }
 task writeAllAssetsToFile {
@@ -38,12 +37,15 @@ allprojects {
     version = '1.0'
     ext {
         appName = "TankSimulator"
-        gdxVersion = '1.12.0'
+        gdxVersion = '1.14.2'
+        gdxBox2dVersion = '3.1.1-0'
+        jacksonVersion = '3.2.2'
         roboVMVersion = '2.3.19'
         box2DLightsVersion = '1.5'
         ashleyVersion = '1.7.4'
         aiVersion = '1.8.2'
         gdxControllersVersion = '2.2.1'
+        javaVersion = 26
     }
 
     repositories {
@@ -59,32 +61,43 @@ allprojects {
 
 project(":desktop") {
     apply plugin: "java-library"
+    apply plugin: "org.jetbrains.kotlin.jvm"
 
+    kotlin {
+        jvmToolchain(javaVersion)
+    }
 
     dependencies {
         implementation project(":core")
         api "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-platform:$gdxVersion:natives-desktop"
         api "com.badlogicgames.gdx:gdx-freetype-platform:$gdxVersion:natives-desktop"
-        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxVersion:natives-desktop"
+        api "com.badlogicgames.gdx:gdx-box2d-platform:$gdxBox2dVersion:natives-desktop"
 
-        
+
     }
 }
 
 project(":core") {
     apply plugin: "java-library"
+    apply plugin: "org.jetbrains.kotlin.jvm"
+
+    kotlin {
+        jvmToolchain(javaVersion)
+    }
 
     dependencies {
         api "com.esotericsoftware:kryonet:2.22.0-RC1"
         api "com.badlogicgames.gdx:gdx:$gdxVersion"
         api "com.badlogicgames.gdx:gdx-freetype:$gdxVersion"
-        api "com.badlogicgames.gdx:gdx-box2d:$gdxVersion"
+        api "com.badlogicgames.gdx:gdx-box2d:$gdxBox2dVersion"
+        // needed to toggle borderless windowed mode at runtime (see ui/GraphicsSettings.kt) -
+        // this game only ever ships on desktop, so it's fine for core to know about the lwjgl3 backend
+        compileOnly "com.badlogicgames.gdx:gdx-backend-lwjgl3:$gdxVersion"
 
 
-        implementation 'com.fasterxml.jackson.core:jackson-databind:2.12.4'
-        implementation 'com.fasterxml.jackson.core:jackson-annotations:2.12.4'
-        implementation 'com.fasterxml.jackson.core:jackson-core:2.12.4'
+        implementation "tools.jackson.core:jackson-databind:$jacksonVersion"
+        implementation "tools.jackson.core:jackson-core:$jacksonVersion"
 
 
     }

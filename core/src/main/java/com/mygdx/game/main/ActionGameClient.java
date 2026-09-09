@@ -1,0 +1,264 @@
+package com.mygdx.game.main;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.GL20;
+import com.mygdx.game.Inventory.InventoryInterface;
+import com.mygdx.game.Shader.FlameShader;
+import com.mygdx.game.Shader.LiquidShader;
+import com.mygdx.game.bull.Bullet;
+import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.unit.SpawnPlayer.SpawnPlayerPack;
+import com.mygdx.game.unit.Unit;
+
+import java.util.concurrent.ExecutionException;
+
+import static com.mygdx.game.Inventory.ItemObject.ItemList;
+import static com.mygdx.game.Sound.SoundPlay.soundPlayClient;
+import static com.mygdx.game.Weather.WeatherMainSystem.RippleIteration;
+import static com.mygdx.game.Weather.WeatherMainSystem.WeatherIteration;
+import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.main.ClientMain.Client;
+import static com.mygdx.game.method.pow2.pow2;
+
+
+public class ActionGameClient extends ActionGame {
+
+    private Thread ThreadIterationDebris;
+    private Thread ThreadIterationBullet;
+    private Thread ThreadIterationUnit;
+
+    public static void ActionGameClientIteration(){
+        SpawnPlayerPack pack = new SpawnPlayerPack();
+        //inventoryMain = new InventoryInterface(new Inventory(new Item[4][4]),200,200,500,400);
+        pack.ID = SpawnIDPlayer;
+        Client.sendTCP(pack);
+    }
+    int i;
+    private static int timer = 0;
+    @Override final
+    public void action() throws ExecutionException, InterruptedException {
+        ThreadIterationBullet = new Thread(new IterationBullet());
+        ThreadIterationDebris = new Thread(new IterationDebris());
+        ThreadIterationUnit = new Thread(new IterationUnit());
+        ThreadIterationBullet.start();
+        ThreadIterationDebris.start();
+        ThreadIterationUnit.start();
+
+        Gdx.gl.glClearColor(0.08f, 0.09f, 0.07f, 1f);
+        Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
+        RC.method();
+        if (RC.MainUnit != null) {
+            boolean alive;
+            R_LOCK.lock();
+            try {
+                alive = UnitList.contains(RC.MainUnit);
+            } finally {
+                R_LOCK.unlock();
+            }
+            if (!alive) {
+                com.mygdx.game.ui.DeathScreen.INSTANCE.show();
+                ActionGameMain = com.mygdx.game.ui.DeathScreen.INSTANCE;
+                return;
+            }
+        }
+        //if(RC.UnitCamera==null){
+        if(Keyboard.PressW){
+            RC.y += 10;
+        }
+        if(Keyboard.PressS){
+            RC.y -= 10;
+        }
+        if(Keyboard.PressA){
+            RC.x -= 10;
+        }
+        if(Keyboard.PressD){
+            RC.x += 10;}
+        if(Keyboard.ClickEsc){
+            ActionGameMain = com.mygdx.game.ui.PauseScreen.INSTANCE;
+            com.mygdx.game.ui.PauseScreen.INSTANCE.show();
+        }
+//        try {
+//                if(timer <= 0) {
+//
+//                    if (Keyboard.LeftMouse) {
+//                        FlameSpawnList.add(new FlameSpawn(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
+//                        timer = 60;
+//
+//
+//                    }
+//                    if (Keyboard.RightMouse) {
+//                        //main.Main.bang_obj.add(new particle.bang(mouse_x,mouse_y,new Color(236,124,38),12));
+//                        LiquidList.add(new Acid(Keyboard.MouseX / Zoom + RC.x2,Keyboard.MouseY / Zoom + RC.y2));
+//                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+//                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+//                        //main.Main.liquid_obj.add(new particle.acid(mouse_x/1.23,mouse_y/1.23));
+//
+//                    }
+//                }
+//                else{timer-= 1;}
+//            }
+//            catch(Exception ignored){
+
+            //}
+
+        //}
+
+
+
+        Batch.begin();
+        Render.polyBatch.begin();
+        RC.render_block();
+        RippleIteration(Batch);
+
+        if(flame_spawn_time > 0){flame_spawn_time-=1;}
+        LiquidShader.AcidShaderIteration();
+
+        LiquidShader.BloodShaderIteration();
+
+        for (i = 0; i< FlameStaticList.size(); i++){
+            FlameStaticList.get(i).all_action();}
+        for (i = 0; i< FlameList.size(); i++){
+            FlameList.get(i).all_action();}
+        for (i = 0; i< FlameParticleList.size(); i++){
+            FlameParticleList.get(i).all_action();}
+
+        Render.polyBatch.flush();
+
+        FlameShader.FlameShaderIteration();
+        Batch.setShader(LightSystem.shader);
+        //Batch.flush();
+        for(int i = 0;i<ItemList.size();i++){
+            ItemList.get(i).IterationItemClient();
+        }
+        Render.polyBatch.flush();
+
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
+            if(bullet!=null) {
+                if (bullet.height == 1) {
+                    bullet.update();
+                }
+            }
+
+        }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 1) {
+                unit.UpdateUnit();
+                unit.update();
+                for (Unit tower : unit.TowerUnitList){
+                    tower.updateTower();
+                }
+            }
+        }
+        // Same reasoning as UnitList (see Unit.hill_bot()): DebrisList is
+        // also mutated from other threads, so an unprotected foreach can
+        // throw ConcurrentModificationException.
+        R_LOCK.lock();
+        try {
+            for(Unit unit : DebrisList) {
+                unit.UpdateUnit();
+
+            }
+        } finally {
+            R_LOCK.unlock();
+        }
+
+        soundPlayClient();
+
+
+
+        RC.BuildingUpdate();
+
+        for (i = 0;i< BulletList.size();i++){
+            Bullet bullet = BulletList.get(i);
+            if(bullet!= null) {
+                if(bullet.height == 2) {
+                    bullet.update();
+                }
+            }
+
+
+
+        }
+        for(i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
+            if(unit.height == 2) {
+                unit.UpdateUnit();
+                unit.update();
+                for (Unit tower : unit.TowerUnitList){
+                    tower.updateTower();
+                }
+            }
+        }
+        for (i= 0; i< BangList.size(); i++){
+            BangList.get(i).all_action();
+        }
+        if(flame_spawn_time < 0){flame_spawn_time=flame_spawn_time_max;}
+        Render.polyBatch.end();
+        Batch.end();
+        WeatherIteration(Batch);
+        LightSystem.begin(Batch);
+        //PackUpdateUnit();
+        // This used to be an empty-body busy-wait loop spinning on isAlive(),
+        // burning a full CPU core every frame instead of actually blocking -
+        // join() waits for the same condition properly.
+        try {
+            ThreadIterationBullet.join();
+            ThreadIterationUnit.join();
+            ThreadIterationDebris.join();
+        } catch (InterruptedException e) {
+            Thread.currentThread().interrupt();
+        }
+        // Inventory/Equipment/Shop (Scene2D, own Stage) - has to run after
+        // Batch.end() above, not while the world Batch is still buffered and
+        // unflushed. Stage.draw() flushes its own separate SpriteBatch
+        // immediately, so calling it mid-world-batch meant its quads hit the
+        // GPU before the still-buffered building sprites did, landing the
+        // menus underneath buildings drawn earlier in the frame (like the barn).
+        com.mygdx.game.ui.PlayerMenus.INSTANCE.render();
+        com.mygdx.game.ui.DevOverlay.INSTANCE.render();
+        com.mygdx.game.ui.PlayerHud.INSTANCE.render();
+        com.mygdx.game.ui.Minimap.INSTANCE.render();
+    }
+    private class IterationDebris implements Runnable{
+        public void run() {
+            for (int i = 0;i< DebrisList.size();i++){
+                Unit debris = DebrisList.get(i);
+                if(debris != null) {
+                    debris.all_action_client();
+
+                }
+                //Main_client.debris_data(debris);
+            }
+            // результат
+        }
+    }
+    private class IterationBullet implements Runnable{
+        public void run(){
+            for (int i = 0; i< BulletList.size(); i++){
+                Bullet bullet = BulletList.get(i);
+                if(bullet != null) {
+                    bullet.all_action_client();
+
+                }
+            }
+        }
+    }
+    private class IterationUnit implements Runnable{
+        public void run(){
+            //System.out.println(UnitList.get(0).press_a+" "+UnitList.get(0).press_d);
+            for(int i = 0;i< UnitList.size();i++) {
+
+                Unit unit = UnitList.get(i);
+                if(unit != null) {
+                    unit.XYMapCord();
+                    if (unit.host || unit.nConnect != IDClient) {
+                        unit.all_action_client_2();}
+                    else {unit.all_action_client_1();}
+                }
+            }
+
+        }
+    }
+}

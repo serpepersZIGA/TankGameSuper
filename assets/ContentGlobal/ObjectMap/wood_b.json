@@ -1,0 +1,13 @@
+{
+  "Image": "wood_b",
+  "Collision":"CollisionBreak",
+  "CrushSound":"break_wooden",
+  "X":16,
+  "Y":15,
+  "width":37,
+  "height":22,
+  "HP":9999,
+  "LightingConf":false,
+  "Lighting":0,
+  "SpawnUnit": false
+}

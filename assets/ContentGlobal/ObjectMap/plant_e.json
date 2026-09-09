@@ -1,0 +1,12 @@
+{
+  "Image": "plant_e",
+  "Collision":"CollisionSlow",
+  "X":13,
+  "Y":10,
+  "width":44,
+  "height":29,
+  "HP":9999,
+  "LightingConf":false,
+  "Lighting":0,
+  "SpawnUnit": false
+}

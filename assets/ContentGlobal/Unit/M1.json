@@ -1,0 +1,12 @@
+{
+  "Engine": "U1M",
+  "Corpus": "CorpusM1",
+  "Cannon": ["Kwk12ML"],
+  "TowerXY": [[0,8]],
+
+  "Track": ["TrackM1","TrackM1"],
+  "Side": [0,1],
+  "TrackXY": [[-9,0],[9,0]],
+  "MedicConf": 0,
+  "Height": 1
+}

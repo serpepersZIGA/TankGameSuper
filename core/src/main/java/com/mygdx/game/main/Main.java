@@ -1,0 +1,532 @@
+package com.mygdx.game.main;
+import com.badlogic.gdx.ApplicationAdapter;
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.g2d.BitmapFont;
+import com.badlogic.gdx.graphics.g2d.SpriteBatch;
+import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
+import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
+import com.mygdx.game.Event.EventRegister;
+import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
+import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
+import com.mygdx.game.Inventory.Shop.ShopInterface;
+import com.mygdx.game.MapFunction.MapScan;
+import com.mygdx.game.Network.PackerServer;
+import com.mygdx.game.Network.PacketBuildingServer;
+import com.mygdx.game.Network.Packet_client;
+import com.mygdx.game.Parsing.ObjectPars;
+import com.mygdx.game.Parsing.ParsBlock;
+import com.mygdx.game.Parsing.ParserItem;
+import com.mygdx.game.Parsing.UnitsParser;
+import com.mygdx.game.Shader.LightingMainSystem;
+import com.mygdx.game.Sound.SoundRegister;
+import com.mygdx.game.Weather.WeatherMainSystem;
+import com.mygdx.game.block.Block;
+import com.mygdx.game.block.BlockMap;
+import com.mygdx.game.build.*;
+import com.mygdx.game.build.BuildingScan;
+import com.mygdx.game.bull.Bullet;
+import Data.DataImage;
+import com.mygdx.game.bull.BulletRegister;
+import com.mygdx.game.bull.Updater.UpdateRegister;
+import com.mygdx.game.menu.button.*;
+import com.mygdx.game.method.*;
+import com.mygdx.game.object_map.MapObject;
+import com.mygdx.game.object_map.VoidObject;
+import com.mygdx.game.particle.*;
+import com.mygdx.game.Sound.DataSound;
+import com.mygdx.game.unit.*;
+import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
+import com.mygdx.game.unit.Controller.RegisterController;
+import com.mygdx.game.unit.Fire.FireRegister;
+import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
+import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
+import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
+import com.mygdx.game.unit.moduleUnit.*;
+
+import java.io.IOException;
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.concurrent.ExecutionException;
+import java.util.concurrent.locks.Lock;
+import java.util.concurrent.locks.ReentrantLock;
+
+import static com.mygdx.game.FunctionalComponent.FunctionalBuilding.FunctionalComponentBuildingRegister.FunctionalComponentBuildingRegisters;
+import static com.mygdx.game.MapFunction.MapScan.MapSize;
+import static com.mygdx.game.Shader.FlameShader.FlameShaderAdd;
+import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
+import static com.mygdx.game.method.Keyboard.ClickEsc;
+import static com.mygdx.game.method.Keyboard.ZoomMin;
+import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
+import static com.mygdx.game.unit.TransportRegister.Helicopter_t1;
+import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
+import static com.mygdx.game.unit.Unit.IDList;
+
+
+public class Main extends ApplicationAdapter {
+	public static ArrayList<Unit> UnitList = new ArrayList<>();
+	public static ArrayList<Building> BuildingList = new ArrayList<>();
+	public static ArrayList<Bullet> BulletList = new ArrayList<>();
+	public static ArrayList<Particle> FlameStaticList = new ArrayList<>();
+	public static ArrayList<Button>ButtonList = new ArrayList<>();
+	public static ArrayList<Particle> FlameList = new ArrayList<>();
+	public static ArrayList<Particle> BangList = new ArrayList<>();
+	public static ArrayList<Particle> FlameParticleList = new ArrayList<>();
+	public static ArrayList<Particle> LiquidList = new ArrayList<>();
+    public static ArrayList<Particle> BloodList = new ArrayList<>();
+
+	public static ArrayList<Particle> FlameSpawnList = new ArrayList<>();
+	public static ArrayList<Unit> DebrisList = new ArrayList<>();
+
+	// Combat (bullet impacts, deaths, fire) used to spawn particles onto these
+	// lists with no upper bound at all, so a big enough fight would spawn
+	// thousands of them and start visibly lagging the game. Capping each list
+	// and dropping the oldest particle to make room keeps the effect visually
+	// dense without letting it grow unbounded.
+	private static final int MAX_PARTICLES_PER_LIST = 300;
+	public static void addParticle(ArrayList<Particle> list, Particle particle) {
+		if (!com.mygdx.game.ui.DevFlags.INSTANCE.getUncappedParticles() && list.size() >= MAX_PARTICLES_PER_LIST) {
+			list.removeFirst();
+		}
+		list.add(particle);
+	}
+
+	public static DataSound ContentSound;
+	public static final com.mygdx.game.Sound.Procedural.AudioMixer Audio = new com.mygdx.game.Sound.Procedural.AudioMixer();
+	// how far away (world units) a tank's engine/tracks are still audible at
+	// all - beyond this we don't even bother creating voices for it
+	private static final float ENGINE_HEARING_RADIUS = 900f;
+	private static boolean audioStarted = false;
+	// exiting a match back to the main menu (see PauseScreen.exitToMenu())
+	// used to only clear game-state lists (UnitList etc.) - the per-tank
+	// engine/track voices already handed to Audio.playPersistent() aren't
+	// referenced from there, they live inside AudioMixer's own list, so they
+	// kept playing forever with no game left to belong to. audioStarted also
+	// has to go back to false, or the render() guard below never calls
+	// Audio.start() again for the next match.
+	public static void stopProceduralAudio(){
+		Audio.stop();
+		audioStarted = false;
+	}
+	public static ArrayList<ArrayList<Block>> BlockList2D = new ArrayList<>();
+
+	public static RenderCenter RC;
+	public static DataImage ContentImage;
+	public static SpriteBatch Batch;
+	public static Keyboard KeyboardObj;
+	public static int screenWidth;
+	public static int screenHeight;
+	public static float Zoom = 1,ZoomWindowX,ZoomWindowY;
+	public static AI Ai;
+	public static ActionGame ActionGameMain;
+	public static boolean GameStart;
+	public static int FPS;
+	public static boolean GameHost;
+	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,quantity_width,quantity_height;
+	public static int width_block_zoom= 70,height_block_zoom =70,width_block_render= 73,height_block_render =73;
+	public static float radius_air_max = 150,radius_air_max_zoom,TimeGlobal,TimeGlobalBullet;
+	public static ServerMain serverMain;
+	public static ClientMain Main_client;
+	public static Option Option;
+	public static PackerServer PacketServer;
+	public static MapObject VoidObj;
+	public static com.mygdx.game.Network.PacketBuildingServer PacketBuildingServer;
+	public static Packet_client PacketClient;
+	public static float TickBlock,TickBlockMax = 600;
+	public static BitmapFont font,font2,font3;
+	public static byte ConfigMenu;
+	public static int xMap,yMap,i;
+	public static EventRegister EventData;
+	public static int IDClient;
+	public static PlayerSpawnData SpawnPlayer;
+	public static String SpawnIDPlayer;
+	public static CycleTimeDay CycleDayNight;
+	public static int flame_spawn_time,flame_spawn_time_max = 20;
+	public static RegisterController RegisterControl;
+	public static FunctionalComponentUnitRegister RegisterFunctionalComponent;
+	public static CollisionMethodGlobal Collision;
+	public static ArrayList<Unit> ClearUnitList = new ArrayList<>();
+	public static ArrayList<Unit> ClearDebrisList = new ArrayList<>();
+	public static ArrayList<PacketInventory> InventoryPack = new ArrayList<>();
+	public static InventoryInterface inventoryMain;
+	public static ShopInterface shopMain;
+	public static EquipmentInterface equipmentMain;
+	public static ArrayList<ItemPacket>ItemPackList = new ArrayList<>();
+	public static LightingMainSystem LightSystem;
+	public static RenderPrimitive Render;
+	public static HashMap<Byte,Integer>TeamGlobal = new HashMap<>();
+	public static ActionGame ActionGameTotal;
+    public static int udpPort = 27950, tcpPort = 27950;
+
+	public static final Lock R_LOCK = new ReentrantLock();
+	public static int portConst = 0;
+
+
+
+
+	public Main(int x,int y,int FPS){
+		screenWidth = x;
+		screenHeight = y;
+		Main.FPS = FPS;
+		// same factor both axes, see resize() for why
+		float zoom = Math.min((float) screenWidth / 1920, (float) screenHeight / 1080);
+		ZoomWindowX = zoom;
+		ZoomWindowY = zoom;
+	}
+	public static void spawn_object(){
+		//PlayerList.add(new PlayerCannonFlame(200,200, PlayerList,true));
+		//SoldatList.add(new SoldatBull(1200,200, UnitList));
+		MapScan.MapInput("Map/maps/MapBase.mapt");
+//		TrackSoldatT1.UnitAdd(2000,1200,true, (byte) 2,
+//				RegisterControl.controllerBotSupport,new Inventory(new Item[3][4]));
+        //TrackSoldatT1.UnitAdd(1200,1200,true, (byte) 2,
+				//RegisterControl.controllerBotSupport,new Inventory(new Item[3][4],1),new Inventory(new Item[1][1],1));
+
+		//UnitList.add(new TrackSoldatT1(2700,2000,Main.UnitList,true,(byte)2));
+	}
+	public static void field(int width_field,int height_field){
+        BlockList2D.clear();
+		quantity_width = width_field;
+		quantity_height = height_field;
+		width_block_2 = width_block/2;
+		height_block_2 = width_block /2;
+		//width_block*=1.24;
+		//height_block*=1.24;
+
+		x_block = width_block_2;
+		y_block = 0;
+		for(int i = 0;i<quantity_height;i++){
+			BlockList2D.add(new ArrayList<>());
+			y_block += width_block;
+			x_block = 0;
+			for(int i2 = 0;i2<quantity_width;i2++){
+				x_block += width_block;
+				BlockList2D.get(i).add(new BlockMap(x_block,y_block));
+
+
+			}
+		}
+		for(int i = 0;i<quantity_height;i++){
+
+			for(int i2 = 0;i2<quantity_width;i2++){
+				BlockList2D.get(quantity_height-1).get(i2).passability= true;
+				BlockList2D.get(0).get(i2).passability= true;
+
+			}
+			BlockList2D.get(i).get(0).passability= true;
+			BlockList2D.get(i).get(quantity_width-1).passability= true;
+		}
+        xMap = width_field;
+        yMap = height_field;
+		//for()
+		//width_block-= 1;
+		//height_block-= 1;
+//		quantity_width = (int)(screenWidth/width_block_air);
+//		quantity_height = (int)(screenHeight/height_block_air);
+//		y_block = -height_block_air;
+//		for(int i = 0; i<quantity_height+1;i++){
+//			AirList.add(new ArrayList<>());
+//			y_block += height_block_air;
+//			x_block = -width_block_air;
+//			for(int i2 = 0; i2<quantity_width+1;i2++){
+//				x_block += width_block_air;
+//				AirList.get(i).add(new Air(x_block,y_block));
+//
+//			}
+//		}
+//		MapLighting = new boolean[quantity_height][quantity_width];
+//		for(int i = 0;i<quantity_height;i++){
+//			for(int i2 = 0;i2<quantity_width;i2++){
+//				MapLighting[i][i2] = BlockList2D.get(i).get(i2).passability;
+//			}
+//		}
+
+//
+	}
+
+	@Override final
+	public void create () {
+//		Unit.time_max_sound_motor = 20;Unit.time_sound_motor = Unit.time_max_sound_motor;
+		Unit.range_see=2000;Unit.range_see_2 = (int)(Unit.range_see*1.5);
+		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
+		FunctionalComponentBulletRegister.FunctionalComponentBulletRegisters();
+		UpdateRegister.UpdateBulletRegisterCreate();
+		LightSystem = new LightingMainSystem();
+		LightSystem.setAmbientColor(new Color(0,0,0,1f));
+		ContentSound = new DataSound();
+		ContentImage = new DataImage();
+		// cuts individual decor sprites (rocks, bushes, flowers...) out of a
+		// handful of shared sheets instead of needing one PNG file per variant
+		com.mygdx.game.object_map.DecorSpriteSheets.INSTANCE.register();
+		// Particle's static fields build Animators, which create OpenGL
+		// textures - and textures can only be created on the thread that
+		// owns the GL context. Particle is a plain class, so its static
+		// initializer only runs the *first* time something references it,
+		// and bullet/particle code runs on background worker threads
+		// (ActionGameHost/ActionGameClient's per-frame Iteration* threads) -
+		// if one of those happens to be first, texture creation crashes the
+		// JVM natively ("No context is current"). Referencing it here forces
+		// that one-time initialization to happen now, on the render thread.
+		com.mygdx.game.particle.Particle.AcidLiquid.getClass();
+		ParsBlock.Pars();
+		SoundRegister.SoundAdd();
+		FunctionalComponentBuildingRegisters();
+		FireRegister.Create();
+		BuildingScan.ScanGlobal();
+		CorpusParser.ParsCorpus();
+		EngineParser.ParsEngine();
+		CannonParser.ParsCannon();
+		TrackParser.ParsTrack();
+
+		GunRegister.Create();
+		ParserItem.Pars();
+		ItemRegister.Create();
+		VoidObj = new VoidObject();
+		Collision = new CollisionMethodGlobal();
+		inventoryMain = new InventoryInterface();
+		Inventory shop = new Inventory(new Item[2][2],0);
+		shopMain = new ShopInterface(shop);
+
+		BulletRegister.BulletRegisterAdd();
+		RegisterControl = new RegisterController();
+        RegisterModuleTrack.Create();
+		RegisterModuleEngine.Create();
+		RegisterModuleCorpus.Create();
+		RegisterModuleSoldat.Create();
+		InventoryPack = new ArrayList<>();//new PacketInventory();
+		// day/night light values, longer cycle + real day/night brightness (see shader: higher = brighter)
+		// nightLight used to be 0.3 - only a third dimmer than full day, not
+		// dark enough to actually feel like night or to make a lamp's own
+		// glow stand out against its surroundings. 0.12 is properly dark
+		// while the lamp-exclusion threshold (see LightingMainSystem.DAY_THRESHOLD)
+		// still crosses well before it gets this dark, so lamps are lit
+		// before it's pitch black outside, not right at the darkest moment.
+		CycleDayNight = new CycleTimeDay(90,60,25,25,0.9f,0.12f);
+		PacketBuildingServer = new PacketBuildingServer();
+		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
+		Render = new RenderPrimitive();
+//		Render = new ShapeRenderer(128,LightSystem.shader);
+//		Matrix4 u_projTrans = new Matrix4();
+//		Render.setTransformMatrix(u_projTrans);
+//		u_projTrans.setToOrtho2D(0, 0, Gdx.graphics.getWidth(), Gdx.graphics.getHeight());
+
+
+		TeamGlobal.put((byte)0,0);
+		TeamGlobal.put((byte)1,4);
+		TeamGlobal.put((byte)2,0);
+		TeamGlobal.put((byte)3,0);
+		TeamGlobal.put((byte)4,0);
+		RC = new RenderCenter(0,0);
+		Batch = new SpriteBatch();
+        WeatherMainSystem.WeatherMainSystemAdd();
+        FlameShaderAdd();
+        LiquidShaderAdd();
+
+		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
+		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
+		//font3 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
+		// The multiplayer IP-entry window is opened lazily, only once the player
+		// actually chooses to join a game (see PlayClient) - it used to pop up
+		// unconditionally on every launch, even for players who never touch
+		// multiplayer.
+		EventData = new EventRegister();
+		PlayerSpawnListData.Create();
+		KeyboardObj = new Keyboard();
+		Keyboard.ZoomMaxMin();
+		Main.Zoom = 1;
+		Gdx.input.setInputProcessor(KeyboardObj);
+		Option = new Option();
+		com.mygdx.game.ui.GameSettings.INSTANCE.load();
+		com.mygdx.game.ui.GraphicsSettings.INSTANCE.applyFrameLimit(com.mygdx.game.ui.GameSettings.INSTANCE.getFrameLimitMode());
+		com.mygdx.game.ui.DevFlags.INSTANCE.setShowFps(com.mygdx.game.ui.GameSettings.INSTANCE.getShowFps());
+		if (com.mygdx.game.ui.GameSettings.INSTANCE.getWindowMode() != com.mygdx.game.ui.WindowMode.FULLSCREEN) {
+			// only re-apply if not the boot default - GameStart already opens a fullscreen-sized window
+			com.mygdx.game.ui.GraphicsSettings.INSTANCE.apply(com.mygdx.game.ui.GameSettings.INSTANCE.getWindowMode(),
+					com.mygdx.game.ui.GameSettings.INSTANCE.getResolutionWidth(), com.mygdx.game.ui.GameSettings.INSTANCE.getResolutionHeight());
+		}
+		Ai = new AI();
+		UnitsParser.Pars();
+		TransportRegister.Create();
+		BuildRegister.Create();
+        ObjectPars.Pars();
+		//field(120, 120);
+        MapSize("Map/maps/MapBase.mapt");
+		spawn_object();
+		// all pre-game + pause menus are now in com.mygdx.game.ui (Kotlin/Scene2D)
+		ActionGameMain = com.mygdx.game.ui.MainMenuScreen.INSTANCE;
+		xMap = Main.BlockList2D.get(0).size();
+		yMap = Main.BlockList2D.size();
+		SpawnPlayer = PlayerSpawnCannonVoid;
+		//Render.begin(ShapeRenderer.ShapeType.Filled);
+		//Render.setAutoShapeType(true);
+
+		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
+		//viewport = new StretchViewport(ZoomWindowX, ZoomWindowY, camera);
+		KeyboardObj.zoom_const();
+        Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
+        Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
+
+//		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
+//				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
+//		IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
+//				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+
+		IDList.get("Gb-1M").UnitAdd(2000,700,true, (byte) 2,
+				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+		UnitList.get(0).crite_life = true;
+		//UnitList.get(0).RotationInertion = 20;
+//		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
+//				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
+	}
+	// FreeTypeFontGenerator.DEFAULT_CHARS is ASCII only - any Cyrillic text
+	// drawn with this font (world-overlay text like DevOverlay/NetworkStatusBanner/
+	// PlayerHud, not the Scene2D menus - those use GameSkin.kt's own font,
+	// which already adds this same range) renders as missing-glyph squares
+	// without it. Same fix GameSkin.kt already has for its own fonts.
+	private static String cyrillicChars(){
+		StringBuilder sb = new StringBuilder();
+		for (int c = 0x0400; c <= 0x04FF; c++) sb.append((char) c);
+		return sb.toString();
+	}
+	public static BitmapFont TXTFont(int size,String fontPath){
+		FreeTypeFontGenerator generator = new FreeTypeFontGenerator(Gdx.files.internal(fontPath));
+		FreeTypeFontGenerator.FreeTypeFontParameter parameter = new FreeTypeFontGenerator.FreeTypeFontParameter();
+		parameter.characters = FreeTypeFontGenerator.DEFAULT_CHARS + cyrillicChars();
+		parameter.size = size;
+		BitmapFont font = generator.generateFont(parameter);
+		generator.dispose();
+		return font;
+	}
+	@Override
+	public void resize(int width, int height) {
+		screenWidth = width;
+		screenHeight = height;
+		// same factor for both axes so the world scales instead of stretching/squishing
+		// on a window that isn't 16:9
+		float zoom = Math.min((float) screenWidth / 1920, (float) screenHeight / 1080);
+		ZoomWindowX = zoom;
+		ZoomWindowY = zoom;
+		Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
+		Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
+
+		// RC caches its own copy of screen size at construction time and never
+		// re-reads Main.screenWidth/Height after that - refresh it too, then
+		// let zoom_const() redo the stuff that's derived from it (this is
+		// also why the aim was off: the camera math used the stale numbers)
+		if (RC != null) {
+			RC.width_2 = screenWidth / 2f;
+			RC.height_2 = screenHeight / 2f;
+			RC.WidthRender = screenWidth;
+			RC.HeightRender = screenHeight;
+		}
+		if (KeyboardObj != null) {
+			KeyboardObj.zoom_const();
+		}
+
+		// the actual squish cause: Batch/polyBatch set their projection matrix
+		// once at construction and never touch it again, so draws kept using
+		// the projection for whatever size the window was at launch
+		if (Batch != null) {
+			Batch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		}
+		if (Render != null) {
+			Render.polyBatch.getProjectionMatrix().setToOrtho2D(0, 0, width, height);
+		}
+	}
+	@Override final
+	public void render () {
+        TimeGlobal+= Gdx.graphics.getDeltaTime();
+        TimeGlobalBullet = TimeGlobal*50;
+        com.mygdx.game.unit.CollisionUnit.CollisionFunctional.tickHitSoundCooldown();
+        if (RC != null && RC.MainUnit != null) {
+            if (!audioStarted) {
+                Audio.start();
+                audioStarted = true;
+            }
+            Unit listener = RC.MainUnit;
+            // every tank on the map gets its own engine/track pair, lazily
+            // created only once it's actually close enough to be worth
+            // hearing, and faded by distance from the listener the same way
+            // - so a tank rolling in from far off is heard approaching,
+            // instead of every tank on the map playing at once in a pile
+            R_LOCK.lock();
+            try {
+                for (Unit unit : UnitList) {
+                    if (unit.classUnit != ClassUnit.Transport) continue;
+                    float dx = unit.x-listener.x, dy = unit.y-listener.y;
+                    float dist = (float) Math.sqrt(dx*dx+dy*dy);
+                    float attenuation = Math.max(0f, 1f-dist/ENGINE_HEARING_RADIUS);
+                    if (unit.engineVoice == null) {
+                        if (attenuation <= 0f) continue;
+                        long seed = System.identityHashCode(unit);
+                        unit.engineVoice = new com.mygdx.game.Sound.Procedural.EngineVoice(seed);
+                        unit.trackVoice = new com.mygdx.game.Sound.Procedural.TrackVoice(seed);
+                        Audio.playPersistent(unit.engineVoice);
+                        Audio.playPersistent(unit.trackVoice);
+                    }
+                    unit.engineVoice.setState(unit.speed, unit.press_w || unit.press_s, attenuation, unit.terrainLoad);
+                    unit.trackVoice.setState(unit.speed, attenuation);
+                }
+            } finally {
+                R_LOCK.unlock();
+            }
+        }
+//		if(TimeGlobalBullet <0.1f){
+//			TimeGlobalBullet = 0.3f;
+//		}
+		//System.out.println(Shop.Money);
+        try {
+            ActionGameMain.action();
+        } catch (ExecutionException | InterruptedException e) {
+            throw new RuntimeException(e);
+        }
+        TimeGlobal = 0;
+		ClickEsc = false;
+		//LightSystem.clearLights();
+	}
+	@Override final
+	public void dispose () {
+		Audio.stop();
+		ContentSound.dispose();
+		BlockList2D.clear();
+		BuildingList.clear();
+		FlameList.clear();
+		FlameSpawnList.clear();
+		LiquidList.clear();
+		UnitList.clear();
+		DebrisList.clear();
+		FlameParticleList.clear();
+		FlameStaticList.clear();
+		ButtonList.clear();
+		//KeyboardObj = null;
+		//RC= null;
+		Batch.dispose();
+		Render.dispose();
+		font.dispose();
+		font2.dispose();
+		if(ServerMain.Server != null) {
+			try {
+				// stop() first: it sets the flag the server's own background
+				// thread checks before each update() call. Without it,
+				// dispose()/close() can close the network selector while
+				// that thread is still mid-loop, and its next update() call
+				// throws an uncaught ClosedSelectorException on shutdown.
+				ServerMain.Server.stop();
+				ServerMain.Server.dispose();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+		if(ClientMain.Client != null) {
+			try {
+				ClientMain.Client.dispose();
+			} catch (IOException e) {
+				throw new RuntimeException(e);
+			}
+		}
+        super.dispose();
+		Gdx.app.exit();
+		System.exit(0);
+	}
+}

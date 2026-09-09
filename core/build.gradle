@@ -1,9 +1,25 @@
-sourceCompatibility = 1.8
+plugins {
+    id "org.jetbrains.kotlin.plugin.lombok"
+}
 dependencies {
-    implementation 'org.projectlombok:lombok:1.18.30'
+    compileOnly 'org.projectlombok:lombok:1.18.46'
+    annotationProcessor 'org.projectlombok:lombok:1.18.46'
+
+    testImplementation 'org.junit.jupiter:junit-jupiter:6.1.3'
+    testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
+    testImplementation 'org.jetbrains.kotlin:kotlin-test'
 }
 [compileJava, compileTestJava]*.options*.encoding = 'UTF-8'
 
-sourceSets.main.java.srcDirs = [ "src/" ]
+// Java sources live under src/main/java, Kotlin sources under src/main/kotlin,
+// tests under src/test/kotlin - the standard Gradle/Kotlin layout, so no
+// custom sourceSets overrides are needed any more.
+
+test {
+    useJUnitPlatform()
+}
 
 eclipse.project.name = appName + "-core"
+repositories {
+    mavenCentral()
+}

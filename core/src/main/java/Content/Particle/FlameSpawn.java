@@ -1,0 +1,47 @@
+package Content.Particle;
+import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.MapFunction.WaterCheck;
+import com.mygdx.game.main.Main;
+import com.mygdx.game.particle.Particle;
+
+import static Data.DataColor.RGBFlame;
+import static Data.DataImage.TextureAtl;
+import static com.mygdx.game.main.Main.Batch;
+import static com.mygdx.game.main.Main.LightSystem;
+
+public class FlameSpawn extends Particle {
+    public FlameSpawn(float x, float y){
+        this.x = x;
+        this.y = y;
+        this.size = 70;
+        this.size_render = (int) (size*Main.Zoom);
+        this.size_render2 = (int) (size_render*0.5f);
+        this.time_delete = 400;
+        grass_delete();
+        rgb = RGBFlame;
+        // radius used to be 420 - six times this particle's own 70-unit size,
+        // so a dense flamethrower stream (many of these alive at once) had
+        // every light's glow radius overlapping every neighbor's, and all
+        // those overlapping contributions summed into one big white patch.
+        // A radius closer to the particle's own visual size still glows, but
+        // doesn't blanket half the stream in overlapping light.
+        light = LightSystem.addLight().set(this.x,this.y,new Color(RGBFlame[0],RGBFlame[1]
+                ,RGBFlame[2],0.3f),1.8f,150,0.2f);
+
+    }
+    @Override final
+    public void all_action(){
+        //spawn_flame();
+        // pouring flamethrower fire onto water/mud shouldn't just keep
+        // burning there like it's dry ground
+        if (WaterCheck.isTooWetToBurn(this.x, this.y)) {
+            this.time_delete = 0;
+        }
+        sound_play();
+        center_render();//Block.LightingAir(x_rend,y_rend,rgb);
+        Batch.draw(TextureAtl.createSprite("Buffer"),this.x_rend-size_render2,this.y_rend-size_render2
+                ,size_render,size_render);
+        //Batch.draw(new Texture());
+        timerFlame(Main.FlameSpawnList);
+    }
+}
