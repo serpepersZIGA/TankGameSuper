@@ -5,7 +5,6 @@ import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.g2d.BitmapFont;
 import com.badlogic.gdx.graphics.g2d.SpriteBatch;
 import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Event.EventRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalBullet.FunctionalComponentBulletRegister;
 import com.mygdx.game.Inventory.*;
@@ -30,9 +29,9 @@ import com.mygdx.game.bull.Bullet;
 import Data.DataImage;
 import com.mygdx.game.bull.BulletRegister;
 import com.mygdx.game.bull.Updater.UpdateRegister;
-import com.mygdx.game.menu.InputWindow;
-import com.mygdx.game.menu.MapAllLoad;
-import com.mygdx.game.menu.button.*;
+import com.mygdx.game.UI.InputWindow;
+import com.mygdx.game.UI.MapAllLoad;
+import com.mygdx.game.UI.button.*;
 import com.mygdx.game.method.*;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.object_map.VoidObject;
@@ -51,7 +50,6 @@ import com.mygdx.game.unit.moduleUnit.*;
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.concurrent.ExecutionException;
 import java.util.concurrent.locks.Lock;
 import java.util.concurrent.locks.ReentrantLock;
@@ -63,8 +61,6 @@ import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
 import static com.mygdx.game.method.Keyboard.ClickEsc;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
-import static com.mygdx.game.unit.TransportRegister.Helicopter_t1;
-import static com.mygdx.game.unit.TransportRegister.TrackSoldatT1;
 import static com.mygdx.game.unit.Unit.IDList;
 
 
@@ -324,14 +320,14 @@ public class Main extends ApplicationAdapter {
         Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
         Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
 
-//		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
-//				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
+		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
+				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
 //		IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
 //				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
 
 		IDList.get("Gb-1M").UnitAdd(2000,700,true, (byte) 2,
 				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
-		UnitList.get(0).crite_life = true;
+		//UnitList.get(0).crite_life = true;
 		//UnitList.get(0).RotationInertion = 20;
 //		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,
 //				RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));

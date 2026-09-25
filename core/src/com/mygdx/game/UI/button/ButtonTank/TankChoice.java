@@ -1,7 +1,7 @@
-package com.mygdx.game.menu.button.ButtonTank;
+package com.mygdx.game.UI.button.ButtonTank;
 
 
-import com.mygdx.game.menu.button.Button;
+import com.mygdx.game.UI.button.Button;
 
 
 import java.util.ArrayList;

@@ -1,4 +1,4 @@
-package com.mygdx.game.menu.button;
+package com.mygdx.game.UI.button;
 
 import com.mygdx.game.MapFunction.MapScan;
 

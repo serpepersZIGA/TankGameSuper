@@ -2,6 +2,10 @@ WidthTower = 55;
 HeightTower = 35;
 ConstTowerX = 36;
 ConstTowerY = 17;
+
+ReloadUP = 0.2;
+OneShot = 1;
+
 SpeedRotationTower = 1;
 Damage = 22;
 Penetration = 20;
@@ -9,7 +13,7 @@ DamageFragment = 0;
 PenetrationFragment = 0;
 TemperatureDamage = 0;
 SizeBullet = 2;
-ReloadMax = 2;
+ReloadMax = 70;
 SpeedBullet = 6;
 TimeBullet = 85;
 TowerX = 15;
@@ -19,7 +23,7 @@ Image = tower_enemy;
 
 func.Add = ComponentTowerXY;
 func.Add = ComponentTowerControl;
-func.Add = ComponentFireControl;
+func.Add = ComponentFireTankCumulativeControl;
 
 Sound = 2;
 AmountFragment = 0;

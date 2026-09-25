@@ -3,13 +3,19 @@ HeightTower = 15;
 ConstTowerX = 14;
 ConstTowerY = 7;
 SpeedRotationTower = 1;
+
+QuantityShots = 100;
+ReloadShots = 3;
+ReloadBetweenShots = 3;
+ReloadUP = 0.5f;
+
 Damage = 12;
 Penetration = 4;
 DamageFragment = 0;
 PenetrationFragment = 0;
 TemperatureDamage = 0;
 SizeBullet = 2;
-ReloadMax = 3;
+ReloadMax = 320;
 SpeedBullet = 32;
 TimeBullet = 270;
 TowerX = 15;
@@ -19,7 +25,7 @@ Image = machinegun;
 
 func.Add = ComponentTowerXY;
 func.Add = ComponentTowerControl;
-func.Add = ComponentFireControl;
+func.Add = ComponentFireDrumControl;
 
 Sound = 9;
 AmountFragment = 0;

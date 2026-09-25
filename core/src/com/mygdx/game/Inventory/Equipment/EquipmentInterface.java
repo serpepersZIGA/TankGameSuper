@@ -14,12 +14,10 @@ public class EquipmentInterface extends InventoryInterface {
         YInterface = inventory.InventorySlots[0].length;
         SlotInventory = new Slot[XInterface][YInterface];
         this.x = 220;this.y = 220;
-        WidthWindow = 600;
-        HeightWindow = 320;
-        XSlots = WidthWindow/XInterface;
-        YSlots = HeightWindow/YInterface;
-        if(XSlots>YSlots){XSlots=YSlots;}
-        else if(XSlots<YSlots){YSlots = XSlots;}
+        WidthWindow = XSlots*XInterface;
+        HeightWindow = YSlots*YInterface+Table;
+        TableTxT = "Equipment";
+        TableSize();
         SlotGeneration();
     }
     @Override final
@@ -31,12 +29,11 @@ public class EquipmentInterface extends InventoryInterface {
         YInterface = inventory.InventorySlots[0].length;
         SlotInventory = new Slot[XInterface][YInterface];
         this.x = 220;this.y = 220;
-        WidthWindow = 600;
-        HeightWindow = 320;
-        XSlots = WidthWindow/XInterface;
-        YSlots = HeightWindow/YInterface;
-        if(XSlots>YSlots){XSlots=YSlots;}
-        else if(XSlots<YSlots){YSlots = XSlots;}
+        WidthWindow = XSlots*XInterface;
+        HeightWindow = YSlots*YInterface+Table;
+        TableTxT = "Equipment";
+        TableSize();
+        SlotGeneration();
     }
     public void InventoryReload(Unit unit){
         StrengtheningInitialization(unit);

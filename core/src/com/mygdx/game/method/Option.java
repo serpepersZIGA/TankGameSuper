@@ -1,7 +1,7 @@
 package com.mygdx.game.method;
 
 import com.mygdx.game.main.Main;
-import com.mygdx.game.menu.button.Button;
+import com.mygdx.game.UI.button.Button;
 
 public class Option {
     public float reload_r_indicator,reload_g_indicator,reload_b_indicator;

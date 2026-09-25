@@ -1,16 +1,15 @@
-package com.mygdx.game.menu.button;
+package com.mygdx.game.UI.button;
 
 import com.mygdx.game.main.Main;
 
-import static com.mygdx.game.main.Main.ActionGameTotal;
-
-public class Play2 extends Button{
-    public Play2(int x, int y, int width, int height, String txt, byte ConfigMenu){
+public class PlayClient extends Button{
+    public PlayClient(int x, int y, int width, int height, String txt,byte ConfigMenu){
         this.x = x;this.y = y;
         this.ConfigMenu = ConfigMenu;
         this.width = width;this.height = height;
         this.txt = txt;
         DataRect();
+        XTXT -= 80;
 
     }
     @Override
@@ -23,8 +22,8 @@ public class Play2 extends Button{
     }
     protected void ActionButton(){
         if(condition) {
-            Main.ActionGameMain = ActionGameTotal;
-
+            Main.GameStart = true;
+            Main.GameHost = false;
             condition = false;
         }
     }

@@ -1,7 +1,6 @@
 package com.mygdx.game.unit.moduleUnit;
 
 import com.badlogic.gdx.audio.Sound;
-import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
@@ -32,11 +31,13 @@ public class Cannon extends moduleUnit implements Cloneable{
     public float corpus_height_2;
     public String ID;
     public FunctionalList functional = new FunctionalList();
-    public float damage_fragment, penetration_fragment, TemperatureDamage;
+    public float damage_fragment, penetration_fragment, TemperatureDamage,
+            ReloadUP, OneShot;
     public int differenceY, differenceX,TowerX,TowerY,XTower, YTower,CenterX,CenterY,AmountFragment;
     public int XTowerRend,YTowerRend,TowerWidth2,TowerHeight2;
     public Sound sound;
     public String image;
+    public int ReloadBetweenShots,ReloadShots,QuantityShots;
 
     public Cannon(int WidthTower, int HeightTower, int ConstTowerX, int ConstTowerY, float SpeedRotationTower,
                   float damage, float penetration, float damage_fragment, float penetration_fragment, float TemperatureDamage,
@@ -103,7 +104,8 @@ public class Cannon extends moduleUnit implements Cloneable{
                   float damage, float penetration
             , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
                   float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,String image,FunctionalList functional
-            ,Sound sound,int AmountFragment,int MaxRotate,int RotateBase){
+            ,Sound sound,int AmountFragment,int MaxRotate,int RotateBase,
+                  float ReloadUP,float OneShot,int ReloadBetweenShots,int ReloadShots,int QuantityShots){
         this.ID = ID;
         this.MaxRotate = MaxRotate;
         this.RotateBase = RotateBase;
@@ -130,6 +132,11 @@ public class Cannon extends moduleUnit implements Cloneable{
         this.TowerX = TowerX;
         this.TowerY = TowerY;
         this.image =  image;
+        this.ReloadUP = ReloadUP;
+        this.OneShot = OneShot;
+        this.ReloadBetweenShots = ReloadBetweenShots;
+        this.ReloadShots = ReloadShots;
+        this.QuantityShots = QuantityShots;
         this.functional = functional.clone();
         this.sound = sound;
     }
@@ -203,6 +210,12 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.AmountFragment = AmountFragment;
         unit.corpus_width_2 = corpus_width_2;
         unit.corpus_height_2 = corpus_height_2;
+
+        unit.ReloadUP = ReloadUP;
+        unit.OneShot = OneShot;
+        unit.ReloadBetweenShots = ReloadBetweenShots;
+        unit.ReloadShots = ReloadShots;
+        unit.QuantityShots = QuantityShots;
 
         unit.differenceTotal = differenceTotal;
         unit.RotationDifference = RotationDifference;

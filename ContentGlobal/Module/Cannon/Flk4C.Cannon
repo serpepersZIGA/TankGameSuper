@@ -3,13 +3,17 @@ HeightTower = 35;
 ConstTowerX = 36;
 ConstTowerY = 17;
 SpeedRotationTower = 1;
+
+ReloadUP = 0.2;
+OneShot = 1;
+
 Damage = 10;
 Penetration = 2;
 DamageFragment = 0;
 PenetrationFragment = 0;
 TemperatureDamage = 1.5;
 SizeBullet = 2;
-ReloadMax = 2;
+ReloadMax = 70;
 SpeedBullet = 6;
 TimeBullet = 85;
 TowerX = 15;
@@ -22,7 +26,7 @@ RotateBase = 90;
 
 func.Add = ComponentTowerXY;
 func.Add = ComponentNotTowerControl;
-func.Add = ComponentFireControl;
+func.Add = ComponentFireTankCumulativeControl;
 
 Sound = 5;
 AmountFragment = 0;

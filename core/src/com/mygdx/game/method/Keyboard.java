@@ -9,7 +9,7 @@ import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
-import com.mygdx.game.menu.button.Button;
+import com.mygdx.game.UI.button.Button;
 import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 
@@ -362,6 +362,8 @@ public class Keyboard extends InputAdapter{
                 tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
+                tower.differenceZoom = (int)(tower.difference* Zoom);
+                tower.difference2Zoom= (int)(tower.difference_2* Zoom);
             }
             for (Unit track : tr.TrackUnitList){
                 track.width_tower_zoom = (int)(track.width_tower *Main.Zoom);
@@ -402,6 +404,8 @@ public class Keyboard extends InputAdapter{
                 tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
+                tower.differenceZoom = (int)(tower.difference* Zoom);
+                tower.difference2Zoom= (int)(tower.difference_2* Zoom);
             }
 
 

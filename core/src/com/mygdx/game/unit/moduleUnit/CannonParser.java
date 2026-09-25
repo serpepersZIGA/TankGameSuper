@@ -23,7 +23,8 @@ public class CannonParser {
     public static FunctionalList List;
     public static boolean ConfControl;
     public static float SpeedRotationTower, Damage, Penetration, DamageFragment, PenetrationFragment,TemperatureDamage
-    ,SpeedBullet;
+    ,SpeedBullet,ReloadUP, OneShot;
+    public static int ReloadBetweenShots,ReloadShots,QuantityShots;
 
 
 
@@ -42,13 +43,13 @@ public class CannonParser {
 //            }
 //            StructBuffer = new boolean[][]{{true,true},
 //                    {true,true}};
-            CannonListID.add(new Object[]{
-                    new Cannon(file.name().replace(".Cannon", "")
+            CannonListID.add(new Object[]{new Cannon(file.name().replace(".Cannon", "")
                             , WidthTower, HeightTower, ConstTowerX, ConstTowerY, SpeedRotationTower,
                             Damage, Penetration
                             , DamageFragment, PenetrationFragment, TemperatureDamage, SizeBullet, ReloadMax,
                             SpeedBullet, TimeBullet, TimeBulletRand, TowerX, TowerY, Fire.clone(), Image, List
-                            , Sound, AmountFragment,MaxRotate,RotateBase)
+                            , Sound, AmountFragment,MaxRotate,RotateBase,
+                            ReloadUP, OneShot,ReloadBetweenShots,ReloadShots,QuantityShots)
                     , file.name().replace(".Cannon", "")});
             List = new FunctionalList();
             MaxRotate = 0;
@@ -56,6 +57,7 @@ public class CannonParser {
             AmountFragment = 0;
             Sound = null;
             Image = null;
+            Fire = null;
             ReloadMax = 0;
             SizeBullet = 0;
             TemperatureDamage = 0;
@@ -64,6 +66,8 @@ public class CannonParser {
             Penetration = 0;
             Damage = 0;
             SpeedRotationTower = 0;ConstTowerY = 0;ConstTowerX = 0;
+            ReloadUP = 0;
+            OneShot = 0;ReloadBetweenShots=0;ReloadShots=0;QuantityShots=0;
             WidthTower = 0;HeightTower = 0;
             //List.Clear();
             //System.out.println(BuildRegister.BuildingID.size());
@@ -207,6 +211,40 @@ public class CannonParser {
                         break;
 
 
+
+                    case "ReloadBetweenShots":
+                        obj = Parser.IntegerPars(TxT, i);
+                        ReloadBetweenShots = (int) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
+                    case "ReloadShots":
+                        obj = Parser.IntegerPars(TxT, i);
+                        ReloadShots = (int) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
+                    case "ReloadUP":
+                        obj = Parser.FloatPars(TxT, i);
+                        ReloadUP = (float) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
+                    case "OneShot":
+                        obj = Parser.FloatPars(TxT, i);
+                        OneShot = (float) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
+                    case "QuantityShots":
+                        obj = Parser.IntegerPars(TxT, i);
+                        QuantityShots = (int) obj[0];
+                        i = (int) obj[1];
+                        TotalTxT = "";
+                        break;
+
+                            //public static int ReloadBetweenShots,ReloadShots,ReloadUP,QuantityShots;
+
                     case "TowerX":
                         obj = Parser.IntegerPars(TxT, i);
                         TowerX = (int) obj[0];
@@ -291,6 +329,10 @@ public class CannonParser {
                 "HeightTower = 35;\n" +
                 "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
+                "\n" +
+                "ReloadUP = 0.2;\n" +
+                "OneShot = 1;\n" +
+                "\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 22;\n" +
                 "Penetration = 20;\n" +
@@ -298,7 +340,7 @@ public class CannonParser {
                 "PenetrationFragment = 0;\n" +
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
-                "ReloadMax = 2;\n" +
+                "ReloadMax = 70;\n" +
                 "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 15;\n" +
@@ -308,7 +350,7 @@ public class CannonParser {
                 "\n" +
                 "func.Add = ComponentTowerXY;\n" +
                 "func.Add = ComponentTowerControl;\n" +
-                "func.Add = ComponentFireControl;\n" +
+                "func.Add = ComponentFireTankCumulativeControl;\n" +
                 "\n" +
                 "Sound = 2;\n" +
                 "AmountFragment = 0;";
@@ -403,13 +445,19 @@ public class CannonParser {
                 "ConstTowerX = 14;\n" +
                 "ConstTowerY = 7;\n" +
                 "SpeedRotationTower = 1;\n" +
+                "\n" +
+                "QuantityShots = 100;\n" +
+                "ReloadShots = 12;\n" +
+                "ReloadBetweenShots = 3;\n" +
+                "ReloadUP = 0.5f;\n" +
+                "\n" +
                 "Damage = 12;\n" +
                 "Penetration = 4;\n" +
                 "DamageFragment = 0;\n" +
                 "PenetrationFragment = 0;\n" +
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
-                "ReloadMax = 3;\n" +
+                "ReloadMax = 120;\n" +
                 "SpeedBullet = 32;\n" +
                 "TimeBullet = 270;\n" +
                 "TowerX = 15;\n" +
@@ -419,7 +467,7 @@ public class CannonParser {
                 "\n" +
                 "func.Add = ComponentTowerXY;\n" +
                 "func.Add = ComponentTowerControl;\n" +
-                "func.Add = ComponentFireControl;\n" +
+                "func.Add = ComponentFireDrumControl;\n" +
                 "\n" +
                 "Sound = 9;\n" +
                 "AmountFragment = 0;";
@@ -430,13 +478,17 @@ public class CannonParser {
                 "ConstTowerX = 13;\n" +
                 "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
+                "\n" +
+                "ReloadUP = 0.2;\n" +
+                "OneShot = 1;\n" +
+                "\n" +
                 "Damage = 15;\n" +
                 "Penetration = 20;\n" +
                 "DamageFragment = 0;\n" +
                 "PenetrationFragment = 0;\n" +
                 "TemperatureDamage = 0;\n" +
                 "SizeBullet = 2;\n" +
-                "ReloadMax = 2;\n" +
+                "ReloadMax = 50;\n" +
                 "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 16;\n" +
@@ -446,7 +498,7 @@ public class CannonParser {
                 "\n" +
                 "func.Add = ComponentTowerXY;\n" +
                 "func.Add = ComponentTowerControl;\n" +
-                "func.Add = ComponentFireControl;\n" +
+                "func.Add = ComponentFireTankCumulativeControl;\n" +
                 "\n" +
                 "Sound = 2;\n" +
                 "AmountFragment = 0;";
@@ -470,9 +522,12 @@ public class CannonParser {
                 "Fire = Flame;\n" +
                 "Image = tower_enemy;\n" +
                 "\n" +
+                "MaxRotate = 20;\n" +
+                "RotateBase = 90;\n" +
+                "\n" +
                 "func.Add = ComponentTowerXY;\n" +
-                "func.Add = ComponentTowerControl;\n" +
-                "func.Add = ComponentFireControl;\n" +
+                "func.Add = ComponentNotTowerControl;\n" +
+                "func.Add = ComponentFireTankCumulativeControl;\n" +
                 "\n" +
                 "Sound = 5;\n" +
                 "AmountFragment = 0;";
@@ -498,7 +553,7 @@ public class CannonParser {
                 "\n" +
                 "func.Add = ComponentTowerXY;\n" +
                 "func.Add = ComponentTowerControl;\n" +
-                "func.Add = ComponentFireControl;\n" +
+                "func.Add = ComponentFireTankCumulativeControl;\n" +
                 "\n" +
                 "Sound = 5;\n" +
                 "AmountFragment = 0;";
@@ -559,6 +614,12 @@ public class CannonParser {
                 "HeightTower = 35;\n" +
                 "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
+                "\n" +
+                "QuantityShots = 4;\n" +
+                "ReloadShots = 12;\n" +
+                "ReloadBetweenShots = 32;\n" +
+                "ReloadUP = 0.5f;\n" +
+                "\n" +
                 "SpeedRotationTower = 1;\n" +
                 "Damage = 420;\n" +
                 "Penetration = 24;\n" +
@@ -576,7 +637,7 @@ public class CannonParser {
                 "\n" +
                 "func.Add = ComponentTowerXY;\n" +
                 "func.Add = ComponentTowerControl;\n" +
-                "func.Add = ComponentFireControl;\n" +
+                "func.Add = ComponentFireDrumControl;\n" +
                 "\n" +
                 "Sound = 4;\n" +
                 "AmountFragment = 15;";

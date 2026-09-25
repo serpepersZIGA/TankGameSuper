@@ -1,4 +1,4 @@
-package com.mygdx.game.menu.button.ButtonTank;
+package com.mygdx.game.UI.button.ButtonTank;
 
 import java.io.File;
 import java.io.IOException;

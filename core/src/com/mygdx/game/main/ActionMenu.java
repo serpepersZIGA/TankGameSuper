@@ -8,23 +8,22 @@ import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
-import com.mygdx.game.Inventory.Shop.ShopInterface;
 import com.mygdx.game.Network.PackerServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.bull.Bullet;
-import com.mygdx.game.menu.button.Button;
-import com.mygdx.game.menu.slider.Slider;
+import com.mygdx.game.UI.button.Button;
+import com.mygdx.game.UI.slider.Slider;
 import com.mygdx.game.method.Keyboard;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.menu.button.ButtonTank.TankChoice.TankChoiceList;
-import static com.mygdx.game.menu.button.MapLoad.MapChoiceList;
+import static com.mygdx.game.UI.button.ButtonTank.TankChoice.TankChoiceList;
+import static com.mygdx.game.UI.button.MapLoad.MapChoiceList;
 import static com.mygdx.game.method.Option.SoundProcent;
 import static com.mygdx.game.unit.Unit.IDList;
 

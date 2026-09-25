@@ -77,7 +77,8 @@ public class RenderCenter {
                     Main.BlockList2D.get(iy).get(ix).update();
                 }
             }
-        } else {
+        }
+        else {
             for (int iy = render_y_min; iy < render_y_max; iy++) {
                 for (int ix = render_x_min; ix < render_x_max; ix++) {
                     Block block = Main.BlockList2D.get(iy).get(ix);
@@ -87,12 +88,6 @@ public class RenderCenter {
                             block.render_block = BlockID.get(1);
                         }
                     }
-                    //Main.BlockList2D.get(iy).get(ix).updateTick(ix,iy);
-//                    if (Main.BlockList2D.get(iy).get(ix).render_block == UpdateRegister.DirtUpdate) {
-//                        if (rand.rand(20) == 1) {
-//                            Main.BlockList2D.get(iy).get(ix).render_block = UpdateRegister.GrassUpdate;
-//                        }
-//                    }
                 }
             }
             LightSystem.lightsRender.clear();

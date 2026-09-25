@@ -21,12 +21,10 @@ public class ShopInterface extends InventoryInterface {
         YInterface = ShopGlobal.xySize;
         SlotInventory = new Slot[XInterface][YInterface];
         this.x = 420;this.y = 420;
-        WidthWindow = 650;
-        HeightWindow = 420;
-        XSlots = WidthWindow/XInterface;
-        YSlots = HeightWindow/YInterface;
-        if(XSlots>YSlots){XSlots=YSlots;}
-        else if(XSlots<YSlots){YSlots = XSlots;}
+        WidthWindow = XSlots*XInterface;
+        HeightWindow = YSlots*YInterface+Table;
+        TableTxT = "Shop";
+        TableSize();
         SlotGeneration();
     }
     @Override final

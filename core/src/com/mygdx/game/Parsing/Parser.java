@@ -130,6 +130,10 @@ public class Parser {
                 return new Object[]{BuildCollision,n[1]};
             case "ComponentFireControl":
                 return new Object[]{FireControl,n[1]};
+            case "ComponentFireDrumControl":
+                return new Object[]{FireDrumControl,n[1]};
+            case "ComponentFireTankCumulativeControl":
+                return new Object[]{FireTankCumulativeControl,n[1]};
             case "ComponentHill":
                 return new Object[]{Hill,n[1]};
             case "ComponentMotorControl":

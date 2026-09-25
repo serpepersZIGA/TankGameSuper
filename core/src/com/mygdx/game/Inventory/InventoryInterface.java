@@ -17,8 +17,11 @@ public class InventoryInterface {
     public boolean InventoryConf = false;
     public boolean InventoryConfMoving = false;
     public int XCol,YCol,XColUs,YColUs,XCol2,YCol2;
-    public int XInterface,YInterface,XSlots,YSlots,WidthWindow,HeightWindow,x,y;
+    public int XInterface,YInterface,WidthWindow,HeightWindow,x,y;
+    public static int XSlots = 85,YSlots = 85,Table = 50;
     public String frame = "frameSlot";
+    public String TableTxT = "frameSlot";
+    public int XTable,YTable;
     public String frameInventory = "InventoryBackground";
     public Slot[][]SlotInventory;
     public static SlotBuffer SlotBuffer;
@@ -33,13 +36,22 @@ public class InventoryInterface {
         this.inventory = inventory;
         SlotInventory = new Slot[XInterface][YInterface];
         this.x = 200;this.y = 500;
-        WidthWindow = 600;
-        HeightWindow = 350;
-        XSlots = 600/XInterface;
-        YSlots = 350/YInterface;
-        if(XSlots>YSlots){XSlots=YSlots;}
-        else if(XSlots<YSlots){YSlots = XSlots;}
+        TableTxT = "Inventory";
+        //XSlots = 60;
+        //YSlots = 60;
+        WidthWindow = XSlots*XInterface;
+        HeightWindow = YSlots*YInterface+Table;
+        TableSize();
+
+
+
+        //if(XSlots>YSlots){XSlots=YSlots;}
+        //else if(XSlots<YSlots){YSlots = XSlots;}
         SlotGeneration();
+    }
+    protected void TableSize(){
+        XTable = (int) (WidthWindow*0.5f-TableTxT.length()*6);
+        YTable = (int) (HeightWindow - Table*0.5f)+5;
     }
     public void InventoryRefactor(Inventory inventory){
         XInterface = inventory.InventorySlots.length;
@@ -109,7 +121,12 @@ public class InventoryInterface {
                 WindowName.RenderWindow();
             }
             WindowName.conf = false;
+            RenderTable();
         }
+    }
+    public void RenderTable(){
+        font2.setColor(0.8f,0.7f,0.15f,1f);
+        font2.draw(Batch,this.TableTxT,this.x+XTable,this.y+YTable);
     }
     public void InventoryIterationClient(){
         if(InventoryConf & RC.MainUnit != null) {
@@ -142,6 +159,7 @@ public class InventoryInterface {
                 WindowName.RenderWindow();
             }
             WindowName.conf = false;
+            RenderTable();
         }
     }
     public boolean CollisionMouseInvert(){

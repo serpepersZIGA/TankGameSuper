@@ -1,18 +1,11 @@
-package com.mygdx.game.menu;
+package com.mygdx.game.UI;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
-import com.badlogic.gdx.utils.GdxRuntimeException;
-import com.esotericsoftware.kryonet.Server;
 import com.mygdx.game.main.ClientMain;
-import com.mygdx.game.main.ServerMain;
 
 import javax.swing.*;
-import java.awt.*;
 import java.io.*;
-
-import static com.mygdx.game.main.Main.tcpPort;
-import static com.mygdx.game.main.Main.udpPort;
 
 public class InputWindow{
     public static JButton Button;

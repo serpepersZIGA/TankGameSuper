@@ -1,8 +1,6 @@
-package com.mygdx.game.menu.button;
+package com.mygdx.game.UI.button;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.MapFunction.MapScan;
-import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.main.Main;
@@ -16,7 +14,6 @@ import static com.mygdx.game.main.ActionGame.ActionMenu;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.nConnect;
 import static com.mygdx.game.method.RenderCenter.IndBuilding;
-import static java.awt.SystemColor.window;
 
 public class ExitPlay extends Button{
     public ExitPlay(int x, int y, int width, int height, String txt,byte ConfigMenu){

@@ -1,11 +1,9 @@
-package com.mygdx.game.menu.slider;
+package com.mygdx.game.UI.slider;
 
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.method.Keyboard;
 
 import static com.mygdx.game.main.Main.*;
-import static com.mygdx.game.main.Main.ZoomWindowX;
-import static com.mygdx.game.main.Main.ZoomWindowY;
 import static java.lang.StrictMath.abs;
 
 public class Slider {

@@ -42,8 +42,10 @@ public abstract class Unit implements Cloneable{
     public TypeCollision collision = TypeCollision.rect;
     public UnitType TypeUnit;
     public int[][]TowerXY,TrackXY;
-    public int SizeBullet,TimeBullet,TimeBulletRand;
-    public float SpeedBullet,SpeedBulletRand;
+    public int SizeBullet,TimeBullet,TimeBulletRand,ReloadBetweenShots,ReloadShots,
+    QuantityShots,QuantityShotsTotal;
+    public boolean ConfShot,ConfShotDrum;
+    public float SpeedBullet,SpeedBulletRand,ReloadBetweenTotal,ReloadUP, OneShot;
     public static boolean AIScan;
     public ClassUnit classUnit = ClassUnit.Transport;
     public Inventory inventory, equipment;
@@ -55,7 +57,7 @@ public abstract class Unit implements Cloneable{
     public ArrayList<Track> TrackUnitLists = new ArrayList<>();
     public Cannon CannonUnit;
     public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend,
-    nConnect,HpBase,PenetrationBase;
+    nConnect,HpBase,PenetrationBase,differenceZoom,difference2Zoom;
     public int time_sound_motor = time_max_sound_motor;
     public static int time_max_sound_motor = 20;
     public Sound sound_fire;
@@ -357,6 +359,9 @@ public abstract class Unit implements Cloneable{
                 tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x* Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y* Zoom);
+
+                tower.differenceZoom = (int)(tower.difference* Zoom);
+                tower.difference2Zoom= (int)(tower.difference_2* Zoom);
                 tower.team = team;
             }
             for(Unit Track : unitAdd.TrackUnitList){
@@ -648,15 +653,16 @@ public abstract class Unit implements Cloneable{
 //                this.tower_y+const_tower_y-const_y_tower
 //                ,this.const_tower_y-const_y_tower,
 //                this.const_tower_x-const_x_tower,-this.rotation_tower);
+        //System.out.println(this);
         TowerXYTarget();
-        tower(fire_x,fire_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+        tower(this.fire_x,this.fire_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     public void NotTowerControl() {
         //rotationTower = -this.rotation_tower-90;
         //SoundPlay.soundPlay(this.x_rend,this.y_rend, (int) this.x, (int) this.y,4, this.sound_fire);
         TowerXYTarget();
 
-        NotTower(fire_x,fire_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
+        NotTower(this.fire_x,this.fire_y,TargetX,TargetY, this.speed_tower*TimeGlobalBullet);
     }
     private void TowerXYTarget(){
 //        float[] xy = Method.tower_xy_2(this.x,
@@ -664,7 +670,11 @@ public abstract class Unit implements Cloneable{
 //                ,0,
 //                0
 //                ,-this.rotation_corpus);
-        float []xy = tower_xy_2(TargetConstX,TargetConstY,this.difference,this.difference_2,-this.rotation_corpus);
+        float []xy = tower_xy_2(this.TargetConstX,this.TargetConstY
+                ,this.differenceZoom,this.difference2Zoom,-this.rotation_corpus);
+//        System.out.println(this);
+//        System.out.println(this.fire_x+"  "+this.fire_y);
+
 //        this.tower_x = xy[0];this.tower_y = xy[1];
         this.fire_x = xy[0];
         this.fire_y = xy[1];
@@ -775,14 +785,6 @@ public abstract class Unit implements Cloneable{
 //            System.out.println(left_mouse);
         }
 
-    private boolean enemy_fire_not_tower(){
-        if(!UnitList.isEmpty()) {
-            Unit unit = detection_near_transport_i(this);
-            return fire_bot_not_tower(unit.x,unit.y);
-        }
-        return false;
-    }
-
     protected void blade_helicopter(){
         this.rotation_tower += speed_tower;
     }
@@ -815,14 +817,6 @@ public abstract class Unit implements Cloneable{
         //}
         //}
     }
-    public boolean reload_bot(){
-        if(this.reload > 0){
-            this.reload -= TimeGlobalBullet;
-            return false;
-        }
-        return true;
-
-    }
     protected void indicator_hp_2() {
         Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom
         ,new Color(Option.hp_2_r_indicator, Option.hp_2_g_indicator, Option.hp_2_b_indicator, 0.3F));
@@ -836,13 +830,51 @@ public abstract class Unit implements Cloneable{
         }
     }
     protected void indicator_reload(){
-        green_len_reload = (this.reload/this.reload_max)* Option.size_x_indicator;
         Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),(this.y_tower_rend- height_tower_zoom),
                 Option.size_x_indicator_zoom,
                 Option.size_y_indicator_zoom,new Color(Option.reload_r_indicator, Option.reload_g_indicator, Option.reload_b_indicator,0.3f));
         Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),
                 (this.y_tower_rend- height_tower_zoom),(int)(green_len_reload* Zoom),
                 Option.size_y_indicator_zoom,new Color(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f));
+    }
+
+//    public int ReloadBetweenShots,ReloadUP,OneShot,QuantityShot;
+//    public boolean ConfShot;
+    public void FireDrumControl(){
+        if(this.reloadDrum() && this.left_mouse){
+            R_LOCK.lock();
+            try {
+                fire.FireIteration(this);
+            }
+            finally {
+                R_LOCK.unlock();
+            }
+            QuantityShotsTotal -=1;
+            if(QuantityShotsTotal == 0){
+                reload = reload_max;
+                ConfShotDrum = false;
+            }
+            ReloadBetweenTotal = ReloadBetweenShots;
+            this.left_mouse = false;
+        }
+    }
+    public void FireTankCumulativeControl(){
+        if(this.reloadTankCumulative() && this.left_mouse){
+            R_LOCK.lock();
+            try {
+                fire.FireIteration(this);
+            }
+            finally {
+                R_LOCK.unlock();
+            }
+            //QuantityShotsTotal -=1;
+            //if(QuantityShotsTotal == 0){
+            reload -= OneShot;
+                //ConfShotDrum = false;
+            //}
+            //ReloadBetweenTotal = ReloadBetweenShots;
+            this.left_mouse = false;
+        }
     }
     public void FireControl(){
         if(this.reload_bot() && this.left_mouse){
@@ -857,6 +889,43 @@ public abstract class Unit implements Cloneable{
             this.left_mouse = false;
         }
     }
+    public boolean reload_bot(){
+        if(this.reload > 0){
+            this.reload -= TimeGlobalBullet;
+            return false;
+        }
+        return true;
+    }
+    public boolean reloadDrum(){
+        if(ConfShotDrum) {
+            if (this.ReloadBetweenTotal > 0) {
+                this.ReloadBetweenTotal -= TimeGlobalBullet;
+                return false;
+            }
+            return true;
+        }
+        else {
+            if (this.reload > 0) {
+                this.reload -= TimeGlobalBullet;
+                return false;
+            }
+            else{
+                ConfShotDrum = true;
+                QuantityShotsTotal = QuantityShots;
+                ReloadBetweenTotal = 0;
+                return true;
+            }
+        }
+    }
+    public boolean reloadTankCumulative(){
+        if (this.reload < this.reload_max) {
+            this.reload += TimeGlobalBullet*ReloadUP;
+            return (this.reload > OneShot);
+        }
+        return true;
+
+    }
+
 
     public void TowerXY(){
     float []xy = tower_xy(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,-this.rotation_corpus);
@@ -874,16 +943,7 @@ public abstract class Unit implements Cloneable{
         //rotation_tower = rotation_corpus;
         return abs(AngleTarget - (rotation_corpus)) < 20;
     }
-    protected boolean fire_bot_not_tower(double obj_x,double obj_y){
-        g = (float) (atan2(this.tower_y - obj_y,this.tower_x-obj_x ) *RP);
-        sost_fire_bot = abs(g-rotation_tower)<20;
-        //sost_fire_bot = true;
-        if(reload_bot() & sost_fire_bot){
-            this.reload = this.reload_max;
-            return true;
-        }
-        return false;
-    }
+
     private void motor_bot_base(float g,byte behavior){
         this.time_sound_motor -=1;
 

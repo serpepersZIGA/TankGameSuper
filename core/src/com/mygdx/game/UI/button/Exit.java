@@ -1,15 +1,15 @@
-package com.mygdx.game.menu.button;
+package com.mygdx.game.UI.button;
 
-import com.mygdx.game.main.ActionGame;
-import com.mygdx.game.main.Main;
+import com.badlogic.gdx.Gdx;
 
-public class Play extends Button{
-    public Play(int x, int y, int width, int height, String txt,byte ConfigMenu){
+public class Exit extends Button{
+    public Exit(int x, int y, int width, int height, String txt,byte ConfigMenu){
         this.x = x;this.y = y;
         this.ConfigMenu = ConfigMenu;
         this.width = width;this.height = height;
         this.txt = txt;
         DataRect();
+        //XTXT -=40;
 
     }
     @Override
@@ -22,9 +22,7 @@ public class Play extends Button{
     }
     protected void ActionButton(){
         if(condition) {
-            Main.ConfigMenu = 1;
-
-            condition = false;
+            Gdx.app.exit();
         }
     }
 }

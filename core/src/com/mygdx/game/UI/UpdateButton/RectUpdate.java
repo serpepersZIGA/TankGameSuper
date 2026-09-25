@@ -1,4 +1,4 @@
-package com.mygdx.game.menu.UpdateButton;
+package com.mygdx.game.UI.UpdateButton;
 
 public class RectUpdate extends UpdateButton{
     public RectUpdate(int x,int y,int width,int height){

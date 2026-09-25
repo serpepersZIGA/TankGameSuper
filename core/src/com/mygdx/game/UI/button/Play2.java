@@ -1,18 +1,16 @@
-package com.mygdx.game.menu.button;
+package com.mygdx.game.UI.button;
 
-import com.badlogic.gdx.Gdx;
 import com.mygdx.game.main.Main;
 
-import static java.awt.SystemColor.window;
+import static com.mygdx.game.main.Main.ActionGameTotal;
 
-public class Exit extends Button{
-    public Exit(int x, int y, int width, int height, String txt,byte ConfigMenu){
+public class Play2 extends Button{
+    public Play2(int x, int y, int width, int height, String txt, byte ConfigMenu){
         this.x = x;this.y = y;
         this.ConfigMenu = ConfigMenu;
         this.width = width;this.height = height;
         this.txt = txt;
         DataRect();
-        //XTXT -=40;
 
     }
     @Override
@@ -25,7 +23,9 @@ public class Exit extends Button{
     }
     protected void ActionButton(){
         if(condition) {
-            Gdx.app.exit();
+            Main.ActionGameMain = ActionGameTotal;
+
+            condition = false;
         }
     }
 }

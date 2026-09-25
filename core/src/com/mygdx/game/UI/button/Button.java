@@ -1,10 +1,6 @@
-package com.mygdx.game.menu.button;
+package com.mygdx.game.UI.button;
 
-import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
-import com.badlogic.gdx.graphics.g2d.BitmapFont;
-import com.badlogic.gdx.graphics.g2d.freetype.FreeTypeFontGenerator;
-import com.mygdx.game.main.Main;
 import com.mygdx.game.method.Keyboard;
 
 import static com.mygdx.game.main.Main.*;
