@@ -508,13 +508,17 @@ public class CannonParser {
                 "ConstTowerX = 36;\n" +
                 "ConstTowerY = 17;\n" +
                 "SpeedRotationTower = 1;\n" +
+                "\n" +
+                "ReloadUP = 0.2;\n" +
+                "OneShot = 1;\n" +
+                "\n" +
                 "Damage = 10;\n" +
                 "Penetration = 2;\n" +
                 "DamageFragment = 0;\n" +
                 "PenetrationFragment = 0;\n" +
                 "TemperatureDamage = 1.5;\n" +
                 "SizeBullet = 2;\n" +
-                "ReloadMax = 2;\n" +
+                "ReloadMax = 70;\n" +
                 "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 15;\n" +
@@ -532,18 +536,19 @@ public class CannonParser {
                 "Sound = 5;\n" +
                 "AmountFragment = 0;";
         Create(Flk4C,data);
-        data = "WidthTower = 20;\n" +
-                "HeightTower = 16;\n" +
-                "ConstTowerX = 13;\n" +
-                "ConstTowerY = 8;\n" +
+        data = "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
+                "\n" +
+                "ReloadUP = 0.2;\n" +
+                "OneShot = 1;\n" +
+                "\n" +
                 "Damage = 10;\n" +
                 "Penetration = 2;\n" +
                 "DamageFragment = 0;\n" +
                 "PenetrationFragment = 0;\n" +
                 "TemperatureDamage = 1.5;\n" +
                 "SizeBullet = 2;\n" +
-                "ReloadMax = 2;\n" +
+                "ReloadMax = 70;\n" +
                 "SpeedBullet = 6;\n" +
                 "TimeBullet = 85;\n" +
                 "TowerX = 16;\n" +
