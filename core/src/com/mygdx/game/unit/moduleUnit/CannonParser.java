@@ -536,7 +536,10 @@ public class CannonParser {
                 "Sound = 5;\n" +
                 "AmountFragment = 0;";
         Create(Flk4C,data);
-        data = "ConstTowerY = 8;\n" +
+        data = "WidthTower = 20;\n" +
+                "HeightTower = 16;\n" +
+                "ConstTowerX = 13;\n" +
+                "ConstTowerY = 8;\n" +
                 "SpeedRotationTower = 1;\n" +
                 "\n" +
                 "ReloadUP = 0.2;\n" +
