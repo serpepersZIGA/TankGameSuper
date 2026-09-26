@@ -49,7 +49,8 @@ void main() {
        * 0.15 /* 0.1 - это обратно пропорациональная сила рассеивания. Чем больше тем жестче */, light.radius, dist);
         attenuation *= (1.0 - light.transparency);
         attenuation = pow(attenuation, 1.5);
-        lightEffect = (light.color * light.intensity * attenuation) + ((light.radius / dist) * 0.05);
+        lightEffect = (light.color * light.intensity * attenuation *(1.0-u_minLightness))
+         + ((light.radius / dist) * 0.05);
         accumulatedLight.rgb += lightEffect.rgb * lightEffect.a;
         accumulatedLight.a *= (1.0 - lightEffect.a * attenuation);
     }
@@ -59,5 +60,5 @@ void main() {
     finalColor.rgb *= max(accumulatedLight.rgb, vec3(u_minLightness));
     finalColor.rgb = clamp(finalColor.rgb, 0.0, 1.0);
     finalColor.a = clamp(finalColor.a, 0.0, 1.0);
-    fragColor = finalColor*texColor*2.0;
+    fragColor = finalColor*texColor;
 }
