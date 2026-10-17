@@ -28,11 +28,7 @@ public class LightingMainSystem implements Disposable {
     private Color ambientColor;
     private float minLightness;
     public int limitLightingRender = 650;
-    public static FrameBuffer fbo = new FrameBuffer(Pixmap.Format.RGBA8888, Gdx.graphics.getWidth()
-            , Gdx.graphics.getHeight(), false);
 
-    public static Mesh mesh;
-    public static Texture texture;
 
     public static class Light {
         public final Vector2 position = new Vector2();
@@ -92,15 +88,6 @@ public class LightingMainSystem implements Disposable {
         LightClear = new ArrayList<>();
         ambientColor = new Color(0.1f, 0.1f, 0.15f, 1f);
         minLightness = 0.3f;
-
-        mesh = new Mesh(true, 4, 6, VertexAttribute.Position(), VertexAttribute.ColorUnpacked(), VertexAttribute.TexCoords(0));
-        mesh.setVertices(new float[] {
-                -0.5f, -0.5f, 0, 1, 1, 1, 1, 0, 1,
-                0.5f, -0.5f, 0, 1, 1, 1, 1, 1, 1,
-                0.5f, 0.5f, 0, 1, 1, 1, 1, 1, 0,
-                -0.5f, 0.5f, 0, 1, 1, 1, 1, 0, 0
-        });
-        mesh.setIndices(new short[] {0, 1, 2, 2, 3, 0});
     }
 
     public void begin(SpriteBatch batch) {
