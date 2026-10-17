@@ -4,6 +4,7 @@ import com.badlogic.gdx.audio.Sound;
 import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
+import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
@@ -56,7 +57,7 @@ public abstract class Unit implements Cloneable{
     public ArrayList<Cannon> CannonUnitList = new ArrayList<>();
     public ArrayList<Track> TrackUnitLists = new ArrayList<>();
     public Cannon CannonUnit;
-    public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max,x_rend,y_rend,x_tower_rend,y_tower_rend,
+    public int  difference,difference_2,hp,max_hp,time_spawn_soldat_max = 200,x_rend,y_rend,x_tower_rend,y_tower_rend,
     nConnect,HpBase,PenetrationBase,differenceZoom,difference2Zoom;
     public int time_sound_motor = time_max_sound_motor;
     public static int time_max_sound_motor = 20;
@@ -113,6 +114,7 @@ public abstract class Unit implements Cloneable{
     public Unit TargetUnit,EnemyFire;
     public Squad SquadAlly;
     public float TargetConstX,TargetConstY;
+    public Area area;
     public Unit(){
     }
     public Unit(float x, float y, float rotation, float speed,
@@ -177,6 +179,9 @@ public abstract class Unit implements Cloneable{
         this.speed = speed;
         this.height = (byte) Height;
         this.CorpusUnit = corpus.CorpusAdd();
+        this.area = new Area(new Rectangle((int) this.x, (int) this.y,
+                0, 0));
+
 
 
 
@@ -198,7 +203,8 @@ public abstract class Unit implements Cloneable{
         classUnit = ClassUnit.Tower;
         //data_tower();
     }
-    public Unit UnitAdd(int x, int y, boolean host, byte team, Controller controller,Inventory inventory,Inventory equipment){
+    public Unit UnitAdd(int x, int y, boolean host, byte team, Controller controller,Inventory inventory,Inventory equipment
+    ,int nConnect){
         try {
             Unit unitAdd = (Unit) this.clone();
             unitAdd.x = x;
@@ -208,6 +214,7 @@ public abstract class Unit implements Cloneable{
             unitAdd.classUnit = this.classUnit;
             unitAdd.host = host;
             unitAdd.team = team;
+            unitAdd.nConnect = nConnect;
             unitAdd.control = controller;
             unitAdd.TowerUnitList = new ArrayList<>();
             unitAdd.TrackUnitList = new ArrayList<>();
@@ -216,6 +223,20 @@ public abstract class Unit implements Cloneable{
             unitAdd.medic_help = this.medic_help;
             unitAdd.ConfSquad = this.ConfSquad;
             unitAdd.EventClear = this.EventClear;//EventData.eventDeadSoldat;
+            unitAdd.area = new Area(new Rectangle((int) unitAdd.x, (int) unitAdd.y,
+                    (int) unitAdd.corpus_width, (int) unitAdd.corpus_height));
+            if(unitAdd.control == RegisterControl.controllerPlayer){
+                unitAdd.PlayerConf = true;
+                if(host){
+                    equipmentMain = new EquipmentInterface(equipment);
+                    inventoryMain = new InventoryInterface(inventory);
+                    RC.MainUnit = unitAdd;
+                }
+                else{
+                    PacketServer.InventoryConf = true;
+                }
+
+            }
 
 
             for(int i = 0;i<TrackUnitLists.size();i++){
@@ -333,6 +354,8 @@ public abstract class Unit implements Cloneable{
             unitAdd.tower_x = x;
             unitAdd.tower_y = y;
             unitAdd.EventClear = this.EventClear;
+            unitAdd.area = new Area(new Rectangle((int) unitAdd.x, (int) unitAdd.y,
+                    (int) unitAdd.corpus_width, (int) unitAdd.corpus_height));
 
             for(int i = 0;i<TrackUnitLists.size();i++){
                 unitAdd.TrackUnitList.add(new UnitPattern(TrackUnitLists.get(i).
@@ -488,21 +511,24 @@ public abstract class Unit implements Cloneable{
     protected final void review_field(){
         // Object[] sp = detection_near_transport(this);
         if(EnemyFire != null) {
-             RadiusTarget = (float) sqrt(pow2(EnemyFire.x - this.x) + pow2(EnemyFire.y - this.y));
-            if(EnemyFire.team != this.team) {
-                this.trigger_attack = (int) RadiusTarget < this.range_see;
-            }
-            else {
-                if (this.SquadAlly != null) {
-                    if (this.SquadAlly.EnemySquad != null) {
-                        float b = (float) sqrt(pow2(SquadAlly.EnemySquad.x - this.x)
-                                + pow2(SquadAlly.EnemySquad.y - this.y));
-                        this.trigger_attack = (int) b < this.range_see & SquadAlly.AttackSquad;
-                    }
-                }
-            }
+             //RadiusTarget = (float) sqrt(pow2(EnemyFire.x - this.x) + pow2(EnemyFire.y - this.y));
+             trigger_attack = true;
+             trigger_fire = findIntersection2(this.XMap,this.YMap,EnemyFire.XMap,EnemyFire.YMap);
+//            if(EnemyFire.team != this.team) {
+//                this.trigger_attack = (int) RadiusTarget < this.range_see;
+//            }
+//            else {
+//                if (this.SquadAlly != null) {
+//                    if (this.SquadAlly.EnemySquad != null) {
+//                        float b = (float) sqrt(pow2(SquadAlly.EnemySquad.x - this.x)
+//                                + pow2(SquadAlly.EnemySquad.y - this.y));
+//                        this.trigger_attack = (int) b < this.range_see & SquadAlly.AttackSquad;
+//                    }
+//                }
+//            }
         }
         else{
+            trigger_fire = false;
             trigger_attack = false;
         }
 
@@ -810,7 +836,7 @@ public abstract class Unit implements Cloneable{
         //if(Enemy != null) {
             //System.out.println("ggggg");
         review_field();
-        AITransport(TargetUnit, RadiusTarget);
+        AITransport(TargetUnit);
         //}
         //else{
             //trigger_fire = false;
@@ -931,7 +957,6 @@ public abstract class Unit implements Cloneable{
     float []xy = tower_xy(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,-this.rotation_corpus);
         this.tower_x = xy[0];this.tower_y = xy[1];}
     public void TowerXY2(){
-        //float []xy = tower_xy_2(this.x+this.tower_x_const,this.y+this.tower_y_const,this.difference,this.difference_2,-this.rotation_corpus);
         float []xy = tower_xy(this.x+this.tower_x_const,this.y+this.tower_y_const,differenceTotal,-this.rotation_corpus+RotationDifference-90);
         //System.out.println(differenceTotal+" "+RotationDifference);
         this.tower_x = xy[0];this.tower_y = xy[1];}
@@ -1035,9 +1060,9 @@ public abstract class Unit implements Cloneable{
 //                SquadAlly.EnemySquad = Target;
 //                EnemyDetectedInit(this.SquadAlly);
 //            }
-            if (null != findIntersection(this.tower_x, this.tower_y, Target.tower_x, Target.tower_y)) {
-                trigger_fire = false;
-                Ai.pathAIAStar(this, Target, this.tower_x, this.tower_y);
+            if (null != findIntersection(this.XMap, this.YMap, Target.XMap, Target.YMap)) {
+                //trigger_fire = false;
+                Ai.pathAIAStar(this, Target);
 
 //            for (ArrayList<Block> i2:Main.BlockList2D){
 //                for (Block i3:i2){
@@ -1049,30 +1074,24 @@ public abstract class Unit implements Cloneable{
 //            }
 
             } else {
-                path.clear();
-                trigger_fire = true;
+                this.path.clear();
+                //trigger_fire = true;
             }
 
 
 
 
         }
-        else if(!path.isEmpty()) {
+        else if(!this.path.isEmpty()) {
             //System.out.println(path.size());
             //float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
-            float RadiusTarget = (float)sqrt(pow2(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
-                    + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
-            AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1])
-                    .get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1])
-                    .get(path.get(0)[0]).x_center)*RP)-90);
+            AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(this.path.get(0)[1])
+                    .get(this.path.get(0)[0]).y_center,tower_x - BlockList2D.get(this.path.get(0)[1])
+                    .get(this.path.get(0)[0]).x_center)*RP)-90);
             rotation_bot();
             //System.out.println(trigger_drive);
             motor_bot_base();
             //System.out.println(path.size());
-            if(RadiusTarget<35){
-                path.remove(0);
-                return;
-            }
             for(int i = 0;i<path.size();i++) {
                 if (XMap == path.get(i)[0]&YMap == path.get(i)[1]) {
                     path.remove(0);
@@ -1098,7 +1117,7 @@ public abstract class Unit implements Cloneable{
             motor_bot_base(rad, this.behavior);
         }
     }
-    private void AITransport(Unit Target,float rad) {
+    private void AITransport(Unit Target) {
 //        for (ArrayList<Block> i2:Main.BlockList2D){
 //            for (Block i3:i2){
 //                i3.render_block = UpdateRegister.GrassUpdate;
@@ -1110,55 +1129,44 @@ public abstract class Unit implements Cloneable{
 //        Main.BlockList2D.get(YMap).get(XMap).render_block = UpdateRegister.UpdateAsphalt1;
         if (AIScan) {
             if(Target!= null) {
-//                if(Target.team != this.team) {
-//                    SquadAlly.EnemySquad = Target;
-//                    EnemyDetectedInit(this.SquadAlly);
-//                }
-                if (null != findIntersection(this.tower_x, this.tower_y, Target.tower_x, Target.tower_y)) {
-                    trigger_fire = false;
-                    Ai.pathAIAStar(this, Target, this.tower_x, this.tower_y);
+                if (null != findIntersection(this.XMap, this.YMap,Target.XMap, Target.YMap)) {
+                    //trigger_fire = false;
+                    Ai.pathAIAStar(this, Target);
 
-//               for (ArrayList<Block> i2:Main.BlockList2D){
-//                   for (Block i3:i2){
-//                       i3.render_block = UpdateRegister.GrassUpdate;
-//                   }
-//               }
+
 //               for(int[]i: path){
-//                   Main.BlockList2D.get(i[1]).get(i[0]).render_block = UpdateRegister.Update3;
+//                   Main.BlockList2D.get(i[1]).get(i[0]).render_block = BlockID.get(3);
 //               }
 
 
                 } else {
-                    path.clear();
-                    trigger_fire = true;
+                    this.path.clear();
+                    //trigger_fire = true;
                 }
+
             }
 
 
 
         }
-        else if(!path.isEmpty()) {
+        if(!this.path.isEmpty()) {
             //System.out.println(path.size());
             //float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
-            float RadiusTarget = (float) sqrt(pow2(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
-                    + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center))*0.5f;
-            AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1])
-                    .get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1])
-                    .get(path.get(0)[0]).x_center)*RP)-90);
+            RadiusTarget = (float)sqrt(pow2(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
+                    + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
+            AngleTarget = (float) ((atan2(this.tower_y - BlockList2D.get(this.path.get(0)[1])
+                    .get(this.path.get(0)[0]).y_center,this.tower_x - BlockList2D.get(this.path.get(0)[1])
+                    .get(this.path.get(0)[0]).x_center)*RP)-90);
             rotation_bot();
-            //System.out.println(trigger_drive);
             motor_bot_base();
-            //System.out.println(path.size());
-            if(RadiusTarget<35){
+            if(RadiusTarget<70){
                 path.remove(0);
                 return;
             }
-            for(int i = 0;i<path.size();i++) {
-                if (XMap == path.get(i)[0]&YMap == path.get(i)[1]) {
-                    path.remove(0);
-//                    for(int i2 = 0;i2<i;i2++){
-//                        path.remove(path.get(i2));
-//                    }
+            for(int i = 0;i<this.path.size();i++) {
+                if (this.XMap == this.path.get(i)[0]&this.YMap == this.path.get(i)[1]) {
+                    this.path.remove(0);
+                    break;
 
                 }
 //                else if(RadiusTarget<30){
@@ -1172,14 +1180,14 @@ public abstract class Unit implements Cloneable{
             AngleTarget = (float) ((atan2(tower_y - Target.tower_y,
                     tower_x - Target.tower_x)*RP)-90);
             rotation_bot();
-            motor_bot_base(rad, this.behavior);
+            motor_bot_base(RadiusTarget, this.behavior);
         }
     }
-    public static float[] findIntersection(float x0, float y0, float dx, float dy) {
-        float x = dx/width_block-1;
-        float y = dy/ width_block -1;
-        dx = x0/width_block-1;
-        dy = y0/ width_block -1;
+    public static float[] findIntersection(float x, float y, float dx, float dy) {
+//        float x = dx/width_block-1;
+//        float y = dy/ width_block -1;
+//        dx = x0/width_block-1;
+//        dy = y0/ width_block -1;
         float xy_r = (float)(atan2(y-dy, x-dx));
         float speed_x = (float) cos(xy_r);
         float speed_y = (float) sin(xy_r);
@@ -1260,6 +1268,91 @@ public abstract class Unit implements Cloneable{
         }
 
     }
+    public static boolean findIntersection2(float x, float y, float dx, float dy) {
+        //float x = dx/width_block-1;
+        //float y = dy/ width_block -1;
+        //dx = x0/width_block-1;
+        //dy = y0/ width_block -1;
+        float xy_r = (float)(atan2(y-dy, x-dx));
+        float speed_x = (float) cos(xy_r);
+        float speed_y = (float) sin(xy_r);
+        if (y > dy) {
+            if (x > dx) {
+                while (x > dx && y > dy) {
+                    x -= speed_x;
+                    y -= speed_y;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+
+                }
+            } else if(x < dx){
+                while (x < dx && y > dy) {
+                    x -= speed_x;
+                    y -= speed_y;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            }
+            else{
+                while (y > dy) {
+                    y -= speed_y;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        } else if(y < dy){
+            if (x > dx) {
+                while (x > dx && y < dy) {
+                    x -= speed_x;
+                    y -= speed_y;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            } else if (x < dx){
+                while (x < dx && y < dy) {
+                    x -= speed_x;
+                    y -= speed_y;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            }
+            else {
+                while (y < dy) {
+                    y -= speed_y;
+                    //System.out.println(x+" "+y);
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+        else {
+            if (x > dx) {
+                while (x > dx) {
+                    x -= speed_x;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            } else if (x < dx){
+                while (x < dx) {
+                    x -= speed_x;
+                    if (BlockList2D.get((int)y).get((int)x).passability) {
+                        return false;
+                    }
+                }
+            }
+            return true;
+        }
+
+    }
 
 
 
@@ -1336,10 +1429,7 @@ public abstract class Unit implements Cloneable{
     public void corpus_corpus(ArrayList<Unit> obj_2){
         for (int i = 0;i<obj_2.size();i++) {
             Unit unit = obj_2.get(i);
-            if (unit != this) {
-                if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height,this.rotation_corpus,
-                        (int) unit.x,(int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, unit.rotation_corpus)
-                        && unit.priority_paint == this.priority_paint) {
+                if (rect_collision(this.area,unit.area)) {
                     SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7, ContentSound.hit);
                     PhysicCollision(this,unit);
                     PhysicCollision(unit,this);
@@ -1348,7 +1438,7 @@ public abstract class Unit implements Cloneable{
                     MethodCollisionTransport(this,unit);
 
                 }
-            }
+
         }
     }
 
@@ -1382,6 +1472,19 @@ public abstract class Unit implements Cloneable{
             PacketServer.unitConf = true;
             ClearUnitList.add(this);
             AI.SquadDeleteList.add(this.SquadAlly);
+            if(PlayerConf){
+                if(this.host){
+                    inventoryMain.inventory = null;
+                    equipmentMain.inventory = null;
+                    RC.MainUnit = null;
+                    InventoryInterface.SlotBuffer = null;
+                }
+                else {
+                    //PacketServer.InventoryConf = true;
+                }
+                RespawnList.add(new Object[]{this.host,this.nConnect,this.ID,10.0f,this.team});
+
+            }
             //SquadAlly.UnitSquad.remove(this);
             //UnitList.remove(this);
             return;
@@ -1461,14 +1564,14 @@ public abstract class Unit implements Cloneable{
 //        return !a.isEmpty();
 //    }
     public boolean rectCollision(int x1, int y1, int width, int height, double rotation,
-                                 Area area2){
+                                 Area area2,int x2,int y2){
 
         Rectangle rect1 = new Rectangle(x1,y1,width,height); // Прямоугольник 1
         // Прямоугольник 2
 
         // Создаем аффинное преобразование для поворота
         AffineTransform transform1 = new AffineTransform();
-        transform1.rotate(Math.toRadians(rotation), rect1.getCenterX(), rect1.getCenterY());
+        transform1.rotate(Math.toRadians(rotation),x2,y2);
 
         // Преобразование прямоугольников с учетом поворота
         Area area1 = new Area(rect1);
@@ -1482,7 +1585,20 @@ public abstract class Unit implements Cloneable{
         //System.out.println("Прямоугольники пересекаются. Результат: " + intersection);
         return !area1.isEmpty();
     }
+    private static AffineTransform transform2;
+    private static Rectangle rect;
+
     public void XYMapCord(){
+        rect = new Rectangle((int) x, (int) y, (int) corpus_width, (int) corpus_height); // Прямоугольник 2
+
+        // Создаем аффинное преобразование для поворота
+
+        transform2 = new AffineTransform();
+        transform2.rotate(Math.toRadians(rotation_corpus),this.x+corpus_width_2,this.y+corpus_height_2);
+
+        // Преобразование прямоугольников с учетом поворота
+        this.area = new Area(rect);
+        this.area.transform(transform2);
         XMap = (int) (tower_x/ width_block)-1;
         YMap = (int) (tower_y/ width_block)-1;
         if(XMap<0){
@@ -1511,6 +1627,14 @@ public abstract class Unit implements Cloneable{
 
     }
     public void XYMapCordDebris(){
+        rect = new Rectangle((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height);
+        AffineTransform transform2 = new AffineTransform();
+        transform2.rotate(Math.toRadians(rotation_corpus),this.x+corpus_width_2,this.y+corpus_height_2);
+
+        // Преобразование прямоугольников с учетом поворота
+        this.area = new Area(rect);
+        this.area.transform(transform2);
+
         XMap = (int) (x/ width_block)-1;
         YMap = (int) (y/ width_block)-1;
         if(XMap<0){
@@ -1546,19 +1670,32 @@ public abstract class Unit implements Cloneable{
             for (int ix = render_x_min; ix < render_x_max; ix++) {
                 if (BlockList2D.get(iy).get(ix).passability) {
 
-                    if (rectCollision((int) this.x, (int) this.y, (int) this.corpus_width, (int) this.corpus_height, this.rotation_corpus, BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y,
-                            width_block, width_block, 0)) {
+                    if (rect_collision(this.area,BlockList2D.get(iy).get(ix).area)) {
                         if (this.speed > 2 || this.speed < -2) {
                             SoundPlay.soundPlay(x_rend,y_rend, BlockList2D.get(iy).get(ix).x_center,
                                     BlockList2D.get(iy).get(ix).y_center,3, ContentSound.break_wooden);
                         }
-                        Rectangle rect1 = new Rectangle(BlockList2D.get(iy).get(ix).x,BlockList2D.get(iy).get(ix).y,
-                                 width_block, width_block); // Прямоугольник 1
-                        AffineTransform transform1 = new AffineTransform();
-                        transform1.rotate(Math.toRadians(0),rect1.getCenterX(),rect1.getCenterY());
-                        Area area1 = new Area(rect1);
-                        area1.transform(transform1);
-                        PhysicCollisionBuild(this,area1);
+                        PhysicCollisionBuild(this,BlockList2D.get(iy).get(ix).area);
+                        MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
+                    }
+                } else {
+                    BlockList2D.get(iy).get(ix).objMap.Collision.collision(this, ix, iy);
+                }
+            }
+        }
+    }
+    public void BuildingSoldat(){
+
+        for (int iy = render_y_min; iy < render_y_max; iy++) {
+            for (int ix = render_x_min; ix < render_x_max; ix++) {
+                if (BlockList2D.get(iy).get(ix).passability) {
+
+                    if (rect_collision(this.area, BlockList2D.get(iy).get(ix).area)) {
+//                        if (this.speed > 2 || this.speed < -2) {
+//                            SoundPlay.soundPlay(x_rend,y_rend, BlockList2D.get(iy).get(ix).x_center,
+//                                    BlockList2D.get(iy).get(ix).y_center,3, ContentSound.break_wooden);
+//                        }
+                        //PhysicCollisionBuild(this,BlockList2D.get(iy).get(ix).area);
                         MethodCollision(BlockList2D.get(iy).get(ix).x, BlockList2D.get(iy).get(ix).y);
                     }
                 } else {
@@ -1676,11 +1813,13 @@ public abstract class Unit implements Cloneable{
             try {
                 switch (rand.rand(2)) {
                     case 0: {
-                        Veteran.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, RegisterControl.controllerSoldatBot, inventory1,new Inventory(new Item[1][1],1));
+                        Veteran.UnitAdd((int) this.x, (int) this.y, true, (byte) 2,
+                                RegisterControl.controllerSoldatBot, inventory1,new Inventory(new Item[1][1],1),0);
                         break;
                     }
                     case 1: {
-                        Jaeger.UnitAdd((int) this.x, (int) this.y, true, (byte) 2, RegisterControl.controllerSoldatBot, inventory1,new Inventory(new Item[1][1],1));
+                        Jaeger.UnitAdd((int) this.x, (int) this.y, true, (byte) 2,
+                                RegisterControl.controllerSoldatBot, inventory1,new Inventory(new Item[1][1],1),0);
                         break;
                     }
                     //case 3->{soldat.add(new soldat_(this.x,this.y));}
@@ -1766,18 +1905,18 @@ public abstract class Unit implements Cloneable{
     }
     public void AISoldatPath(Unit iEnemy){
         if (AIScan) {
-            if (null != findIntersection(x,y, iEnemy.tower_x, iEnemy.tower_y)) {
-                path.clear();
-                Ai.pathAIAStar(this,iEnemy, x, y);
+            if (null != findIntersection(XMap,YMap, iEnemy.XMap, iEnemy.YMap)) {
+                //path.clear();
+                Ai.pathAIAStar(this,iEnemy);
                 trigger_fire = false;
             } else {
                 path.clear();
                 trigger_fire = true;
             }
         }
-        if(path.size() > 0) {
-            RadiusTarget = (float) sqrt(pow2((x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
-            AngleTarget = (float) ((atan2(y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
+        if(!path.isEmpty()) {
+            RadiusTarget = (float) sqrt(pow2((tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)) + pow2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center));
+            AngleTarget = (float) ((atan2(tower_y - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).y_center,tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)/3.1415926535*180)-90);
             SoldatRotateBot();
             SoldatMovePathBot();
             if(RadiusTarget< 70){

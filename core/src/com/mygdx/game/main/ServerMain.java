@@ -41,7 +41,7 @@ public class ServerMain extends Listener {
         Server.getKryo().register(EventDeleteItemClient.class);
         Server.getKryo().register(EventTransferItemClient.class);
         Server.getKryo().register(PacketInventory.class);
-        Server.getKryo().register(PackerServer.class);
+        Server.getKryo().register(PacketServer.class);
         Server.getKryo().register(Packet_client.class);
         Server.getKryo().register(TransportPacket.class);
         Server.getKryo().register(BullPacket.class);
@@ -156,11 +156,17 @@ public class ServerMain extends Listener {
                     unit.press_f = pack.press_f;
                     unit.TargetX = pack.mouse_x;
                     unit.TargetY = pack.mouse_y;
+
+//                    for(Unit Tower : unit.TowerUnitList){
+//                        Tower.left_mouse = LeftMouse;
+//                        Tower.TargetX = unit.TargetX+Tower.TargetConstX;
+//                        Tower.TargetY = unit.TargetY+Tower.TargetConstY;
+//                    }
                     //unit.FireControl();
                     for (Unit Tower : unit.TowerUnitList) {
                         Tower.left_mouse = pack.left_mouse;
-                        Tower.TargetX = unit.TargetX+ Tower.tower_x;
-                        Tower.TargetY = unit.TargetY+ Tower.tower_y;
+                        Tower.TargetX = unit.TargetX+ Tower.TargetConstX;
+                        Tower.TargetY = unit.TargetY+ Tower.TargetConstY;
                     }
                     return;
                 }
@@ -173,8 +179,7 @@ public class ServerMain extends Listener {
             Unit unitBuf;
 
             unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
-                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1));
-            unitBuf.nConnect = nConnect;
+                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1),nConnect);
             unitBuf.PlayerConf = true;
             unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
             unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);

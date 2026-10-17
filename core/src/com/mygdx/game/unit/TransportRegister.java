@@ -17,7 +17,7 @@ public class TransportRegister {
     Veteran,Soldat,Jaeger;
 
     public static void Create() {
-        ArrayList<Cannon>list = new ArrayList<>();
+        //ArrayList<Cannon>list = new ArrayList<>();
 //        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
 //        list.add(RegisterModuleCannon.CannonFlameAuxiliary);
 //        list.add(RegisterModuleCannon.CannonFlame);
@@ -26,14 +26,14 @@ public class TransportRegister {
 //        listr.add("Flk4CL");
 //        listr.add("Flk4C");
 
-        list = new ArrayList<>();
-        TrackSoldatT1 = new UnitPattern("TrSolS1",RegisterModuleCorpus.CorpusSoldatTrackS1,
-                RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.Transport,0,1);
-
-        TrackSoldatT1.time_spawn_soldat_max = 200;
-
-        TrackRemountT1 = new UnitPattern("TrRemR1",RegisterModuleCorpus.CorpusRemountTrackR1,
-                RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.SupportTransport,1,1);
+//        list = new ArrayList<>();
+//        TrackSoldatT1 = new UnitPattern("TrSolS1",RegisterModuleCorpus.CorpusSoldatTrackS1,
+//                RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.Transport,0,1);
+//
+//        //TrackSoldatT1.time_spawn_soldat_max = 200;
+//
+//        TrackRemountT1 = new UnitPattern("TrRemR1",RegisterModuleCorpus.CorpusRemountTrackR1,
+//                RegisterModuleEngine.Engine1E,list,new int[][]{},ClassUnit.SupportTransport,1,1);
 
         Veteran = new UnitPattern("Vet",RegisterModuleSoldat.Veteran);
 

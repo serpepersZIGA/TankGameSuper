@@ -88,17 +88,21 @@ public abstract class Particle {
         this.size_2 = this.size/2;
         this.size_3 = this.size_2-2;
     }
-    public static float time,slow = 0.02f;
+    public static float time,slow = 0.02f,SpeedBuffX,SpeedBuffY;
     public void liquidConst(){
         for (Particle particle2 : Main.LiquidList) {
             if (particle2 != this && (int) sqrt(pow2.pow2(this.x - particle2.x)
                     + pow2.pow2(this.y - particle2.y))
                     < (this.size + particle2.size) * 0.5) {
-                r = (float) (atan2(this.y - particle2.y, this.x - particle2.x)*57.2974);
-                this.speed_x = move.move_sin2(1.1f, r);
-                this.speed_y = move.move_cos2(1.1f, r);
-                particle2.speed_x = -move.move_sin2(1.1f, r);
-                particle2.speed_y = -move.move_cos2(1.1f, r);
+                r = (float) (atan2
+                        (this.y - particle2.y, this.x - particle2.x)*57.2974);
+                SpeedBuffX = move.move_sin2(1.1f, r);
+                SpeedBuffY = move.move_cos2(1.1f, r);
+                this.speed_x = SpeedBuffX;
+                this.speed_y = SpeedBuffY;
+                particle2.speed_x = -SpeedBuffX;
+                particle2.speed_y = -SpeedBuffY;
+                //particle2.liquidConst();
                 //break;
 
 
@@ -108,11 +112,16 @@ public abstract class Particle {
             if (particle2 != this && (int) sqrt(pow2.pow2(this.x - particle2.x)
                     + pow2.pow2(this.y - particle2.y))
                     < (this.size + particle2.size) * 0.5) {
-                r = (float) (atan2(this.y - particle2.y, this.x - particle2.x)*57.2974);
-                this.speed_x = move.move_sin2(1.1f, r);
-                this.speed_y = move.move_cos2(1.1f, r);
-                particle2.speed_x = -move.move_sin2(1.1f, r);
-                particle2.speed_y = -move.move_cos2(1.1f, r);
+                r = (float) (atan2
+                        (this.y - particle2.y,
+                                this.x - particle2.x)*57.2974);
+                SpeedBuffX = move.move_sin2(1.1f, r);
+                SpeedBuffY = move.move_cos2(1.1f, r);
+                this.speed_x = SpeedBuffX;
+                this.speed_y = SpeedBuffY;
+                particle2.speed_x = -SpeedBuffX;
+                particle2.speed_y = -SpeedBuffY;
+                //particle2.liquidConst();
                 //break;
 
 

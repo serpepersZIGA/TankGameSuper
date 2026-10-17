@@ -93,13 +93,15 @@ public class RenderCenter {
             LightSystem.lightsRender.clear();
             for(int i = 0;i<LightSystem.lights.size();i++){
                 LightingMainSystem.Light light = LightSystem.lights.get(i);
-                if(light.XRender+LightSystem.limitLightingRender >0 &
-                        light.YRender+LightSystem.limitLightingRender >0&
-                        light.XRender-LightSystem.limitLightingRender < Main.screenWidth &
-                        light.YRender-LightSystem.limitLightingRender <Main.screenHeight
-                ){
-                    LightSystem.lightsRender.add(light);
+                if(light != null) {
+                    if (light.XRender + LightSystem.limitLightingRender > 0 &
+                            light.YRender + LightSystem.limitLightingRender > 0 &
+                            light.XRender - LightSystem.limitLightingRender < Main.screenWidth &
+                            light.YRender - LightSystem.limitLightingRender < Main.screenHeight
+                    ) {
+                        LightSystem.lightsRender.add(light);
 
+                    }
                 }
             }
             Main.TickBlock = 0;

@@ -18,6 +18,7 @@ public class Squad{
     public int[][]UnitSquadXY;
     public int x,y;
     public Unit EnemySquad;
+    public Unit Leader;
     public ClassUnit classSquad;
     public static int MaxRadius = 12;
     public static int MaxQuantity = 4;
@@ -32,6 +33,7 @@ public class Squad{
         x = unit.XMap;
         y = unit.YMap;
         classSquad = ClassUnit.Transport;
+        Leader = unit;
         Team = unit.team;
         UnitDetected();
         //for(int i = 0;i<UnitSquad.size();i++){
@@ -66,63 +68,71 @@ public class Squad{
         }
 
     }
-    public void EnemyDetected(){
+    public void EnemyDetected() {
         AttackSquad = false;
-        if(EnemySquad!= null) {
-            if (abs(x - EnemySquad.XMap)>20 & abs(y - EnemySquad.YMap)>20) {
+        if (Leader != null) {
+            x = Leader.XMap;
+            y = Leader.YMap;
+        } else {
+            Leader = UnitSquad.get(0);
+            x = Leader.XMap;
+            y = Leader.YMap;
+        }
+        if (EnemySquad != null) {
+            if (abs(x - EnemySquad.XMap) > 35 & abs(y - EnemySquad.YMap) > 35) {
                 EnemySquad = null;
-                for (int i = 0; i < UnitSquad.size(); i++) {
-                    Unit unit = UnitSquad.get(i);
-                    unit.TargetUnit = null;
-                }
+//                for (int i = 0; i < UnitSquad.size(); i++) {
+//                    Unit unit = UnitSquad.get(i);
+//                    unit.TargetUnit = null;
+//                }
 
             }
         }
         for (int i = 0; i < UnitSquad.size(); i++) {
             Unit unit = UnitSquad.get(i);
-            x = unit.XMap;
-            y = unit.YMap;
             //Object[] sp = detection_near_transport(unit);
-            Object[]sp = unit.less_hp_bot();
+            Object[] sp = unit.less_hp_bot();
             unit.EnemyFire = detection_near_transport_i(unit);
             Unit unit2 = (Unit) sp[0];
+            //unit.TargetUnit = unit2;
             if(unit2 != null) {
                 if (unit2.team != Team & EnemySquad == null) {
-                    EnemySquad = (Unit) sp[0];
+                    EnemySquad = unit2;
                     //if(null == Unit.findIntersection(unit.x,unit.y,EnemySquad.x,EnemySquad.y)){
                     AttackSquad = true;
-                        //unit.Enemy = unit2;
-                        //unit.RadiusTarget = (float) sp[1];
+                    //unit.Enemy = unit2;
+                    //unit.RadiusTarget = (float) sp[1];
                     //}
                 }
-                else if(unit2.team == Team){
+                if (unit2.team == Team) {
                     unit.TargetUnit = unit2;
                     unit.RadiusTarget = (float) sp[1];
                 }
-
-                //EnemyDetectedInit();
-
-                //}
-//                EnemyDetectedInit();
-                //
-                //return;
-
-            } else if (unit.EnemyFire != null) {
-                if(EnemySquad == null){
+            }
+            if (unit.EnemyFire != null) {
+                if (EnemySquad == null) {
                     EnemySquad = unit.EnemyFire;
                     AttackSquad = true;
                 }
 
             }
-            //unit.AttackSquad =AttackSquad;
+            //EnemyDetectedInit();
+
+            //}
+//                EnemyDetectedInit();
+            //
+            //return;
+
         }
-        if(EnemySquad!= null) {
+
+        //unit.AttackSquad =AttackSquad;
+        if (EnemySquad != null) {
             EnemyDetectedInit();
         }
         for (int i2 = 0; i2 < UnitSquad.size(); i2++) {
             Unit unit = UnitSquad.get(i2);
             unit.AttackSquad = AttackSquad;
-            if(!AttackSquad){
+            if (!AttackSquad) {
                 unit.trigger_attack = false;
             }
         }
@@ -135,9 +145,10 @@ public class Squad{
 //            Arrays.fill(UnitSquadXY, null);
 //        }
         //EnemyDetectedInit();
-
-
     }
+
+
+
     public void SquadPositionFait(){
         for (int i = 0; i < UnitSquad.size(); i++) {
             Unit unit = UnitSquad.get(i);

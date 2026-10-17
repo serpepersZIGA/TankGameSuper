@@ -59,7 +59,8 @@ public class ItemObject{
 
     }
     protected void Press(){
-        for (Unit unit : UnitList) {
+        for (int i = 0;i< UnitList.size();i++) {
+            Unit unit = UnitList.get(i);
             if (unit.press_f & sqrt(pow2(this.x-unit.x)+pow2(this.y-unit.y))<LineSelection) {
                 if(unit.inventory.ItemAdd(this.item)) {
                     if(unit.inventory== inventoryMain.inventory){
@@ -67,7 +68,7 @@ public class ItemObject{
                     }
                     ConfSentPackItem = true;
                     ItemList.remove(this);
-                    PacketAdd();
+                    PacketAdd(unit);
                 }
                 //unit.press_f = false;
                     //unit.inventory.ItemAdd(item);
@@ -94,6 +95,29 @@ public class ItemObject{
         packetUnitUpdate.ConfDebris = false;
         ServerMain.Server.sendToAllTCP(packetUnitUpdate);
         packetUnitUpdate.ConfItem = false;
+
+
+    }
+    public static void PacketAdd(Unit unit){
+        ItemPackList.clear();
+        for(int i = 0;i<ItemList.size();i++) {
+            ItemObject item1 = ItemList.get(i);
+            ItemPacket pack = new ItemPacket();
+            pack.ID = item1.item.ID;
+            pack.x = item1.x;
+            pack.y = item1.y;
+            ItemPackList.add(pack);
+        }
+        packetUnitUpdate.IDClient = unit.nConnect;
+        packetUnitUpdate.inventoryClient = unit.inventory.inventoryStr;
+
+        packetUnitUpdate.ItemPack = ItemPackList;
+        packetUnitUpdate.ConfItem = true;
+        packetUnitUpdate.ConfDebris = false;
+        ServerMain.Server.sendToAllTCP(packetUnitUpdate);
+        packetUnitUpdate.inventoryClient = null;
+        packetUnitUpdate.ConfItem = false;
+        packetUnitUpdate.IDClient = 0;
 
 
     }

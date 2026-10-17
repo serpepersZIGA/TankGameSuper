@@ -10,6 +10,6 @@ import lombok.NoArgsConstructor;
 public class buffObjMap {
     public String Image, Collision;
     public int X,Y,width,height,HP;
-    public boolean LightingConf,SpawnUnit;
+    public boolean LightingConf,SpawnUnit,Respawn;
     public int Lighting;
 }

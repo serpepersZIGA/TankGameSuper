@@ -52,9 +52,10 @@ public class ObjectPars {
         int Lighting = obj.Lighting;
         boolean LightingConf = obj.LightingConf;
         boolean SpawnUnit = obj.SpawnUnit;
+        boolean Respawn = obj.Respawn;
 
         new MapObject(Image, width, height,HP,X, Y, Collision,LightingConf,Lighting,SpawnUnit
-                ,file.name().replace(".json", ""));
+                ,file.name().replace(".json", ""),Respawn);
 
 
     }
@@ -64,7 +65,7 @@ public class ObjectPars {
         File Pz2A = new File("ContentGlobal/ObjectMap/pepper.json");
         String data = "{\n" +
                 "  \"Image\": \"pepper_object_map\",\n" +
-                "  \"Collision\":\"CollisionBreak\",\n" +
+                " \"Collision\":\"CollisionSlow\",\n" +
                 "  \"X\":2,\n" +
                 "  \"Y\":2,\n" +
                 "  \"width\":20,\n" +
@@ -72,7 +73,22 @@ public class ObjectPars {
                 "  \"HP\":120,\n" +
                 "  \"LightingConf\":true,\n" +
                 "  \"Lighting\":600,\n" +
-                "  \"SpawnUnit\": false\n" +
+                "  \"SpawnUnit\": true\n" +
+                "}";
+        Create(Pz2A,data);
+        Pz2A = new File("ContentGlobal/ObjectMap/RespawnPoint.json");
+        data = "{\n" +
+                "\"Image\": \"pepper_object_map\",\n" +
+                " \"Collision\":\"CollisionSlow\",\n" +
+                " \"X\":2,\n" +
+                " \"Y\":2,\n" +
+                " \"width\":20,\n" +
+                " \"height\":20,\n" +
+                " \"HP\":120,\n" +
+                " \"LightingConf\":true,\n" +
+                " \"Lighting\":600,\n" +
+                " \"SpawnUnit\": true,\n" +
+                " \"Respawn\": true\n" +
                 "}";
         Create(Pz2A,data);
 

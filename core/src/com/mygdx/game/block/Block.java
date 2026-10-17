@@ -14,6 +14,7 @@ import static com.mygdx.game.method.pow2.pow2;
 public abstract class Block {
     public int x,y;
     public int x_center,y_center;
+    public Area area;
     public UpdateBlock render_block;
     public MapObject objMap;
     public static HashMap<Integer,UpdateBlock>BlockID = new HashMap<>();

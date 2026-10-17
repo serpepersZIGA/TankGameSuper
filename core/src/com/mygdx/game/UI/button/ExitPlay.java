@@ -14,6 +14,8 @@ import static com.mygdx.game.main.ActionGame.ActionMenu;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.nConnect;
 import static com.mygdx.game.method.RenderCenter.IndBuilding;
+import static com.mygdx.game.object_map.MapObject.RespawnPointList;
+import static com.mygdx.game.object_map.MapObject.SpawnerList;
 
 public class ExitPlay extends Button{
     public ExitPlay(int x, int y, int width, int height, String txt,byte ConfigMenu){
@@ -50,8 +52,11 @@ public class ExitPlay extends Button{
             IndBuilding.clear();
             Block.passability_detected2();
             UnitList.clear();
+            DebrisList.clear();
             BuildingList.clear();
             BulletList.clear();
+            RespawnPointList.clear();
+            SpawnerList.clear();
             LightSystem.lights.clear();
             LightSystem.lightsRender.clear();
             BlockList2D.clear();

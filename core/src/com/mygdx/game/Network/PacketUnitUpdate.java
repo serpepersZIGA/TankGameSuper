@@ -6,10 +6,11 @@ import java.util.ArrayList;
 
 public class PacketUnitUpdate {
     public boolean ConfDebris,ConfUnit,ConfItem,ConfInventory;
-    public PackerServer packServer;
+    public PacketServer packServer;
     public ArrayList<ItemPacket>ItemPack;
     public ArrayList<BullPacket>bull;
     public ArrayList<String[][]> inventory,equipment;
+    public String[][] inventoryClient;
     public int IDClient;
 
 }

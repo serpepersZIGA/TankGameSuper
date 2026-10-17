@@ -24,6 +24,7 @@ public class LightingMainSystem implements Disposable {
     public final ShaderProgram shader;
     public final ArrayList<Light> lights;
     public final ArrayList<Light> lightsRender;
+    public final ArrayList<Light> LightClear;
     private Color ambientColor;
     private float minLightness;
     public int limitLightingRender = 650;
@@ -32,7 +33,6 @@ public class LightingMainSystem implements Disposable {
 
     public static Mesh mesh;
     public static Texture texture;
-    public static OrthographicCamera camera;
 
     public static class Light {
         public final Vector2 position = new Vector2();
@@ -89,6 +89,7 @@ public class LightingMainSystem implements Disposable {
         }
         lightsRender = new ArrayList<>();
         lights = new ArrayList<>();
+        LightClear = new ArrayList<>();
         ambientColor = new Color(0.1f, 0.1f, 0.15f, 1f);
         minLightness = 0.3f;
 

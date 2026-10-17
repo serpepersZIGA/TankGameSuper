@@ -23,6 +23,7 @@ image/enemy/CorpusM1.png
 image/enemy/corpus_enemy.png
 image/enemy/corpus_track_remount_enemy.png
 image/enemy/gunTank.png
+image/enemy/HelicopterM2S.kra
 image/enemy/helicopter_enemy_t1.png
 image/enemy/machine_enemy_1lvl.png
 image/enemy/tower_auxiliart_enemy.png
@@ -62,6 +63,7 @@ image/player/corpus_player.png
 image/player/tower_auxiliart_player.png
 image/player/tower_player.png
 image/player/tower_player_auxiliary_1.png
+lips.png
 META-INF/MANIFEST.MF
 ShaderList/Fire/Fire.frag
 ShaderList/Fire/Fire.vert
@@ -88,6 +90,5 @@ sound/hit_not_penetration.wav
 sound/kill.wav
 sound/machinegun.wav
 sound/motor.wav
-sound/motors.ogg
 sound/motor_back.wav
 sound/motor_helicopter.wav

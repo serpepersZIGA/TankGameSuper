@@ -205,7 +205,7 @@ public class MapScan {
             }
         }
     }
-    public static void SpawnObjectBlock(String Obj,int x,int y){
+    public static void SpawnObjectBlock(String Obj,int x,int y,int t){
 
         StringBuilder result = new StringBuilder();
         try (BufferedReader br = new BufferedReader(new FileReader("ContentGlobal/ObjectMap/"+Obj+".json"))) {
@@ -224,7 +224,7 @@ public class MapScan {
         // Чтение JSON-файла и создание объекта Person
 
 
-        ObjectMapIDList.get(Obj).MapObjectAdd(x,y);
+        ObjectMapIDList.get(Obj).MapObjectAdd(x,y,t);
 
 
         //BlockList2D.get(y).get(x).objMap
@@ -323,10 +323,17 @@ public class MapScan {
         char c;
         int x = 0;
         int y = 0;
+        int t = 0;
         String Build = "";
         for (; i < TxT.length(); i++) {
             c = TxT.charAt(i);
             switch (c){
+                case't':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    t = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
                 case'x':{
                     Object[]obj = Parser.IntegerPars2(TxT,i);
                     x = (int)obj[0];
@@ -346,7 +353,7 @@ public class MapScan {
                 }
                 break;
                 case';':{
-                    SpawnObjectBlock(Build,x+xStr,y+yStr);
+                    SpawnObjectBlock(Build,x+xStr,y+yStr, t);
                     return i;
                 }
             }

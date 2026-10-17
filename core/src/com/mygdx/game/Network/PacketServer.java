@@ -1,11 +1,8 @@
 package com.mygdx.game.Network;
 
-import com.mygdx.game.Inventory.ItemPacket;
-import com.mygdx.game.Inventory.PacketInventory;
-
 import java.util.ArrayList;
 
-public class PackerServer {
+public class PacketServer {
     public ArrayList<TransportPacket>player;
     public ArrayList<BuildPacket>building;
     public ArrayList<DebrisPacket>debris;

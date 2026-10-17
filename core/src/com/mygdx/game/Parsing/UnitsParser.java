@@ -73,6 +73,8 @@ public class UnitsParser {
         File Helicopter2Z = new File("ContentGlobal/Unit/Helicopter-2Z.json");
         File Gb1M = new File("ContentGlobal/Unit/Gb-1M.json");
         File M1 = new File("ContentGlobal/Unit/M1.json");
+        File TrackRemount = new File("ContentGlobal/Unit/TrRemR1.json");
+        File TrackSoldat = new File("ContentGlobal/Unit/TrSolS1.json");
         String data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"HelicopterCorpus1\",\n" +
@@ -170,6 +172,35 @@ public class UnitsParser {
                 "  \"Height\": 1\n" +
                 "}";
         Create(Pz2M,data);
+
+
+
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"CorpusRemountTrackR1\",\n" +
+                "  \"Cannon\": [],\n" +
+                "  \"TowerXY\": [],\n" +
+                "\n" +
+                "  \"Track\": [],\n" +
+                "  \"Side\": [],\n" +
+                "  \"TrackXY\": [],\n" +
+                "  \"MedicConf\": 1,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+        Create(TrackRemount,data);
+        data = "{\n" +
+                "  \"Engine\": \"V2A\",\n" +
+                "  \"Corpus\": \"CorpusSoldatTrackS1\",\n" +
+                "  \"Cannon\": [],\n" +
+                "  \"TowerXY\": [],\n" +
+                "\n" +
+                "  \"Track\": [],\n" +
+                "  \"Side\": [],\n" +
+                "  \"TrackXY\": [],\n" +
+                "  \"MedicConf\": 0,\n" +
+                "  \"Height\": 1\n" +
+                "}";
+        Create(TrackSoldat,data);
 
 
     }

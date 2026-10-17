@@ -123,7 +123,7 @@ public class Item implements Cloneable{
                 if(GameHost) {
                     IDList.get(IDSpawnUnit).UnitAdd((int) unit.x, (int) unit.y, true, unit.team
                             , Main.RegisterControl.controllerBot, new Inventory(new Item[1][1], 1)
-                            , new Inventory(new Item[1][1], 1));
+                            , new Inventory(new Item[1][1], 1),0);
                 }
                 return true;
 

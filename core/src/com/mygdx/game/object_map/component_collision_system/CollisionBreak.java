@@ -2,7 +2,11 @@ package com.mygdx.game.object_map.component_collision_system;
 
 import com.mygdx.game.main.Main;
 import com.mygdx.game.Network.PacketMapObject;
+import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.Unit;
+
+import java.awt.*;
+import java.awt.geom.Area;
 
 import static com.mygdx.game.main.Main.LightSystem;
 
@@ -12,11 +16,12 @@ public class CollisionBreak extends ComponentCollisionSystem{
         this.y = y;
         this.width = width;
         this.height = height;
+        Rectangle rect1 = new Rectangle(x,y,width,height); // Прямоугольник 1
+        this.area = new Area(rect1);
     }
     @Override final
     public void collision(Unit tr, int ix, int iy) {
-        if(rect_collision(x,y,width,height,0,
-                (int)tr.x,(int)tr.y,(int)tr.corpus_width,(int)tr.corpus_height,tr.rotation_corpus)){
+        if(Method.rect_collision(this.area,tr.area)){
             tr.speed *= 0.2f;
             tr.SpeedInertionY *= 0.2f;
             tr.SpeedInertionX *= 0.2f;

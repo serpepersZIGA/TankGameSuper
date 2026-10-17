@@ -34,7 +34,7 @@ public class GameStart {
 		config.useVsync(true);
 		config.setForegroundFPS(120);
 		config.setTitle("Game");
-		config.setWindowIcon("image/player/tower_player.png");
+		config.setWindowIcon("lips.png");
 		new Lwjgl3Application(new Main(WidthWindow,HeightWindow,120), config);
 
 	}

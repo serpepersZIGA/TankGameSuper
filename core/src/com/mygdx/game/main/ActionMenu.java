@@ -8,7 +8,7 @@ import com.mygdx.game.Inventory.Inventory;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.Item;
 import com.mygdx.game.Inventory.ItemRegister;
-import com.mygdx.game.Network.PackerServer;
+import com.mygdx.game.Network.PacketServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
@@ -230,7 +230,7 @@ public class ActionMenu extends ActionGame {
         LightSystem.begin(Batch);
         if(GameStart) {
             GameStart = false;
-            PacketServer = new PackerServer();
+            PacketServer = new PacketServer();
             PacketClient = new Packet_client();
             if (GameHost) {
                 try {
@@ -274,7 +274,7 @@ public class ActionMenu extends ActionGame {
         Inventory equipment = new Inventory(new Item[4][2],1);
         Unit unit = IDList.get(SpawnIDPlayer);
         unit = unit.UnitAdd(200,200,true,(byte)1,
-                RegisterControl.controllerPlayer,inventory,equipment);
+                RegisterControl.controllerPlayer,inventory,equipment,0);
         unit.inventory.ItemAdd(ItemRegister.MedicineT1);
         unit.inventory.ItemAdd(ItemRegister.MedicineT1);
         unit.inventory.ItemAdd(ItemRegister.MedicineT1);

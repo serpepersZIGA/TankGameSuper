@@ -55,7 +55,7 @@ public class CollisionMethodGlobal {
 
         if(unit1.height == unit2.height) {
             if (abs(unit1.XMap-unit2.XMap)<3 & abs(unit1.YMap-unit2.YMap)<3) {
-                if (CollisionRectRect(unit1, unit2)) {
+                if (Method.rect_collision(unit1.area,unit2.area)) {
                     SoundPlay.soundPlay(unit1.x_rend, unit1.y_rend, (int) unit1.x, (int) unit1.y, 7, Main.ContentSound.hit);
                     if (unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
                         CollisionFunctional.PhysicCollision(unit1, unit2);
@@ -82,6 +82,7 @@ public class CollisionMethodGlobal {
                             CollisionFunctional.MethodCollisionTransportSoldatAlly(unit1, unit2);
                         }
                     }
+                    //unit1.area.reset();
                 }
             }
         }

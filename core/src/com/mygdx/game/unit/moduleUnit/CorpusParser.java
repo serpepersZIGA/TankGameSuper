@@ -162,6 +162,9 @@ public class CorpusParser {
         File At2E = new File("ContentGlobal/Module/Corpus/At2E.Corpus");
         File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus");
         File CorpusM1 = new File("ContentGlobal/Module/Corpus/CorpusM1.Corpus");
+
+        File CorpusRemountTrackR1 = new File("ContentGlobal/Module/Corpus/CorpusRemountTrackR1.Corpus");
+        File CorpusSoldatTrackS1 = new File("ContentGlobal/Module/Corpus/CorpusSoldatTrackS1.Corpus");
         String data = "MaxHP = 1700;\n" +
                 "ArmorFront = 55;\n" +
                 "ArmorCenter = 35;\n" +
@@ -219,6 +222,35 @@ public class CorpusParser {
                 "func.Add ComponentBuildingCollision;\n" +
                 "func.Add ComponentTowerXY;";
         Create(CorpusM1,data);
+
+        data = "MaxHP = 520;\n" +
+                "ArmorFront = 12;\n" +
+                "ArmorCenter = 5;\n" +
+                "ArmorBack = 5;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 130;\n" +
+                "Difference = 18;\n" +
+                "Image = machine_enemy_1lvl;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;\n" +
+                "func.Add ComponentHill;";
+        Create(CorpusRemountTrackR1,data);
+        data = "MaxHP = 520;\n" +
+                "ArmorFront = 12;\n" +
+                "ArmorCenter = 5;\n" +
+                "ArmorBack = 5;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 130;\n" +
+                "Difference = 18;\n" +
+                "Image = machine_enemy_1lvl;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;\n" +
+                "func.Add ComponentSoldatSpawn;";
+        Create(CorpusSoldatTrackS1,data);
 
 
     }

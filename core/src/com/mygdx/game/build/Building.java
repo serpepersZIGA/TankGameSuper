@@ -124,8 +124,8 @@ public class Building implements Serializable,Cloneable {
     public void DataBuilding(){
         int ConstructX = ConstructBuilding[0].length;
         int ConstructY =ConstructBuilding.length;
-        this.width = width_block*ConstructX;
-        this.height = width_block*ConstructY;
+        this.width = width_block*ConstructX+1;
+        this.height = width_block*ConstructY+1;
     }
     private void DataCollision(){
         int ConstructX = ConstructBuilding[0].length;
@@ -214,6 +214,7 @@ public class Building implements Serializable,Cloneable {
 
             }
             case 270:{
+
                 RenderMethod.transorm_img((int) ((xy[0])* Main.Zoom),(int) (xy[1]* Main.Zoom)
                         ,width_render,height_render,rotate,TextureAtl.createSprite(build_image),width_render2,width_render2);
                 break;

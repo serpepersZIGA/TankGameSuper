@@ -13,6 +13,7 @@ public class MapBaseAdd {
         File MapFile = new File("Map/maps/MapBase.mapt");
         File Str2File = new File("Map/Structure/streetPoselok.str");
         File StrFile = new File("Map/Structure/street1.str");
+        File Spawn = new File("Map/Structure/Spawn.str");
 
         File pepper1 = new File("Map/Structure/pepper1.str");
         File CentralSquare = new File("Map/Structure/CentralSquare.str");
@@ -26,6 +27,7 @@ public class MapBaseAdd {
                 "(str):street1:x69:y40:;\n" +
                 "(str):streetPoselok:x70:y60:;\n" +
                 "BlockAdd:*Asphalt:x70:y53:Y7:;\n" +
+                "(str):Spawn:x85:y85:;\n" +
                 "(str):pepper1:x12:y12:;";
         Create(MapFile,dataMap);
         String dataStr =
@@ -65,9 +67,9 @@ public class MapBaseAdd {
                         "BlockAdd:*Asphalt:x28:y0:Y7:;";
         Create(Str2File,dataStr);
         dataStr =
-                "MapObject:x14:y5:o pepper:;\n" +
-                        "MapObject:x22:y10:o pepper:;\n" +
-                        "MapObject:x14:y10:o pepper:;";
+                "MapObject:x14:y5:o pepper:2:;\n" +
+                        "MapObject:x22:y10:o pepper:t 2:;\n" +
+                        "MapObject:x14:y10:o pepper:t 2:;";
         Create(pepper1,dataStr);
 
 
@@ -108,6 +110,9 @@ public class MapBaseAdd {
                         "BuildAdd:B BigBuildingWood1:x44:y9:r0:;";
         Create(CentralSquare,dataStr);
 
+        dataMap = "MapObject:x0:y0:o RespawnPoint:t 1:;\n" +
+                "MapObject:x0:y20:o RespawnPoint:t 1:;";
+        Create(Spawn,dataMap);
 
 
         dataStr =

@@ -11,7 +11,7 @@ import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
 import com.mygdx.game.Inventory.Shop.ShopInterface;
 import com.mygdx.game.MapFunction.MapScan;
-import com.mygdx.game.Network.PackerServer;
+import com.mygdx.game.Network.PacketServer;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.Packet_client;
 import com.mygdx.game.Parsing.ObjectPars;
@@ -75,9 +75,10 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<Particle> FlameParticleList = new ArrayList<>();
 	public static ArrayList<Particle> LiquidList = new ArrayList<>();
     public static ArrayList<Particle> BloodList = new ArrayList<>();
-
 	public static ArrayList<Particle> FlameSpawnList = new ArrayList<>();
 	public static ArrayList<Unit> DebrisList = new ArrayList<>();
+
+	public static ArrayList<Object[]>RespawnList = new ArrayList<>();
 
 	public static DataSound ContentSound;
 	public static ArrayList<ArrayList<Block>> BlockList2D = new ArrayList<>();
@@ -100,7 +101,7 @@ public class Main extends ApplicationAdapter {
 	public static ServerMain serverMain;
 	public static ClientMain Main_client;
 	public static Option Option;
-	public static PackerServer PacketServer;
+	public static PacketServer PacketServer;
 	public static MapObject VoidObj;
 	public static com.mygdx.game.Network.PacketBuildingServer PacketBuildingServer;
 	public static Packet_client PacketClient;
@@ -320,13 +321,21 @@ public class Main extends ApplicationAdapter {
         Keyboard.ZoomSpawnRippleWidth = screenWidth / ZoomMin;
         Keyboard.ZoomSpawnRippleHeight = screenHeight / ZoomMin;
 
-		IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
-				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1));
-//		IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
-//				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+		//IDList.get("Helicopter-2Z").UnitAdd(1500,1500,true,(byte)2,
+				//RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[4][4],1),0);
+		IDList.get("Pz-2M").UnitAdd(2000,700,true, (byte) 2,
+				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
+				0);
+		IDList.get("Pz-2M").UnitAdd(2000,800,true, (byte) 2,
+				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
+				0);
+		IDList.get("Pz-2M").UnitAdd(2000,900,true, (byte) 2,
+				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
+				0);
 
-		IDList.get("Gb-1M").UnitAdd(2000,700,true, (byte) 2,
-				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+
+		//IDList.get("Gb-1M").UnitAdd(2000,700,true, (byte) 2,
+				//RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),0);
 		//UnitList.get(0).crite_life = true;
 		//UnitList.get(0).RotationInertion = 20;
 //		IDList.get("TrRemR1").UnitAdd(1500,1500,true,(byte)2,

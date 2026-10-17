@@ -35,7 +35,7 @@ public class InventoryInterface {
         YInterface = inventory.InventorySlots[0].length;
         this.inventory = inventory;
         SlotInventory = new Slot[XInterface][YInterface];
-        this.x = 200;this.y = 500;
+        this.x = 200;this.y = 200;
         TableTxT = "Inventory";
         //XSlots = 60;
         //YSlots = 60;

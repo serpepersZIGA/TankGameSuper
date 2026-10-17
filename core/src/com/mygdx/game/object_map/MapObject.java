@@ -25,19 +25,23 @@ import static com.mygdx.game.unit.Unit.IDList;
 public class MapObject implements Cloneable{
     public static ArrayList<PacketMapObject> PacketMapObjects = new ArrayList<>();
     public static ArrayList<int[]>SpawnerList = new ArrayList<>();
+    public static ArrayList<int[]> RespawnPointList = new ArrayList<>();
     public int width,height,hp,y,x,ix,iy;
     public int width_render,height_render;
     public String img,CollisionBuff;
     public float distance_lighting,distance_lighting_2;
-    public boolean lighting,SpawnUnit;
+    protected boolean Respawn,SpawnUnit;
     public ComponentCollisionSystem Collision;
     public String assets;
     public LightingMainSystem.Light light;
+    public byte team;
+    public boolean lighting;
     public static HashMap<String,MapObject> ObjectMapIDList=new HashMap<>();
     public MapObject(){
     }
     public MapObject(String img, int width, int height, int hp, int ix, int iy,
-                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,String assets){
+                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,String assets,boolean
+                     Respawn){
         this.ix = ix;
         this.iy = iy;
         this.width = width;
@@ -49,6 +53,7 @@ public class MapObject implements Cloneable{
         this.SpawnUnit = SpawnUnit;
         this.hp = hp;
         this.img = img;
+        this.Respawn = Respawn;
         this.assets = assets;
         ObjectMapIDList.put(assets,this);
         CollisionBuff = collision;
@@ -59,13 +64,14 @@ public class MapObject implements Cloneable{
 //            case "CollisionVoid":Collision = new CollisionVoid();
 //        }
     }
-    public void MapObjectAdd(int x,int y){
+    public void MapObjectAdd(int x,int y,int t){
         try {
             MapObject obj = (MapObject) this.clone();
             BlockList2D.get(y).get(x).objMap = obj;
 
             obj.x = x*Main.width_block+ix;
             obj.y = y*Main.width_block +iy;
+            obj.team = (byte) t;
 
             if(this.lighting){
                 obj.lighting = true;
@@ -84,7 +90,10 @@ public class MapObject implements Cloneable{
                     break;
             }
             if(this.SpawnUnit){
-                SpawnerList.add(new int[]{y,x});
+                SpawnerList.add(new int[]{y,x,t});
+            }
+            if(this.Respawn){
+                RespawnPointList.add(new int[]{y,x,t});
             }
 
         } catch (CloneNotSupportedException e) {
@@ -130,18 +139,51 @@ public class MapObject implements Cloneable{
     }
     public static void SpawnWave(){
         for(int[] i : SpawnerList){
-            Spawn(BlockList2D.get(i[0]).get(i[1]));
+            Spawn(BlockList2D.get(i[0]).get(i[1]),(byte) i[2]);
         }
     }
-    private static void Spawn(Block block){
-
-        if(rand.rand(2) == 1){
-            IDList.get("Pz-2M").UnitAdd(block.x,block.y,true, (byte) 2,
-                    RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+    public static void SpawnPlayer(String unit,boolean host,byte team,int nConnect){
+        for(int[] i : RespawnPointList){
+            if(i[2] == team) {
+                IDList.get(unit).UnitAdd(i[0]*width_block, i[1]*width_block, host,team, RegisterControl.controllerPlayer
+                        , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),nConnect);
+                return;
+            }
+            //Spawn(BlockList2D.get(i[0]).get(i[1]),(byte) i[2]);
         }
-        else{
-            IDList.get("Pz-2A").UnitAdd(block.x,block.y,true, (byte) 2,
-                    RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1));
+    }
+    private static void Spawn(Block block,byte t){
+        int h = rand.rand(6);
+        switch (h) {
+            case 0:{
+                IDList.get("Pz-2M").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            } case 1:{
+                IDList.get("Pz-2A").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            }
+            case 2:{
+                IDList.get("Pz-2AC").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            }
+            case 3:{
+                IDList.get("Gb-1M").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            }
+            case 4:{
+                IDList.get("TrSolS1").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBotSupport, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+            }
+            break;
+            case 5:{
+                IDList.get("TrRemR1").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBotSupport, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+            }
+            break;
         }
 
     }

@@ -1,5 +1,6 @@
 package com.mygdx.game.bull;
 import com.mygdx.game.Network.BullPacket;
+import com.mygdx.game.bull.Updater.Rect;
 import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.bull.Updater.UpdaterBullet;
 import com.mygdx.game.main.Main;
@@ -37,8 +38,10 @@ public abstract class Bullet implements Serializable,Cloneable {
     public boolean BangSpawn;
     public boolean FlameSpawn,clear_sost;
     public byte type_team,height;
+    public Ellipse2D eclipse;
     public static ArrayList<Bullet>BulletListClear = new ArrayList<>();
     public static ArrayList<Integer>BulletListInd = new ArrayList<>();
+
     //public static ArrayList<Bullet> BulletListDown=new ArrayList<Bullet>(),BulletListUp=new ArrayList<Bullet>();
     public FunctionalList functionalList;
     public Bullet(float x, float y, float rotation, float damage, float penetration, float damage_fragment, float penetration_fragment, byte type_team, byte height) {
@@ -208,6 +211,7 @@ public abstract class Bullet implements Serializable,Cloneable {
                     return;
                 }
             }
+            bullet.eclipse = new Ellipse2D.Double(bullet.x, bullet.y, bullet.size,bullet.size);
             bullet.ind = BulletList.size();
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
@@ -241,6 +245,7 @@ public abstract class Bullet implements Serializable,Cloneable {
                 bullet.y2 +=rand.rand(bullet.sizeRandom);
                 bullet.size = bullet.x2;
             }
+            bullet.eclipse = new Ellipse2D.Double(bullet.x, bullet.y, bullet.size,bullet.size);
             bullet.size_render = (int)(bullet.size*Main.Zoom);
             bullet.speed_save();
             return bullet;
@@ -379,6 +384,7 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     public void all_action(){
 //        this.update();
+        this.eclipse = new Ellipse2D.Double(this.x, this.y, this.size,this.size);
         this.functionalList.FunctionalIterationAnHost(this);
         this.bull_move_xy();
         this.CorpusBullet();
@@ -389,6 +395,7 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     public void all_action_client(){
 //        this.update();
+        this.eclipse = new Ellipse2D.Double(this.x, this.y, this.size,this.size);
         this.functionalList.FunctionalIterationAnClient(this);
         this.bull_move_xy();
         this.CorpusBulletClient();
@@ -454,8 +461,7 @@ protected final void CorpusBullet(){
     for(int i = 0;i< UnitList.size();i++) {
         Unit unit = UnitList.get(i);
         if (this.type_team != unit.team & abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-            if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
-                    (int) unit.corpus_height, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+            if (rect_bull(unit.area,this.eclipse)) {
                 //int x1 = (int) (unit.x);
                 unit.TeamKill = type_team;
                 int y1 = (int) (unit.y+unit.corpus_height_2);
@@ -469,14 +475,14 @@ protected final void CorpusBullet(){
                 float[]xy3 = Method.tower_xy_2(unit.x,y1-Height3,
                         Height,0,-unit.rotation_corpus);
 
-                if (rect_bull((int) xy1[0] ,(int) xy1[1], (int) unit.corpus_width,Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                if (rect_bull((int) xy1[0] ,(int) xy1[1], (int) unit.corpus_width,Height2, -unit.rotation_corpus,this.eclipse)) {
                     armor_damage(unit,unit.armorBack);
                     //System.out.println("1");
                 }
                 else if (rect_bull((int) xy3[0],
                         (int) xy3[1]
                         , (int) unit.corpus_width,
-                        Height2, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                        Height2, -unit.rotation_corpus,this.eclipse)) {
                     armor_damage(unit,unit.armorFront);
                     //System.out.println("3");
                 }
@@ -499,8 +505,7 @@ protected final void CorpusBullet(){
     for(int i = 0;i< DebrisList.size();i++) {
         Unit unit = DebrisList.get(i);
         if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-            if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
-                    this.size, -unit.rotation_corpus)) {
+            if (rect_bull(unit.area,this.eclipse)) {
                 armor_damage(unit,unit.armorFront);
                 //unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
                 return;
@@ -514,8 +519,7 @@ protected final void CorpusBullet(){
         for(int i = 0;i< UnitList.size();i++) {
             Unit unit = UnitList.get(i);
             if (this.type_team != unit.team & abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-                if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width,
-                        (int) unit.corpus_height, (int) this.x, (int) this.y, this.size, -unit.rotation_corpus)) {
+                if (rect_bull(unit.area,this.eclipse)) {
                     this.clear_sost = true;
                     return;
                 }
@@ -524,10 +528,11 @@ protected final void CorpusBullet(){
         for(int i = 0;i< DebrisList.size();i++) {
             Unit unit = DebrisList.get(i);
             //if (abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
-            if (rect_bull((int) unit.x, (int) unit.y, (int) unit.corpus_width, (int) unit.corpus_height, (int) this.x, (int) this.y,
-                    this.size, -unit.rotation_corpus)) {
-                this.clear_sost = true;
-                return;
+            if ( abs(unit.XMap - this.xMap) < 3 & abs(unit.YMap - this.yMap) < 3) {
+                if (rect_bull(unit.area,this.eclipse)) {
+                    this.clear_sost = true;
+                    return;
+                }
             }
             //}
         }
@@ -540,15 +545,17 @@ protected final void CorpusBullet(){
         unit.t += this.t_damage;
         this.clear_sost = true;
     }
+    protected final boolean rect_bull(Area area1,Ellipse2D circle){
+        return area1.intersects(circle.getBounds2D());
+    }
 
-    protected final boolean rect_bull(int x1,int y1,int width,int height,int x,int y,int size,double rotation){
+    protected final boolean rect_bull(int x1,int y1,int width,int height,double rotation,Ellipse2D circle){
         Rectangle2D rect1 = new Rectangle2D.Double(x1,y1,width,height);
         AffineTransform transform1 = new AffineTransform();
         transform1.rotate(Math.toRadians(-rotation), rect1.getCenterX(), rect1.getCenterY());
         Area area1 = new Area(rect1);
         area1.transform(transform1);
 
-        Ellipse2D circle = new Ellipse2D.Double(x,y,size,size);
         return area1.intersects(circle.getBounds2D());
     }
     public boolean rectCollisionCenter(float cx, float cy, float w, float h,

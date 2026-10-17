@@ -5,7 +5,7 @@ import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 public class FunctionalComponentUnitRegister {
     public static FunctionalComponent TowerXY,MotorControl,BuildCollision,Hill,SoldatSpawn,TowerIteration,FireControl;
     public static FunctionalComponent SoldatControl,SoldatCorrect,WorkBlade,MoveDebris,TowerControl,NotTowerControl,
-            TowerPartCorpus,FireDrumControl,FireTankCumulativeControl;
+            TowerPartCorpus,FireDrumControl,FireTankCumulativeControl,BuildingSoldatCollision;
     public FunctionalComponentUnitRegister(){
         TowerControl = new ComponentTowerControl();
         NotTowerControl = new ComponentNotTowerControl();
@@ -20,6 +20,7 @@ public class FunctionalComponentUnitRegister {
         TowerXY = new ComponentTowerXY();
         MotorControl = new ComponentMotorControl();
         BuildCollision = new ComponentBuildingCollision();
+        BuildingSoldatCollision = new ComponentBuildingSoldatCollision();
         Hill = new ComponentHill();
         SoldatSpawn = new ComponentSpawnSoldat();
         TowerIteration = new ComponentTowerAuxiliaryIteration();

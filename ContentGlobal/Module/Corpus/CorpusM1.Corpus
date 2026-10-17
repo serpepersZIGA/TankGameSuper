@@ -6,8 +6,6 @@ CorpusWidth = 18;
 CorpusHeight = 45;
 Difference = 5;
 Image = CorpusM1;
-CorrectX = 0;
-CorrectY = 0;
 
 func.Add ComponentTowerIteration;
 func.Add ComponentBuildingCollision;

@@ -128,6 +128,8 @@ public class Parser {
         switch (((String) n[0]).trim()){
             case "ComponentBuildingCollision":
                 return new Object[]{BuildCollision,n[1]};
+            case "ComponentBuildingSoldatCollision":
+                return new Object[]{BuildingSoldatCollision,n[1]};
             case "ComponentFireControl":
                 return new Object[]{FireControl,n[1]};
             case "ComponentFireDrumControl":

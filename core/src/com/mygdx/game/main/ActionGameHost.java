@@ -11,6 +11,7 @@ import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Network.PacketUnitUpdate;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
+import com.mygdx.game.block.Block;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.CycleTimeDay;
 import com.mygdx.game.method.Keyboard;
@@ -34,11 +35,11 @@ import static com.mygdx.game.Inventory.ItemObject.ItemList;
 
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
 import static com.mygdx.game.Weather.WeatherMainSystem.*;
+import static com.mygdx.game.block.Block.BlockID;
 import static com.mygdx.game.build.BuildRegister.PacketBuilding;
 import static com.mygdx.game.bull.BulletRegister.PacketBull;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.ServerMain.Server;
-import static com.mygdx.game.method.Method.tower_xy;
 import static com.mygdx.game.unit.TransportRegister.*;
 import static com.mygdx.game.unit.Unit.AIScan;
 import static java.lang.StrictMath.cos;
@@ -67,8 +68,14 @@ public class ActionGameHost extends ActionGame{
         else {
             Squad.SquadCreate();
             Unit.ai_sost=700;
+//            for (ArrayList<Block> i2:Main.BlockList2D){
+//                for (Block i3:i2){
+//                    i3.render_block = BlockID.get(1);
+//                }
+//            }
             Unit.AIScan = true;
         }
+        //Unit.yu = 0;
         ThreadIterationDebris = new Thread(new IterationDebris());
         ThreadIterationBullet = new Thread(new IterationBullet());
         ThreadIterationUnit = new Thread(new IterationUnit());
@@ -93,6 +100,7 @@ public class ActionGameHost extends ActionGame{
 
 
 
+        //Gdx.gl.glClearColor(0.2f, 0.4f, 0.8f, 1f); // R, G, B, Alpha
         Gdx.gl.glClear(GL20.GL_COLOR_BUFFER_BIT);
         RC.method();
         //if(RC.UnitCamera==null){
@@ -219,8 +227,9 @@ public class ActionGameHost extends ActionGame{
                 }
             }
         }
-        for(Unit u: DebrisList){
-            u.UpdateUnit();
+        for(int i = 0;i< DebrisList.size();i++){
+            Unit unit = DebrisList.get(i);
+            unit.UpdateUnit();
         }
 
         RC.BuildingUpdate();
@@ -271,6 +280,7 @@ public class ActionGameHost extends ActionGame{
         server_packet();
 
     }
+    private static float time;
     private void server_packet() {
 
         for (Unit unit : ClearUnitList) {
@@ -291,11 +301,22 @@ public class ActionGameHost extends ActionGame{
             UnitList.remove(unit);
         }
         ClearUnitList.clear();
-            for (Unit unit : ClearDebrisList) {
-                DebrisList.remove(unit);
-            }
+        for (Unit unit : ClearDebrisList) {
+            DebrisList.remove(unit);
+        }
         ClearDebrisList.clear();
-
+        //System.out.println(RespawnList.size());
+        for(int i = 0;i<RespawnList.size();i++){
+            Object[] obj = RespawnList.get(i);
+            time = (float)obj[3];
+            time -= TimeGlobal;
+            obj[3] = time;
+            //System.out.println(time+" time");
+            if(time <0){
+                MapObject.SpawnPlayer((String) obj[2],(boolean)obj[0],(byte)obj[4],(int) obj[1]);
+                RespawnList.remove(obj);
+            }
+        }
 
         PacketServer.building = PacketBuilding;
         PacketServer.debris = PacketDebris;
@@ -398,10 +419,10 @@ public class ActionGameHost extends ActionGame{
                 Unit debris = DebrisList.get(i);
                 if(debris != null){
                     //synchronized (debris) {
-                        packet_debris_server(debris, i);
-                        debris.XYMapCordDebris();
-                        debris.all_action();
-                        debris.corpus_corpus(Main.UnitList);
+                    debris.XYMapCordDebris();
+                    packet_debris_server(debris, i);
+                    debris.all_action();
+                    debris.corpus_corpus(Main.UnitList);
                     //}
                 }
             }

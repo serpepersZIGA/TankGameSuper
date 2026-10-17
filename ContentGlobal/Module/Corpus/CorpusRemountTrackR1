@@ -1,0 +1,13 @@
+MaxHP = 520;
+ArmorFront = 12;
+ArmorCenter = 5;
+ArmorBack = 5;
+CorpusWidth = 50;
+CorpusHeight = 130;
+Difference = 18;
+Image = machine_enemy_1lvl;
+
+func.Add ComponentTowerIteration;
+func.Add ComponentBuildingCollision;
+func.Add ComponentTowerXY;
+func.Add ComponentSoldatSpawn;

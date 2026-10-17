@@ -200,6 +200,7 @@ public class ActionGameClient extends ActionGame {
             for (int i = 0;i< DebrisList.size();i++){
                 Unit debris = DebrisList.get(i);
                 if(debris != null) {
+                    debris.XYMapCordDebris();
                     debris.all_action_client();
 
                 }

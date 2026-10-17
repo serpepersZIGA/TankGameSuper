@@ -16,6 +16,7 @@ public class UnitPattern extends Unit {
         super(corpus,engine,cannon,TowerXY,classUnit,medic_help,Height);
         TowerUnitList = new ArrayList<>();
         this.TrackUnitList = new ArrayList<>();
+        time_spawn_soldat_max = 200;
         behavior = 3;
         this.collision = TypeCollision.rect;
         corpus.CorpusLoad(this);
@@ -58,10 +59,13 @@ public class UnitPattern extends Unit {
     public UnitPattern(Corpus corpus,String str,float x,float y,float rotation,float speed,int Height){
         super(corpus,x,y,rotation,speed,Height);
         corpus.functional = new FunctionalList();
+
         corpus.functional.Add(FunctionalComponentUnitRegister.MoveDebris);
         corpus.functional.Add(FunctionalComponentUnitRegister.BuildCollision);
         this.TrackUnitList = new ArrayList<>();
         this.TowerUnitList = new ArrayList<>();
+        this.corpus_width_2 = corpus.corpus_width_2;
+        this.corpus_height_2 = corpus.corpus_height_2;
         ID = str;
         corpus.CorpusLoad(this);
         data();

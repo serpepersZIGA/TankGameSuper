@@ -10,6 +10,7 @@ public class RenderMethod {
         sprite.setPosition(x,y);
         sprite.setSize( width,height);
         sprite.setRotation( rotation);
+        //sprite.setColor(1f,1f,1f,0.5f);
         sprite.draw(Main.Batch);
     }
     public static void transorm_img(int x,int y,float width,float height,Sprite sprite){
