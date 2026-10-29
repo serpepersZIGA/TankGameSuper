@@ -27,6 +27,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import static com.mygdx.game.Inventory.Item.IDListItem;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.pow2.pow2;
@@ -39,6 +40,7 @@ import static java.lang.StrictMath.*;
 public abstract class Unit implements Cloneable{
     public static HashMap<String,Unit> IDList = new HashMap<>();
     public Item GunUse = null;
+    public boolean bypassConf;
     public String ID;
     public TypeCollision collision = TypeCollision.rect;
     public UnitType TypeUnit;
@@ -64,7 +66,7 @@ public abstract class Unit implements Cloneable{
     public Sound sound_fire;
     public float fire_x,time_spawn_soldat;
     public byte TeamKill = 0;
-    public float fire_y;
+    public float fire_y,timeBypass;
     public float SpeedUp =4, SpeedDown =-4,damage,penetration,damage_fragment,penetration_fragment,t,t_damage, armorFront,armorCenter,armorBack,reload_max, Acceleration =0.2f,speed, rotation_tower, speed_tower=0.2f, speed_rotation=0.2f
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
@@ -115,6 +117,8 @@ public abstract class Unit implements Cloneable{
     public Squad SquadAlly;
     public float TargetConstX,TargetConstY;
     public Area area;
+    public float SpeedMod = 0.08f;
+    public static byte TeamPlayer = 1;
     public Unit(){
     }
     public Unit(float x, float y, float rotation, float speed,
@@ -130,9 +134,9 @@ public abstract class Unit implements Cloneable{
 
     }
     public Unit(Corpus corpus, Engine engine, ArrayList<Cannon> cannon, int[][]TowerXY,ClassUnit classUnit
-    ,float medic_help,int Height){
+    ,int medic_help,int Height){
 
-        this.HillHp = (byte) medic_help;
+        this.HillHp =  medic_help;
         this.height = (byte) Height;
         this.CorpusUnit = corpus.CorpusAdd();
         this.EngineUnit = engine.EngineAdd();
@@ -149,6 +153,9 @@ public abstract class Unit implements Cloneable{
             , int HillHp, float Height){
         this.height = (byte) Height;
         this.HillHp = HillHp;
+//        if(this.HillHp>0){
+//            this.classUnit = SupportTransport;
+//        }
         this.CorpusUnit = Corpus.CorpusAdd(corpus);
         this.EngineUnit = Engine.EngineAdd(engine);
         for (int i = 0;i<cannon.size();i++) {
@@ -415,7 +422,7 @@ public abstract class Unit implements Cloneable{
         this.reload = this.reload_max;
         this.hp = this.max_hp;
         this.HpBase = this.max_hp;
-        this.HPTriggerHill = (int) (this.max_hp*0.4f);
+        this.HPTriggerHill = (int) (this.max_hp*0.8f);
         this.time_spawn_soldat = this.time_spawn_soldat_max;
         this.corpus_width_2 = this.corpus_width*0.5f;
         this.corpus_height_2 = this.corpus_height*0.5f;
@@ -615,7 +622,7 @@ public abstract class Unit implements Cloneable{
                 this.rotation_corpus -= speed;
             }
         }
-        if((!this.press_w && !this.press_s)|| this.crite_life) {
+        if((!this.press_w & !this.press_s)|| this.crite_life) {
             if (this.speed > 0.1f) {
                 this.speed -= this.slowing;
                 //if (this.speed< Unit.speed_minimum){this.speed = 0;}
@@ -650,8 +657,14 @@ public abstract class Unit implements Cloneable{
         //if(SpeedMaxInertionY-abs(SpeedInertionY)>0) {
             //this.SpeedInertionY -= speedY;
         //}
-        this.SpeedInertionX -= speedX*0.08f;
-        this.SpeedInertionY -= speedY*0.08f;
+        this.SpeedInertionX -= speedX*SpeedMod;
+        this.SpeedInertionY -= speedY*SpeedMod;
+        if(abs(SpeedInertionX) < 0.01f){
+            SpeedInertionX = 0;
+        }
+        if(abs(SpeedInertionY) < 0.01f){
+            SpeedInertionY = 0;
+        }
 
         this.SpeedInertionX -= SpeedInertion;
         this.SpeedInertionY -= SpeedInertion2;
@@ -1047,7 +1060,7 @@ public abstract class Unit implements Cloneable{
         }
     }
     private void motor_bot_base() {
-        this.time_sound_motor -= 1;
+        //this.time_sound_motor -= 1;
         if (this.trigger_drive == 1& this.speed<2.5f) {
             press_w = true;
         }
@@ -1081,6 +1094,13 @@ public abstract class Unit implements Cloneable{
 
 
 
+        }
+        if(this.bypassConf){
+            press_s = true;
+            timeBypass -= TimeGlobal;
+            if(timeBypass<0){
+                this.bypassConf = false;
+            }
         }
         else if(!this.path.isEmpty()) {
             //System.out.println(path.size());
@@ -1149,7 +1169,14 @@ public abstract class Unit implements Cloneable{
 
 
         }
-        if(!this.path.isEmpty()) {
+        if(this.bypassConf){
+            press_s = true;
+            timeBypass -= TimeGlobal;
+            if(timeBypass<0){
+                this.bypassConf = false;
+            }
+        }
+        else if(!this.path.isEmpty()) {
             //System.out.println(path.size());
             //float []xy = Method.tower_xy_2(this.x,this.y,this.ai_x_const,this.ai_y_const,-this.rotation_corpus);
             RadiusTarget = (float)sqrt(pow2(tower_x - BlockList2D.get(path.get(0)[1]).get(path.get(0)[0]).x_center)
@@ -1406,11 +1433,13 @@ public abstract class Unit implements Cloneable{
                 TargetUnit = null;
                 return new Object[]{null,0};
             }
+
             Unit unit2 = null;
             float radius = 0;
             //System.out.println("eeeeeee1008");
             for (Unit unitSupport : UnitList) {
                 if(this != unitSupport && unitSupport.classUnit == SupportTransport) {
+                    System.out.println("rtyy");
                     g = (float) sqrt(pow2(unitSupport.x - this.x) + pow2(unitSupport.y - this.y));
                     if (radius == 0 || radius > g) {
                         unit2 = unitSupport;
@@ -1467,6 +1496,7 @@ public abstract class Unit implements Cloneable{
             //PacketServer.MoneyAdd += money;
             money += TeamGlobal.get(TeamKill);
             TeamGlobal.replace(TeamKill,money);
+            //System.out.println(TeamGlobal.get(TeamKill));
             //PacketServer.Money = Inventory.Money;
             eventDead();
             PacketServer.unitConf = true;
@@ -1599,14 +1629,15 @@ public abstract class Unit implements Cloneable{
         // Преобразование прямоугольников с учетом поворота
         this.area = new Area(rect);
         this.area.transform(transform2);
-        XMap = (int) (tower_x/ width_block)-1;
-        YMap = (int) (tower_y/ width_block)-1;
+        XMap = (int) (tower_x* WidthBlockDivided)-1;
+        YMap = (int) (tower_y* WidthBlockDivided)-1;
         if(XMap<0){
             XMap=0;
         }
         if(YMap<0){
             YMap=0;
         }
+        this.SpeedMod = BlockList2D.get(YMap).get(XMap).render_block.SpeedMod;
         render_x_max = XMap + 3;
         render_x_min = XMap - 3;
         render_y_max = YMap + 3;
@@ -1635,13 +1666,19 @@ public abstract class Unit implements Cloneable{
         this.area = new Area(rect);
         this.area.transform(transform2);
 
-        XMap = (int) (x/ width_block)-1;
-        YMap = (int) (y/ width_block)-1;
+        XMap = (int) (x* WidthBlockDivided)-1;
+        YMap = (int) (y* WidthBlockDivided)-1;
         if(XMap<0){
             XMap=0;
         }
+        else if(this.XMap> xMap){
+            this.XMap = xMap;
+        }
         if(YMap<0){
             YMap=0;
+        }
+        else if(this.YMap> yMap){
+            this.YMap = yMap;
         }
         render_x_max = XMap + 3;
         render_x_min = XMap - 3;
@@ -1785,10 +1822,10 @@ public abstract class Unit implements Cloneable{
     public void hill_bot(ArrayList<Unit> obj){
         for (Unit unit : obj) {
             if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < 230 && unit.max_hp > unit.hp
-                    & unit.team == this.team) {
+                    && unit.team == this.team) {
                 unit.hp += this.HillHp;
                 unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
-                if(unit.hp >= unit.max_hp -20 && unit.crite_life){
+                if(unit.hp >= unit.max_hp  && unit.crite_life){
                     unit.crite_life = false;
                 }
             }
@@ -1807,8 +1844,8 @@ public abstract class Unit implements Cloneable{
             this.time_spawn_soldat = this.time_spawn_soldat_max;
             PacketServer.unitConf = true;
             Inventory inventory1 = new Inventory(new Item[3][4],1);
-            inventory1.ItemAdd(ItemRegister.AK74);
-            inventory1.ItemAdd(ItemRegister.flamethrower);
+            inventory1.ItemAdd(IDListItem.get("AK74"));
+            inventory1.ItemAdd(IDListItem.get("flamethrower"));
             R_LOCK.lock();
             try {
                 switch (rand.rand(2)) {
@@ -1933,7 +1970,7 @@ public abstract class Unit implements Cloneable{
     public void clearSoldat(){
         if(this.hp <0){
             for(int i1 =0;i1<12;i1++){
-                BloodList.add(new Blood(this.x+i1, this.y));}
+                LiquidList.add(new Blood(this.x+i1, this.y));}
             PacketServer.unitConf = true;
             ClearUnitList.add(this);
             //UnitList.remove(this);

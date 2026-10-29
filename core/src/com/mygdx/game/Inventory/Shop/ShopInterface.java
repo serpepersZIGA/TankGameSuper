@@ -16,6 +16,7 @@ import static java.lang.StrictMath.sqrt;
 public class ShopInterface extends InventoryInterface {
     public ShopInterface(Inventory ShopGlobal){
         this.inventory = ShopGlobal;
+        InventoryInterface.Team = (byte) 1;
         WindowName = new WindowName();
         XInterface = ShopGlobal.xySize;
         YInterface = ShopGlobal.xySize;
@@ -38,6 +39,9 @@ public class ShopInterface extends InventoryInterface {
                     if (YCol2 < Slot.height & YCol2 > 0 & XCol2 < Slot.width & XCol2 > 0) {
                         if (SlotInventory[ix][iy].item != null) {
                                 if(GameHost) {
+//                                    for(int i = 0;i<4;i++) {
+//                                        System.out.println(i+" "+Team + "  r  " + TeamGlobal.get((byte)i));
+//                                    }
                                     if(Slot.item.Price<TeamGlobal.get(Team)) {
                                         inventoryMain.inventory.ItemAdd(Slot.item);
                                         inventoryMain.SlotGeneration();

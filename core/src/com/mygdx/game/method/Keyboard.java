@@ -10,6 +10,7 @@ import com.mygdx.game.build.Building;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.UI.button.Button;
+import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 
@@ -178,8 +179,23 @@ public class Keyboard extends InputAdapter{
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         switch (button){
             case Input.Buttons.LEFT:{
+                //RespawnPoint
                 LeftMouse = false;
                 LeftMouseClick = true;
+
+                RC.BlockClickLX = (int) ((Keyboard.MouseX / Zoom + RC.x2)*WidthBlockDivided);
+                RC.BlockClickLY = (int) ((Keyboard.MouseY / Zoom + RC.y2)*WidthBlockDivided);
+
+                if(RC.MainUnit == null && ActionGameTotal == ActionGameMain){
+                    Block block = BlockList2D.get(RC.BlockClickLY).get(RC.BlockClickLX);
+                    if(block != null && block.objMap.team == Unit.TeamPlayer){
+                        for(int[] i : MapObject.RespawnPointList){
+                            if(RC.BlockClickLX == i[1] && RC.BlockClickLY == i[0]){
+                                RespawnPoint = i;
+                            }
+                        }
+                    }
+                }
                 break;
             }
             case Input.Buttons.MIDDLE:
@@ -231,12 +247,12 @@ public class Keyboard extends InputAdapter{
     public boolean scrolled(float amountX, float amountY) {
         if(amountY > 0) {
             if (Main.Zoom >ZoomMin) {
-                Main.Zoom -= 0.1;
+                Main.Zoom -= 0.1f;
                 zoom_const();
             }
         } else {
             if (Main.Zoom < ZoomMax) {
-                Main.Zoom += 0.1;
+                Main.Zoom += 0.1f;
                 zoom_const();
             }
         }
@@ -260,8 +276,8 @@ public class Keyboard extends InputAdapter{
         RC.width_2_zoom = RC.width_2/Main.Zoom;
         RC.height_2_zoom = RC.height_2/Main.Zoom;
         RC.CameraMapConf();
-        RC.cam_x_width = (int) (RC.WidthRenderZoom/Main.width_block);
-        RC.cam_y_height= (int) (RC.HeightRenderZoom/Main.width_block);
+        RC.cam_x_width = (int) (RC.WidthRenderZoom*Main.WidthBlockDivided);
+        RC.cam_y_height= (int) (RC.HeightRenderZoom*Main.WidthBlockDivided);
 
         LightSystem.lightsRender.clear();
         for(LightingMainSystem.Light light : LightSystem.lights){

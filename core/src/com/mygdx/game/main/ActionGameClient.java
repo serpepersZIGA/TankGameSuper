@@ -31,6 +31,7 @@ public class ActionGameClient extends ActionGame {
         SpawnPlayerPack pack = new SpawnPlayerPack();
         //inventoryMain = new InventoryInterface(new Inventory(new Item[4][4]),200,200,500,400);
         pack.ID = SpawnIDPlayer;
+        pack.Team = Unit.TeamPlayer;
         Client.sendTCP(pack);
     }
     int i;
@@ -98,14 +99,14 @@ public class ActionGameClient extends ActionGame {
         if(flame_spawn_time > 0){flame_spawn_time-=1;}
         LiquidShader.AcidShaderIteration();
 
-        LiquidShader.BloodShaderIteration();
+        //LiquidShader.BloodShaderIteration();
 
-        for (i = 0; i< FlameStaticList.size(); i++){
-            FlameStaticList.get(i).all_action();}
-        for (i = 0; i< FlameList.size(); i++){
-            FlameList.get(i).all_action();}
-        for (i = 0; i< FlameParticleList.size(); i++){
-            FlameParticleList.get(i).all_action();}
+//        for (i = 0; i< FlameStaticList.size(); i++){
+//            FlameStaticList.get(i).all_action();}
+//        for (i = 0; i< FlameList.size(); i++){
+//            FlameList.get(i).all_action();}
+//        for (i = 0; i< FlameParticleList.size(); i++){
+//            FlameParticleList.get(i).all_action();}
 
         Render.polyBatch.flush();
 

@@ -72,18 +72,20 @@ public class Item implements Cloneable{
         this.typeItem = TypeItem.Spawner;
         IDListItem.put(ID,this);
     }
-    public Item(Gun gun,String ID,ArrayList<TegItem>teg,String image){
+    public Item(Gun gun,String ID,ArrayList<TegItem>teg,String image,int Price){
         this.teg = teg;
         this.ID = ID;
         this.gun = gun;
+        this.Price =Price;
         this.image = image;
         this.typeItem = TypeItem.Gun;
         IDListItem.put(ID,this);
     }
-    public Item(int HPHill,String ID,ArrayList<TegItem>teg,String image){
+    public Item(int HPHill,String ID,ArrayList<TegItem>teg,String image,int Price){
         this.teg = teg;
         this.ID = ID;
         this.HPHill = HPHill;
+        this.Price = Price;
 
         this.image = image;
         this.typeItem = TypeItem.Medic;

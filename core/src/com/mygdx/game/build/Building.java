@@ -132,8 +132,8 @@ public class Building implements Serializable,Cloneable {
         int ConstructY =ConstructBuilding.length;
 //        this.width = Main.width_block*ConstructX;
 //        this.height = Main.width_block*ConstructY;
-        xMatrix = this.x/ width_block;
-        yMatrix = this.y/ width_block;
+        xMatrix = (int) (this.x*Main.WidthBlockDivided);
+        yMatrix = (int) (this.y*Main.WidthBlockDivided);
 
         this.x = Main.BlockList2D.get(yMatrix).get(xMatrix).x;
         this.y = Main.BlockList2D.get(yMatrix).get(xMatrix).y;

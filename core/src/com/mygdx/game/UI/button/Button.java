@@ -11,7 +11,7 @@ public abstract class Button {
     public static float[] RGBButton1,RGBButton2,RGBButton3,RGBTotal;
     public String txt,path,TankName;
     public static int YList = 0;
-    public byte TypeClick;
+    public byte TypeClick,Team;
     public byte ConfigMenu = 0;
     public boolean condition;
     public boolean TypeFont;

@@ -10,4 +10,4 @@ Image = machine_enemy_1lvl;
 func.Add ComponentTowerIteration;
 func.Add ComponentBuildingCollision;
 func.Add ComponentTowerXY;
-func.Add ComponentHill;
+func.Add ComponentSoldatSpawn;

@@ -158,16 +158,16 @@ public class ActionGameHost extends ActionGame{
 
         LiquidShader.AcidShaderIteration();
 
-        LiquidShader.BloodShaderIteration();
+        //LiquidShader.BloodShaderIteration();
 
 
         //liquidGlobal();
-        for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action();}
-        for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action();}
-        for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameStaticList.size(); i++){
+//            Main.FlameStaticList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameList.size(); i++){
+//            Main.FlameList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameParticleList.size(); i++){
+//            Main.FlameParticleList.get(i).all_action();}
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
@@ -313,7 +313,10 @@ public class ActionGameHost extends ActionGame{
             obj[3] = time;
             //System.out.println(time+" time");
             if(time <0){
-                MapObject.SpawnPlayer((String) obj[2],(boolean)obj[0],(byte)obj[4],(int) obj[1]);
+                MapObject.SpawnPlayer((String) obj[2]
+                        ,(boolean)obj[0]
+                        ,(byte)obj[4]
+                        ,(int) obj[1]);
                 RespawnList.remove(obj);
             }
         }

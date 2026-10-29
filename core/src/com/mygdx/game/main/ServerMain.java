@@ -176,16 +176,19 @@ public class ServerMain extends Listener {
         else if(p instanceof SpawnPlayerPack){
             //System.out.println("586855");
             nConnect += 1;
-            Unit unitBuf;
+            //Unit unitBuf;
+            RespawnList.add(new Object[]{false,nConnect,((SpawnPlayerPack) p).ID,1.0f
+                    ,((SpawnPlayerPack) p).Team});
 
-            unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
-                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1),nConnect);
-            unitBuf.PlayerConf = true;
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+
+//            unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
+//                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1),nConnect);
+//            unitBuf.PlayerConf = true;
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
 
             PacketServer.InventoryConf = true;
 //            if(!p.equals(new SpawnPlayerVoid())) {

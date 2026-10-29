@@ -13,7 +13,7 @@ public class RegisterModuleSoldat {
         functional.Add(FunctionalComponentUnitRegister.SoldatCorrect);
         functional.Add(FunctionalComponentUnitRegister.SoldatControl);
         functional.Add(FunctionalComponentUnitRegister.BuildingSoldatCollision);
-        functional.Add(FunctionalComponentUnitRegister.FireControl);
+        //functional.Add(FunctionalComponentUnitRegister.FireControl);
         Soldat = new Soldat(35,2,20,20,"soldat_1",functional);
         Veteran = new Soldat(60,7,20,20,"soldat_1",functional);
         Jaeger = new Soldat(110,12,20,20,"soldat_1",functional);

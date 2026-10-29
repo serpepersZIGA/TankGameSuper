@@ -1,5 +1,9 @@
 package com.mygdx.game.Parsing;
 
+import com.mygdx.game.FunctionalComponent.FunctionalComponent;
+import com.mygdx.game.Inventory.TegItem;
+import com.mygdx.game.unit.ClassUnit;
+import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.unit.Fire.FireRegister;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister.*;
@@ -164,6 +168,81 @@ public class Parser {
         }
         throw new RuntimeException();
     }
+    public static FunctionalComponent ComponentParsing(String TxT){
+
+        switch (TxT){
+            case "ComponentBuildingCollision":
+                return BuildCollision;
+            case "ComponentBuildingSoldatCollision":
+                return BuildingSoldatCollision;
+            case "ComponentFireControl":
+                return FireControl;
+            case "ComponentFireDrumControl":
+                return FireDrumControl;
+            case "ComponentFireTankCumulativeControl":
+                return FireTankCumulativeControl;
+            case "ComponentHill":
+                return Hill;
+            case "ComponentMotorControl":
+                return MotorControl;
+            case "ComponentMoveDebris":
+                return MoveDebris;
+            case "ComponentSoldatControl":
+                return SoldatControl;
+            case "ComponentSoldatCorrect":
+                return SoldatCorrect;
+            case "ComponentSoldatSpawn":
+                return SoldatSpawn;
+            case "ComponentTowerIteration":
+                return TowerIteration;
+            case "ComponentTowerControl":
+                return TowerControl;
+            case "ComponentNotTowerControl":
+                return NotTowerControl;
+            case "ComponentTowerPartCorpus":
+                return TowerPartCorpus;
+            case "ComponentTowerXY":
+                return TowerXY;
+            case "ComponentWorkBlade":
+                return WorkBlade;
+
+        }
+        throw new RuntimeException();
+    }
+    public static TegItem TegUnitParsing(String TxT){
+
+        switch (TxT){
+            case "afar":
+                return TegItem.afar;
+            case "intimately":
+                return TegItem.intimately;
+            case "grenade":
+                return TegItem.grenade;
+            case "upgrade":
+                return TegItem.upgrade;
+            case "spawner":
+                return TegItem.spawner;
+            case "medicine":
+                return TegItem.medicine;
+
+        }
+        throw new RuntimeException();
+    }
+    public static ClassUnit ClassUnitParsing(String TxT){
+
+        switch (TxT){
+            case "Transport":
+                return ClassUnit.Transport;
+            case "Soldat":
+                return ClassUnit.Soldat;
+            case "SupportTransport":
+                return ClassUnit.SupportTransport;
+            case "Tower":
+                return ClassUnit.Tower;
+
+        }
+        throw new RuntimeException();
+    }
     public static Object[] FireParsing(String TxT,int u){
         Object[]n = TextPars(TxT,u);
 
@@ -176,6 +255,21 @@ public class Parser {
                 return new Object[]{FireRegister.FireBullet,n[1]};
             case "Mortar":
                 return new Object[]{FireRegister.FireMortar,n[1]};
+
+        }
+        throw new RuntimeException();
+    }
+    public static Fire FireParsing(String TxT){
+
+        switch (TxT){
+            case "Flame":
+                return FireRegister.FireFlame;
+            case "Acid":
+                return FireRegister.FireAcid;
+            case "Bullet":
+                return FireRegister.FireBullet;
+            case "Mortar":
+                return FireRegister.FireMortar;
 
         }
         throw new RuntimeException();

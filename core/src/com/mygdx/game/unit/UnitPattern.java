@@ -31,7 +31,7 @@ public class UnitPattern extends Unit {
         TowerUnitList = new ArrayList<>();
         this.TrackUnitList = new ArrayList<>();
         behavior = 3;
-        this.classUnit = ClassUnit.Transport;
+        //this.classUnit = ClassUnit.Transport;
         this.collision = TypeCollision.rect;
         this.CorpusUnit.CorpusLoad(this);
         this.EngineUnit.EngineLoad(this);

@@ -8,5 +8,6 @@
   "Side": [0,1],
   "TrackXY": [[-9,0],[9,0]],
   "MedicConf": 0,
-  "Height": 1
+  "Height": 1,
+  "ClassUnit": "Transport"
 }

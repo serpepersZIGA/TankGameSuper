@@ -33,7 +33,7 @@ public class ActionMenu extends ActionGame {
     private static final Slider SliderSound = new Slider(1200,500,300,35,(byte) 0,"Sound",true);
     private static final Slider SliderListTank = new Slider(1460,0,35,980,(byte) 1,"",false);
     private static final Slider SliderListMap = new Slider(1460,0,35,980,(byte) 3,"",false);
-    public static int LenghtListTank,LenghtListMap;
+    public static int LenghtListTank,LenghtListMap,LenghtListTeam;
     public static int TotalPointListTank,TotalPointListMap;
     public static boolean ActionGameChoiceConf;
     @Override final
@@ -55,7 +55,7 @@ public class ActionMenu extends ActionGame {
         if(timer <= 0) {
             if (Keyboard.LeftMouse) {
                 //Main.FlameSpawnList.add(new FlameSpawn((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
-                BloodList.add(new Blood((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
+                LiquidList.add(new Blood((float) (Keyboard.MouseX / Zoom + RC.x2), (float) (Keyboard.MouseY / Zoom + RC.y2)));
                 //timer = 60;
             }
             if (Keyboard.RightMouse) {
@@ -75,7 +75,7 @@ public class ActionMenu extends ActionGame {
         RippleIteration(Batch);
 
         LiquidShader.AcidShaderIteration();
-        LiquidShader.BloodShaderIteration();
+        //LiquidShader.BloodShaderIteration();
 
         //LightSystem.begin(Batch);
         //Batch.setShader(LightSystem.shader);
@@ -87,12 +87,12 @@ public class ActionMenu extends ActionGame {
         //liquidGlobal();
 
 
-        for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action();}
-        for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action();}
-        for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameStaticList.size(); i++){
+//            Main.FlameStaticList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameList.size(); i++){
+//            Main.FlameList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameParticleList.size(); i++){
+//            Main.FlameParticleList.get(i).all_action();}
         Render.polyBatch.flush();
 //        Render.end();
 //        Render.begin();
@@ -269,21 +269,23 @@ public class ActionMenu extends ActionGame {
         //Batch.setShader(null);
     }
     public void SpawnPlayer(){
+        RespawnList.add(new Object[]{true,0,SpawnIDPlayer,1f,Unit.TeamPlayer});
 
-        Inventory inventory = new Inventory(new Item[4][4],1);
-        Inventory equipment = new Inventory(new Item[4][2],1);
-        Unit unit = IDList.get(SpawnIDPlayer);
-        unit = unit.UnitAdd(200,200,true,(byte)1,
-                RegisterControl.controllerPlayer,inventory,equipment,0);
-        unit.inventory.ItemAdd(ItemRegister.MedicineT1);
-        unit.inventory.ItemAdd(ItemRegister.MedicineT1);
-        unit.inventory.ItemAdd(ItemRegister.MedicineT1);
-        unit.inventory.ItemAdd(ItemRegister.AK74);
-        unit.inventory.ItemAdd(IDListItem.get("armorB1"));
-        RC.MainUnit = unit;
-        equipmentMain = new EquipmentInterface(equipment);
-        inventoryMain = new InventoryInterface(inventory);
-        InventoryInterface.Team = (byte) 1;
+        //RespawnList.add(new Object[]{this.host,this.nConnect,this.ID,10.0f,this.team});
+
+//        Inventory inventory = new Inventory(new Item[4][4],1);
+//        Inventory equipment = new Inventory(new Item[4][2],1);
+//        Unit unit = IDList.get(SpawnIDPlayer);
+//        unit = unit.UnitAdd(200,200,true,(byte)1,
+//                RegisterControl.controllerPlayer,inventory,equipment,0);
+//        unit.inventory.ItemAdd(IDListItem.get("Med1"));
+//        unit.inventory.ItemAdd(IDListItem.get("Med1"));
+//        unit.inventory.ItemAdd(IDListItem.get("Med1"));
+//        unit.inventory.ItemAdd(IDListItem.get("AK74"));
+//        unit.inventory.ItemAdd(IDListItem.get("armorB1"));
+//        RC.MainUnit = unit;
+//        equipmentMain = new EquipmentInterface(equipment);
+//        inventoryMain = new InventoryInterface(inventory);
 
 //    IDList.get("Helicopter-2Z").UnitAdd(200,200,true,(byte)2,
 //            RegisterControl.controllerHelicopter,new Inventory(new Item[4][4]));

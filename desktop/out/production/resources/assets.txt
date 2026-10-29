@@ -23,7 +23,7 @@ image/enemy/CorpusM1.png
 image/enemy/corpus_enemy.png
 image/enemy/corpus_track_remount_enemy.png
 image/enemy/gunTank.png
-image/enemy/HelicopterM2S.kra
+image/enemy/HelicopterM2S.png
 image/enemy/helicopter_enemy_t1.png
 image/enemy/machine_enemy_1lvl.png
 image/enemy/tower_auxiliart_enemy.png

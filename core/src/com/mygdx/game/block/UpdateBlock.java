@@ -13,14 +13,16 @@ public class UpdateBlock {
     public int ind;
     public boolean GrassGrow;
     public String ID;
+    public float SpeedMod;
     public UpdateBlock(){
 
     }
-    public UpdateBlock(String img,int ind,boolean GrassGrow,String ID){
+    public UpdateBlock(String img,int ind,boolean GrassGrow,String ID,float SpeedMod){
         this.img = TextureAtl.createSprite(img);
         this.ind = ind;
         this.ID = ID;
         this.GrassGrow = GrassGrow;
+        this.SpeedMod = SpeedMod;
     }
     public void render(int x,int y){
         RenderMethod.transorm_img(x, y, Main.width_block_zoom, Main.height_block_zoom,img);

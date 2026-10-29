@@ -14,12 +14,10 @@ import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.Network.PacketServer;
 import com.mygdx.game.Network.PacketBuildingServer;
 import com.mygdx.game.Network.Packet_client;
-import com.mygdx.game.Parsing.ObjectPars;
-import com.mygdx.game.Parsing.ParsBlock;
-import com.mygdx.game.Parsing.ParserItem;
-import com.mygdx.game.Parsing.UnitsParser;
+import com.mygdx.game.Parsing.*;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Sound.SoundRegister;
+import com.mygdx.game.UI.button.ButoonTeam.CommandAllLoad;
 import com.mygdx.game.Weather.WeatherMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.block.BlockMap;
@@ -42,7 +40,7 @@ import com.mygdx.game.unit.CollisionUnit.CollisionMethodGlobal;
 import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Fire.FireRegister;
 import com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister;
-import com.mygdx.game.unit.PlayerSpawnList.PlayerAllLoad;
+import com.mygdx.game.UI.button.ButtonTank.PlayerAllLoad;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnData;
 import com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData;
 import com.mygdx.game.unit.moduleUnit.*;
@@ -74,7 +72,6 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<Particle> BangList = new ArrayList<>();
 	public static ArrayList<Particle> FlameParticleList = new ArrayList<>();
 	public static ArrayList<Particle> LiquidList = new ArrayList<>();
-    public static ArrayList<Particle> BloodList = new ArrayList<>();
 	public static ArrayList<Particle> FlameSpawnList = new ArrayList<>();
 	public static ArrayList<Unit> DebrisList = new ArrayList<>();
 
@@ -95,9 +92,9 @@ public class Main extends ApplicationAdapter {
 	public static boolean GameStart;
 	public static int FPS;
 	public static boolean GameHost;
-	public static int width_block_2, height_block_2,x_block,y_block,width_block= 70,quantity_width,quantity_height;
+	public static int width_block_2,x_block,y_block,width_block= 70,quantity_width,quantity_height;
 	public static int width_block_zoom= 70,height_block_zoom =70,width_block_render= 73,height_block_render =73;
-	public static float radius_air_max = 150,radius_air_max_zoom,TimeGlobal,TimeGlobalBullet;
+	public static float radius_air_max = 150,radius_air_max_zoom,TimeGlobal,TimeGlobalBullet,WidthBlockDivided;
 	public static ServerMain serverMain;
 	public static ClientMain Main_client;
 	public static Option Option;
@@ -134,6 +131,9 @@ public class Main extends ApplicationAdapter {
 
 	public static final Lock R_LOCK = new ReentrantLock();
 	public static int portConst = 0;
+	public static int[] RespawnPoint;
+
+
 
 
 
@@ -161,8 +161,7 @@ public class Main extends ApplicationAdapter {
         BlockList2D.clear();
 		quantity_width = width_field;
 		quantity_height = height_field;
-		width_block_2 = width_block/2;
-		height_block_2 = width_block /2;
+		//System.out.println();
 		//width_block*=1.24;
 		//height_block*=1.24;
 
@@ -219,6 +218,9 @@ public class Main extends ApplicationAdapter {
 
 	@Override final
 	public void create () {
+		width_block_2 = (int) (width_block*0.5F);
+		WidthBlockDivided = 1f/width_block;
+		//System.out.println(WidthBlockDivided+" sss");
 //		Unit.time_max_sound_motor = 20;Unit.time_sound_motor = Unit.time_max_sound_motor;
 		Unit.range_see=2000;Unit.range_see_2 = (int)(Unit.range_see*1.5);
 		RegisterFunctionalComponent = new FunctionalComponentUnitRegister();
@@ -238,6 +240,7 @@ public class Main extends ApplicationAdapter {
 		CannonParser.ParsCannon();
 		TrackParser.ParsTrack();
 
+		ParsGun.Pars();
 		GunRegister.Create();
 		ParserItem.Pars();
 		ItemRegister.Create();
@@ -274,6 +277,7 @@ public class Main extends ApplicationAdapter {
         WeatherMainSystem.WeatherMainSystemAdd();
         FlameShaderAdd();
         LiquidShaderAdd();
+		CommandAllLoad.PlayerCount();
 
 		font = TXTFont((int) (64*ZoomWindowX),"font/Base/BaseFont4.ttf");
 		font2 = TXTFont((int) (16*ZoomWindowX),"font/Base/BaseFont.ttf");
@@ -329,7 +333,8 @@ public class Main extends ApplicationAdapter {
 		IDList.get("Pz-2M").UnitAdd(2000,800,true, (byte) 2,
 				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
 				0);
-		IDList.get("Pz-2M").UnitAdd(2000,900,true, (byte) 2,
+		UnitList.get(UnitList.size()-1).hp = 20;
+		IDList.get("Gb-1M").UnitAdd(3000,900,true, (byte) 2,
 				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
 				0);
 

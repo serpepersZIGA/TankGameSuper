@@ -12,4 +12,5 @@ public class buffBlock {
     public String Image;
     public int ind;
     public boolean GrassGrow;
+    public float SpeedMod;
 }

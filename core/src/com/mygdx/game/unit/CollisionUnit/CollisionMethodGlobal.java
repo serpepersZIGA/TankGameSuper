@@ -5,6 +5,7 @@ import com.mygdx.game.main.Main;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.method.Method;
 import com.mygdx.game.unit.ClassUnit;
+import com.mygdx.game.unit.Controller.RegisterController;
 import com.mygdx.game.unit.Unit;
 
 import java.awt.*;
@@ -15,6 +16,7 @@ import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
 
 import static com.mygdx.game.Sound.SoundRegister.SoundPack;
+import static com.mygdx.game.main.Main.RegisterControl;
 import static com.mygdx.game.method.Option.SoundConst;
 import static com.mygdx.game.method.pow2.pow2;
 import static com.mygdx.game.unit.CollisionUnit.CollisionFunctional.TowerRotate;
@@ -58,10 +60,38 @@ public class CollisionMethodGlobal {
                 if (Method.rect_collision(unit1.area,unit2.area)) {
                     SoundPlay.soundPlay(unit1.x_rend, unit1.y_rend, (int) unit1.x, (int) unit1.y, 7, Main.ContentSound.hit);
                     if (unit1.classUnit != ClassUnit.Soldat & unit2.classUnit != ClassUnit.Soldat) {
+                        if(unit1.team == unit2.team) {
+                            if(unit1.control == RegisterControl.controllerBotSupport){
+                                if (!unit1.bypassConf) {
+                                    unit1.bypassConf = true;
+                                    unit1.timeBypass = 1.5f;
+                                }
+
+                            }
+                            else if((unit2.control == RegisterControl.controllerBotSupport)){
+                                if (!unit2.bypassConf) {
+                                    unit2.bypassConf = true;
+                                    unit2.timeBypass = 1.5f;
+                                }
+                            }
+                            else if ((unit1.control == RegisterControl.controllerBot)) {
+                                if (!unit1.bypassConf) {
+                                    unit1.bypassConf = true;
+                                    unit1.timeBypass = 1.5f;
+                                }
+
+                            } else if ((unit2.control == RegisterControl.controllerBot)) {
+                                if (!unit2.bypassConf) {
+                                    unit2.bypassConf = true;
+                                    unit2.timeBypass = 1.5f;
+                                }
+                            }
+                        }
                         CollisionFunctional.PhysicCollision(unit1, unit2);
                         CollisionFunctional.PhysicCollision(unit2, unit1);
                         //CollisionFunctional.physicCollision(unit1, unit2);
                         CollisionFunctional.MethodCollisionTransport(unit1, unit2);
+
                     } else if (unit1.classUnit == ClassUnit.Soldat & unit2.classUnit == ClassUnit.Soldat) {
                         CollisionFunctional.MethodCollisionSoldatSoldat(unit1, unit2);
                     } else if (unit1.classUnit == ClassUnit.Soldat) {

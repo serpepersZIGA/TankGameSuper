@@ -7,8 +7,7 @@ import com.mygdx.game.particle.Particle;
 
 import static Data.DataColor.*;
 import static Data.DataImage.TextureAtl;
-import static com.mygdx.game.main.Main.Batch;
-import static com.mygdx.game.main.Main.BloodList;
+import static com.mygdx.game.main.Main.*;
 
 
 public class Blood extends Particle {
@@ -28,7 +27,7 @@ public class Blood extends Particle {
         this.slow_particle();
         center_render();
         this.StateTime = BloodLiquid.render(x_rend,y_rend,size_render,size_render,0,0.5f,this.StateTime);
-        super.size_rise_delete(BloodList);
+        super.size_rise_delete(LiquidList);
         //Sprite spr = TextureAtl.createSprite("Buffer");
         //spr.setColor(0.1f,0.6f,0.2f,1.0f);
 

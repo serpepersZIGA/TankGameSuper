@@ -3,7 +3,6 @@ package com.mygdx.game.method;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
-import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.unit.Unit;
 
@@ -27,6 +26,7 @@ public class RenderCenter {
     public int render_x_max,render_x_min,render_y_max,render_y_min;
     public int render_x,render_y,cam_x_width,cam_y_height;
     public float WidthRenderZoom,HeightRenderZoom,WidthRenderZoom2,HeightRenderZoom2;
+    public int BlockClickLX, BlockClickLY;
     public RenderCenter(float x, float y){
 
         this.x = x;
@@ -36,8 +36,8 @@ public class RenderCenter {
     public void method(){
         this.x2 = this.x -this.width_2_zoom;
         this.y2 = this.y -this.height_2_zoom;
-        ixCamBuff = (int) (x2/Main.width_block);
-        iyCamBuff = (int) (y2/Main.width_block);
+        ixCamBuff = (int) (x2*Main.WidthBlockDivided);
+        iyCamBuff = (int) (y2*Main.WidthBlockDivided);
     }
     public float[] WindowSynchronization(float x_obj, float y_obj){
         x_obj -= this.x2;
@@ -110,15 +110,15 @@ public class RenderCenter {
 
     }
     public void CameraMapConf(){
-        render_x_max = (int)((x2+ WidthRenderZoom)/Main.width_block+2);
-        render_x_min = (int)((x2/Main.width_block-2));
+        render_x_max = (int)((x2+ WidthRenderZoom)*Main.WidthBlockDivided+2);
+        render_x_min = (int)((x2*Main.WidthBlockDivided-2));
 
-        render_x = (int)(x2/Main.width_block);
-        render_y = (int)(y2/Main.width_block);
+        render_x = (int)(x2*Main.WidthBlockDivided);
+        render_y = (int)(y2*Main.WidthBlockDivided);
         if(render_x_min <0){render_x_min =0;}
         else if(render_x_max >Main.xMap){render_x_max = Main.xMap;}
-        render_y_max = (int)((y2+ HeightRenderZoom)/Main.width_block+2);
-        render_y_min = (int)(y2/Main.width_block-2);
+        render_y_max = (int)((y2+ HeightRenderZoom)*Main.WidthBlockDivided+2);
+        render_y_min = (int)(y2*Main.WidthBlockDivided-2);
         if(render_y_min <0){render_y_min = 0;}
         else if(render_y_max >Main.yMap){render_y_max = Main.yMap;}
         BuildingConst();
