@@ -3,23 +3,18 @@ package com.mygdx.game.method;
 import com.badlogic.gdx.Input;
 import com.badlogic.gdx.InputAdapter;
 import com.mygdx.game.Inventory.ItemObject;
-import com.mygdx.game.Network.ConnectPlayer;
 import com.mygdx.game.Shader.LightingMainSystem;
 import com.mygdx.game.Weather.Ripple;
 import com.mygdx.game.block.Block;
 import com.mygdx.game.build.Building;
 import com.mygdx.game.bull.Bullet;
-import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.UI.button.Button;
-import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 
 import java.util.ArrayList;
 
-import static com.mygdx.game.main.ActionGame.ActionGameCl;
-import static com.mygdx.game.main.ActionGame.ActionGameH;
 import static com.mygdx.game.main.Main.*;
 
 public class Keyboard extends InputAdapter{
@@ -183,35 +178,8 @@ public class Keyboard extends InputAdapter{
     public boolean touchUp(int screenX, int screenY, int pointer, int button) {
         switch (button){
             case Input.Buttons.LEFT:{
-                //RespawnPoint
                 LeftMouse = false;
                 LeftMouseClick = true;
-
-                RC.BlockClickLX = (int) ((Keyboard.MouseX / Zoom + RC.x2)*WidthBlockDivided);
-                RC.BlockClickLY = (int) ((Keyboard.MouseY / Zoom + RC.y2)*WidthBlockDivided);
-                if(RC.BlockClickLX<0){
-                    RC.BlockClickLX=0;
-                }
-                else if(RC.BlockClickLX> xMap){
-                    RC.BlockClickLX = xMap;
-                }
-                if(RC.BlockClickLY<0){
-                    RC.BlockClickLY=0;
-                }
-                else if(RC.BlockClickLY> yMap){
-                    RC.BlockClickLY = yMap;
-                }
-
-                if(RC.MainUnit == null && ActionGameTotal == ActionGameMain){
-                    Block block = BlockList2D.get(RC.BlockClickLY).get(RC.BlockClickLX);
-                    if(block != null && block.objMap.team == Unit.TeamPlayer){
-                        for(int[] i : MapObject.RespawnPointList){
-                            if(RC.BlockClickLX == i[1] && RC.BlockClickLY == i[0]){
-                                RespawnPoint = i;
-                            }
-                        }
-                    }
-                }
                 break;
             }
             case Input.Buttons.MIDDLE:
@@ -263,12 +231,12 @@ public class Keyboard extends InputAdapter{
     public boolean scrolled(float amountX, float amountY) {
         if(amountY > 0) {
             if (Main.Zoom >ZoomMin) {
-                Main.Zoom -= 0.1f;
+                Main.Zoom -= 0.1;
                 zoom_const();
             }
         } else {
             if (Main.Zoom < ZoomMax) {
-                Main.Zoom += 0.1f;
+                Main.Zoom += 0.1;
                 zoom_const();
             }
         }
@@ -276,13 +244,6 @@ public class Keyboard extends InputAdapter{
         return false;
     }
     public void zoom_const(){
-        if(ActionGameMain == ActionGameCl){
-            ConnectPlayer pack = new ConnectPlayer();
-            pack.conf = false;
-            pack.Zoom = Zoom;
-            pack.IDPlayerConnect = IDClient;
-            ClientMain.Client.sendTCP(pack);
-        }
         for(Particle particle : Main.FlameParticleList){
             particle.size_render = (int)(particle.size* Main.Zoom);
         }
@@ -299,8 +260,8 @@ public class Keyboard extends InputAdapter{
         RC.width_2_zoom = RC.width_2/Main.Zoom;
         RC.height_2_zoom = RC.height_2/Main.Zoom;
         RC.CameraMapConf();
-        RC.cam_x_width = (int) (RC.WidthRenderZoom*Main.WidthBlockDivided);
-        RC.cam_y_height= (int) (RC.HeightRenderZoom*Main.WidthBlockDivided);
+        RC.cam_x_width = (int) (RC.WidthRenderZoom/Main.width_block);
+        RC.cam_y_height= (int) (RC.HeightRenderZoom/Main.width_block);
 
         LightSystem.lightsRender.clear();
         for(LightingMainSystem.Light light : LightSystem.lights){
@@ -403,7 +364,8 @@ public class Keyboard extends InputAdapter{
                 tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
-                ZoomTower(tower);
+                tower.differenceZoom = (int)(tower.difference* Zoom);
+                tower.difference2Zoom= (int)(tower.difference_2* Zoom);
             }
             for (Unit track : tr.TrackUnitList){
                 track.width_tower_zoom = (int)(track.width_tower *Main.Zoom);
@@ -411,14 +373,6 @@ public class Keyboard extends InputAdapter{
                 track.const_x_tower = (int)(track.width_tower *Main.Zoom*0.5);
                 track.const_y_tower = (int)(track.height_tower *Main.Zoom*0.5);
 
-            }
-            if(tr.host){
-                for (Unit tower : tr.TowerUnitList){
-                    tower.difference2Zoom = (int)(tower.differenceX * Zoom);
-                    tower.differenceZoom = (int)(tower.differenceY * Zoom);
-                    tower.differenceTotalZoom = (int)(tower.differenceTotal* Zoom);
-                    ZoomTower2(tower);
-                }
             }
 
         }
@@ -452,22 +406,8 @@ public class Keyboard extends InputAdapter{
                 tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
-                ZoomTower(tower);
-            }
-            for (Unit track : tr.TrackUnitList){
-                track.width_tower_zoom = (int)(track.width_tower *Main.Zoom);
-                track.height_tower_zoom = (int)(track.height_tower *Main.Zoom);
-                track.const_x_tower = (int)(track.width_tower *Main.Zoom*0.5);
-                track.const_y_tower = (int)(track.height_tower *Main.Zoom*0.5);
-
-            }
-            if(tr.host){
-                for (Unit tower : tr.TowerUnitList){
-                    tower.difference2Zoom = (int)(tower.differenceX * Zoom);
-                    tower.differenceZoom = (int)(tower.differenceY * Zoom);
-                    tower.differenceTotalZoom = (int)(tower.differenceTotal* Zoom);
-                    ZoomTower2(tower);
-                }
+                tower.differenceZoom = (int)(tower.difference* Zoom);
+                tower.difference2Zoom= (int)(tower.difference_2* Zoom);
             }
 
 
@@ -477,69 +417,6 @@ public class Keyboard extends InputAdapter{
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
             tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
-
-        }
-    }
-    public void ZoomConstTransport2(){
-        for(Unit tr : Main.UnitList){
-            tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
-            tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
-            tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
-            tr.height_tower_zoom = (int)(tr.height_tower *Main.Zoom);
-            tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
-            tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
-            tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
-            tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
-            for (Unit tower : tr.TowerUnitList){
-                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
-                tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
-                tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
-                tower.difference2Zoom = (int)(tower.differenceX * Zoom);
-                tower.differenceZoom = (int)(tower.differenceY * Zoom);
-                tower.differenceTotalZoom = (int)(tower.differenceTotal* Zoom);
-                ZoomTower(tower);
-            }
-
-
-        }
-        for(Unit tr : Main.DebrisList){
-            tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
-            tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
-            tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
-            tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
-
-        }
-    }
-    private static void ZoomTower( Unit tr){
-        for (Unit tower :tr.TowerUnitList){
-            tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-            tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
-            tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
-            tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
-            ZoomTower(tower);
-        }
-        for (Unit tower : tr.TrackUnitList){
-            tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-            tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
-            tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
-            tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
-            ZoomTower(tower);
-
-        }
-    }
-    public static void ZoomTower2( Unit tr){
-        for (Unit tower :tr.TowerUnitList){
-            tower.difference2Zoom = (int)(tower.differenceX * Zoom);
-            tower.differenceZoom = (int)(tower.differenceY * Zoom);
-            tower.differenceTotalZoom = (int)(tower.differenceTotal* Zoom);
-            ZoomTower2(tower);
-        }
-        for (Unit tower : tr.TrackUnitList){
-            tower.difference2Zoom = (int)(tower.differenceX * Zoom);
-            tower.differenceZoom = (int)(tower.differenceY * Zoom);
-            tower.differenceTotalZoom = (int)(tower.differenceTotal* Zoom);
-            ZoomTower2(tower);
 
         }
     }

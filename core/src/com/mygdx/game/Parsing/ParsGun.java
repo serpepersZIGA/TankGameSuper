@@ -120,13 +120,11 @@ public class ParsGun {
                 "  \"TimeBullet\": 200,\n" +
                 "  \"AmountFragment\": 0,\n" +
                 "  \"SpeedBullet\": 0,\n" +
-                "\"TegList\": [\"afar\"]," +
                 "  \"Sound\": 10,\n" +
                 "  \"QuantityShots\": 30,\n" +
                 "  \"ReloadBetweenShots\": 0,\n" +
                 "  \"ReloadShots\": 0,\n" +
                 "  \"ReloadUP\": 2,\n" +
-                "  \"OneShot\": 5,\n" +
                 "\"Price\": 2\n" +
                 "}";
         Create(AK74,data);
@@ -143,12 +141,10 @@ public class ParsGun {
                 "  \"AmountFragment\": 0,\n" +
                 "  \"SpeedBullet\": 0,\n" +
                 "  \"Sound\": 5,\n" +
-                "\"TegList\": [\"intimately\"]," +
                 "  \"QuantityShots\": 30,\n" +
                 "  \"ReloadBetweenShots\": 0,\n" +
                 "  \"ReloadShots\": 0,\n" +
                 "  \"ReloadUP\": 2,\n" +
-                "  \"OneShot\": 5,\n" +
                 "\"Price\": 2\n" +
                 "}";
         Create(flamethrower,data);
