@@ -23,6 +23,7 @@ import java.util.ArrayList;
 import static com.mygdx.game.Inventory.ItemObject.ItemList;
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.Inventory.Item.IDListItem;
+import static com.mygdx.game.method.Keyboard.ZoomTower2;
 import static com.mygdx.game.unit.Unit.IDList;
 
 public class ServerMain extends Listener {
@@ -65,6 +66,7 @@ public class ServerMain extends Listener {
         Server.getKryo().register(PacketUnitUpdate.class);
         Server.getKryo().register(SpawnPlayerPack.class);
         Server.getKryo().register(ConnectPlayer.class);
+        Server.getKryo().register(TowerPack.class);
 
 
         //Регистрируем порт
@@ -167,6 +169,7 @@ public class ServerMain extends Listener {
                         Tower.left_mouse = pack.left_mouse;
                         Tower.TargetX = unit.TargetX+ Tower.TargetConstX;
                         Tower.TargetY = unit.TargetY+ Tower.TargetConstY;
+                        TowerControl(Tower,pack.left_mouse);
                     }
                     return;
                 }
@@ -176,16 +179,19 @@ public class ServerMain extends Listener {
         else if(p instanceof SpawnPlayerPack){
             //System.out.println("586855");
             nConnect += 1;
-            Unit unitBuf;
+            //Unit unitBuf;
+            RespawnList.add(new Object[]{false,nConnect,((SpawnPlayerPack) p).ID,1.0f
+                    ,((SpawnPlayerPack) p).Team});
 
-            unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
-                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1),nConnect);
-            unitBuf.PlayerConf = true;
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
-            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+
+//            unitBuf = IDList.get(((SpawnPlayerPack) p).ID).UnitAdd(200,200,false,(byte) 1
+//                    ,RegisterControl.controllerPlayer,new Inventory(new Item[4][4],1),new Inventory(new Item[7][2],1),nConnect);
+//            unitBuf.PlayerConf = true;
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
+//            unitBuf.inventory.ItemAdd(ItemRegister.MedicineT1);
 
             PacketServer.InventoryConf = true;
 //            if(!p.equals(new SpawnPlayerVoid())) {
@@ -323,11 +329,39 @@ public class ServerMain extends Listener {
             for(int i = 0;i<UnitList.size();i++){
                 Unit unit = UnitList.get(i);
                 if(unit.nConnect == ((ConnectPlayer) p).IDPlayerConnect){
-                    PacketServer.unitConf = true;
-                    PacketServer.InventoryConf = true;
+                    if(((ConnectPlayer) p).conf) {
+                        PacketServer.unitConf = true;
+                        PacketServer.InventoryConf = true;
+                    }
+                    else{
+                        unit.Zoom = ((ConnectPlayer) p).Zoom;
+                        for (Unit tower : unit.TowerUnitList){
+                            tower.difference2Zoom = (int)(tower.differenceX * unit.Zoom);
+                            tower.differenceZoom = (int)(tower.differenceY * unit.Zoom);
+                            tower.differenceTotalZoom = (int)(tower.differenceTotal* unit.Zoom);
+                            ZoomTower2(tower);
+                        }
+                        //KeyboardObj.ZoomConstTransport();
+
+                    }
                 }
             }
         }
+    }
+    private void TowerControl(Unit unit,boolean left_mouse){
+        for (Unit Tower : unit.TowerUnitList) {
+            Tower.left_mouse = left_mouse;
+            Tower.TargetX = unit.TargetX;
+            Tower.TargetY = unit.TargetY;
+            TowerControl(Tower,left_mouse);
+        }
+        for (Unit Tower : unit.TrackUnitList) {
+            Tower.left_mouse = left_mouse;
+            Tower.TargetX = unit.TargetX;
+            Tower.TargetY = unit.TargetY;
+            TowerControl(Tower,left_mouse);
+        }
+
     }
 
     //Используется когда клиент покидает сервер.

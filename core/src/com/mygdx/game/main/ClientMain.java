@@ -87,6 +87,7 @@ public class ClientMain extends Listener {
         Client.getKryo().register(PacketUnitUpdate.class);
         Client.getKryo().register(SpawnPlayerPack.class);
         Client.getKryo().register(ConnectPlayer.class);
+        Client.getKryo().register(TowerPack.class);
 
         //Запускаем клиент
         Client.start();
@@ -224,6 +225,7 @@ public class ClientMain extends Listener {
             Block.passability_detected();
             ConnectPlayer connect = new ConnectPlayer();
             connect.IDPlayerConnect = IDClient;
+            connect.conf = true;
             Client.sendTCP(connect);
 
         }
@@ -378,9 +380,12 @@ public class ClientMain extends Listener {
         unit.host = packet.host;
         unit.nConnect = packet.IDClient;
         for (int i2 = 0; i2 < unit.TowerUnitList.size(); i2++) {
+            Unit tower = unit.TowerUnitList.get(i2);
             //System.out.println(packet.rotation_tower_2.get(i2)+ " "+i2);
-            unit.TowerUnitList.get(i2).rotation_tower = packet.rotation_tower_2.get(i2);
-            unit.TowerUnitList.get(i2).reload = packet.reloadTower.get(i2);
+            tower.rotation_tower=packet.TowerList1.get(i2).rotationTower;
+            tower.reload=packet.TowerList1.get(i2).reloadTower;
+            towerInit(packet.TowerList1.get(i2).TowerList1,
+                    packet.TowerList1.get(i2).TowerList2,tower);
         }
         for(Unit Track : unit.TrackUnitList){
             Track.speed = packet.speed;
@@ -407,6 +412,21 @@ public class ClientMain extends Listener {
         }
 
     }
+    private void towerInit(ArrayList<TowerPack> pack1, ArrayList<TowerPack> pack2, Unit transport){
+        for(int i2 = 0; i2 < transport.TowerUnitList.size(); i2++){
+            Unit tower = transport.TowerUnitList.get(i2);
+            tower.rotation_tower=pack1.get(i2).rotationTower;
+            tower.reload=pack1.get(i2).reloadTower;
+            towerInit(pack1.get(i2).TowerList1,pack1.get(i2).TowerList2,tower);
+        }
+        for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
+            Unit tower = transport.TrackUnitList.get(i2);
+            tower.rotation_tower=pack2.get(i2).rotationTower;
+            tower.reload=pack2.get(i2).reloadTower;
+            towerInit(pack2.get(i2).TowerList1,pack2.get(i2).TowerList2,tower);
+        }
+
+    }
 
     public void UnitDataCreate(TransportPacket pack, Unit transport) {
         transport.TypeUnit = pack.name;
@@ -420,9 +440,36 @@ public class ClientMain extends Listener {
         transport.press_d = pack.PressD;
         transport.host = pack.host;
         transport.nConnect = pack.IDClient;
-        for (int i2 = 0; i2 < transport.TowerUnitList.size(); i2++) {
-            transport.TowerUnitList.get(i2).rotation_tower=pack.rotation_tower_2.get(i2);
-            transport.TowerUnitList.get(i2).reload=pack.reloadTower.get(i2);
+        for(int i2 = 0; i2 < transport.TowerUnitList.size(); i2++){
+            Unit tower = transport.TowerUnitList.get(i2);
+            tower.rotation_tower=pack.TowerList1.get(i2).rotationTower;
+            tower.reload=pack.TowerList1.get(i2).reloadTower;
+            towerInitAdd(pack.TowerList1,pack.TowerList2,tower);
+        }
+//        for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
+//            transport.TrackUnitList.get(i2).rotation_tower=pack.TowerList1.get(i2).rotationTower;
+//            transport.TrackUnitList.get(i2).reload=pack.TowerList1.get(i2).reloadTower;
+//        }
+
+
+//        for (int i2 = 0; i2 < transport.TowerUnitList.size(); i2++) {
+//            transport.TowerUnitList.get(i2).rotation_tower=pack.rotation_tower_2.get(i2);
+//            transport.TowerUnitList.get(i2).reload=pack.reloadTower.get(i2);
+//        }
+
+    }
+    private void towerInitAdd(ArrayList<TowerPack> pack1, ArrayList<TowerPack> pack2, Unit transport){
+        for(int i2 = 0; i2 < transport.TowerUnitList.size(); i2++){
+            Unit tower = transport.TowerUnitList.get(i2);
+            tower.rotation_tower=pack1.get(i2).rotationTower;
+            tower.reload=pack1.get(i2).reloadTower;
+            towerInitAdd(pack1.get(i2).TowerList1,pack1.get(i2).TowerList2,tower);
+        }
+        for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
+            Unit tower = transport.TrackUnitList.get(i2);
+            tower.rotation_tower=pack2.get(i2).rotationTower;
+            tower.reload=pack2.get(i2).reloadTower;
+            towerInitAdd(pack2.get(i2).TowerList1,pack2.get(i2).TowerList2,tower);
         }
 
     }

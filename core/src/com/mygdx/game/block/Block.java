@@ -26,9 +26,9 @@ public abstract class Block {
                 for (int j2 = 0; j2 < Main.BuildingList.get(i).ConstructBuilding[j].length; j2++) {
                     Main.BlockList2D.get(j+Main.BuildingList.get(i).yMatrix).get(j2+Main.BuildingList.get(i).xMatrix).passability =
                             Main.BuildingList.get(i).ConstructBuilding[j][j2];
+                    Main.BlockList2D.get(j+Main.BuildingList.get(i).yMatrix).get(j2+Main.BuildingList.get(i).xMatrix).iBuilding = i;
                     if(Main.BuildingList.get(i).ConstructBuilding[j][j2]) {
                         Main.BlockList2D.get(j+Main.BuildingList.get(i).yMatrix).get(j2+Main.BuildingList.get(i).xMatrix).render_block = VoidUpdate;
-                        Main.BlockList2D.get(j+Main.BuildingList.get(i).yMatrix).get(j2+Main.BuildingList.get(i).xMatrix).iBuilding = i;
 
                     }
                 }
@@ -46,8 +46,8 @@ public abstract class Block {
         }
     }
     protected final void block_xy(){
-        this.x_center = (int) (this.x +Main.width_block *0.5);
-        this.y_center = (int) (this.y +Main.width_block *0.5);
+        this.x_center = this.x +Main.width_block_2;
+        this.y_center = this.y +Main.width_block_2;
     }
     @SuppressWarnings("unused")
 	private boolean rect_collision(int x1,int y1,int width,int height,

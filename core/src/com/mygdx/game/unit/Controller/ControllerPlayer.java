@@ -10,13 +10,6 @@ import static com.mygdx.game.method.Keyboard.LeftMouse;
 
 public class ControllerPlayer extends Controller {
     public void ControllerIteration(Unit unit){
-//        for (ArrayList<Block> i2:Main.BlockList2D){
-//            for (Block i3:i2){
-//                i3.render_block = UpdateRegister.GrassUpdate;
-//            }
-//        }
-//
-//        Main.BlockList2D.get(unit.YMap).get(unit.XMap).render_block = UpdateRegister.Update3;
 
 
 
@@ -24,8 +17,8 @@ public class ControllerPlayer extends Controller {
         unit.right_mouse = Keyboard.RightMouse;
         unit.press_w = Keyboard.PressW;
         unit.press_a = Keyboard.PressA;
-        unit.press_s = Keyboard.PressS;
         unit.press_d = Keyboard.PressD;
+        unit.press_s = Keyboard.PressS;
         unit.press_f = Keyboard.PressF;
         unit.TargetX = Keyboard.MouseX- RC.width_2;
         unit.TargetY = Keyboard.MouseY- RC.height_2;
@@ -35,6 +28,7 @@ public class ControllerPlayer extends Controller {
             Tower.left_mouse = LeftMouse;
             Tower.TargetX = unit.TargetX+Tower.TargetConstX;
             Tower.TargetY = unit.TargetY+Tower.TargetConstY;
+            func(Tower);
         }
 //        if(Keyboard.PressE){
 //            inventoryMain = new InventoryInterface(unit.inventory,200,500,600,350);
@@ -44,6 +38,24 @@ public class ControllerPlayer extends Controller {
             inventoryMain.InventoryUs(unit);
         }
 
+    }
+    private void func(Unit unit){
+        for (Unit Tower : unit.TowerUnitList){
+            Tower.left_mouse = LeftMouse;
+            Tower.TargetX = unit.TargetX;
+            Tower.TargetY = unit.TargetY;
+            func(Tower);
+            //Tower.tower_ii();
+            //Tower.tower_ii();
+        }
+        for (Unit Tower : unit.TrackUnitList){
+            Tower.left_mouse = LeftMouse;
+            Tower.TargetX = unit.TargetX;
+            Tower.TargetY = unit.TargetY;
+            func(Tower);
+            //Tower.tower_ii();
+            //Tower.tower_ii();
+        }
     }
     public void ControllerIterationClientAnHost(Unit unit){
 //        for (Packet_client pack : Clients) {

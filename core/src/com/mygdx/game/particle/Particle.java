@@ -74,8 +74,8 @@ public abstract class Particle {
         }
     }
     protected final void grass_delete(){
-        int ix = (int) (x/Main.width_block)-1;
-        int iy = (int) (y/Main.width_block)-1;
+        int ix = (int) (x*Main.WidthBlockDivided)-1;
+        int iy = (int) (y*Main.WidthBlockDivided)-1;
         try {
             if(Main.BlockList2D.get(iy).get(ix).render_block == BlockID.get(1)) {
                 Main.BlockList2D.get(iy).get(ix).render_block = BlockID.get(0);
@@ -85,12 +85,13 @@ public abstract class Particle {
         }
     }
     protected void size_update(){
-        this.size_2 = this.size/2;
+        this.size_2 = this.size*0.5F;
         this.size_3 = this.size_2-2;
     }
     public static float time,slow = 0.02f,SpeedBuffX,SpeedBuffY;
     public void liquidConst(){
-        for (Particle particle2 : Main.LiquidList) {
+        for (int i = 0;i<LiquidList.size();i++) {
+            Particle particle2 = LiquidList.get(i);
             if (particle2 != this && (int) sqrt(pow2.pow2(this.x - particle2.x)
                     + pow2.pow2(this.y - particle2.y))
                     < (this.size + particle2.size) * 0.5) {
@@ -108,25 +109,26 @@ public abstract class Particle {
 
             }
         }
-        for (Particle particle2 : BloodList) {
-            if (particle2 != this && (int) sqrt(pow2.pow2(this.x - particle2.x)
-                    + pow2.pow2(this.y - particle2.y))
-                    < (this.size + particle2.size) * 0.5) {
-                r = (float) (atan2
-                        (this.y - particle2.y,
-                                this.x - particle2.x)*57.2974);
-                SpeedBuffX = move.move_sin2(1.1f, r);
-                SpeedBuffY = move.move_cos2(1.1f, r);
-                this.speed_x = SpeedBuffX;
-                this.speed_y = SpeedBuffY;
-                particle2.speed_x = -SpeedBuffX;
-                particle2.speed_y = -SpeedBuffY;
-                //particle2.liquidConst();
-                //break;
-
-
-            }
-        }
+//        for (int i = 0;i<BloodList.size();i++) {
+//            Particle particle2 = BloodList.get(i);
+//            if (particle2 != this && (int) sqrt(pow2.pow2(this.x - particle2.x)
+//                    + pow2.pow2(this.y - particle2.y))
+//                    < (this.size + particle2.size) * 0.5) {
+//                r = (float) (atan2
+//                        (this.y - particle2.y,
+//                                this.x - particle2.x)*57.2974);
+//                SpeedBuffX = move.move_sin2(1.1f, r);
+//                SpeedBuffY = move.move_cos2(1.1f, r);
+//                this.speed_x = SpeedBuffX;
+//                this.speed_y = SpeedBuffY;
+//                particle2.speed_x = -SpeedBuffX;
+//                particle2.speed_y = -SpeedBuffY;
+//                //particle2.liquidConst();
+//                //break;
+//
+//
+//            }
+//        }
 
     }
     public static void liquidGlobal(){

@@ -16,4 +16,5 @@ public class buff{
     public int[][]TowerXY,TrackXY;
     public int MedicConf,Height;
     public int[] Side;
+    public String ClassUnit;
 }

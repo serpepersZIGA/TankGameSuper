@@ -51,8 +51,9 @@ public class ParsBlock {
         buffBlock obj = objectMapper.readValue(TxT, buffBlock.class);
         String Image = obj.Image;
         int ind = obj.ind;
+        float SpeedMod = obj.SpeedMod;
         boolean GrassGrow = obj.GrassGrow;
-        BlockID.put(ind, new UpdateBlock(Image,ind,GrassGrow,ID));
+        BlockID.put(ind, new UpdateBlock(Image,ind,GrassGrow,ID,SpeedMod));
 
 
 
@@ -71,28 +72,32 @@ public class ParsBlock {
         String data = "{\n" +
                 "  \"Image\": \"asphalt1\",\n" +
                 "  \"ind\":3,\n" +
-                "  \"GrassGrow\": false\n" +
+                "  \"GrassGrow\": false,\n" +
+                "  \"SpeedMod\": 0.16\n" +
                 "}";
         Create(Asphalt,data);
 
         data = "{\n" +
                 "  \"Image\": \"Buffer\",\n" +
                 "  \"ind\": 2,\n" +
-                "  \"GrassGrow\": false\n" +
+                "  \"GrassGrow\": false,\n" +
+                "  \"SpeedMod\": 0.16\n" +
                 "}";
         Create(Void,data);
 
         data = "{\n" +
                 "  \"Image\": \"dirt_256_1\",\n" +
                 "  \"ind\": 0,\n" +
-                "  \"GrassGrow\":true\n" +
+                "  \"GrassGrow\":true,\n" +
+                "  \"SpeedMod\": 0.07\n" +
                 "}";
         Create(Dirt,data);
 
         data = "{\n" +
                 "  \"Image\": \"grass_256_1\",\n" +
                 "  \"ind\": 1,\n" +
-                "  \"GrassGrow\":false\n" +
+                "  \"GrassGrow\":false,\n" +
+                "  \"SpeedMod\": 0.07\n" +
                 "}";
         Create(Grass,data);
 

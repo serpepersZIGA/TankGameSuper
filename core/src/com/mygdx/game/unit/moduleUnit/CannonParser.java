@@ -9,8 +9,10 @@ import com.mygdx.game.MapFunction.MapBaseAdd;
 import com.mygdx.game.Parsing.Parser;
 import com.mygdx.game.Sound.SoundRegister;
 import com.mygdx.game.unit.Fire.Fire;
+import com.mygdx.game.unit.Unit;
 
 import java.io.*;
+import java.util.ArrayList;
 
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
 
@@ -21,6 +23,9 @@ public class CannonParser {
     public static Sound Sound;
     public static String Image;
     public static FunctionalList List;
+    public static ArrayList<int[]>xy = new ArrayList<>();
+    public static ArrayList<Cannon> Tower = new ArrayList<>();
+    public static ArrayList<Integer> z = new ArrayList<>();
     public static boolean ConfControl;
     public static float SpeedRotationTower, Damage, Penetration, DamageFragment, PenetrationFragment,TemperatureDamage
     ,SpeedBullet,ReloadUP, OneShot;
@@ -49,7 +54,7 @@ public class CannonParser {
                             , DamageFragment, PenetrationFragment, TemperatureDamage, SizeBullet, ReloadMax,
                             SpeedBullet, TimeBullet, TimeBulletRand, TowerX, TowerY, Fire.clone(), Image, List
                             , Sound, AmountFragment,MaxRotate,RotateBase,
-                            ReloadUP, OneShot,ReloadBetweenShots,ReloadShots,QuantityShots)
+                            ReloadUP, OneShot,ReloadBetweenShots,ReloadShots,QuantityShots,Tower,xy,z)
                     , file.name().replace(".Cannon", "")});
             List = new FunctionalList();
             MaxRotate = 0;
@@ -69,6 +74,9 @@ public class CannonParser {
             ReloadUP = 0;
             OneShot = 0;ReloadBetweenShots=0;ReloadShots=0;QuantityShots=0;
             WidthTower = 0;HeightTower = 0;
+            Tower = new ArrayList<>();
+            xy = new ArrayList<>();
+            z = new ArrayList<>();
             //List.Clear();
             //System.out.println(BuildRegister.BuildingID.size());
 
@@ -108,6 +116,16 @@ public class CannonParser {
             //System.out.println(TotalTxT);
             if(c == '=') {
                 switch (TotalTxT.trim()) {
+                    case "Cannon":
+                        obj = Parser.CannonParsingAdd(TxT, i);
+                        Tower.add((Cannon) obj[0]);
+                        xy.add(new int[]{(int)obj[1],(int)obj[2]});
+                        z.add((int)obj[3]);
+                        //ConfControl = (boolean) obj[0];
+
+                        i = (int) obj[4];
+                        TotalTxT = "";
+                        break;
                     case "WidthTower":
                         obj = Parser.IntegerPars(TxT, i);
                         WidthTower = (int) obj[0];

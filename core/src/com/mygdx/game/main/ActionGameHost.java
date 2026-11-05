@@ -9,6 +9,7 @@ import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
 import com.mygdx.game.Inventory.InventoryInterface;
 import com.mygdx.game.Inventory.ItemObject;
 import com.mygdx.game.Network.PacketUnitUpdate;
+import com.mygdx.game.Network.TowerPack;
 import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.block.Block;
@@ -75,6 +76,7 @@ public class ActionGameHost extends ActionGame{
 //            }
             Unit.AIScan = true;
         }
+
         //Unit.yu = 0;
         ThreadIterationDebris = new Thread(new IterationDebris());
         ThreadIterationBullet = new Thread(new IterationBullet());
@@ -158,16 +160,16 @@ public class ActionGameHost extends ActionGame{
 
         LiquidShader.AcidShaderIteration();
 
-        LiquidShader.BloodShaderIteration();
+        //LiquidShader.BloodShaderIteration();
 
 
         //liquidGlobal();
-        for (i = 0; i< Main.FlameStaticList.size(); i++){
-            Main.FlameStaticList.get(i).all_action();}
-        for (i = 0; i< Main.FlameList.size(); i++){
-            Main.FlameList.get(i).all_action();}
-        for (i = 0; i< Main.FlameParticleList.size(); i++){
-            Main.FlameParticleList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameStaticList.size(); i++){
+//            Main.FlameStaticList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameList.size(); i++){
+//            Main.FlameList.get(i).all_action();}
+//        for (i = 0; i< Main.FlameParticleList.size(); i++){
+//            Main.FlameParticleList.get(i).all_action();}
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
@@ -313,7 +315,10 @@ public class ActionGameHost extends ActionGame{
             obj[3] = time;
             //System.out.println(time+" time");
             if(time <0){
-                MapObject.SpawnPlayer((String) obj[2],(boolean)obj[0],(byte)obj[4],(int) obj[1]);
+                MapObject.SpawnPlayer((String) obj[2]
+                        ,(boolean)obj[0]
+                        ,(byte)obj[4]
+                        ,(int) obj[1]);
                 RespawnList.remove(obj);
             }
         }
@@ -371,6 +376,7 @@ public class ActionGameHost extends ActionGame{
             PacketServer.Money.add(TeamGlobal.get((byte) i));
         }
 
+
         Server.sendToAllUDP(PacketServer);
         SoundPack.clear();
         MapObject.PacketMapObjects.clear();
@@ -398,12 +404,31 @@ public class ActionGameHost extends ActionGame{
         pack.host = unit.host;
         pack.IDClient = unit.nConnect;
         pack.ID = unit.ID;
-
+        pack.TowerList1 = new ArrayList<>();
+        TowerPack TowerPacket;
         for (Unit Tower : unit.TowerUnitList){
-            pack.reloadTower.add(Tower.reload);
-            pack.rotation_tower_2.add(Tower.rotation_tower);
+            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
+            pack.TowerList1.add(TowerPacket);
+            TowerPackInit(TowerPacket,Tower);
+            //pack.reloadTower.add(Tower.reload);
+            //pack.rotation_tower_2.add(Tower.rotation_tower);
         }
         return pack;
+    }
+    private static void TowerPackInit(TowerPack pack,Unit unit){
+        pack.TowerList1 = new ArrayList<>();
+        pack.TowerList2 = new ArrayList<>();
+        TowerPack TowerPacket;
+        for (Unit Tower : unit.TowerUnitList){
+            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
+            pack.TowerList1.add(TowerPacket);
+            TowerPackInit(TowerPacket,Tower);
+        }
+        for (Unit Tower : unit.TrackUnitList){
+            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
+            pack.TowerList2.add(TowerPacket);
+            TowerPackInit(TowerPacket,Tower);
+        }
     }
     public static void packet_debris_server(Unit unit,int i){
         PacketDebris.add(new DebrisPacket());

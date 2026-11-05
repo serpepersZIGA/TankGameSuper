@@ -4,7 +4,9 @@ import com.badlogic.gdx.audio.Sound;
 import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.UnitPattern;
 
+import java.util.ArrayList;
 import java.util.Objects;
 
 import static com.mygdx.game.method.Method.RP;
@@ -30,6 +32,10 @@ public class Cannon extends moduleUnit implements Cloneable{
     public float corpus_width_2;
     public float corpus_height_2;
     public String ID;
+    public ArrayList<int[]>xy = new ArrayList<>();
+    public ArrayList<Cannon> Tower = new ArrayList<>();
+    public ArrayList<Integer> z = new ArrayList<>();
+    //public static ArrayList
     public FunctionalList functional = new FunctionalList();
     public float damage_fragment, penetration_fragment, TemperatureDamage,
             ReloadUP, OneShot;
@@ -105,7 +111,11 @@ public class Cannon extends moduleUnit implements Cloneable{
             , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
                   float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,String image,FunctionalList functional
             ,Sound sound,int AmountFragment,int MaxRotate,int RotateBase,
-                  float ReloadUP,float OneShot,int ReloadBetweenShots,int ReloadShots,int QuantityShots){
+                  float ReloadUP,float OneShot,int ReloadBetweenShots,int ReloadShots,int QuantityShots,
+                  ArrayList<Cannon> Tower,ArrayList<int[]>xy,ArrayList<Integer>z){
+        this.Tower = Tower;
+        this.xy = xy;
+        this.z = z;
         this.ID = ID;
         this.MaxRotate = MaxRotate;
         this.RotateBase = RotateBase;
@@ -149,12 +159,58 @@ public class Cannon extends moduleUnit implements Cloneable{
 
             CannonAdd.CenterX = unit.CorpusUnit.corpus_width_2-ConstTowerX;
             CannonAdd.CenterY = unit.CorpusUnit.corpus_height_2-ConstTowerY;
+
+            //CannonAdd.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
+            //float[]xy = Method.tower_xy_2(0,0,)
+            //CannonAdd.RotationDifference = (float) (atan2(differenceY,differenceX)*RP);
+
             //CannonAdd.ConstTowerX = unit.const_tower_x;
             //CannonAdd.ConstTowerY = unit.const_tower_y;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
         return CannonAdd;
+    }
+    public Cannon CannonAdd2(Unit unit,int differenceX,int differenceY){
+        Cannon CannonAdd;
+        try {
+            CannonAdd = (Cannon) this.clone();
+            CannonAdd.differenceX = differenceX;
+            CannonAdd.differenceY = differenceY;
+
+            CannonAdd.CenterX = (int) (0);
+            CannonAdd.CenterY = (int) (0);
+
+            CannonAdd.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
+            //float[]xy = Method.tower_xy_2(0,0,)
+            CannonAdd.RotationDifference = (float) (atan2(differenceY,differenceX)*RP);
+
+
+            CannonAdd.corpus_width_2 = unit.const_tower_x;
+            CannonAdd.corpus_height_2 = unit.const_tower_y;
+
+            //CannonAdd.CenterX = unit.CorpusUnit.corpus_width_2-CannonAdd.ConstTowerX;
+            //CannonAdd.CenterY = unit.CorpusUnit.corpus_height_2-CannonAdd.ConstTowerY;
+
+            //CannonAdd.ConstTowerX = unit.const_tower_x;
+            //CannonAdd.ConstTowerY = unit.const_tower_y;
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+        return CannonAdd;
+    }
+    public void CannonAddInit(Unit unit){
+        for(int i = 0;i<Tower.size();i++){
+            Cannon cannonAdd = Tower.get(i);
+            if(z.get(i) == 0) {
+                unit.TowerUnitList.add(new UnitPattern(cannonAdd
+                        .CannonAdd2(unit, xy.get(i)[0], xy.get(i)[1]), unit));
+            }
+            else{
+                unit.TrackUnitList.add(new UnitPattern(cannonAdd
+                        .CannonAdd2(unit, xy.get(i)[0], xy.get(i)[1]), unit));
+            }
+        }
     }
     public static Cannon CannonAdd(String string,Unit unit,int differenceX,int differenceY){
         Cannon cannon = null;
@@ -203,8 +259,8 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.tower_y_const = CenterY;
         unit.speed_tower = SpeedRotationTower;
         unit.SpeedBullet = SpeedBullet;
-        unit.difference_2 = differenceX;
-        unit.difference = differenceY;
+        unit.differenceX = differenceX;
+        unit.differenceY = differenceY;
         unit.reload_max = ReloadMax;
         unit.sound_fire = sound;
         unit.AmountFragment = AmountFragment;
@@ -236,6 +292,19 @@ public class Cannon extends moduleUnit implements Cloneable{
         for(int i = 0;i<functional.functional.size();i++){
             unit.functional.Add(functional.functional.get(i));
         }
+//        for(int i = 0;i<Tower.size();i++){
+//            Cannon cannonAdd = Tower.get(i);
+//            if(z.get(i) == 0) {
+//                unit.TowerUnitList.add(new UnitPattern(cannonAdd
+//                    .CannonAdd(unit, xy.get(i)[0], xy.get(i)[1]), unit));
+//            }
+//            else{
+//                unit.TrackUnitList.add(new UnitPattern(cannonAdd
+//                    .CannonAdd(unit, xy.get(i)[0], xy.get(i)[1]), unit));
+//            }
+//        }
+        //unit.TowerUnitList = new ArrayList<>();
+        //unit.TrackUnitList = new ArrayList<>();
         //unit.tower_x_const =XTower;
         //unit.tower_y_const =YTower;
 

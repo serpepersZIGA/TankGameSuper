@@ -3,15 +3,11 @@ package com.mygdx.game.unit.moduleUnit;
 import com.badlogic.gdx.audio.Sound;
 import com.mygdx.game.FunctionalComponent.FunctionalList;
 import com.mygdx.game.method.Animator;
-import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.unit.Unit;
-
-import java.util.Objects;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister.TowerXY;
 import static com.mygdx.game.method.Method.RP;
 import static com.mygdx.game.method.pow2.pow2;
-import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
 import static com.mygdx.game.unit.moduleUnit.RegisterModuleTrack.TrackID;
 import static java.lang.StrictMath.atan2;
 import static java.lang.StrictMath.sqrt;
@@ -99,8 +95,8 @@ public class Track implements Cloneable{
         unit.tower_height_2 = HeightTrack2;
         unit.tower_x_const =CenterX;
         unit.tower_y_const = CenterY;
-        unit.difference_2 = differenceX;
-        unit.difference = differenceY;
+        unit.differenceX = differenceX;
+        unit.differenceY = differenceY;
 
         unit.differenceTotal = differenceTotal;
         unit.RotationDifference = RotationDifference;

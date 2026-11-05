@@ -1,8 +1,21 @@
 package com.mygdx.game.Parsing;
 
+import com.mygdx.game.FunctionalComponent.FunctionalComponent;
+import com.mygdx.game.Inventory.TegItem;
+import com.mygdx.game.build.Building;
+import com.mygdx.game.unit.ClassUnit;
+import com.mygdx.game.unit.Fire.Fire;
 import com.mygdx.game.unit.Fire.FireRegister;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.moduleUnit.Cannon;
+
+import java.util.Objects;
 
 import static com.mygdx.game.FunctionalComponent.FunctionalUnit.FunctionalComponentUnitRegister.*;
+import static com.mygdx.game.build.BuildRegister.BuildingID;
+import static com.mygdx.game.main.Main.BuildingList;
+import static com.mygdx.game.main.Main.width_block;
+import static com.mygdx.game.unit.moduleUnit.RegisterModuleCannon.CannonListID;
 
 public class Parser {
     public static Object[] BooleanPars(String TxT,int u){
@@ -49,6 +62,59 @@ public class Parser {
         }
         throw new RuntimeException();
     }
+    public static Object[] CannonParsingAdd(String TxT,int i){
+        char c;
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        Cannon cannon = null;
+        String Build = "";
+        for (; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            switch (c){
+                case'x':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    x = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'y':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    y = (int)obj[0];
+                    i = (int)obj[1];
+                }
+                break;
+                case'z':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    z = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'C':{
+                    Object[]obj = Parser.TextPars2(TxT,i);
+                    Build = (String) obj[0];
+                    Build = Build.trim();
+                    i =  (int)obj[1];
+                }
+                break;
+                case';':{
+                    for(Object[] obj :CannonListID){
+                        //System.out.println(Build+" "+obj[1]);
+                        if(Objects.equals(obj[1],Build)){
+                            cannon = (Cannon)obj[0];
+
+                        }
+                    }
+                    return new Object[]{cannon,x,y,z,i};
+
+                }
+            }
+            //else if (c == ':') {
+            //}
+        }
+        return new Object[]{cannon,x,y,z,i};
+    }
+
     public static Object[] IntegerPars(String TxT,int u){
         String TotalTxT = "";
         boolean Conf;
@@ -164,6 +230,81 @@ public class Parser {
         }
         throw new RuntimeException();
     }
+    public static FunctionalComponent ComponentParsing(String TxT){
+
+        switch (TxT){
+            case "ComponentBuildingCollision":
+                return BuildCollision;
+            case "ComponentBuildingSoldatCollision":
+                return BuildingSoldatCollision;
+            case "ComponentFireControl":
+                return FireControl;
+            case "ComponentFireDrumControl":
+                return FireDrumControl;
+            case "ComponentFireTankCumulativeControl":
+                return FireTankCumulativeControl;
+            case "ComponentHill":
+                return Hill;
+            case "ComponentMotorControl":
+                return MotorControl;
+            case "ComponentMoveDebris":
+                return MoveDebris;
+            case "ComponentSoldatControl":
+                return SoldatControl;
+            case "ComponentSoldatCorrect":
+                return SoldatCorrect;
+            case "ComponentSoldatSpawn":
+                return SoldatSpawn;
+            case "ComponentTowerIteration":
+                return TowerIteration;
+            case "ComponentTowerControl":
+                return TowerControl;
+            case "ComponentNotTowerControl":
+                return NotTowerControl;
+            case "ComponentTowerPartCorpus":
+                return TowerPartCorpus;
+            case "ComponentTowerXY":
+                return TowerXY;
+            case "ComponentWorkBlade":
+                return WorkBlade;
+
+        }
+        throw new RuntimeException();
+    }
+    public static TegItem TegUnitParsing(String TxT){
+
+        switch (TxT){
+            case "afar":
+                return TegItem.afar;
+            case "intimately":
+                return TegItem.intimately;
+            case "grenade":
+                return TegItem.grenade;
+            case "upgrade":
+                return TegItem.upgrade;
+            case "spawner":
+                return TegItem.spawner;
+            case "medicine":
+                return TegItem.medicine;
+
+        }
+        throw new RuntimeException();
+    }
+    public static ClassUnit ClassUnitParsing(String TxT){
+
+        switch (TxT){
+            case "Transport":
+                return ClassUnit.Transport;
+            case "Soldat":
+                return ClassUnit.Soldat;
+            case "SupportTransport":
+                return ClassUnit.SupportTransport;
+            case "Tower":
+                return ClassUnit.Tower;
+
+        }
+        throw new RuntimeException();
+    }
     public static Object[] FireParsing(String TxT,int u){
         Object[]n = TextPars(TxT,u);
 
@@ -176,6 +317,21 @@ public class Parser {
                 return new Object[]{FireRegister.FireBullet,n[1]};
             case "Mortar":
                 return new Object[]{FireRegister.FireMortar,n[1]};
+
+        }
+        throw new RuntimeException();
+    }
+    public static Fire FireParsing(String TxT){
+
+        switch (TxT){
+            case "Flame":
+                return FireRegister.FireFlame;
+            case "Acid":
+                return FireRegister.FireAcid;
+            case "Bullet":
+                return FireRegister.FireBullet;
+            case "Mortar":
+                return FireRegister.FireMortar;
 
         }
         throw new RuntimeException();

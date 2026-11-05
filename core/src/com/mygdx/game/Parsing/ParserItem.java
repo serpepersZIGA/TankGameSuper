@@ -89,8 +89,15 @@ public class ParserItem {
                 } else {
                     new Item(ID, Price,
                             new ArrayList<>(list), Image);
-                }
-                break;
+                }break;
+
+            case "Medicine":
+                list.add(TegItem.medicine);
+                if (Price != 0) {
+                    Inventory.AssortmentAdd(new Item(Hp,ID,list,Image,Price));
+                } else {
+                    new Item(Hp,ID,list,Image,Price);
+                }break;
         }
     }
     public static void AddBuilding(){
@@ -98,6 +105,7 @@ public class ParserItem {
         new File("ContentGlobal/Item").mkdirs();
         File armorB1 = new File("ContentGlobal/Item/armorB1.json");
         File SpawnUnit1 = new File("ContentGlobal/Item/M1.json");
+        File Medicine = new File("ContentGlobal/Item/Med1.json");
         String data = "{\n" +
                 "  \"TypeItem\": \"Upgrade\",\n" +
                 "  \"ArmorFront\": 20,\n" +
@@ -122,6 +130,14 @@ public class ParserItem {
                 "  \"Price\": 2\n" +
                 "}";
         Create(SpawnUnit1,data);
+
+        data = "{\n" +
+                "  \"TypeItem\": \"Medicine\",\n" +
+                "  \"Image\": \"Medicine\",\n" +
+                "  \"Hp\": 200,\n" +
+                "  \"Price\": 2\n" +
+                "}";
+        Create(Medicine,data);
 
 
     }

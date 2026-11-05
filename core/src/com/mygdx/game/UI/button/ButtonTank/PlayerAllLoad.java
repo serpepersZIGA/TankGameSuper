@@ -1,11 +1,9 @@
-package com.mygdx.game.unit.PlayerSpawnList;
+package com.mygdx.game.UI.button.ButtonTank;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.files.FileHandle;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.UI.button.Button;
-import com.mygdx.game.UI.button.ButtonTank.ListTankPlayerAdd;
-import com.mygdx.game.UI.button.ButtonTank.TankChoice;
 
 import static com.mygdx.game.main.ActionMenu.LenghtListTank;
 import static com.mygdx.game.UI.button.ButtonTank.TankChoice.TankChoiceList;

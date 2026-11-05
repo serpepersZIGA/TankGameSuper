@@ -18,6 +18,7 @@ public class Inventory implements Cloneable{
         switch (conf) {
             case 0:
             xySize = (int) sqrt(AssortmentList.size()) + 1;
+            //System.out.println(xySize);
             this.InventorySlots = new Item[xySize][xySize];
             int ii = 0;
             int i2 = 0;
@@ -27,6 +28,7 @@ public class Inventory implements Cloneable{
                 ii++;
                 if (ii == xySize) {
                     i2++;
+                    ii = 0;
                 }
 
             }

@@ -98,7 +98,7 @@ public class Corpus extends moduleUnit implements Cloneable{
         unit.tower_x_const = CenterCorpusX;
         unit.tower_y_const = CenterCorpusY;
         unit.corpus_img = image;
-        unit.difference = Difference;
+        unit.differenceY = Difference;
         for(int i = 0;i<functional.functional.size();i++){
             unit.functional.Add(functional.functional.get(i));
         }

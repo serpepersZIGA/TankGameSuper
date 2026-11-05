@@ -31,7 +31,7 @@ public class UnitPattern extends Unit {
         TowerUnitList = new ArrayList<>();
         this.TrackUnitList = new ArrayList<>();
         behavior = 3;
-        this.classUnit = ClassUnit.Transport;
+        //this.classUnit = ClassUnit.Transport;
         this.collision = TypeCollision.rect;
         this.CorpusUnit.CorpusLoad(this);
         this.EngineUnit.EngineLoad(this);
@@ -110,7 +110,7 @@ public class UnitPattern extends Unit {
             Tower.x = x;
             Tower.y = y;
             Tower.rotation_corpus = rotation_corpus;
-            Tower.UpdateTower();
+            TowerAction(Tower,Tower.rotation_tower);
         }
     }
     @Override final
@@ -128,7 +128,7 @@ public class UnitPattern extends Unit {
             Tower.x = x;
             Tower.y = y;
             Tower.rotation_corpus = rotation_corpus;
-            Tower.UpdateTower();
+            TowerAction(Tower,Tower.rotation_tower);
         }
     }
     public void update(){
@@ -162,5 +162,21 @@ public class UnitPattern extends Unit {
         center_render();
         animator.render(x_tower_rend,y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,
                 this.const_x_tower,this.const_y_tower,this.rotation_corpus,0);
+    }
+    private void TowerAction(Unit unit,float rotation){
+        for(Unit Tower : unit.TrackUnitList){
+            Tower.x = unit.tower_x;
+            Tower.y = unit.tower_y;
+            Tower.rotation_corpus = rotation;
+            TowerAction(Tower,rotation_tower);
+        }
+        unit.UpdateTower();
+        for(Unit Tower : unit.TowerUnitList){
+            Tower.x = unit.tower_x+tower_width_2+const_tower_x;
+            Tower.y = unit.tower_y+tower_height_2+const_tower_y;
+           // System.out.println(this.x+" "+this.y);
+            Tower.rotation_corpus = rotation;
+            TowerAction(Tower,rotation_tower);
+        }
     }
 }

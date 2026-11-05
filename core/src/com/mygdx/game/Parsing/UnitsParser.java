@@ -15,7 +15,7 @@ public class UnitsParser {
     public static ArrayList<String> Track;
     public static int [][] TowerXY,TrackXY;
     public static int []Side;
-    public static ClassUnit classUnit;
+    public static ClassUnit ClassUnit;
     public static int height;
     public static int HillHp;
 
@@ -35,7 +35,7 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY,Side, classUnit, HillHp,height);
+                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY,Side, ClassUnit, HillHp,height);
 
 
         }
@@ -62,6 +62,7 @@ public class UnitsParser {
         Side = obj.Side;
         HillHp = obj.MedicConf;
         height = obj.Height;
+        ClassUnit = Parser.ClassUnitParsing(obj.ClassUnit);
     }
     public static void AddBuilding(){
         new File("ContentGlobal").mkdirs();
@@ -85,7 +86,8 @@ public class UnitsParser {
                 "  \"Side\": [],\n" +
                 "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 2\n" +
+                "  \"Height\": 2,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
 
         Create(Helicopter2Z,data);
@@ -100,7 +102,8 @@ public class UnitsParser {
                 "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-9,0],[9,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
 
         Create(M1,data);
@@ -115,7 +118,8 @@ public class UnitsParser {
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"Side\": [0,1],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
 
         Create(Gb1M,data);
@@ -129,7 +133,8 @@ public class UnitsParser {
                 "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
 
         Create(Pz2A,data);
@@ -143,7 +148,8 @@ public class UnitsParser {
                 "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
         Create(Pz2AC,data);
         data = "{\n" +
@@ -156,7 +162,8 @@ public class UnitsParser {
                 "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
         Create(Pz2F,data);
         data = "{\n" +
@@ -169,7 +176,8 @@ public class UnitsParser {
                 "  \"Side\": [0,1],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
         Create(Pz2M,data);
 
@@ -184,8 +192,9 @@ public class UnitsParser {
                 "  \"Track\": [],\n" +
                 "  \"Side\": [],\n" +
                 "  \"TrackXY\": [],\n" +
-                "  \"MedicConf\": 1,\n" +
-                "  \"Height\": 1\n" +
+                "  \"MedicConf\": 3,\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"SupportTransport\"\n" +
                 "}";
         Create(TrackRemount,data);
         data = "{\n" +
@@ -198,7 +207,8 @@ public class UnitsParser {
                 "  \"Side\": [],\n" +
                 "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 0,\n" +
-                "  \"Height\": 1\n" +
+                "  \"Height\": 1,\n" +
+                "  \"ClassUnit\": \"Transport\"\n" +
                 "}";
         Create(TrackSoldat,data);
 
