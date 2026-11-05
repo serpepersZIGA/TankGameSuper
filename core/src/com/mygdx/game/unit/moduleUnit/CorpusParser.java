@@ -1,0 +1,271 @@
+package com.mygdx.game.unit.moduleUnit;
+
+import com.badlogic.gdx.Gdx;
+import com.badlogic.gdx.files.FileHandle;
+import com.mygdx.game.FunctionalComponent.FunctionalComponent;
+import com.mygdx.game.FunctionalComponent.FunctionalList;
+import com.mygdx.game.MapFunction.MapBaseAdd;
+import com.mygdx.game.Parsing.Parser;
+
+import java.io.*;
+
+import static com.mygdx.game.unit.moduleUnit.RegisterModuleCorpus.CorpusListID;
+
+public class CorpusParser {
+    public static int MaxHP, ArmorFront,ArmorCenter,ArmorBack,CorpusWidth,CorpusHeight,Difference,CorrectX,CorrectY;
+    public static String Image;
+    public static FunctionalList List;
+    public static boolean ConfControl;
+
+    public static void ParsCorpus(){
+        FileHandle[] files = Gdx.files.internal("ContentGlobal/Module/Corpus").list();
+        if(files.length== 0){
+            AddBuilding();
+            files = Gdx.files.internal("ContentGlobal/Module/Corpus").list();
+        }
+        for (FileHandle file: files) {
+            //System.out.println(file.path());
+            Scan(file.path());
+//            for (int i = file.name().length()-4;i<file.name().length();i++){
+//                Name = file.name().replace(".bld");
+//            }
+//            StructBuffer = new boolean[][]{{true,true},
+//                    {true,true}};
+
+            CorpusListID.add(new Object[]{
+                    new Corpus(file.name().replace(".Corpus","")
+                            ,MaxHP, ArmorFront,ArmorCenter,ArmorBack,CorpusWidth,CorpusHeight,Difference
+                            ,Image,List,CorrectX,CorrectY)
+                    ,file.name().replace(".Corpus","")});
+            List = new FunctionalList();
+            //List.Clear();
+            //System.out.println(BuildRegister.BuildingID.size());
+
+        }
+        //System.out.println(CorpusListID.size());
+
+
+    }
+    public static void Scan(String Path) {
+        List = new FunctionalList();
+        Object[]obj;
+        String TxT = "";
+        char c;
+        StringBuilder result = new StringBuilder();
+        try (BufferedReader br = new BufferedReader(new FileReader(Path))) {
+            result.append(br.readLine());
+
+        } catch (IOException e) {
+            e.printStackTrace();
+            MapBaseAdd.AddMap();
+            try {
+                BufferedReader br = new BufferedReader(new FileReader(Path));
+                result.append(br.readLine());
+            } catch (IOException ignored) {
+            }
+        }
+        FileHandle file = Gdx.files.internal(Path);
+        TxT = file.readString();
+        String TotalTxT = "";
+
+
+        for (int i = 0; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+
+            if(c != '\n' &  c != ' ' & c != '=' & c != '{'& c != '}'){
+                TotalTxT = TotalTxT + c;
+            }
+            //System.out.println(TotalTxT);
+            switch (TotalTxT.trim()) {
+                case "CorrectX":
+                    obj = Parser.IntegerPars(TxT,i);
+                    CorrectX = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "CorrectY":
+                    obj = Parser.IntegerPars(TxT,i);
+                    CorrectY = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "MaxHP":
+                    obj = Parser.IntegerPars(TxT,i);
+                    MaxHP = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "ArmorFront":
+                    obj = Parser.IntegerPars(TxT,i);
+                    ArmorFront = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "ArmorCenter":
+                    obj = Parser.IntegerPars(TxT,i);
+                    ArmorCenter = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "ArmorBack":
+                    obj = Parser.IntegerPars(TxT,i);
+                    ArmorBack = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "CorpusWidth":
+                    obj = Parser.IntegerPars(TxT,i);
+                    CorpusWidth = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+
+                case "CorpusHeight":
+                    obj = Parser.IntegerPars(TxT,i);
+                    CorpusHeight = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+
+                case "Difference":
+                    obj = Parser.IntegerPars(TxT,i);
+                    Difference = (int) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "Image":
+                    obj = Parser.TextPars(TxT,i);
+                    Image = (String) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+                case "func.Add":
+                    obj = Parser.ComponentParsing(TxT,i);
+                    FunctionalComponent comp =(FunctionalComponent)obj[0];
+                    //System.out.println(comp);
+                    List.Add(comp);
+                    //ConfControl = (boolean) obj[0];
+                    i = (int) obj[1];
+                    TotalTxT = "";
+                    break;
+
+            }
+        }
+
+
+    }
+    public static void AddBuilding(){
+        new File("ContentGlobal").mkdirs();
+        new File("ContentGlobal/Module").mkdirs();
+        new File("ContentGlobal/Module/Corpus").mkdirs();
+        File Panzer1 = new File("ContentGlobal/Module/Corpus/Panzer1.Corpus");
+        File At2E = new File("ContentGlobal/Module/Corpus/At2E.Corpus");
+        File HelicopterCorpus1 = new File("ContentGlobal/Module/Corpus/HelicopterCorpus1.Corpus");
+        File CorpusM1 = new File("ContentGlobal/Module/Corpus/CorpusM1.Corpus");
+
+        File CorpusRemountTrackR1 = new File("ContentGlobal/Module/Corpus/CorpusRemountTrackR1.Corpus");
+        File CorpusSoldatTrackS1 = new File("ContentGlobal/Module/Corpus/CorpusSoldatTrackS1.Corpus");
+        String data = "MaxHP = 1700;\n" +
+                "ArmorFront = 55;\n" +
+                "ArmorCenter = 35;\n" +
+                "ArmorBack = 25;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 145;\n" +
+                "Difference = 18;\n" +
+                "Image = CorpusAT;\n" +
+                "CorrectX = 0;\n" +
+                "CorrectY = 0;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(At2E,data);
+         data = "MaxHP = 700;\n" +
+                 "ArmorFront = 20;\n" +
+                 "ArmorCenter = 20;\n" +
+                 "ArmorBack = 10;\n" +
+                 "CorpusWidth = 76;\n" +
+                 "CorpusHeight = 220;\n" +
+                 "Difference = 18;\n" +
+                 "Image = helicopter_enemy_t1;\n" +
+                 "\n" +
+                 "func.Add ComponentTowerIteration;\n" +
+                 "func.Add ComponentTowerXY;";
+        Create(HelicopterCorpus1,data);
+        data = "MaxHP = 1200;\n" +
+                "ArmorFront = 35;\n" +
+                "ArmorCenter = 20;\n" +
+                "ArmorBack = 10;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 130;\n" +
+                "Difference = 18;\n" +
+                "Image = corpus_enemy;\n" +
+                "CorrectX = 0;\n" +
+                "CorrectY = 0;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(Panzer1,data);
+        data = "MaxHP = 200;\n" +
+                "ArmorFront = 5;\n" +
+                "ArmorCenter = 5;\n" +
+                "ArmorBack = 5;\n" +
+                "CorpusWidth = 18;\n" +
+                "CorpusHeight = 45;\n" +
+                "Difference = 5;\n" +
+                "Image = CorpusM1;\n" +
+                "CorrectX = 0;\n" +
+                "CorrectY = 0;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;";
+        Create(CorpusM1,data);
+
+        data = "MaxHP = 520;\n" +
+                "ArmorFront = 12;\n" +
+                "ArmorCenter = 5;\n" +
+                "ArmorBack = 5;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 130;\n" +
+                "Difference = 18;\n" +
+                "Image = machine_enemy_1lvl;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;\n" +
+                "func.Add ComponentHill;";
+        Create(CorpusRemountTrackR1,data);
+        data = "MaxHP = 520;\n" +
+                "ArmorFront = 12;\n" +
+                "ArmorCenter = 5;\n" +
+                "ArmorBack = 5;\n" +
+                "CorpusWidth = 50;\n" +
+                "CorpusHeight = 130;\n" +
+                "Difference = 18;\n" +
+                "Image = machine_enemy_1lvl;\n" +
+                "\n" +
+                "func.Add ComponentTowerIteration;\n" +
+                "func.Add ComponentBuildingCollision;\n" +
+                "func.Add ComponentTowerXY;\n" +
+                "func.Add ComponentSoldatSpawn;";
+        Create(CorpusSoldatTrackS1,data);
+
+
+    }
+    private static void Create(File file, String str){
+        try {
+            file.createNewFile();
+        } catch (IOException ignored) {
+        }
+        try {
+            PrintWriter out = new PrintWriter(file);
+            out.println(str);
+            out.close();
+        } catch (IOException ignored) {
+        }
+
+    }
+
+}

@@ -1,0 +1,22 @@
+{
+  "TypeShot": "ComponentFireTankCumulativeControl",
+  "Fire": "Flame",
+  "Image":"FlameGun",
+  "Damage": 20,
+  "Penetration": 3,
+  "DamageFragment": 0,
+  "PenetrationFragment": 0,
+  "TemperatureDamage": 0,
+  "ReloadMax": 5,
+  "TimeBullet": 200,
+  "TegList": ["intimately"],
+  "AmountFragment": 0,
+  "SpeedBullet": 5,
+  "Sound": 5,
+  "QuantityShots": 30,
+  "ReloadBetweenShots": 0,
+  "ReloadShots": 0,
+  "ReloadUP": 2,
+  "OneShot": 5,
+  "Price": 2
+}

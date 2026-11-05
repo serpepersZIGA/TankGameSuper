@@ -1,0 +1,201 @@
+package com.mygdx.game.Inventory;
+
+import com.mygdx.game.main.Main;
+import com.mygdx.game.unit.ClassUnit;
+import com.mygdx.game.unit.Controller.ControllerBot;
+import com.mygdx.game.unit.Unit;
+import com.mygdx.game.unit.moduleUnit.Gun;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static com.mygdx.game.main.Main.GameHost;
+import static com.mygdx.game.main.Main.Option;
+import static com.mygdx.game.unit.Unit.IDList;
+
+public class Item implements Cloneable{
+    public String ID,IDSpawnUnit;
+    public static HashMap<String,Item>IDListItem = new HashMap<>();
+    public String image;
+    public TypeItem typeItem;
+    public ArrayList<TegItem>teg;
+    public Gun gun;
+    public int TimeCooldown;
+    public int HPHill,Price;
+    public float HPPercent,HP, ArmorFront, ArmorFrontPercent,
+            ArmorBack, ArmorBackPercent,ArmorCenter, ArmorCenterPercent
+    ,DamagePercent,PenetrationPercent,
+            MoveUPPercent,MoveDownPercent, AccelerationPercent;
+    public Item(Gun gun,ArrayList<TegItem>teg){
+        this.teg = teg;
+        this.gun = gun;
+        this.typeItem = TypeItem.Gun;
+    }
+    public Item(float HPPercent, float HP, float ArmorFront, float ArmorFrontPercent
+            , float ArmorCenter, float ArmorCenterPercent
+            , float ArmorBack, float ArmorBackPercent
+            , float DamagePercent, float PenetrationPercent,
+                int MoveUPPercent, int MoveDownPercent, int AccelerationPercent, int Price
+            , String ID, ArrayList<TegItem>teg, String image){
+        this.teg = teg;
+        this.ID = ID;
+        this.Price = Price;
+        this.HPPercent = HPPercent;
+        this.ArmorFront = ArmorFront;
+        this.ArmorFrontPercent = ArmorFrontPercent;
+
+        this.ArmorBack = ArmorBack;
+        this.ArmorBackPercent = ArmorBackPercent;
+
+        this.ArmorCenter = ArmorCenter;
+        this.ArmorCenterPercent = ArmorCenterPercent;
+
+        this.DamagePercent = DamagePercent;
+        this.HP = HP;
+        this.PenetrationPercent = PenetrationPercent;
+        this.MoveUPPercent = MoveUPPercent;
+        this.MoveDownPercent = MoveDownPercent;
+        this.AccelerationPercent = AccelerationPercent;
+
+        this.image = image;
+        this.typeItem = TypeItem.Upgrade;
+        IDListItem.put(ID,this);
+    }
+    public Item(
+            String ID,int Price, ArrayList<TegItem>teg, String image){
+        this.teg = teg;
+        this.ID = ID;
+        this.Price = Price;
+        this.IDSpawnUnit = ID;
+
+        this.image = image;
+        this.typeItem = TypeItem.Spawner;
+        IDListItem.put(ID,this);
+    }
+    public Item(Gun gun,String ID,ArrayList<TegItem>teg,String image,int Price){
+        this.teg = teg;
+        this.ID = ID;
+        this.gun = gun;
+        this.Price =Price;
+        this.image = image;
+        this.typeItem = TypeItem.Gun;
+        IDListItem.put(ID,this);
+    }
+    public Item(int HPHill,String ID,ArrayList<TegItem>teg,String image,int Price){
+        this.teg = teg;
+        this.ID = ID;
+        this.HPHill = HPHill;
+        this.Price = Price;
+
+        this.image = image;
+        this.typeItem = TypeItem.Medic;
+        IDListItem.put(ID,this);
+    }
+    public boolean Use(Unit unit){
+
+        switch (typeItem) {
+            case Gun:
+                //unit.GunUse.Reload = unit.reload;
+                //unit.reload = this.Reload;
+                //unit.GunUse = this;
+                if(unit.classUnit == ClassUnit.Soldat) {
+                    gun.GunLoad(unit);
+                }
+//                else if(unit.classUnit == ClassUnit.Transport){
+//                    for(Unit tower : unit.tower_obj) {
+//                        gun.GunLoad(tower);
+//                    }
+//                }
+                break;
+            case Medic:
+                if(unit.max_hp>=unit.hp+HPHill){
+                    unit.hp+=HPHill;
+                    unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                    return true;
+
+                }
+                break;
+                case Upgrade:
+                {
+                    //UpgradeUse(unit);
+
+                }
+                break;
+            case Spawner:
+                if(GameHost) {
+                    IDList.get(IDSpawnUnit).UnitAdd((int) unit.x, (int) unit.y, true, unit.team
+                            , Main.RegisterControl.controllerBot, new Inventory(new Item[1][1], 1)
+                            , new Inventory(new Item[1][1], 1),0);
+                }
+                return true;
+
+
+
+        }
+        return false;
+
+    }
+    public void UseNull(Unit unit){
+        switch (typeItem){
+            case Gun:
+                gun.GunLoad(unit);
+                break;
+            case Medic:
+                if(unit.max_hp>=unit.hp+HPHill){
+                    unit.hp+=HPHill;
+                }
+                break;
+        }
+    }
+    public Item clone(){
+        try {
+            return (Item) super.clone();
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+
+    }
+    public void UpgradeUse(Unit unit){
+        unit.max_hp+= (int) HP;
+        unit.armorFront += ArmorFront;
+        unit.armorBack += ArmorBack;
+        unit.armorCenter += ArmorCenter;
+        //unit.hp += (int) HP;
+        unit.max_hp += (int) (unit.HpBase * HPPercent*0.01f);
+        //unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
+        unit.armorFront += (int) (unit.ArmorFrontBase * ArmorFrontPercent *0.01f);
+        unit.armorBack += (int) (unit.ArmorBackBase * ArmorFrontPercent *0.01f);
+        unit.armorCenter += (int) (unit.ArmorCenterBase * ArmorFrontPercent *0.01f);
+        unit.Acceleration +=  unit.AccelerationBase * AccelerationPercent*0.01f;
+        unit.SpeedUp += unit.SpeedUpBase *MoveUPPercent*0.01f;
+        unit.SpeedDown += unit.SpeedDownBase *MoveDownPercent*0.01f;
+
+        for (Unit cannon : unit.TowerUnitList) {
+            cannon.damage += (int) (cannon.DamageBase*DamagePercent*0.01);
+        }
+        for (Unit cannon : unit.TowerUnitList) {
+            cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01f);
+        }
+        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+    }
+    public void UpgradeUnUse(Unit unit){
+        unit.max_hp-= (int) HP;
+        unit.armorFront -= ArmorFront;
+        //unit.hp += (int) HP;
+        unit.max_hp -= (int) (unit.HpBase * HPPercent*0.01f);
+        unit.hp -= (int) (unit.HpBase * HPPercent*0.01f);
+        unit.armorFront -= (int) (unit.ArmorFrontBase * ArmorFrontPercent *0.01f);
+        unit.Acceleration -=  unit.AccelerationBase * AccelerationPercent*0.01f;
+        unit.SpeedUp -= unit.SpeedUpBase *MoveUPPercent*0.01f;
+        unit.SpeedDown -= unit.SpeedDownBase *MoveDownPercent*0.01f;
+
+        for (Unit cannon : unit.TowerUnitList) {
+            cannon.damage -= (int) (cannon.DamageBase*DamagePercent*0.01);
+        }
+        for (Unit cannon : unit.TowerUnitList) {
+            cannon.penetration -= (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
+        }
+        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+    }
+
+}

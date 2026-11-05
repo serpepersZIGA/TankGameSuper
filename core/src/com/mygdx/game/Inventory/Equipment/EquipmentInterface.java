@@ -1,0 +1,82 @@
+package com.mygdx.game.Inventory.Equipment;
+
+import com.mygdx.game.Inventory.*;
+import com.mygdx.game.unit.Unit;
+
+import static com.mygdx.game.main.Main.*;
+
+public class EquipmentInterface extends InventoryInterface {
+    public EquipmentInterface(Inventory inventory){
+        this.inventory = inventory;
+        WindowName = new WindowName();
+        InventoryType = true;
+        XInterface = inventory.InventorySlots.length;
+        YInterface = inventory.InventorySlots[0].length;
+        SlotInventory = new Slot[XInterface][YInterface];
+        this.x = 220;this.y = 220;
+        WidthWindow = XSlots*XInterface;
+        HeightWindow = YSlots*YInterface+Table;
+        TableTxT = "Equipment";
+        TableSize();
+        SlotGeneration();
+    }
+    @Override final
+    public void InventoryRefactor(Inventory inventory){
+        this.inventory = inventory;
+        WindowName = new WindowName();
+        InventoryType = true;
+        XInterface = inventory.InventorySlots.length;
+        YInterface = inventory.InventorySlots[0].length;
+        SlotInventory = new Slot[XInterface][YInterface];
+        this.x = 220;this.y = 220;
+        WidthWindow = XSlots*XInterface;
+        HeightWindow = YSlots*YInterface+Table;
+        TableTxT = "Equipment";
+        TableSize();
+        SlotGeneration();
+    }
+    public void InventoryReload(Unit unit){
+        StrengtheningInitialization(unit);
+        for(int ix = 0;ix<unit.equipment.InventorySlots.length;ix++){
+            for(int iy = 0;iy<unit.equipment.InventorySlots[ix].length;iy++) {
+                if (unit.equipment.InventorySlots[ix][iy] != null) {
+                    if (unit.equipment.InventorySlots[ix][iy].typeItem == TypeItem.Upgrade) {
+                        unit.equipment.InventorySlots[ix][iy].UpgradeUse(unit);
+                    }
+                }
+            }
+        }
+    }
+
+    public void StrengtheningInitialization(Unit unit){
+        //unit.max_hp+= (int) HP;
+        //unit.armor+= Armor;
+        //unit.hp += (int) HP;
+        unit.max_hp = unit.HpBase;
+        //unit.hp = unit.HpBase;
+        unit.armorFront = unit.ArmorFrontBase;
+        unit.Acceleration =  unit.AccelerationBase;
+        unit.SpeedUp = unit.SpeedUpBase;
+        unit.SpeedDown = unit.SpeedDownBase;
+
+        for (Unit cannon : unit.TowerUnitList) {
+            cannon.damage = (int) cannon.DamageBase;
+        }
+        for (Unit cannon : unit.TowerUnitList) {
+            cannon.penetration = cannon.PenetrationBase;
+        }
+
+
+        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+//        for(int i = 0;i<inventory.InventorySlots.length;i++){
+//            for(int i2 = 0;i2<inventory.InventorySlots[i].length;i2++){
+//                Item item = inventory.InventorySlots[i][i2];
+//                if(item != null) {
+//                    item.Use(unit);
+//                    //inventory.InventorySlots[i][i2].
+//                }
+//            }
+//        }
+    }
+
+}

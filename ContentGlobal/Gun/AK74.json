@@ -1,0 +1,22 @@
+{
+  "TypeShot": "ComponentFireDrumControl",
+  "Fire": "Bullet",
+  "Image":"AK74",
+  "Damage": 20,
+  "Penetration": 3,
+  "DamageFragment": 0,
+  "PenetrationFragment": 0,
+  "TemperatureDamage": 0,
+  "ReloadMax": 400,
+  "TimeBullet": 200,
+  "TegList": ["afar"],
+  "AmountFragment": 0,
+  "SpeedBullet": 12,
+  "Sound": 10,
+  "QuantityShots": 10,
+  "ReloadBetweenShots": 4,
+  "ReloadShots": 0,
+  "ReloadUP": 2,
+  "OneShot": 5,
+  "Price": 2
+}

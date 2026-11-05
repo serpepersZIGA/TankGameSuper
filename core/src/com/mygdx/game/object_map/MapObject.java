@@ -1,0 +1,197 @@
+package com.mygdx.game.object_map;
+
+import com.badlogic.gdx.graphics.Color;
+import com.mygdx.game.Inventory.Inventory;
+import com.mygdx.game.Inventory.Item;
+import com.mygdx.game.Network.PacketMapObject;
+import com.mygdx.game.Shader.LightingMainSystem;
+import com.mygdx.game.block.Block;
+import com.mygdx.game.main.Main;
+import com.mygdx.game.method.RenderMethod;
+import com.mygdx.game.method.rand;
+import com.mygdx.game.object_map.component_collision_system.CollisionBreak;
+import com.mygdx.game.object_map.component_collision_system.CollisionSlow;
+import com.mygdx.game.object_map.component_collision_system.CollisionVoid;
+import com.mygdx.game.object_map.component_collision_system.ComponentCollisionSystem;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+
+import static Data.DataColor.RGBFlame;
+import static Data.DataImage.TextureAtl;
+import static com.mygdx.game.main.Main.*;
+import static com.mygdx.game.unit.Unit.IDList;
+
+public class MapObject implements Cloneable{
+    public static ArrayList<PacketMapObject> PacketMapObjects = new ArrayList<>();
+    public static ArrayList<int[]>SpawnerList = new ArrayList<>();
+    public static ArrayList<int[]> RespawnPointList = new ArrayList<>();
+    public int width,height,hp,y,x,ix,iy;
+    public int width_render,height_render;
+    public String img,CollisionBuff;
+    public float distance_lighting,distance_lighting_2;
+    protected boolean Respawn,SpawnUnit;
+    public ComponentCollisionSystem Collision;
+    public String assets;
+    public LightingMainSystem.Light light;
+    public byte team;
+    public boolean lighting;
+    public static HashMap<String,MapObject> ObjectMapIDList=new HashMap<>();
+    public MapObject(){
+    }
+    public MapObject(String img, int width, int height, int hp, int ix, int iy,
+                     String collision,boolean lighting,float distance_lighting,boolean SpawnUnit,String assets,boolean
+                     Respawn){
+        this.ix = ix;
+        this.iy = iy;
+        this.width = width;
+        this.lighting = lighting;
+        this.height = height;
+        this.width_render = (int) (width*Main.Zoom);
+        this.height_render = (int) (height*Main.Zoom);
+        this.distance_lighting = distance_lighting;
+        this.SpawnUnit = SpawnUnit;
+        this.hp = hp;
+        this.img = img;
+        this.Respawn = Respawn;
+        this.assets = assets;
+        ObjectMapIDList.put(assets,this);
+        CollisionBuff = collision;
+        //center_render();
+//        switch (collision){
+//            case "CollisionBreak":Collision = new CollisionBreak(ix,iy,width,height);
+//            case "CollisionSlow":Collision = new CollisionSlow(ix,iy,width,height);
+//            case "CollisionVoid":Collision = new CollisionVoid();
+//        }
+    }
+    public void MapObjectAdd(int x,int y,int t){
+        try {
+            MapObject obj = (MapObject) this.clone();
+            BlockList2D.get(y).get(x).objMap = obj;
+
+            obj.x = x*Main.width_block+ix;
+            obj.y = y*Main.width_block +iy;
+            obj.team = (byte) t;
+
+            if(this.lighting){
+                obj.lighting = true;
+                obj.light = LightSystem.addLight().set(obj.x,obj.y
+                        ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
+                        4f,distance_lighting,0.2f);
+                //light.radius = distance_lighting;
+
+            }
+            switch (this.CollisionBuff){
+                case "CollisionBreak":obj.Collision = new CollisionBreak(obj.x,obj.y,width,height);
+                break;
+                case "CollisionSlow":obj.Collision = new CollisionSlow(obj.x,obj.y,width,height);
+                    break;
+                case "CollisionVoid":obj.Collision = new CollisionVoid();
+                    break;
+            }
+            if(this.SpawnUnit){
+                SpawnerList.add(new int[]{y,x,t});
+            }
+            if(this.Respawn){
+                RespawnPointList.add(new int[]{y,x,t});
+            }
+
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void MapObjectAdd(float x,float y){
+        try {
+            int ix = (int) (x*Main.WidthBlockDivided+1);
+            int iy = (int) (y*Main.WidthBlockDivided+1);
+            BlockList2D.get(iy).get(ix).objMap = (MapObject) this.clone();
+            MapObject obj = BlockList2D.get(iy).get(ix).objMap;
+            obj.x = (int) x;
+            obj.y = (int) y;
+            if(lighting){
+                obj.light = LightSystem.addLight().set(obj.x,obj.y
+                        ,new Color(RGBFlame[0],RGBFlame[1],RGBFlame[2],0.3f),
+                        4f,distance_lighting,0.2f);
+                //light.radius = distance_lighting;
+
+            }
+            switch (CollisionBuff){
+                case "CollisionBreak":obj.Collision = new CollisionBreak(obj.x,obj.y,width,height);
+                    break;
+                case "CollisionSlow":obj.Collision = new CollisionSlow(obj.x,obj.y,width,height);
+                    break;
+                case "CollisionVoid":obj.Collision = new CollisionVoid();
+                    break;
+            }
+            if(SpawnUnit){
+                SpawnerList.add(new int[]{iy,ix});
+            }
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+
+    public void render(){
+        int[]xy = Main.RC.render_objZoom(this.x,this.y);
+        //if(lighting)Block.LightingAirObject(xy[0],xy[1],RGBFlame,distance_lighting*Main.Zoom);
+
+        RenderMethod.transorm_img(xy[0],xy[1],width_render,height_render,TextureAtl.createSprite(img));
+    }
+    public static void SpawnWave(){
+        for(int[] i : SpawnerList){
+            Spawn(BlockList2D.get(i[0]).get(i[1]),(byte) i[2]);
+        }
+    }
+    public static void SpawnPlayer(String unit,boolean host,byte team,int nConnect){
+        if(RespawnPoint != null){
+            IDList.get(unit).UnitAdd(RespawnPoint[1]*width_block, RespawnPoint[0]*width_block, host,team, RegisterControl.controllerPlayer
+                    , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),nConnect);
+            KeyboardObj.ZoomConstTransport();
+            return;
+        }
+        for(int[] i : RespawnPointList){
+            if(i[2] == team) {
+                IDList.get(unit).UnitAdd(i[0]*width_block, i[1]*width_block, host,team, RegisterControl.controllerPlayer
+                        , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),nConnect);
+                KeyboardObj.ZoomConstTransport();
+                return;
+            }
+            //Spawn(BlockList2D.get(i[0]).get(i[1]),(byte) i[2]);
+        }
+    }
+    private static void Spawn(Block block,byte t){
+        int h = rand.rand(6);
+        switch (h) {
+            case 0:{
+                IDList.get("Pz-2M").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            } case 1:{
+                IDList.get("Pz-2A").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            }
+            case 2:{
+                IDList.get("Pz-2AC").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            }
+            case 3:{
+                IDList.get("Gb-1M").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBot, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+                break;
+            }
+            case 4:{
+                IDList.get("TrSolS1").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBotSupport, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+            }
+            break;
+            case 5:{
+                IDList.get("TrRemR1").UnitAdd(block.x, block.y, true, t,
+                        RegisterControl.controllerBotSupport, new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),0);
+            }
+            break;
+        }
+
+    }
+}

@@ -1,0 +1,11 @@
+MaxHP = 700;
+ArmorFront = 20;
+ArmorCenter = 20;
+ArmorBack = 10;
+CorpusWidth = 76;
+CorpusHeight = 220;
+Difference = 18;
+Image = helicopter_enemy_t1;
+
+func.Add ComponentTowerIteration;
+func.Add ComponentTowerXY;

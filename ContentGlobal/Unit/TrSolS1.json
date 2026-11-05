@@ -1,0 +1,13 @@
+{
+  "Engine": "V2A",
+  "Corpus": "CorpusSoldatTrackS1",
+  "Cannon": [],
+  "TowerXY": [],
+
+  "Track": [],
+  "Side": [],
+  "TrackXY": [],
+  "MedicConf": 0,
+  "Height": 1,
+  "ClassUnit": "Transport"
+}
