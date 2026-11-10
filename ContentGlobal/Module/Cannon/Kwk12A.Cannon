@@ -17,7 +17,6 @@ TowerY = 20;
 Fire = Bullet;
 Image = tower_enemy;
 
-func.Add = ComponentTowerXY;
 func.Add = ComponentTowerControl;
 func.Add = ComponentFireControl;
 

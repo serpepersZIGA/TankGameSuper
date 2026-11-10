@@ -23,7 +23,6 @@ TowerY = 20;
 Fire = Bullet;
 Image = machinegun;
 
-func.Add = ComponentTowerXY;
 func.Add = ComponentTowerControl;
 func.Add = ComponentFireDrumControl;
 

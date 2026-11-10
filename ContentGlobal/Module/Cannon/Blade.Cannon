@@ -17,7 +17,6 @@ TowerY = 0;
 Fire = Flame;
 Image = helicopter_blade;
 
-func.Add = ComponentTowerXY;
 func.Add = ComponentWorkBlade;
 
 

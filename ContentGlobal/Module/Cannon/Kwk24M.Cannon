@@ -3,8 +3,8 @@ HeightTower = 16;
 ConstTowerX = 77;
 ConstTowerY = 8;
 SpeedRotationTower = 1;
-Damage = 0;
-Penetration = 12;
+Damage = 100;
+Penetration = 100;
 DamageFragment = 0;
 PenetrationFragment = 0;
 TemperatureDamage = 0;
@@ -19,7 +19,6 @@ Image = gunTank;
 MaxRotate = 20;
 RotateBase = 90;
 
-func.Add = ComponentTowerXY;
 func.Add = ComponentNotTowerControl;
 func.Add = ComponentFireControl;
 

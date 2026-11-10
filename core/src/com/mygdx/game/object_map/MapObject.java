@@ -144,16 +144,20 @@ public class MapObject implements Cloneable{
     }
     public static void SpawnPlayer(String unit,boolean host,byte team,int nConnect){
         if(RespawnPoint != null){
-            IDList.get(unit).UnitAdd(RespawnPoint[1]*width_block, RespawnPoint[0]*width_block, host,team, RegisterControl.controllerPlayer
-                    , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),nConnect);
-            KeyboardObj.ZoomConstTransport();
+            if(unit != null && !unit.isEmpty()) {
+                IDList.get(unit).UnitAdd(RespawnPoint[1] * width_block, RespawnPoint[0] * width_block, host, team, RegisterControl.controllerPlayer
+                        , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1), nConnect);
+                KeyboardObj.ZoomConstTransport();
+            }
             return;
         }
         for(int[] i : RespawnPointList){
             if(i[2] == team) {
-                IDList.get(unit).UnitAdd(i[0]*width_block, i[1]*width_block, host,team, RegisterControl.controllerPlayer
-                        , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1),nConnect);
-                KeyboardObj.ZoomConstTransport();
+                if(unit != null && !unit.isEmpty()){
+                    IDList.get(unit).UnitAdd(i[0] * width_block, i[1] * width_block, host, team, RegisterControl.controllerPlayer
+                            , new Inventory(new Item[4][4], 1), new Inventory(new Item[2][2], 1), nConnect);
+                    KeyboardObj.ZoomConstTransport();
+                }
                 return;
             }
             //Spawn(BlockList2D.get(i[0]).get(i[1]),(byte) i[2]);

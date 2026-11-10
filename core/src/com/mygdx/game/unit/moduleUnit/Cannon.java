@@ -33,8 +33,8 @@ public class Cannon extends moduleUnit implements Cloneable{
     public float corpus_height_2;
     public String ID;
     public ArrayList<int[]>xy = new ArrayList<>();
-    public ArrayList<Cannon> Tower = new ArrayList<>();
-    public ArrayList<Integer> z = new ArrayList<>();
+    public ArrayList<String> TowerStr = new ArrayList<>();
+    public ArrayList<Integer> z = new ArrayList<>(),r = new ArrayList<>();
     //public static ArrayList
     public FunctionalList functional = new FunctionalList();
     public float damage_fragment, penetration_fragment, TemperatureDamage,
@@ -110,15 +110,15 @@ public class Cannon extends moduleUnit implements Cloneable{
                   float damage, float penetration
             , float damage_fragment, float penetration_fragment, float TemperatureDamage, int SizeBullet, int ReloadMax,
                   float SpeedBullet, int TimeBullet, int TimeBulletRand,int TowerX,int TowerY, Fire fire,String image,FunctionalList functional
-            ,Sound sound,int AmountFragment,int MaxRotate,int RotateBase,
+            ,Sound sound,int AmountFragment,int MaxRotate,
                   float ReloadUP,float OneShot,int ReloadBetweenShots,int ReloadShots,int QuantityShots,
-                  ArrayList<Cannon> Tower,ArrayList<int[]>xy,ArrayList<Integer>z){
-        this.Tower = Tower;
+                  ArrayList<String> Tower,ArrayList<int[]>xy,ArrayList<Integer>z,ArrayList<Integer>r){
+        this.TowerStr = Tower;
         this.xy = xy;
         this.z = z;
+        this.r = r;
         this.ID = ID;
         this.MaxRotate = MaxRotate;
-        this.RotateBase = RotateBase;
         CannonListID.add(new Object[]{this,ID});
         this.AmountFragment = AmountFragment;
         this.WidthTower = WidthTower;
@@ -150,7 +150,7 @@ public class Cannon extends moduleUnit implements Cloneable{
         this.functional = functional.clone();
         this.sound = sound;
     }
-    public Cannon CannonAdd(Unit unit,int differenceX,int differenceY){
+    public Cannon CannonAdd(Unit unit,int differenceX,int differenceY,int RotateBase){
         Cannon CannonAdd;
         try {
             CannonAdd = (Cannon) this.clone();
@@ -159,6 +159,7 @@ public class Cannon extends moduleUnit implements Cloneable{
 
             CannonAdd.CenterX = unit.CorpusUnit.corpus_width_2-ConstTowerX;
             CannonAdd.CenterY = unit.CorpusUnit.corpus_height_2-ConstTowerY;
+            CannonAdd.RotateBase = RotateBase;
 
             //CannonAdd.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
             //float[]xy = Method.tower_xy_2(0,0,)
@@ -171,15 +172,16 @@ public class Cannon extends moduleUnit implements Cloneable{
         }
         return CannonAdd;
     }
-    public Cannon CannonAdd2(Unit unit,int differenceX,int differenceY){
+    public Cannon CannonAdd2(Unit unit,int differenceX,int differenceY,int Rotate){
         Cannon CannonAdd;
         try {
             CannonAdd = (Cannon) this.clone();
             CannonAdd.differenceX = differenceX;
             CannonAdd.differenceY = differenceY;
+            CannonAdd.RotateBase  = Rotate;
 
-            CannonAdd.CenterX = (int) (0);
-            CannonAdd.CenterY = (int) (0);
+            CannonAdd.CenterX = (int) (unit.tower_width_2-CannonAdd.ConstTowerX);
+            CannonAdd.CenterY = (int) (unit.tower_height_2-CannonAdd.ConstTowerY);
 
             CannonAdd.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
             //float[]xy = Method.tower_xy_2(0,0,)
@@ -200,29 +202,44 @@ public class Cannon extends moduleUnit implements Cloneable{
         return CannonAdd;
     }
     public void CannonAddInit(Unit unit){
+        ArrayList<Cannon>Tower = new ArrayList<>();
+        for(String str : TowerStr){
+            //System.out.println(str);
+            for(Object[] obj :CannonListID){
+                //System.out.println(Build+" "+obj[1]);
+                if(Objects.equals(obj[1],str)){
+                    //cannon = (Cannon)obj[0];
+                    Tower.add((Cannon)obj[0]);
+                    break;
+
+                }
+            }
+        }
         for(int i = 0;i<Tower.size();i++){
             Cannon cannonAdd = Tower.get(i);
             if(z.get(i) == 0) {
                 unit.TowerUnitList.add(new UnitPattern(cannonAdd
-                        .CannonAdd2(unit, xy.get(i)[0], xy.get(i)[1]), unit));
+                        .CannonAdd2(unit, xy.get(i)[0], xy.get(i)[1],r.get(i)), unit));
             }
             else{
                 unit.TrackUnitList.add(new UnitPattern(cannonAdd
-                        .CannonAdd2(unit, xy.get(i)[0], xy.get(i)[1]), unit));
+                        .CannonAdd2(unit, xy.get(i)[0], xy.get(i)[1],r.get(i)), unit));
             }
         }
     }
-    public static Cannon CannonAdd(String string,Unit unit,int differenceX,int differenceY){
+    public static Cannon CannonAdd(String string,Unit unit,int differenceX,int differenceY,int RotateBase){
         Cannon cannon = null;
         try {
             for(Object[] cannon1 : CannonListID) {
                 if(Objects.equals(cannon1[1], string)) {
                     cannon = (Cannon)cannon1[0];
+                    break;
                 }
             }
             cannon = (Cannon) cannon.clone();
             cannon.differenceX = differenceX;
             cannon.differenceY = differenceY;
+            cannon.RotateBase = RotateBase;
 
 
             cannon.differenceTotal = (float) sqrt(pow2(differenceX)+pow2(differenceY));
@@ -246,10 +263,15 @@ public class Cannon extends moduleUnit implements Cloneable{
     }
     public void CannonLoad(Unit unit){
         unit.damage = damage;
+        unit.DamageBase = damage;
+
+        unit.penetration = penetration;
+        unit.PenetrationBase = penetration;
+
         unit.tower_img = image;
         unit.t_damage = TemperatureDamage;
-        unit.width_tower = WidthTower;
-        unit.height_tower = HeightTower;
+        unit.tower_width = WidthTower;
+        unit.tower_height = HeightTower;
         unit.tower_width_2 = WidthTower2;
         unit.tower_height_2 = HeightTower2;
         unit.damage_fragment = damage_fragment;
@@ -289,6 +311,9 @@ public class Cannon extends moduleUnit implements Cloneable{
         unit.TimeBullet = TimeBullet;
         unit.TimeBulletRand = TimeBulletRand;
         unit.fire = fire;
+
+        unit.ConstTowerCenterX = unit.tower_width_2-unit.const_tower_x;
+        unit.ConstTowerCenterY = unit.tower_height_2-unit.const_tower_y;
         for(int i = 0;i<functional.functional.size();i++){
             unit.functional.Add(functional.functional.get(i));
         }

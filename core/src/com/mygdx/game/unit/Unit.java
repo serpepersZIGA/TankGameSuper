@@ -5,9 +5,11 @@ import com.badlogic.gdx.graphics.Color;
 import com.mygdx.game.Event.EventGame;
 import com.mygdx.game.Inventory.*;
 import com.mygdx.game.Inventory.Equipment.EquipmentInterface;
+import com.mygdx.game.Network.TransportPacket;
 import com.mygdx.game.Sound.SoundPlay;
 import com.mygdx.game.Network.BullPacket;
 import com.mygdx.game.bull.Bullet;
+import com.mygdx.game.main.ActionGameHost;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.method.*;
 import Content.Particle.FlameSpawn;
@@ -25,6 +27,7 @@ import java.awt.geom.Area;
 import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.HashMap;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
@@ -44,6 +47,7 @@ public abstract class Unit implements Cloneable{
     public String ID;
     public TypeCollision collision = TypeCollision.rect;
     public UnitType TypeUnit;
+    public TransportPacket PackUnit;
     public int[][]TowerXY,TrackXY;
     public int SizeBullet,TimeBullet,TimeBulletRand,ReloadBetweenShots,ReloadShots,
     QuantityShots,QuantityShotsTotal;
@@ -60,7 +64,7 @@ public abstract class Unit implements Cloneable{
     public ArrayList<Track> TrackUnitLists = new ArrayList<>();
     public Cannon CannonUnit;
     public int differenceY, differenceX,hp,max_hp,time_spawn_soldat_max = 200,x_rend,y_rend,x_tower_rend,y_tower_rend,
-    nConnect,HpBase,PenetrationBase,differenceZoom,difference2Zoom,differenceTotalZoom;
+    nConnect,HpBase,differenceZoom,difference2Zoom,differenceTotalZoom;
     public int time_sound_motor = time_max_sound_motor;
     public static int time_max_sound_motor = 20;
     public Sound sound_fire;
@@ -70,9 +74,9 @@ public abstract class Unit implements Cloneable{
     public float SpeedUp, SpeedDown,damage,penetration,damage_fragment,penetration_fragment,t,t_damage, armorFront,armorCenter,armorBack,reload_max, Acceleration,speed, rotation_tower, speed_tower, speed_rotation
             , rotation_corpus,tower_x,tower_y
             , tower_x_const, tower_y_const, tower_width_2, tower_height_2,reload,corpus_width,corpus_height,corpus_width_2,corpus_height_2,
-             width_tower, height_tower, TargetX, TargetY,corpus_height_3,corpus_width_3,
+            tower_width, tower_height, TargetX, TargetY,corpus_height_3,corpus_width_3,
             ArmorFrontBase,ArmorCenterBase,ArmorBackBase,DamageBase, SpeedUpBase, SpeedDownBase,AccelerationBase, MaxRotate,MaxRotate2,RotateBase
-            ,TowerFireConstX,TowerFireConstY;
+            ,TowerFireConstX,TowerFireConstY,PenetrationBase;
     protected static float slowing = 0.05f;
     public static float speed_minimum = 0.5f;
     public int time_max_relocation = 300,time_relocation = 0,HillHp;
@@ -88,10 +92,11 @@ public abstract class Unit implements Cloneable{
     public static int BorderDetected = 200;
     public boolean host,crite_life;
     public Soldat soldat;
+    public int[] RotateBaseList;
 
     private static int i;
     protected static int distance_target = 200;
-    public float SpeedCollision = 10;
+    public float SpeedCollision = 10,ConstTowerCenterX,ConstTowerCenterY;
     protected static int distance_target_2 = 230;
     public float green_len,green_len_reload,RotationInertion,RotationInertionTimeSyncrone;
     public float rotation_fire;
@@ -148,7 +153,7 @@ public abstract class Unit implements Cloneable{
 //            tower_obj.add(new UnitPattern(cannon.get(i).CannonAdd(this,TowerXY[i][0],TowerXY[i][1]),this));
 //        }
     }
-    public Unit(String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,
+    public Unit(String corpus, String engine, ArrayList<String> cannon,int[]RotateBase, int[][]TowerXY,
             ArrayList<String>track,int[][]TrackXY,int[] Side, ClassUnit classUnit
             , int HillHp, float Height){
         this.height = (byte) Height;
@@ -156,10 +161,12 @@ public abstract class Unit implements Cloneable{
 //        if(this.HillHp>0){
 //            this.classUnit = SupportTransport;
 //        }
+        this.RotateBaseList = RotateBase;
         this.CorpusUnit = Corpus.CorpusAdd(corpus);
         this.EngineUnit = Engine.EngineAdd(engine);
         for (int i = 0;i<cannon.size();i++) {
-            this.CannonUnitList.add(Cannon.CannonAdd(cannon.get(i),this,TowerXY[i][0],TowerXY[i][1]));
+            this.CannonUnitList.add(Cannon.CannonAdd(cannon.get(i),this,TowerXY[i][0],
+                    TowerXY[i][1],RotateBase[i]));
             //for(int i2 = 0;i2<cannon.get(i))
         }
         for (int i = 0;i<track.size();i++) {
@@ -167,6 +174,7 @@ public abstract class Unit implements Cloneable{
         }
         this.TowerXY = TowerXY;
         this.TrackXY = TrackXY;
+        //System.out.println(Arrays.deepToString(TrackXY));
         this.classUnit = classUnit;
 //        for(int i = 0;i<cannon.size();i++){
 //            tower_obj.add(new UnitPattern(cannon.get(i).CannonAdd(this,TowerXY[i][0],TowerXY[i][1]),this));
@@ -253,17 +261,18 @@ public abstract class Unit implements Cloneable{
             }
             for(int i = 0;i<CannonUnitList.size();i++){
                 Unit UnitTower = new UnitPattern(CannonUnitList.get(i).
-                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd);
+                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]
+                                ,unitAdd.RotateBaseList[i]),unitAdd);
                 UnitTower.CorpusUnit = unitAdd.CorpusUnit;
-                CannonUnitList.get(i).CannonAddInit(UnitTower);
+                //CannonUnitList.get(i).CannonAddInit(UnitTower);
 
                 unitAdd.TowerUnitList.add(UnitTower);
             }
 
             unitAdd.corpus_width_zoom = (int)(unitAdd.corpus_width* Zoom);
             unitAdd.corpus_height_zoom = (int)(unitAdd.corpus_height* Zoom);
-            unitAdd.width_tower_zoom = (int)(unitAdd.width_tower * Zoom);
-            unitAdd.height_tower_zoom = (int)(unitAdd.height_tower * Zoom);
+            unitAdd.width_tower_zoom = (int)(unitAdd.tower_width * Zoom);
+            unitAdd.height_tower_zoom = (int)(unitAdd.tower_height * Zoom);
             unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2* Zoom);
             unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2* Zoom);
             unitAdd.const_x_tower = (int)(unitAdd.const_tower_x* Zoom);
@@ -276,8 +285,8 @@ public abstract class Unit implements Cloneable{
             //for (int i = 0;i<unitAdd.TowerUnitList.size();i++){
             for (Unit tower : unitAdd.TowerUnitList){
                 //Unit tower = unitAdd.TowerUnitList.get(i);
-                tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
+                tower.width_tower_zoom = (int)(tower.tower_width * Zoom);
+                tower.height_tower_zoom = (int)(tower.tower_height * Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
                 tower.team = team;
@@ -307,10 +316,10 @@ public abstract class Unit implements Cloneable{
             }
 
             for(Unit Track : unitAdd.TrackUnitList){
-                Track.width_tower_zoom = (int)(Track.width_tower * Main.Zoom);
-                Track.height_tower_zoom = (int)(Track.height_tower *Main.Zoom);
-                Track.const_x_tower = (int)(Track.width_tower *Main.Zoom*0.5);
-                Track.const_y_tower = (int)(Track.height_tower *Main.Zoom*0.5);
+                Track.width_tower_zoom = (int)(Track.tower_width * Main.Zoom);
+                Track.height_tower_zoom = (int)(Track.tower_height *Main.Zoom);
+                Track.const_x_tower = (int)(Track.tower_width *Main.Zoom*0.5);
+                Track.const_y_tower = (int)(Track.tower_height *Main.Zoom*0.5);
 
                 Track.team = team;
 
@@ -327,6 +336,8 @@ public abstract class Unit implements Cloneable{
 //            }
             R_LOCK.lock();
             try {
+                unitAdd.PackUnit = ActionGameHost.packet_player_server(unitAdd);
+                PacketUnit.add(unitAdd.PackUnit);
                 UnitList.add(unitAdd);
             }
             finally {
@@ -355,6 +366,7 @@ public abstract class Unit implements Cloneable{
             if(PacketServer != null) {
                 PacketServer.unitConf = true;
             }
+            KeyboardObj.ZoomConstTransport();
             return unitAdd;
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -363,8 +375,8 @@ public abstract class Unit implements Cloneable{
     private void TowerInit(Unit towerUnit){
         for (int i = 0;i<towerUnit.TowerUnitList.size();i++){
             Unit tower = towerUnit.TowerUnitList.get(i);
-            tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
-            tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
+            tower.width_tower_zoom = (int)(tower.tower_width * Zoom);
+            tower.height_tower_zoom = (int)(tower.tower_height * Zoom);
             tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
             tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             tower.team = towerUnit.team;
@@ -388,8 +400,8 @@ public abstract class Unit implements Cloneable{
         }
         for (int i = 0;i<towerUnit.TrackUnitList.size();i++){
             Unit tower = towerUnit.TrackUnitList.get(i);
-            tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
-            tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
+            tower.width_tower_zoom = (int)(tower.tower_width * Zoom);
+            tower.height_tower_zoom = (int)(tower.tower_height * Zoom);
             tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
             tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             tower.team = towerUnit.team;
@@ -433,16 +445,16 @@ public abstract class Unit implements Cloneable{
             }
             for(int i = 0;i<CannonUnitList.size();i++){
                 Unit UnitTower = new UnitPattern(CannonUnitList.get(i).
-                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1]),unitAdd);
+                        CannonAdd(unitAdd,unitAdd.TowerXY[i][0],unitAdd.TowerXY[i][1],unitAdd.RotateBaseList[i]),unitAdd);
                 UnitTower.CorpusUnit = unitAdd.CorpusUnit;
-                CannonUnitList.get(i).CannonAddInit(UnitTower);
+                //CannonUnitList.get(i).CannonAddInit(UnitTower);
 
                 unitAdd.TowerUnitList.add(UnitTower);
             }
             unitAdd.corpus_width_zoom = (int)(unitAdd.corpus_width* Zoom);
             unitAdd.corpus_height_zoom = (int)(unitAdd.corpus_height* Zoom);
-            unitAdd.width_tower_zoom = (int)(unitAdd.width_tower * Zoom);
-            unitAdd.height_tower_zoom = (int)(unitAdd.height_tower * Zoom);
+            unitAdd.width_tower_zoom = (int)(unitAdd.tower_width * Zoom);
+            unitAdd.height_tower_zoom = (int)(unitAdd.tower_height * Zoom);
             unitAdd.const_x_corpus = (int)(unitAdd.corpus_width_2* Zoom);
             unitAdd.const_y_corpus = (int)(unitAdd.corpus_height_2* Zoom);
             unitAdd.const_x_tower = (int)(unitAdd.const_tower_x* Zoom);
@@ -452,8 +464,8 @@ public abstract class Unit implements Cloneable{
             unitAdd.TowerFireConstY = -this.const_tower_y;
             this.const_y_tower = (int)(unitAdd.const_tower_y* Zoom);
             for (Unit tower : unitAdd.TowerUnitList){
-                tower.width_tower_zoom = (int)(tower.width_tower * Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower * Zoom);
+                tower.width_tower_zoom = (int)(tower.tower_width * Zoom);
+                tower.height_tower_zoom = (int)(tower.tower_height * Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x* Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y* Zoom);
 
@@ -465,10 +477,10 @@ public abstract class Unit implements Cloneable{
                 TowerInit(tower);
             }
             for(Unit Track : unitAdd.TrackUnitList){
-                Track.width_tower_zoom = (int)(Track.width_tower * Zoom);
-                Track.height_tower_zoom = (int)(Track.height_tower * Zoom);
-                Track.const_x_tower = (int)(Track.width_tower *Main.Zoom*0.5);
-                Track.const_y_tower = (int)(Track.height_tower *Main.Zoom*0.5);
+                Track.width_tower_zoom = (int)(Track.tower_width * Zoom);
+                Track.height_tower_zoom = (int)(Track.tower_height * Zoom);
+                Track.const_x_tower = (int)(Track.tower_width *Main.Zoom*0.5);
+                Track.const_y_tower = (int)(Track.tower_height *Main.Zoom*0.5);
                 Track.team = team;
 
 
@@ -499,8 +511,8 @@ public abstract class Unit implements Cloneable{
         corpus_height_3 = (float) (corpus_height_2/1.5);
         corpus_width_3 = (float)(corpus_width_2*1.2);
         if(tower_img != null){
-            this.tower_width_2 = this.width_tower*0.5f;
-            this.tower_height_2 = this.height_tower*0.5f;
+            this.tower_width_2 = this.tower_width *0.5f;
+            this.tower_height_2 = this.tower_height *0.5f;
             this.const_x_tower = (int)(const_tower_x* Zoom);
             this.const_y_tower = (int)(const_tower_y* Zoom);}
         this.corpus_width_zoom = (int)(corpus_width* Zoom);
@@ -517,8 +529,8 @@ public abstract class Unit implements Cloneable{
 
 //        this.corpus_width_zoom = (int)(corpus_width*Main.Zoom);
 //        this.corpus_height_zoom = (int)(corpus_height*Main.Zoom);
-        this.width_tower_zoom = (int)(width_tower * Zoom);
-        this.height_tower_zoom = (int)(height_tower * Zoom);
+        this.width_tower_zoom = (int)(tower_width * Zoom);
+        this.height_tower_zoom = (int)(tower_height * Zoom);
         this.const_x_corpus = (int)(corpus_width_2* Zoom);
         this.const_y_corpus = (int)(corpus_height_2* Zoom);
         green_len = ((float)this.hp/this.max_hp)* Option.size_x_indicator;
@@ -537,8 +549,8 @@ public abstract class Unit implements Cloneable{
         corpus_width_3 = (float)(corpus_width_2*1.2);
         this.corpus_width_zoom = (int)(corpus_width* Zoom);
         this.corpus_height_zoom = (int)(corpus_height* Zoom);
-        this.width_tower_zoom = (int)(width_tower * Zoom);
-        this.height_tower_zoom = (int)(height_tower * Zoom);
+        this.width_tower_zoom = (int)(tower_width * Zoom);
+        this.height_tower_zoom = (int)(tower_height * Zoom);
         this.const_x_corpus = (int)(corpus_width_2* Zoom);
         this.const_y_corpus = (int)(corpus_height_2* Zoom);
         green_len = ((float)this.hp/this.max_hp)* Option.size_x_indicator;
@@ -546,10 +558,10 @@ public abstract class Unit implements Cloneable{
     protected final void data_tower(){
         classUnit = ClassUnit.Tower;
         this.reload = this.reload_max;
-        this.tower_width_2 = this.width_tower /2;
-        this.tower_height_2 = this.height_tower /2;
-        this.width_tower_zoom = (int)(width_tower * Zoom);
-        this.height_tower_zoom = (int)(height_tower * Zoom);
+        this.tower_width_2 = this.tower_width /2;
+        this.tower_height_2 = this.tower_height /2;
+        this.width_tower_zoom = (int)(tower_width * Zoom);
+        this.height_tower_zoom = (int)(tower_height * Zoom);
 
         this.const_x_tower = (int)(const_tower_x* Zoom);
         this.const_y_tower = (int)(const_tower_y* Zoom);
@@ -1090,7 +1102,7 @@ public abstract class Unit implements Cloneable{
                     if (g > distance_target) {
                         press_w = true;
                         return;
-                    }if (g < distance_target_2) {
+                    }else if (g < distance_target_2) {
                         press_s = true;
 
                     }
@@ -1483,6 +1495,7 @@ public abstract class Unit implements Cloneable{
     public void helicopterAi(){
         if(TargetUnit != null) {
             AngleTarget = (float) (atan2(this.y - TargetUnit.y, this.x - TargetUnit.x) *RP)-90;
+            RadiusTarget = (float) sqrt(pow2(this.x - TargetUnit.x)+pow2(this.y - TargetUnit.y));
 
             trigger_fire = true;
             rotation_bot();
@@ -1491,7 +1504,7 @@ public abstract class Unit implements Cloneable{
         else{
             trigger_fire = false;
         }
-        speed_balance();
+        //speed_balance();
 
 
     }
@@ -1575,6 +1588,7 @@ public abstract class Unit implements Cloneable{
             R_LOCK.lock();
             try {UnitDelete();}
             finally {R_LOCK.unlock();}
+            KeyboardObj.ZoomConstTransport();
             int money = 5+rand.rand(5);
             //PacketServer.MoneyAdd += money;
             money += TeamGlobal.get(TeamKill);
@@ -1717,13 +1731,13 @@ public abstract class Unit implements Cloneable{
         if(XMap<0){
             XMap=0;
         }
-        else if(XMap>BlockList2D.get(0).size()){
-            XMap = BlockList2D.get(0).size();
+        else if(XMap>xMap2){
+            XMap = xMap2;
         }
         if(YMap<0){
             YMap=0;
-        } else if (YMap>BlockList2D.size()) {
-            
+        } else if (YMap>yMap2) {
+            YMap = yMap2;
         }
         this.SpeedMod = BlockList2D.get(YMap).get(XMap).render_block.SpeedMod;
         render_x_max = XMap + 3;
@@ -1893,18 +1907,20 @@ public abstract class Unit implements Cloneable{
             this.y += 2f;
         }
     }
+    //hyhyy
     public void move_debris(){
         if(speed != 0) {
-            this.x -= move.move_sin(this.speed, -this.rotation_corpus);
-            this.y -= move.move_cos(this.speed, -this.rotation_corpus);
+            //this.x -= move.move_sin(this.speed, -this.rotation_corpus);
+            //this.y -= move.move_cos(this.speed, -this.rotation_corpus);
 
-            if (this.speed < -0.5f) {
+            if (this.speed < -this.Acceleration) {
                 this.speed += this.Acceleration;
-            } else if (this.speed > 0.5f) {
+            } else if (this.speed > this.Acceleration) {
                 this.speed -= Acceleration;
             } else {
                 speed = 0;
             }
+            move_xy_transport();
         }
     }
     public void hill_bot(ArrayList<Unit> obj){
@@ -1951,8 +1967,8 @@ public abstract class Unit implements Cloneable{
                 }
             } finally {
                 // 3. ОБЯЗАТЕЛЬНО отпускаем замок в finally
-                R_LOCK.unlock();
                 KeyboardObj.ZoomConstTransport();
+                R_LOCK.unlock();
             }
         }
     }
@@ -2131,6 +2147,12 @@ public abstract class Unit implements Cloneable{
         this.x_rend = (int)xy[0];
         this.y_rend = (int)xy[1];
         xy = RC.render_objZoom(this.tower_x,this.tower_y);
+        this.x_tower_rend = (int)xy[0];
+        this.y_tower_rend = (int)xy[1];
+
+    }
+    protected void center_renderTower(){
+        float[]xy = RC.render_objZoom(this.tower_x,this.tower_y);
         this.x_tower_rend = (int)xy[0];
         this.y_tower_rend = (int)xy[1];
 

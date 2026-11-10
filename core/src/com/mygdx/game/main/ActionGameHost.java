@@ -300,8 +300,14 @@ public class ActionGameHost extends ActionGame{
                     squad.EnemySquad = null;
                 }
             }
+            PacketUnit.remove(unit.PackUnit);
             UnitList.remove(unit);
         }
+        for(Bullet bullet : Bullet.BulletListClear){
+            bullet.clear();
+            //Bullet.BulletListClear.remove(bullet);
+        }
+        Bullet.BulletListClear.clear();
         ClearUnitList.clear();
         for (Unit unit : ClearDebrisList) {
             DebrisList.remove(unit);
@@ -341,10 +347,7 @@ public class ActionGameHost extends ActionGame{
             pack.equipment = new ArrayList<>();
             pack.ConfUnit = true;
             pack.ConfInventory = true;
-            PacketUnit.clear();
             for (Unit unit : UnitList){
-                TransportPacket packet = ActionGameHost.packet_player_server(unit);
-                PacketUnit.add(packet);
                 pack.inventory.add(unit.inventory.inventoryStr);
                 pack.equipment.add(unit.equipment.inventoryStr);
             }
@@ -359,10 +362,7 @@ public class ActionGameHost extends ActionGame{
             pack.inventory = new ArrayList<>();
             pack.equipment = new ArrayList<>();
             pack.ConfInventory = true;
-            PacketUnit.clear();
             for (Unit unit : UnitList){
-                TransportPacket packet = ActionGameHost.packet_player_server(unit);
-                PacketUnit.add(packet);
                 pack.inventory.add(unit.inventory.inventoryStr);
                 pack.equipment.add(unit.equipment.inventoryStr);
             }
@@ -385,7 +385,6 @@ public class ActionGameHost extends ActionGame{
         PacketServer.Money.clear();
         PacketDebris.clear();
         PacketBull.clear();
-        PacketUnit.clear();
         PacketBuilding.clear();
     }
     public static TransportPacket packet_player_server(Unit unit){
@@ -408,12 +407,56 @@ public class ActionGameHost extends ActionGame{
         TowerPack TowerPacket;
         for (Unit Tower : unit.TowerUnitList){
             TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
-            pack.TowerList1.add(TowerPacket);
             TowerPackInit(TowerPacket,Tower);
+            pack.TowerList1.add(TowerPacket);
             //pack.reloadTower.add(Tower.reload);
             //pack.rotation_tower_2.add(Tower.rotation_tower);
         }
         return pack;
+    }
+    public static void PacketUnitUpdate(Unit unit){
+        unit.PackUnit.name = unit.TypeUnit;
+        unit.PackUnit.x = unit.x;
+        unit.PackUnit.y = unit.y;
+        unit.PackUnit.PlayerConf = unit.PlayerConf;
+        unit.PackUnit.PressA = unit.press_a;
+        unit.PackUnit.PressD = unit.press_d;
+        unit.PackUnit.rotation_corpus = unit.rotation_corpus;
+        unit.PackUnit.hp = unit.hp;
+        unit.PackUnit.max_hp = unit.max_hp;
+        unit.PackUnit.team = unit.team;
+        unit.PackUnit.speed = unit.speed;
+        unit.PackUnit.host = unit.host;
+        unit.PackUnit.IDClient = unit.nConnect;
+        unit.PackUnit.ID = unit.ID;
+        int i = 0;
+        for (Unit Tower : unit.TowerUnitList){
+            unit.PackUnit.TowerList1.get(i).reloadTower = Tower.reload;
+            unit.PackUnit.TowerList1.get(i).rotationTower = Tower.rotation_tower;
+            TowerPackInit2(unit.PackUnit.TowerList1.get(i),Tower);
+            //pack.reloadTower.add(Tower.reload);
+            //pack.rotation_tower_2.add(Tower.rotation_tower);
+            i++;
+        }
+    }
+    private static void TowerPackInit2(TowerPack pack,Unit unit){
+        int i = 0;
+        TowerPack packTower;
+        for (Unit Tower : unit.TowerUnitList){
+            packTower = pack.TowerList1.get(i);
+            packTower.reloadTower = Tower.reload;
+            packTower.rotationTower = Tower.rotation_tower;
+            TowerPackInit(packTower,Tower);
+            i++;
+        }
+        i = 0;
+        for (Unit Tower : unit.TrackUnitList){
+            packTower = pack.TowerList2.get(i);
+            packTower.reloadTower = Tower.reload;
+            packTower.rotationTower = Tower.rotation_tower;
+            TowerPackInit(packTower,Tower);
+            i++;
+        }
     }
     private static void TowerPackInit(TowerPack pack,Unit unit){
         pack.TowerList1 = new ArrayList<>();
@@ -421,13 +464,13 @@ public class ActionGameHost extends ActionGame{
         TowerPack TowerPacket;
         for (Unit Tower : unit.TowerUnitList){
             TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
-            pack.TowerList1.add(TowerPacket);
             TowerPackInit(TowerPacket,Tower);
+            pack.TowerList1.add(TowerPacket);
         }
         for (Unit Tower : unit.TrackUnitList){
             TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
-            pack.TowerList2.add(TowerPacket);
             TowerPackInit(TowerPacket,Tower);
+            pack.TowerList2.add(TowerPacket);
         }
     }
     public static void packet_debris_server(Unit unit,int i){
@@ -442,35 +485,34 @@ public class ActionGameHost extends ActionGame{
         public void run(){
             for (int i = 0; i < DebrisList.size(); i++) {
                 Unit debris = DebrisList.get(i);
-                if(debris != null){
                     //synchronized (debris) {
                     debris.XYMapCordDebris();
                     packet_debris_server(debris, i);
                     debris.all_action();
                     debris.corpus_corpus(Main.UnitList);
                     //}
-                }
             }
             Collision.DebrisCollisionIterationGlobal();
         }
     }
     private class IterationBullet implements Runnable {
         public void run() {
+            for (int i = 0; i < Bullet.BulletListInd.size(); i++) {
+                Bullet bullet = BulletList.get(Bullet.BulletListInd.get(i));
+                bullet.all_action();
 
-            for (int i = 0; i < BulletList.size(); i++) {
-                Bullet bullet = BulletList.get(i);
-                if (bullet != null) {
-                    //synchronized (bullet) {
-                        bullet.all_action();
-                    //}
-
-                }
             }
+//            for (int i = 0; i < BulletList.size(); i++) {
+//                Bullet bullet = BulletList.get(i);
+//                    //synchronized (bullet) {
+//                        bullet.all_action();
+//                    //}
+//
+//            }
         }
     }
     public class IterationUnit implements Runnable {
         public void run() {
-            TransportPacket pack;
             if (AIScan) {
                 for (Squad squad : AI.SquadList) {
                     squad.SquadIteration();
@@ -478,20 +520,19 @@ public class ActionGameHost extends ActionGame{
             }
             for (int i = 0; i < UnitList.size(); i++) {
                 Unit unit = UnitList.get(i);
-                if (unit != null) {
-                    unit.XYMapCord();
-                    pack = ActionGameHost.packet_player_server(unit);
-                    if (unit.host || unit.control == RegisterControl.controllerBot
-                            || unit.control == RegisterControl.controllerBotSupport
-                            || unit.control == RegisterControl.controllerSoldatTransport
-                            || unit.control == RegisterControl.controllerSoldatBot
-                            || unit.control == RegisterControl.controllerHelicopter) {
-                        PacketUnit.add(pack);
-                        unit.all_action();
-                    } else {
-                        PacketUnit.add(pack);
-                        unit.all_action_client();
-                    }
+                unit.XYMapCord();
+                ActionGameHost.PacketUnitUpdate(unit);
+                PacketUnit.set(i,unit.PackUnit);
+                if (unit.host || unit.control == RegisterControl.controllerBot
+                        || unit.control == RegisterControl.controllerBotSupport
+                        || unit.control == RegisterControl.controllerSoldatTransport
+                        || unit.control == RegisterControl.controllerSoldatBot
+                        || unit.control == RegisterControl.controllerHelicopter) {
+                    //PacketUnit.add(pack);
+                    unit.all_action();
+                } else {
+                    //PacketUnit.add(pack);
+                    unit.all_action_client();
                 }
             }
             if (!AI.SquadDeleteList.isEmpty()) {

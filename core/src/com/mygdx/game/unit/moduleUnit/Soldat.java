@@ -48,6 +48,9 @@ public class Soldat extends moduleUnit implements Cloneable{
         unit.corpus_height = corpus_height;
         unit.corpus_width_zoom = (int) (corpus_width* Main.Zoom);
         unit.corpus_height_zoom = (int) (corpus_height* Main.Zoom);
+        unit.Acceleration = 0.2f;
+        unit.SpeedUp= 4f;
+        unit.SpeedDown= 4f;
         //unit.EventClear = EventData.eventDeadSoldat;
 
         unit.corpus_width_2 = corpus_width_2;

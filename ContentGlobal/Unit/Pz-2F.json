@@ -3,6 +3,7 @@
   "Corpus": "Panzer1",
   "Cannon": ["Flk4CL","Flk4CL","Flk4C"],
   "TowerXY": [[-10,50],[10,50],[1,18]],
+  "RotateBase": [90,90,90],
 
   "Track": ["TrackPz2","TrackPz2"],
   "Side": [0,1],

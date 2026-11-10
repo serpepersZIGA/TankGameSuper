@@ -24,10 +24,8 @@ Image = tower_enemy;
 MaxRotate = 20;
 RotateBase = 90;
 
-func.Add = ComponentTowerXY;
 func.Add = ComponentTowerControl;
 func.Add = ComponentFireTankCumulativeControl;
-Cannon = C Ack2A:x 20:y 20:z0:;
 
 Sound = 5;
 AmountFragment = 0;

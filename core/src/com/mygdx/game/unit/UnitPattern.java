@@ -25,9 +25,9 @@ public class UnitPattern extends Unit {
         data();
         IDList.put(str,this);
     }
-    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon, int[][]TowerXY,
+    public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon,int[]RotateBase, int[][]TowerXY,
             ArrayList<String>track,int[][]TrackXY,int[]Side, ClassUnit classUnit, int HillHp, int Height){
-        super(corpus,engine,cannon,TowerXY,track,TrackXY,Side,classUnit,HillHp,Height);
+        super(corpus,engine,cannon,RotateBase,TowerXY,track,TrackXY,Side,classUnit,HillHp,Height);
         TowerUnitList = new ArrayList<>();
         this.TrackUnitList = new ArrayList<>();
         behavior = 3;
@@ -41,10 +41,21 @@ public class UnitPattern extends Unit {
     }
     public UnitPattern(Cannon cannon,Unit unit){
         super(cannon);
+        this.CorpusUnit = unit.CorpusUnit;
         cannon.XTower = (int) unit.CorpusUnit.CenterCorpusX;
         cannon.YTower = (int) unit.CorpusUnit.CenterCorpusY;
         cannon.CannonLoad(this);
+//        for(int i = 0;i<CannonUnitList.size();i++){
+//            Unit UnitTower = new UnitPattern(CannonUnitList.get(i).
+//                    CannonAdd(this,this.TowerXY[i][0],this.TowerXY[i][1]
+//                            ,this.RotateBaseList[i]),this);
+//            UnitTower.CorpusUnit = this.CorpusUnit;
+//            CannonUnitList.get(i).CannonAddInit(UnitTower);
+//
+//            this.TowerUnitList.add(UnitTower);
+//        }
         data_tower();
+        cannon.CannonAddInit(this);
 
     }
     public UnitPattern(Track track, Unit unit){
@@ -62,6 +73,7 @@ public class UnitPattern extends Unit {
 
         corpus.functional.Add(FunctionalComponentUnitRegister.MoveDebris);
         corpus.functional.Add(FunctionalComponentUnitRegister.BuildCollision);
+        this.Acceleration = 0.025f;
         this.TrackUnitList = new ArrayList<>();
         this.TowerUnitList = new ArrayList<>();
         this.corpus_width_2 = corpus.corpus_width_2;
@@ -141,8 +153,7 @@ public class UnitPattern extends Unit {
     public void UpdateTower(){
         //this.x = tower_x;
         //this.y = tower_y;
-        TowerXY2();
-        center_render();
+        center_renderTower();
         RenderMethod.transorm_img(this.x_tower_rend,this.y_tower_rend,this.width_tower_zoom,this.height_tower_zoom
                 ,this.rotation_tower,TextureAtl.createSprite(this.tower_img),const_x_tower,const_y_tower
         );
@@ -151,7 +162,7 @@ public class UnitPattern extends Unit {
         //this.x = tower_x;
         //this.y = tower_y;
         TowerXY2();
-        center_render();
+        center_renderTower();
         animator.render(x_tower_rend,y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,
                 this.const_x_tower,this.const_y_tower,this.rotation_corpus,speed);
     }
@@ -159,24 +170,28 @@ public class UnitPattern extends Unit {
         //this.x = tower_x;
         //this.y = tower_y;
         TowerXY2();
-        center_render();
+        center_renderTower();
         animator.render(x_tower_rend,y_tower_rend,this.width_tower_zoom,this.height_tower_zoom,
                 this.const_x_tower,this.const_y_tower,this.rotation_corpus,0);
     }
     private void TowerAction(Unit unit,float rotation){
+        unit.TowerXY2();
         for(Unit Tower : unit.TrackUnitList){
-            Tower.x = unit.tower_x;
-            Tower.y = unit.tower_y;
+            Tower.x = unit.tower_x-unit.ConstTowerCenterX;
+            Tower.y = unit.tower_y-unit.ConstTowerCenterY;
             Tower.rotation_corpus = rotation;
-            TowerAction(Tower,rotation_tower);
+            TowerAction(Tower,Tower.rotation_tower);
         }
+        //System.out.println(unit.ConstTowerCenterX+"  "+unit.ConstTowerCenterY);
         unit.UpdateTower();
         for(Unit Tower : unit.TowerUnitList){
-            Tower.x = unit.tower_x+tower_width_2+const_tower_x;
-            Tower.y = unit.tower_y+tower_height_2+const_tower_y;
-           // System.out.println(this.x+" "+this.y);
+            Tower.x = unit.tower_x-unit.ConstTowerCenterX;                 //9,68
+            Tower.y = unit.tower_y-unit.ConstTowerCenterY;
+            //float x = unit.tower_width_2-unit.const_tower_x;
+            //float y = unit.tower_height_2-unit.const_tower_y;
+
             Tower.rotation_corpus = rotation;
-            TowerAction(Tower,rotation_tower);
+            TowerAction(Tower,Tower.rotation_tower);
         }
     }
 }

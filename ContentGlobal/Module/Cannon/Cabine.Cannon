@@ -19,7 +19,8 @@ Image = CabinTank;
 RotateBase = 90;
 
 func.Add = ComponentTowerPartCorpus;
-func.Add = ComponentTowerXY;
+
+Cannon = C Kwk24M:x 0:y -30:z1:r 0:;
 
 Sound = 2;
 AmountFragment = 0;

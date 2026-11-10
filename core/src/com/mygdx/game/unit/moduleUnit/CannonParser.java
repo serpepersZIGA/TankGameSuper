@@ -25,7 +25,8 @@ public class CannonParser {
     public static FunctionalList List;
     public static ArrayList<int[]>xy = new ArrayList<>();
     public static ArrayList<Cannon> Tower = new ArrayList<>();
-    public static ArrayList<Integer> z = new ArrayList<>();
+    public static ArrayList<String> TowerStr = new ArrayList<>();
+    public static ArrayList<Integer> z = new ArrayList<>(),r = new ArrayList<>();
     public static boolean ConfControl;
     public static float SpeedRotationTower, Damage, Penetration, DamageFragment, PenetrationFragment,TemperatureDamage
     ,SpeedBullet,ReloadUP, OneShot;
@@ -53,11 +54,10 @@ public class CannonParser {
                             Damage, Penetration
                             , DamageFragment, PenetrationFragment, TemperatureDamage, SizeBullet, ReloadMax,
                             SpeedBullet, TimeBullet, TimeBulletRand, TowerX, TowerY, Fire.clone(), Image, List
-                            , Sound, AmountFragment,MaxRotate,RotateBase,
-                            ReloadUP, OneShot,ReloadBetweenShots,ReloadShots,QuantityShots,Tower,xy,z)
+                            , Sound, AmountFragment,MaxRotate,
+                            ReloadUP, OneShot,ReloadBetweenShots,ReloadShots,QuantityShots,TowerStr,xy,z,r)
                     , file.name().replace(".Cannon", "")});
             List = new FunctionalList();
-            MaxRotate = 0;
             RotateBase = 0;
             AmountFragment = 0;
             Sound = null;
@@ -74,9 +74,10 @@ public class CannonParser {
             ReloadUP = 0;
             OneShot = 0;ReloadBetweenShots=0;ReloadShots=0;QuantityShots=0;
             WidthTower = 0;HeightTower = 0;
-            Tower = new ArrayList<>();
+            TowerStr = new ArrayList<>();
             xy = new ArrayList<>();
             z = new ArrayList<>();
+            r = new ArrayList<>();
             //List.Clear();
             //System.out.println(BuildRegister.BuildingID.size());
 
@@ -117,13 +118,15 @@ public class CannonParser {
             if(c == '=') {
                 switch (TotalTxT.trim()) {
                     case "Cannon":
-                        obj = Parser.CannonParsingAdd(TxT, i);
-                        Tower.add((Cannon) obj[0]);
-                        xy.add(new int[]{(int)obj[1],(int)obj[2]});
+                        obj = Parser.CannonParsingAdd2(TxT, i);
+                        TowerStr.add((String) obj[0]);
+                        xy.add(new int[]{(int)obj[2],(int)obj[1]});
                         z.add((int)obj[3]);
+                        r.add((int)obj[4]);
+                        //System.out.println(z.size()+" "+TowerStr.size());
                         //ConfControl = (boolean) obj[0];
 
-                        i = (int) obj[4];
+                        i = (int) obj[5];
                         TotalTxT = "";
                         break;
                     case "WidthTower":
@@ -425,6 +428,8 @@ public class CannonParser {
                 "\n" +
                 "func.Add = ComponentTowerPartCorpus;\n" +
                 "func.Add = ComponentTowerXY;\n" +
+                "\n" +
+                "Cannon = C Kwk24M:x 0:y -30:z1:r 0:;\n" +
                 "\n" +
                 "Sound = 2;\n" +
                 "AmountFragment = 0;";

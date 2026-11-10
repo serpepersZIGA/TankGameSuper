@@ -114,6 +114,58 @@ public class Parser {
         }
         return new Object[]{cannon,x,y,z,i};
     }
+    public static Object[] CannonParsingAdd2(String TxT,int i){
+        char c;
+        int x = 0;
+        int y = 0;
+        int z = 0;
+        int r = 0;
+        //String cannon = "";
+        String Build = "";
+        for (; i < TxT.length(); i++) {
+            c = TxT.charAt(i);
+            switch (c){
+                case'x':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    x = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'y':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    y = (int)obj[0];
+                    i = (int)obj[1];
+                }
+                break;
+                case'r':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    r = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'z':{
+                    Object[]obj = Parser.IntegerPars2(TxT,i);
+                    z = (int)obj[0];
+                    i =  (int)obj[1];
+                }
+                break;
+                case'C':{
+                    Object[]obj = Parser.TextPars2(TxT,i);
+                    Build = (String) obj[0];
+                    Build = Build.trim();
+                    i =  (int)obj[1];
+                }
+                break;
+                case';':{
+                    return new Object[]{Build,x,y,z,r,i};
+
+                }
+            }
+            //else if (c == ':') {
+            //}
+        }
+        return new Object[]{Build,x,y,z,i};
+    }
 
     public static Object[] IntegerPars(String TxT,int u){
         String TotalTxT = "";

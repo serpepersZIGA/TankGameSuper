@@ -19,7 +19,6 @@ import com.mygdx.game.unit.Unit;
 import java.util.ArrayList;
 
 import static com.mygdx.game.main.ActionGame.ActionGameCl;
-import static com.mygdx.game.main.ActionGame.ActionGameH;
 import static com.mygdx.game.main.Main.*;
 
 public class Keyboard extends InputAdapter{
@@ -192,14 +191,14 @@ public class Keyboard extends InputAdapter{
                 if(RC.BlockClickLX<0){
                     RC.BlockClickLX=0;
                 }
-                else if(RC.BlockClickLX> xMap){
-                    RC.BlockClickLX = xMap;
+                else if(RC.BlockClickLX> xMap2){
+                    RC.BlockClickLX = xMap2;
                 }
                 if(RC.BlockClickLY<0){
                     RC.BlockClickLY=0;
                 }
-                else if(RC.BlockClickLY> yMap){
-                    RC.BlockClickLY = yMap;
+                else if(RC.BlockClickLY> yMap2){
+                    RC.BlockClickLY = yMap2;
                 }
 
                 if(RC.MainUnit == null && ActionGameTotal == ActionGameMain){
@@ -392,24 +391,24 @@ public class Keyboard extends InputAdapter{
         for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
-            tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
-            tr.height_tower_zoom = (int)(tr.height_tower *Main.Zoom);
+            tr.width_tower_zoom = (int)(tr.tower_width *Main.Zoom);
+            tr.height_tower_zoom = (int)(tr.tower_height *Main.Zoom);
             tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
             tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
             tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
             for (Unit tower : tr.TowerUnitList){
-                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+                tower.width_tower_zoom = (int)(tower.tower_width *Main.Zoom);
+                tower.height_tower_zoom = (int)(tower.tower_height *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
                 ZoomTower(tower);
             }
             for (Unit track : tr.TrackUnitList){
-                track.width_tower_zoom = (int)(track.width_tower *Main.Zoom);
-                track.height_tower_zoom = (int)(track.height_tower *Main.Zoom);
-                track.const_x_tower = (int)(track.width_tower *Main.Zoom*0.5);
-                track.const_y_tower = (int)(track.height_tower *Main.Zoom*0.5);
+                track.width_tower_zoom = (int)(track.tower_width *Main.Zoom);
+                track.height_tower_zoom = (int)(track.tower_height *Main.Zoom);
+                track.const_x_tower = (int)(track.tower_width *Main.Zoom*0.5);
+                track.const_y_tower = (int)(track.tower_height *Main.Zoom*0.5);
 
             }
             if(tr.host){
@@ -441,24 +440,24 @@ public class Keyboard extends InputAdapter{
         for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
-            tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
-            tr.height_tower_zoom = (int)(tr.height_tower *Main.Zoom);
+            tr.width_tower_zoom = (int)(tr.tower_width *Main.Zoom);
+            tr.height_tower_zoom = (int)(tr.tower_height *Main.Zoom);
             tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
             tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
             tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
             for (Unit tower : tr.TowerUnitList){
-                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+                tower.width_tower_zoom = (int)(tower.tower_width *Main.Zoom);
+                tower.height_tower_zoom = (int)(tower.tower_height *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
                 ZoomTower(tower);
             }
             for (Unit track : tr.TrackUnitList){
-                track.width_tower_zoom = (int)(track.width_tower *Main.Zoom);
-                track.height_tower_zoom = (int)(track.height_tower *Main.Zoom);
-                track.const_x_tower = (int)(track.width_tower *Main.Zoom*0.5);
-                track.const_y_tower = (int)(track.height_tower *Main.Zoom*0.5);
+                track.width_tower_zoom = (int)(track.tower_width *Main.Zoom);
+                track.height_tower_zoom = (int)(track.tower_height *Main.Zoom);
+                track.const_x_tower = (int)(track.tower_width *Main.Zoom*0.5);
+                track.const_y_tower = (int)(track.tower_height *Main.Zoom*0.5);
 
             }
             if(tr.host){
@@ -484,15 +483,15 @@ public class Keyboard extends InputAdapter{
         for(Unit tr : Main.UnitList){
             tr.corpus_width_zoom = (int)(tr.corpus_width*Main.Zoom);
             tr.corpus_height_zoom = (int)(tr.corpus_height*Main.Zoom);
-            tr.width_tower_zoom = (int)(tr.width_tower *Main.Zoom);
-            tr.height_tower_zoom = (int)(tr.height_tower *Main.Zoom);
+            tr.width_tower_zoom = (int)(tr.tower_width *Main.Zoom);
+            tr.height_tower_zoom = (int)(tr.tower_height *Main.Zoom);
             tr.const_x_corpus = (int)(tr.corpus_width_2*Main.Zoom);
             tr.const_y_corpus = (int)(tr.corpus_height_2*Main.Zoom);
             tr.const_x_tower = (int)(tr.const_tower_x*Main.Zoom);
             tr.const_y_tower = (int)(tr.const_tower_y*Main.Zoom);
             for (Unit tower : tr.TowerUnitList){
-                tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-                tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+                tower.width_tower_zoom = (int)(tower.tower_width *Main.Zoom);
+                tower.height_tower_zoom = (int)(tower.tower_height *Main.Zoom);
                 tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
                 tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
                 tower.difference2Zoom = (int)(tower.differenceX * Zoom);
@@ -513,15 +512,15 @@ public class Keyboard extends InputAdapter{
     }
     private static void ZoomTower( Unit tr){
         for (Unit tower :tr.TowerUnitList){
-            tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-            tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+            tower.width_tower_zoom = (int)(tower.tower_width *Main.Zoom);
+            tower.height_tower_zoom = (int)(tower.tower_height *Main.Zoom);
             tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
             tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             ZoomTower(tower);
         }
         for (Unit tower : tr.TrackUnitList){
-            tower.width_tower_zoom = (int)(tower.width_tower *Main.Zoom);
-            tower.height_tower_zoom = (int)(tower.height_tower *Main.Zoom);
+            tower.width_tower_zoom = (int)(tower.tower_width *Main.Zoom);
+            tower.height_tower_zoom = (int)(tower.tower_height *Main.Zoom);
             tower.const_x_tower = (int)(tower.const_tower_x*Main.Zoom);
             tower.const_y_tower = (int)(tower.const_tower_y*Main.Zoom);
             ZoomTower(tower);

@@ -21,7 +21,6 @@ TowerY = 20;
 Fire = Acid;
 Image = tower_enemy;
 
-func.Add = ComponentTowerXY;
 func.Add = ComponentTowerControl;
 func.Add = ComponentFireTankCumulativeControl;
 

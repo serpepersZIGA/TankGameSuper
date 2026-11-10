@@ -111,28 +111,30 @@ public class ParsGun {
         String data = "{\n" +
                 "  \"TypeShot\": \"ComponentFireDrumControl\",\n" +
                 "  \"Fire\": \"Bullet\",\n" +
+                "  \"Image\":\"AK74\",\n" +
                 "  \"Damage\": 20,\n" +
                 "  \"Penetration\": 3,\n" +
                 "  \"DamageFragment\": 0,\n" +
                 "  \"PenetrationFragment\": 0,\n" +
                 "  \"TemperatureDamage\": 0,\n" +
-                "  \"ReloadMax\": 5,\n" +
+                "  \"ReloadMax\": 400,\n" +
                 "  \"TimeBullet\": 200,\n" +
+                "  \"TegList\": [\"afar\"],\n" +
                 "  \"AmountFragment\": 0,\n" +
-                "  \"SpeedBullet\": 0,\n" +
-                "\"TegList\": [\"afar\"]," +
+                "  \"SpeedBullet\": 12,\n" +
                 "  \"Sound\": 10,\n" +
-                "  \"QuantityShots\": 30,\n" +
-                "  \"ReloadBetweenShots\": 0,\n" +
+                "  \"QuantityShots\": 10,\n" +
+                "  \"ReloadBetweenShots\": 4,\n" +
                 "  \"ReloadShots\": 0,\n" +
                 "  \"ReloadUP\": 2,\n" +
                 "  \"OneShot\": 5,\n" +
-                "\"Price\": 2\n" +
+                "  \"Price\": 2\n" +
                 "}";
         Create(AK74,data);
         data = "{\n" +
                 "  \"TypeShot\": \"ComponentFireTankCumulativeControl\",\n" +
                 "  \"Fire\": \"Flame\",\n" +
+                "  \"Image\":\"FlameGun\",\n" +
                 "  \"Damage\": 20,\n" +
                 "  \"Penetration\": 3,\n" +
                 "  \"DamageFragment\": 0,\n" +
@@ -140,16 +142,16 @@ public class ParsGun {
                 "  \"TemperatureDamage\": 0,\n" +
                 "  \"ReloadMax\": 5,\n" +
                 "  \"TimeBullet\": 200,\n" +
+                "  \"TegList\": [\"intimately\"],\n" +
                 "  \"AmountFragment\": 0,\n" +
-                "  \"SpeedBullet\": 0,\n" +
+                "  \"SpeedBullet\": 5,\n" +
                 "  \"Sound\": 5,\n" +
-                "\"TegList\": [\"intimately\"]," +
                 "  \"QuantityShots\": 30,\n" +
                 "  \"ReloadBetweenShots\": 0,\n" +
                 "  \"ReloadShots\": 0,\n" +
                 "  \"ReloadUP\": 2,\n" +
                 "  \"OneShot\": 5,\n" +
-                "\"Price\": 2\n" +
+                "  \"Price\": 2\n" +
                 "}";
         Create(flamethrower,data);
 

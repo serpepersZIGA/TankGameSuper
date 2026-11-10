@@ -106,7 +106,7 @@ public class Main extends ApplicationAdapter {
 	public static BitmapFont font,font2,font3;
 	public static byte ConfigMenu;
 	public static InputWindow InputWindow;
-	public static int xMap,yMap,i;
+	public static int xMap,yMap,xMap2,yMap2,i;
 	public static EventRegister EventData;
 	public static int IDClient;
 	public static PlayerSpawnData SpawnPlayer;
@@ -190,6 +190,8 @@ public class Main extends ApplicationAdapter {
 		}
         xMap = width_field;
         yMap = height_field;
+		xMap2 = width_field-1;
+		yMap2 = height_field-1;
 		//for()
 		//width_block-= 1;
 		//height_block-= 1;
@@ -334,8 +336,13 @@ public class Main extends ApplicationAdapter {
 //				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
 //				0);
 //		UnitList.get(UnitList.size()-1).hp = 20;
-//		IDList.get("Gb-1M").UnitAdd(3000,900,true, (byte) 2,
-//				RegisterControl.controllerBot,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
+
+		//IDList.get("TrSolS1").UnitAdd(3000,900,true, (byte) 2,
+		//		RegisterControl.controllerBotSupport,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
+		//		0);
+
+//		IDList.get("Helicopter-2Z").UnitAdd(3000,900,true, (byte) 2,
+//				RegisterControl.controllerHelicopter,new Inventory(new Item[4][4],1),new Inventory(new Item[2][2],1),
 //				0);
 
 

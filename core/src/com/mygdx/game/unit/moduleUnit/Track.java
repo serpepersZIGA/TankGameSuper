@@ -89,8 +89,8 @@ public class Track implements Cloneable{
         unit.functional = new FunctionalList();
         unit.tower_img = image;
 
-        unit.width_tower = WidthTrack;
-        unit.height_tower = HeightTrack;
+        unit.tower_width = WidthTrack;
+        unit.tower_height = HeightTrack;
         unit.tower_width_2 = WidthTrack2;
         unit.tower_height_2 = HeightTrack2;
         unit.tower_x_const =CenterX;

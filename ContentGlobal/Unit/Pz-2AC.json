@@ -3,6 +3,7 @@
   "Corpus": "Panzer1",
   "Cannon": ["Ack2A"],
   "TowerXY": [[1,18]],
+  "RotateBase": [0],
 
   "Track": ["TrackPz2","TrackPz2"],
   "Side": [0,1],

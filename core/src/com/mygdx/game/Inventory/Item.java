@@ -163,19 +163,19 @@ public class Item implements Cloneable{
         //unit.hp += (int) HP;
         unit.max_hp += (int) (unit.HpBase * HPPercent*0.01f);
         //unit.hp += (int) (unit.HpBase * HPPercent*0.01f);
-        unit.armorFront += (int) (unit.ArmorFrontBase * ArmorFrontPercent *0.01f);
-        unit.armorBack += (int) (unit.ArmorBackBase * ArmorFrontPercent *0.01f);
-        unit.armorCenter += (int) (unit.ArmorCenterBase * ArmorFrontPercent *0.01f);
+        unit.armorFront +=  (unit.ArmorFrontBase * ArmorFrontPercent *0.01f);
+        unit.armorBack +=  (unit.ArmorBackBase * ArmorFrontPercent *0.01f);
+        unit.armorCenter +=  (unit.ArmorCenterBase * ArmorFrontPercent *0.01f);
         unit.Acceleration +=  unit.AccelerationBase * AccelerationPercent*0.01f;
         unit.SpeedUp += unit.SpeedUpBase *MoveUPPercent*0.01f;
         unit.SpeedDown += unit.SpeedDownBase *MoveDownPercent*0.01f;
 
         for (Unit cannon : unit.TowerUnitList) {
-            cannon.damage += (int) (cannon.DamageBase*DamagePercent*0.01);
+            cannon.damage += (float) (cannon.DamageBase*DamagePercent*0.01f);
+            cannon.penetration += (float) (cannon.PenetrationBase*PenetrationPercent*0.01f);
+            UpgradeUseTower(cannon);
         }
-        for (Unit cannon : unit.TowerUnitList) {
-            cannon.penetration += (int) (cannon.PenetrationBase*PenetrationPercent*0.01f);
-        }
+
         unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
     }
     public void UpgradeUnUse(Unit unit){
@@ -196,6 +196,16 @@ public class Item implements Cloneable{
             cannon.penetration -= (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
         }
         unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+    }
+    public void UpgradeUseTower(Unit tower){
+        for (Unit cannon : tower.TowerUnitList) {
+            cannon.damage += (float) (cannon.DamageBase*DamagePercent*0.01f);
+            cannon.penetration += (float) (cannon.PenetrationBase*PenetrationPercent*0.01f);
+        }
+        for (Unit cannon : tower.TrackUnitList) {
+            cannon.damage += (float) (cannon.DamageBase*DamagePercent*0.01f);
+            cannon.penetration += (float) (cannon.PenetrationBase*PenetrationPercent*0.01f);
+        }
     }
 
 }

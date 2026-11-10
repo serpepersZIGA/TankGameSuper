@@ -16,6 +16,7 @@ public class UnitsParser {
     public static int [][] TowerXY,TrackXY;
     public static int []Side;
     public static ClassUnit ClassUnit;
+    public static int[] RotateBase;
     public static int height;
     public static int HillHp;
 
@@ -35,7 +36,7 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon, TowerXY,Track,TrackXY,Side, ClassUnit, HillHp,height);
+                    Corpus, Engine, Cannon,RotateBase, TowerXY,Track,TrackXY,Side, ClassUnit, HillHp,height);
 
 
         }
@@ -57,6 +58,8 @@ public class UnitsParser {
         Track.addAll(obj.Track);
         Engine = obj.Engine;
         Corpus = obj.Corpus;
+        RotateBase = obj.RotateBase;
+
         TrackXY = obj.TrackXY;
         TowerXY = obj.TowerXY;
         Side = obj.Side;
@@ -84,6 +87,7 @@ public class UnitsParser {
                 "\n" +
                 "  \"Track\": [],\n" +
                 "  \"Side\": [],\n" +
+                "  \"RotateBase\": [0,0,0],\n" +
                 "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 2,\n" +
@@ -100,6 +104,7 @@ public class UnitsParser {
                 "\n" +
                 "  \"Track\": [\"TrackM1\",\"TrackM1\"],\n" +
                 "  \"Side\": [0,1],\n" +
+                "  \"RotateBase\": [0],\n" +
                 "  \"TrackXY\": [[-9,0],[9,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1,\n" +
@@ -111,8 +116,9 @@ public class UnitsParser {
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"At2E\",\n" +
-                "  \"Cannon\": [\"Kwk24M\",\"Cabine\"],\n" +
-                "  \"TowerXY\": [[0,18],[0,-12]],\n" +
+                "  \"Cannon\": [\"Cabine\"],\n" +
+                "  \"TowerXY\": [[0,-12]],\n" +
+                "  \"RotateBase\": [90],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
@@ -128,6 +134,7 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "  \"RotateBase\": [0,0,0],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
                 "  \"Side\": [0,1],\n" +
@@ -141,8 +148,9 @@ public class UnitsParser {
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Ack2AL\",\"Ack2AL\",\"Ack2A\"],\n" +
-                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "  \"Cannon\": [\"Ack2A\"],\n" +
+                "  \"TowerXY\": [[1,18]],\n" +
+                "  \"RotateBase\": [0],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
                 "  \"Side\": [0,1],\n" +
@@ -157,6 +165,7 @@ public class UnitsParser {
                 "  \"Corpus\": \"Panzer1\",\n" +
                 "  \"Cannon\": [\"Flk4CL\",\"Flk4CL\",\"Flk4C\"],\n" +
                 "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "  \"RotateBase\": [0,0,90],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
                 "  \"Side\": [0,1],\n" +
@@ -169,11 +178,12 @@ public class UnitsParser {
         data = "{\n" +
                 "  \"Engine\": \"V2A\",\n" +
                 "  \"Corpus\": \"Panzer1\",\n" +
-                "  \"Cannon\": [\"Kwk12ML\",\"Flk4CL\",\"Kwk12M\"],\n" +
-                "  \"TowerXY\": [[-10,50],[10,50],[1,18]],\n" +
+                "  \"Cannon\": [\"Kwk12M\"],\n" +
+                "  \"TowerXY\": [[1,18]],\n" +
                 "\n" +
                 "  \"Track\": [\"TrackPz2\",\"TrackPz2\"],\n" +
                 "  \"Side\": [0,1],\n" +
+                "  \"RotateBase\": [0],\n" +
                 "  \"TrackXY\": [[-22,0],[22,0]],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1,\n" +
@@ -191,6 +201,7 @@ public class UnitsParser {
                 "\n" +
                 "  \"Track\": [],\n" +
                 "  \"Side\": [],\n" +
+                "  \"RotateBase\": [],\n" +
                 "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 3,\n" +
                 "  \"Height\": 1,\n" +
@@ -205,6 +216,7 @@ public class UnitsParser {
                 "\n" +
                 "  \"Track\": [],\n" +
                 "  \"Side\": [],\n" +
+                "  \"RotateBase\": [],\n" +
                 "  \"TrackXY\": [],\n" +
                 "  \"MedicConf\": 0,\n" +
                 "  \"Height\": 1,\n" +

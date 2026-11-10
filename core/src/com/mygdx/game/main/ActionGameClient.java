@@ -194,7 +194,12 @@ public class ActionGameClient extends ActionGame {
         //PackUpdateUnit();
         while (ThreadIterationBullet.isAlive()||ThreadIterationUnit.isAlive()||ThreadIterationDebris.isAlive()){
 
-        };
+        }
+        for(Bullet bullet : Bullet.BulletListClear){
+            bullet.clearClient();
+            //Bullet.BulletListClear.remove(bullet);
+        }
+        Bullet.BulletListClear.clear();
     }
     private class IterationDebris implements Runnable{
         public void run() {
@@ -212,13 +217,18 @@ public class ActionGameClient extends ActionGame {
     }
     private class IterationBullet implements Runnable{
         public void run(){
-            for (int i = 0; i< BulletList.size(); i++){
-                Bullet bullet = BulletList.get(i);
-                if(bullet != null) {
-                    bullet.all_action_client();
+            for (int i = 0; i < Bullet.BulletListInd.size(); i++) {
+                Bullet bullet = BulletList.get(Bullet.BulletListInd.get(i));
+                bullet.all_action_client();
 
-                }
             }
+//            for (int i = 0; i< BulletList.size(); i++){
+//                Bullet bullet = BulletList.get(i);
+//                if(bullet != null) {
+//                    bullet.all_action_client();
+//
+//                }
+//            }
         }
     }
     private class IterationUnit implements Runnable{

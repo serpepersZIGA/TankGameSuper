@@ -67,7 +67,7 @@ public class MapBaseAdd {
                         "BlockAdd:*Asphalt:x28:y0:Y7:;";
         Create(Str2File,dataStr);
         dataStr =
-                "MapObject:x14:y5:o pepper:2:;\n" +
+                "MapObject:x14:y5:o pepper:2:t 2:;\n" +
                         "MapObject:x22:y10:o pepper:t 2:;\n" +
                         "MapObject:x14:y10:o pepper:t 2:;";
         Create(pepper1,dataStr);

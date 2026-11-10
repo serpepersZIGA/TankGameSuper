@@ -19,7 +19,6 @@ Image = tower_enemy_auxiliary_1;
 
 
 
-func.Add ComponentTowerXY;
 func.Add ComponentTowerControl;
 func.Add ComponentFireControl;
 

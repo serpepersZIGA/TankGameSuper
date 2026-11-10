@@ -60,10 +60,9 @@ public class EquipmentInterface extends InventoryInterface {
         unit.SpeedDown = unit.SpeedDownBase;
 
         for (Unit cannon : unit.TowerUnitList) {
-            cannon.damage = (int) cannon.DamageBase;
-        }
-        for (Unit cannon : unit.TowerUnitList) {
+            cannon.damage =  cannon.DamageBase;
             cannon.penetration = cannon.PenetrationBase;
+            UpgradeUseTower(cannon);
         }
 
 
@@ -77,6 +76,16 @@ public class EquipmentInterface extends InventoryInterface {
 //                }
 //            }
 //        }
+    }
+    public void UpgradeUseTower(Unit tower){
+        for (Unit cannon : tower.TowerUnitList) {
+            cannon.damage =  cannon.DamageBase;
+            cannon.penetration = cannon.PenetrationBase;
+        }
+        for (Unit cannon : tower.TrackUnitList) {
+            cannon.damage =  cannon.DamageBase;
+            cannon.penetration = cannon.PenetrationBase;
+        }
     }
 
 }

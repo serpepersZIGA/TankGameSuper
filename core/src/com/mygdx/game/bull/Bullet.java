@@ -20,6 +20,7 @@ import java.awt.geom.Ellipse2D;
 import java.awt.geom.Rectangle2D;
 import java.io.Serializable;
 import java.util.ArrayList;
+import java.util.LinkedList;
 
 import static com.mygdx.game.bull.BulletRegister.*;
 import static com.mygdx.game.main.Main.*;
@@ -39,8 +40,8 @@ public abstract class Bullet implements Serializable,Cloneable {
     public boolean FlameSpawn,clear_sost;
     public byte type_team,height;
     public Ellipse2D eclipse;
-    public static ArrayList<Bullet>BulletListClear = new ArrayList<>();
-    public static ArrayList<Integer>BulletListInd = new ArrayList<>();
+    public static LinkedList<Bullet>BulletListClear = new LinkedList<>();
+    public static LinkedList<Integer> BulletListInd = new LinkedList<>();
 
     //public static ArrayList<Bullet> BulletListDown=new ArrayList<Bullet>(),BulletListUp=new ArrayList<Bullet>();
     public FunctionalList functionalList;
@@ -155,11 +156,13 @@ public abstract class Bullet implements Serializable,Cloneable {
                 //Bullet bull = BulletList.get(i);
                 if(BulletList.get(i) == null) {
                     bullet.ind = i;
+                    BulletListInd.add(bullet.ind);
                     BulletList.set(i,bullet);
                     return;
                 }
             }
             bullet.ind = BulletList.size();
+            BulletListInd.add(bullet.ind);
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -207,12 +210,14 @@ public abstract class Bullet implements Serializable,Cloneable {
                 //Bullet bull = BulletList.get(i);
                 if(BulletList.get(i) == null) {
                     bullet.ind = i;
+                    BulletListInd.add(bullet.ind);
                     BulletList.set(i,bullet);
                     return;
                 }
             }
             bullet.eclipse = new Ellipse2D.Double(bullet.x, bullet.y, bullet.size,bullet.size);
             bullet.ind = BulletList.size();
+            BulletListInd.add(bullet.ind);
             BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
@@ -296,35 +301,42 @@ public abstract class Bullet implements Serializable,Cloneable {
             finally {R_LOCK.unlock();}
         }
     }
-    protected final void clear(){
+    protected void Clear(){
         if(this.clear_sost){
-            if(BangSpawn) {
-                Main.BangList.add(new Bang(this.x, this.y, 4));
+            BulletListInd.remove((Integer) this.ind);
+            BulletListClear.add(this);
+        }
+    }
+    public final void clear(){
+        //if(this.clear_sost){
+        if(BangSpawn) {
+            Main.BangList.add(new Bang(this.x, this.y, 4));
+        }
+        if(FlameSpawn) {spawn_flame();}
+        if(AcidSpawn){spawn_acid();}
+        for (int l = 0; l<AmountFragment; l++) {
+            Bullet bullet = BulletFragment.BulletAdd2(this.x,this.y,rand.rand(360),damage_fragment,penetration_fragment,
+                    0,0,type_team,height,0,12+rand.rand(6),0,
+                    65+rand.rand(35));
+            PackBulletFragment(bullet);
+//               R_LOCK.lock();
+//               try {
+            boolean conf = false;
+            for(int i = 0;i<BulletList.size();i++) {
+                //Bullet bull = BulletList.get(i);
+                if(BulletList.get(i) == null) {
+                    bullet.ind = i;
+                    BulletListInd.add((Integer)bullet.ind);
+                    BulletList.set(i,bullet);
+                    conf = true;
+                    break;
+                }
             }
-            if(FlameSpawn) {spawn_flame();}
-            if(AcidSpawn){spawn_acid();}
-            for (int l = 0; l<AmountFragment; l++) {
-                Bullet bullet = BulletFragment.BulletAdd2(this.x,this.y,rand.rand(360),damage_fragment,penetration_fragment,
-                        0,0,type_team,height,0,12+rand.rand(6),0,
-                        65+rand.rand(35));
-
-                PackBulletFragment(bullet);
-//                R_LOCK.lock();
-//                try {
-                boolean conf = false;
-                for(int i = 0;i<BulletList.size();i++) {
-                    //Bullet bull = BulletList.get(i);
-                    if(BulletList.get(i) == null) {
-                        bullet.ind = i;
-                        BulletList.set(i,bullet);
-                        conf = true;
-                        break;
-                    }
-                }
-                if(!conf) {
-                    bullet.ind = BulletList.size();
-                    BulletList.add(bullet);
-                }
+            if(!conf) {
+                bullet.ind = BulletList.size();
+                BulletListInd.add((Integer)bullet.ind);
+                BulletList.add(bullet);
+            }
                 //}
 //                finally {
 //                    R_LOCK.unlock();
@@ -346,41 +358,37 @@ public abstract class Bullet implements Serializable,Cloneable {
 //                    BulletListUp.remove(this);
 //                    break;
 //            }
-            R_LOCK.lock();
-            try {
-                BulletList.set(ind,null);
+
+        BulletList.set(this.ind,null);
                 //Main.BulletList.remove(this);
-            }
-            finally {
-                R_LOCK.unlock();
-            }
-        }
+
+        //}
     }
 
-    protected final void clearClient(){
-        if(this.clear_sost){
-            if(BangSpawn) {
-                Main.BangList.add(new Bang(this.x, this.y, 4));
-            }
-            if(FlameSpawn) {spawn_flame();}
-            if(AcidSpawn){spawn_acid();}
-//            switch (this.height){
-//                case 1:
-//                    BulletListDown.remove(this);
-//                    break;
-//                case 2:
-//                    BulletListUp.remove(this);
-//                    break;
-//            }
-//            R_LOCK.lock();
-//            try {
-                BulletList.set(ind,null);
-                //BulletListInd.add(this.);
-           // }
-//            finally {
-//                R_LOCK.unlock();
-//            }
+    public final void clearClient(){
+        if(BangSpawn) {
+            Main.BangList.add(new Bang(this.x, this.y, 4));
         }
+        if(FlameSpawn) {spawn_flame();}
+        if(AcidSpawn){spawn_acid();}
+//           switch (this.height){
+//               case 1:
+//                   BulletListDown.remove(this);
+//                   break;
+//               case 2:
+//                   BulletListUp.remove(this);
+//                   break;
+//           }
+//           R_LOCK.lock();
+//           try {
+        //BulletListInd.remove((Integer)ind);
+        BulletList.set(ind,null);
+        //BulletListInd.add(this.);
+        // }
+//           finally {
+//               R_LOCK.unlock();
+//           }
+
     }
     public void all_action(){
 //        this.update();
@@ -390,7 +398,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         this.CorpusBullet();
         this.BuildBulletCollision();
         this.bullClearTime();
-        this.clear();
+        this.Clear();
 
     }
     public void all_action_client(){
@@ -401,7 +409,7 @@ public abstract class Bullet implements Serializable,Cloneable {
         this.CorpusBulletClient();
         this.BuildBulletCollision();
         this.bullClearTime();
-        this.clearClient();
+        this.Clear();
     }
     public void update(){
         updaterBullet.Update(this);

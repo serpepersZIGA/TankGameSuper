@@ -3,9 +3,6 @@ package com.mygdx.game.FunctionalComponent.FunctionalUnit;
 import com.mygdx.game.FunctionalComponent.FunctionalComponent;
 import com.mygdx.game.unit.Unit;
 
-import static java.lang.StrictMath.cos;
-import static java.lang.StrictMath.sin;
-
 public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
     private static int TowerX,TowerY;
     @Override final
@@ -14,12 +11,12 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
         unit.TargetConstY = unit.y+unit.corpus_height_2;
         //unit.tower_iteration(unit);
         for (Unit Tower : unit.TowerUnitList){
-            Tower.x = unit.x;
-            Tower.y = unit.y;
+           // Tower.x = unit.x;
+            //Tower.y = unit.y;
             //System.out.println(Tower.difference+"  "+Tower.difference_2);
             Tower.TargetConstX = unit.TargetConstX;
             Tower.TargetConstY = unit.TargetConstY;
-            Tower.rotation_corpus = unit.rotation_corpus;
+            //Tower.rotation_corpus = unit.rotation_corpus;
             //Tower.tower_action();
             //Tower.InertionTowerRotate(unit);
             Tower.functional.FunctionalIterationAnHost(Tower);
@@ -33,12 +30,12 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
         unit.TargetConstY = unit.y+unit.corpus_height_2;
         //unit.tower_iteration(unit);
         for (Unit Tower : unit.TowerUnitList){
-            Tower.x = unit.x;
-            Tower.y = unit.y;
+            //Tower.x = unit.x;
+            //Tower.y = unit.y;
             //System.out.println(Tower.difference+"  "+Tower.difference_2);
             Tower.TargetConstX = unit.TargetConstX;
             Tower.TargetConstY = unit.TargetConstY;
-            Tower.rotation_corpus = unit.rotation_corpus;
+            //Tower.rotation_corpus = unit.rotation_corpus;
             //Tower.tower_action();
             //Tower.InertionTowerRotate(unit);
             Tower.functional.FunctionalIterationClientAnHost(Tower);
@@ -62,12 +59,12 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
         //unit.TargetConstX = unit.x+unit.corpus_width_2;
         //unit.TargetConstY = unit.y+unit.corpus_height_2;
         for (Unit Tower : unit.TrackUnitList){
-            Tower.x = unit.tower_x;
-            Tower.y = unit.tower_y;
+            //Tower.x = unit.tower_x;
+            //Tower.y = unit.tower_y;
             //System.out.println(Tower.difference+"  "+Tower.difference_2);
             Tower.TargetConstX = TowerX;
             Tower.TargetConstY = TowerY;
-            Tower.rotation_corpus = unit.rotation_tower;
+            //Tower.rotation_corpus = unit.rotation_tower;
             //Tower.tower_action();
             //Tower.InertionTowerRotate(unit);
             //Tower.tower_x_const = TowerX;
@@ -76,12 +73,12 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
             func(Tower);
         }
         for (Unit Tower : unit.TowerUnitList){
-            Tower.x = unit.tower_x;
-            Tower.y = unit.tower_y;
+            //Tower.x = unit.tower_x;
+            //Tower.y = unit.tower_y;
             //System.out.println(Tower.difference+"  "+Tower.difference_2);
             Tower.TargetConstX = TowerX;
             Tower.TargetConstY = TowerY;
-            Tower.rotation_corpus = unit.rotation_tower;
+            //Tower.rotation_corpus = unit.rotation_tower;
             //Tower.tower_action();
             //Tower.InertionTowerRotate(unit);
             //Tower.x = TowerX;
@@ -94,24 +91,24 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
         TowerX = (int) (unit.tower_x+unit.tower_width_2);
         TowerY = (int) (unit.tower_y+unit.tower_height_2);
         for (Unit Tower : unit.TrackUnitList){
-            Tower.x = unit.tower_x;
-            Tower.y = unit.tower_y;
+            //Tower.x = unit.tower_x;
+            //Tower.y = unit.tower_y;
             //System.out.println(Tower.difference+"  "+Tower.difference_2);
             Tower.TargetConstX = TowerX;
             Tower.TargetConstY = TowerY;
-            Tower.rotation_corpus = unit.rotation_tower;
+            //Tower.rotation_corpus = unit.rotation_tower;
             //Tower.tower_action();
             //Tower.InertionTowerRotate(unit);
             Tower.functional.FunctionalIterationClientAnHost(Tower);
             func2(Tower);
         }
         for (Unit Tower : unit.TowerUnitList){
-            Tower.x = unit.tower_x;
-            Tower.y = unit.tower_y;
+            //Tower.x = unit.tower_x;
+            //Tower.y = unit.tower_y;
             //System.out.println(Tower.difference+"  "+Tower.difference_2);
             Tower.TargetConstX = TowerX;
             Tower.TargetConstY = TowerY;
-            Tower.rotation_corpus = unit.rotation_tower;
+            //Tower.rotation_corpus = unit.rotation_tower;
             //Tower.tower_action();
             //Tower.InertionTowerRotate(unit);
             Tower.functional.FunctionalIterationClientAnHost(Tower);

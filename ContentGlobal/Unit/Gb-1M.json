@@ -1,8 +1,9 @@
 {
   "Engine": "V2A",
   "Corpus": "At2E",
-  "Cannon": ["Kwk24M","Cabine"],
-  "TowerXY": [[0,18],[0,-12]],
+  "Cannon": ["Cabine"],
+  "TowerXY": [[0,-12]],
+  "RotateBase": [90],
 
   "Track": ["TrackPz2","TrackPz2"],
   "TrackXY": [[-22,0],[22,0]],

@@ -444,7 +444,8 @@ public class ClientMain extends Listener {
             Unit tower = transport.TowerUnitList.get(i2);
             tower.rotation_tower=pack.TowerList1.get(i2).rotationTower;
             tower.reload=pack.TowerList1.get(i2).reloadTower;
-            towerInitAdd(pack.TowerList1,pack.TowerList2,tower);
+            towerInitAdd(pack.TowerList1.get(i2).TowerList1
+                    ,pack.TowerList1.get(i2).TowerList2,tower);
         }
 //        for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
 //            transport.TrackUnitList.get(i2).rotation_tower=pack.TowerList1.get(i2).rotationTower;
@@ -459,17 +460,21 @@ public class ClientMain extends Listener {
 
     }
     private void towerInitAdd(ArrayList<TowerPack> pack1, ArrayList<TowerPack> pack2, Unit transport){
+        TowerPack pack;
+        Unit tower;
         for(int i2 = 0; i2 < transport.TowerUnitList.size(); i2++){
-            Unit tower = transport.TowerUnitList.get(i2);
-            tower.rotation_tower=pack1.get(i2).rotationTower;
-            tower.reload=pack1.get(i2).reloadTower;
-            towerInitAdd(pack1.get(i2).TowerList1,pack1.get(i2).TowerList2,tower);
+            tower = transport.TowerUnitList.get(i2);
+            pack = pack1.get(i2);
+            tower.rotation_tower=pack.rotationTower;
+            tower.reload=pack.reloadTower;
+            towerInitAdd(pack.TowerList1,pack.TowerList2,tower);
         }
         for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
-            Unit tower = transport.TrackUnitList.get(i2);
-            tower.rotation_tower=pack2.get(i2).rotationTower;
-            tower.reload=pack2.get(i2).reloadTower;
-            towerInitAdd(pack2.get(i2).TowerList1,pack2.get(i2).TowerList2,tower);
+            tower = transport.TrackUnitList.get(i2);
+            pack = pack2.get(i2);
+            tower.rotation_tower=pack.rotationTower;
+            tower.reload=pack.reloadTower;
+            towerInitAdd(pack.TowerList1,pack.TowerList2,tower);
         }
 
     }

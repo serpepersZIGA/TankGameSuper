@@ -6,6 +6,7 @@
 
   "Track": [],
   "Side": [],
+  "RotateBase": [0,0,0],
   "TrackXY": [],
   "MedicConf": 0,
   "Height": 2,

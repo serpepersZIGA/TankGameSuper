@@ -117,6 +117,7 @@ public class ParserItem {
                 "  \"ArmorBackPercent\": 10,\n" +
                 "  \"HPPercent\": 0,\n" +
                 "  \"DamagePercent\": 0,\n" +
+                "\"PenetrationPercent\": 25," +
                 "  \"Image\": \"armorB1\",\n" +
                 "  \"MoveUPPercent\": 200,\n" +
                 "  \"MoveDownPercent\": 0,\n" +
