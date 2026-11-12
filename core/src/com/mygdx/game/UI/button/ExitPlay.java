@@ -2,6 +2,7 @@ package com.mygdx.game.UI.button;
 
 import com.mygdx.game.MapFunction.MapScan;
 import com.mygdx.game.block.Block;
+import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.main.ClientMain;
 import com.mygdx.game.main.Main;
 import com.mygdx.game.main.ServerMain;
@@ -53,6 +54,11 @@ public class ExitPlay extends Button{
             Block.passability_detected2();
             UnitList.clear();
             DebrisList.clear();
+            Bullet.BulletListInd.clear();
+            BulletAddList.clear();
+            Bullet.BulletListClear.clear();
+            RespawnList.clear();
+            RespawnPoint = null;
             BuildingList.clear();
             BulletList.clear();
             RespawnPointList.clear();
