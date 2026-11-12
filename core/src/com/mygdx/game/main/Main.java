@@ -66,6 +66,7 @@ public class Main extends ApplicationAdapter {
 	public static ArrayList<Unit> UnitList = new ArrayList<>();
 	public static ArrayList<Building> BuildingList = new ArrayList<>();
 	public static ArrayList<Bullet> BulletList = new ArrayList<>();
+	public static ArrayList<Bullet> BulletAddList = new ArrayList<>();
 	public static ArrayList<Particle> FlameStaticList = new ArrayList<>();
 	public static ArrayList<Button>ButtonList = new ArrayList<>();
 	public static ArrayList<Particle> FlameList = new ArrayList<>();

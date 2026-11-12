@@ -303,12 +303,33 @@ public class ActionGameHost extends ActionGame{
             PacketUnit.remove(unit.PackUnit);
             UnitList.remove(unit);
         }
+        ClearUnitList.clear();
         for(Bullet bullet : Bullet.BulletListClear){
             bullet.clear();
             //Bullet.BulletListClear.remove(bullet);
         }
         Bullet.BulletListClear.clear();
-        ClearUnitList.clear();
+        i = 0;
+        boolean conf;
+        for (Bullet bullet : BulletAddList){
+            conf = false;
+            for(;i<BulletList.size();i++) {
+                //Bullet bull = BulletList.get(i);
+                if(BulletList.get(i) == null) {
+                    bullet.ind = i;
+                    Bullet.BulletListInd.add(bullet.ind);
+                    BulletList.set(i,bullet);
+                    conf = true;
+                    break;
+                }
+            }
+            if(!conf) {
+                bullet.ind = BulletList.size();
+                Bullet.BulletListInd.add(bullet.ind);
+                BulletList.add(bullet);
+            }
+        }
+        BulletAddList.clear();
         for (Unit unit : ClearDebrisList) {
             DebrisList.remove(unit);
         }

@@ -137,7 +137,8 @@ public class ActionGameClient extends ActionGame {
                 }
             }
         }
-        for(Unit unit : DebrisList) {
+        for(i = 0;i< DebrisList.size();i++) {
+            Unit unit = DebrisList.get(i);
             unit.UpdateUnit();
 
         }

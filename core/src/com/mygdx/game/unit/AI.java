@@ -3,7 +3,7 @@ import com.mygdx.game.main.Main;
 
 import java.util.ArrayList;
 
-import static com.mygdx.game.main.Main.BlockList2D;
+import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.Math.abs;
 import static java.lang.Math.sqrt;
@@ -25,6 +25,12 @@ public class AI {
     public void pathAIAStar(Unit ai, Unit target){
         x = ai.XMap;
         y = ai.YMap;
+        if(x <=0 || x>=xMap2){
+            return;
+        }
+        if(y <=0 || y>=yMap2){
+            return;
+        }
         PathAI.add(new int[]{x, y});
         //ai.path.add(new int[]{x, y});
         CloseBlockList.add(new int[]{x,y});

@@ -1554,7 +1554,7 @@ public abstract class Unit implements Cloneable{
     public void corpus_corpus(ArrayList<Unit> obj_2){
         for (int i = 0;i<obj_2.size();i++) {
             Unit unit = obj_2.get(i);
-                if (rect_collision(this.area,unit.area)) {
+                if (unit.height == this.height && rect_collision(this.area,unit.area)) {
                     SoundPlay.soundPlay(x_rend,y_rend, (int) x, (int) y,7, ContentSound.hit);
                     PhysicCollision(this,unit);
                     PhysicCollision(unit,this);

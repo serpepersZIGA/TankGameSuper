@@ -152,18 +152,19 @@ public abstract class Bullet implements Serializable,Cloneable {
             BullPacket bullPacket1 = new BullPacket();
             unit.bull_packets(bullPacket1,bullet);
             PacketBull.add(bullPacket1);
-            for(int i = 0;i<BulletList.size();i++) {
-                //Bullet bull = BulletList.get(i);
-                if(BulletList.get(i) == null) {
-                    bullet.ind = i;
-                    BulletListInd.add(bullet.ind);
-                    BulletList.set(i,bullet);
-                    return;
-                }
-            }
-            bullet.ind = BulletList.size();
-            BulletListInd.add(bullet.ind);
-            BulletList.add(bullet);
+            BulletAddList.add(bullet);
+//            for(int i = 0;i<BulletList.size();i++) {
+//                //Bullet bull = BulletList.get(i);
+//                if(BulletList.get(i) == null) {
+//                    bullet.ind = i;
+//                    BulletListInd.add(bullet.ind);
+//                    BulletList.set(i,bullet);
+//                    return;
+//                }
+//            }
+//            bullet.ind = BulletList.size();
+//            BulletListInd.add(bullet.ind);
+//            BulletList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -319,24 +320,25 @@ public abstract class Bullet implements Serializable,Cloneable {
                     0,0,type_team,height,0,12+rand.rand(6),0,
                     65+rand.rand(35));
             PackBulletFragment(bullet);
+            BulletAddList.add(bullet);
 //               R_LOCK.lock();
 //               try {
-            boolean conf = false;
-            for(int i = 0;i<BulletList.size();i++) {
-                //Bullet bull = BulletList.get(i);
-                if(BulletList.get(i) == null) {
-                    bullet.ind = i;
-                    BulletListInd.add((Integer)bullet.ind);
-                    BulletList.set(i,bullet);
-                    conf = true;
-                    break;
-                }
-            }
-            if(!conf) {
-                bullet.ind = BulletList.size();
-                BulletListInd.add((Integer)bullet.ind);
-                BulletList.add(bullet);
-            }
+//            boolean conf = false;
+//            for(int i = 0;i<BulletList.size();i++) {
+//                //Bullet bull = BulletList.get(i);
+//                if(BulletList.get(i) == null) {
+//                    bullet.ind = i;
+//                    BulletListInd.add((Integer)bullet.ind);
+//                    BulletList.set(i,bullet);
+//                    conf = true;
+//                    break;
+//                }
+//            }
+//            if(!conf) {
+//                bullet.ind = BulletList.size();
+//                BulletListInd.add((Integer)bullet.ind);
+//                BulletList.add(bullet);
+//            }
                 //}
 //                finally {
 //                    R_LOCK.unlock();
@@ -358,7 +360,7 @@ public abstract class Bullet implements Serializable,Cloneable {
 //                    BulletListUp.remove(this);
 //                    break;
 //            }
-
+        BulletListInd.remove((Integer) this.ind);
         BulletList.set(this.ind,null);
                 //Main.BulletList.remove(this);
 
