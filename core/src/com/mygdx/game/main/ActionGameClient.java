@@ -7,6 +7,7 @@ import com.mygdx.game.Shader.FlameShader;
 import com.mygdx.game.Shader.LiquidShader;
 import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.SpawnPlayer.SpawnPlayerPack;
 import com.mygdx.game.unit.Unit;
 
@@ -37,7 +38,7 @@ public class ActionGameClient extends ActionGame {
     int i;
     private static int timer = 0;
     @Override final
-    public void action() throws ExecutionException, InterruptedException {
+    public void action() {
         ThreadIterationBullet = new Thread(new IterationBullet());
         ThreadIterationDebris = new Thread(new IterationDebris());
         ThreadIterationUnit = new Thread(new IterationUnit());
@@ -60,7 +61,7 @@ public class ActionGameClient extends ActionGame {
         if(Keyboard.PressD){
             RC.x += 10;}
         if(Keyboard.ClickEsc){
-            ActionGameMain = ActionMenu;
+            ActionGameMain = ActionMenuClient;
             ConfigMenu = 4;
         }
 //        try {
@@ -111,19 +112,17 @@ public class ActionGameClient extends ActionGame {
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
-        Batch.setShader(LightSystem.shader);
+        //Batch.setShader(LightSystem.shader);
         //Batch.flush();
         for(int i = 0;i<ItemList.size();i++){
             ItemList.get(i).IterationItemClient();
         }
         Render.polyBatch.flush();
 
-        for (i = 0;i< BulletList.size();i++){
-            Bullet bullet = BulletList.get(i);
-            if(bullet!=null) {
-                if (bullet.height == 1) {
-                    bullet.update();
-                }
+        for (Integer ind : Bullet.BulletListInd) {
+            Bullet bullet = BulletList.get(ind);
+            if(bullet.height == 1) {
+                bullet.update();
             }
 
         }
@@ -149,15 +148,11 @@ public class ActionGameClient extends ActionGame {
 
         RC.BuildingUpdate();
 
-        for (i = 0;i< BulletList.size();i++){
-            Bullet bullet = BulletList.get(i);
-            if(bullet!= null) {
-                if(bullet.height == 2) {
-                    bullet.update();
-                }
+        for (Integer ind : Bullet.BulletListInd) {
+            Bullet bullet = BulletList.get(ind);
+            if(bullet.height == 2) {
+                bullet.update();
             }
-
-
 
         }
         for(i = 0;i< UnitList.size();i++) {
@@ -200,9 +195,35 @@ public class ActionGameClient extends ActionGame {
             bullet.clearClient();
             //Bullet.BulletListClear.remove(bullet);
         }
+        for (int i2 = 0;i2<BulletAddList.size();i2++){
+            Bullet bullet = BulletAddList.get(i2);
+            ConfBulletAdd = false;
+            for(int i = 0;i<BulletList.size();i++) {
+                //Bullet bull = BulletList.get(i);
+                if(BulletList.get(i) == null) {
+                    bullet.ind = i;
+                    Bullet.BulletListInd.add(bullet.ind);
+                    BulletList.set(i,bullet);
+                    ConfBulletAdd = true;
+                    break;
+                }
+            }
+            if(!ConfBulletAdd) {
+                bullet.ind = BulletList.size();
+                Bullet.BulletListInd.add(bullet.ind);
+                BulletList.add(bullet);
+            }
+        }
         Bullet.BulletListClear.clear();
+        BulletAddList.clear();
+        for (Particle particle : Particle.ClearLiquidList){
+            LiquidList.remove(particle);
+        }
+        Particle.ClearLiquidList.clear();
     }
-    private class IterationDebris implements Runnable{
+        protected static boolean ConfBulletAdd;
+
+    protected static class IterationDebris implements Runnable{
         public void run() {
             for (int i = 0;i< DebrisList.size();i++){
                 Unit debris = DebrisList.get(i);
@@ -216,10 +237,10 @@ public class ActionGameClient extends ActionGame {
             // результат
         }
     }
-    private class IterationBullet implements Runnable{
+    protected static class IterationBullet implements Runnable{
         public void run(){
-            for (int i = 0; i < Bullet.BulletListInd.size(); i++) {
-                Bullet bullet = BulletList.get(Bullet.BulletListInd.get(i));
+            for (Integer ind : Bullet.BulletListInd) {
+                Bullet bullet = BulletList.get(ind);
                 bullet.all_action_client();
 
             }
@@ -232,7 +253,7 @@ public class ActionGameClient extends ActionGame {
 //            }
         }
     }
-    private class IterationUnit implements Runnable{
+    protected static class IterationUnit implements Runnable{
         public void run(){
             //System.out.println(UnitList.get(0).press_a+" "+UnitList.get(0).press_d);
             for(int i = 0;i< UnitList.size();i++) {
@@ -242,7 +263,9 @@ public class ActionGameClient extends ActionGame {
                     unit.XYMapCord();
                     if (unit.host || unit.nConnect != IDClient) {
                         unit.all_action_client_2();}
-                    else {unit.all_action_client_1();}
+                    else {
+                        unit.all_action_client_1();
+                    }
                 }
             }
 

@@ -236,8 +236,8 @@ public class ClientMain extends Listener {
                     for (Object[] obj : IDBullet) {
                         if (pack.ID == (int) obj[1]) {
                             Bullet bullet = (Bullet) obj[0];
-                            bullet.BulletAdd(pack.x, pack.y, pack.rotation, 0, 0, 0, 0,
-                                    pack.team, pack.height, 0, pack.speed, 0, pack.time);
+                            bullet.BulletAddClient(pack.x, pack.y, pack.rotation,
+                                    pack.team, pack.height,  pack.speed,  pack.time);
                         }
                     }
                 }
@@ -383,7 +383,10 @@ public class ClientMain extends Listener {
             Unit tower = unit.TowerUnitList.get(i2);
             //System.out.println(packet.rotation_tower_2.get(i2)+ " "+i2);
             tower.rotation_tower=packet.TowerList1.get(i2).rotationTower;
-            tower.reload=packet.TowerList1.get(i2).reloadTower;
+            tower.green_len_reload=packet.TowerList1.get(i2).reloadTower;
+
+            //System.out.println(tower.reload);
+
             towerInit(packet.TowerList1.get(i2).TowerList1,
                     packet.TowerList1.get(i2).TowerList2,tower);
         }
@@ -416,13 +419,13 @@ public class ClientMain extends Listener {
         for(int i2 = 0; i2 < transport.TowerUnitList.size(); i2++){
             Unit tower = transport.TowerUnitList.get(i2);
             tower.rotation_tower=pack1.get(i2).rotationTower;
-            tower.reload=pack1.get(i2).reloadTower;
+            tower.green_len_reload=pack1.get(i2).reloadTower;
             towerInit(pack1.get(i2).TowerList1,pack1.get(i2).TowerList2,tower);
         }
         for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
             Unit tower = transport.TrackUnitList.get(i2);
             tower.rotation_tower=pack2.get(i2).rotationTower;
-            tower.reload=pack2.get(i2).reloadTower;
+            tower.green_len_reload=pack2.get(i2).reloadTower;
             towerInit(pack2.get(i2).TowerList1,pack2.get(i2).TowerList2,tower);
         }
 
@@ -443,7 +446,7 @@ public class ClientMain extends Listener {
         for(int i2 = 0; i2 < transport.TowerUnitList.size(); i2++){
             Unit tower = transport.TowerUnitList.get(i2);
             tower.rotation_tower=pack.TowerList1.get(i2).rotationTower;
-            tower.reload=pack.TowerList1.get(i2).reloadTower;
+            tower.green_len_reload=pack.TowerList1.get(i2).reloadTower;
             towerInitAdd(pack.TowerList1.get(i2).TowerList1
                     ,pack.TowerList1.get(i2).TowerList2,tower);
         }
@@ -466,14 +469,14 @@ public class ClientMain extends Listener {
             tower = transport.TowerUnitList.get(i2);
             pack = pack1.get(i2);
             tower.rotation_tower=pack.rotationTower;
-            tower.reload=pack.reloadTower;
+            tower.green_len_reload=pack.reloadTower;
             towerInitAdd(pack.TowerList1,pack.TowerList2,tower);
         }
         for(int i2 = 0; i2 < transport.TrackUnitList.size(); i2++){
             tower = transport.TrackUnitList.get(i2);
             pack = pack2.get(i2);
             tower.rotation_tower=pack.rotationTower;
-            tower.reload=pack.reloadTower;
+            tower.green_len_reload=pack.reloadTower;
             towerInitAdd(pack.TowerList1,pack.TowerList2,tower);
         }
 

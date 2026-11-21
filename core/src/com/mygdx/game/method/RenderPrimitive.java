@@ -2,6 +2,7 @@ package com.mygdx.game.method;
 
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
+import com.badlogic.gdx.graphics.Mesh;
 import com.badlogic.gdx.graphics.Pixmap;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.*;
@@ -16,6 +17,7 @@ import static com.mygdx.game.main.Main.*;
 public class RenderPrimitive implements Disposable {
     public final PolygonSpriteBatch polyBatch;
     private final Texture whitePixel;
+    public Mesh Mesh;
     //private final ShaderProgram shader;
 
     public RenderPrimitive() {

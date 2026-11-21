@@ -12,6 +12,9 @@ public class ActionGame {
     public static ActionGame ActionGameH = new ActionGameHost();
     public static ActionGame ActionGameCl = new ActionGameClient();
     public static ActionGame ActionMenu = new ActionMenu();
+
+    public static ActionGame ActionMenuHost = new ActionMenuHost();
+    public static ActionGame ActionMenuClient = new ActionMenuClient();
     public void action() throws ExecutionException, InterruptedException {
 
     }

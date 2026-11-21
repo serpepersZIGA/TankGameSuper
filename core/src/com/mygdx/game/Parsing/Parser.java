@@ -369,6 +369,8 @@ public class Parser {
                 return new Object[]{FireRegister.FireBullet,n[1]};
             case "Mortar":
                 return new Object[]{FireRegister.FireMortar,n[1]};
+            case "Void":
+                return new Object[]{FireRegister.FireVoid,n[1]};
 
         }
         throw new RuntimeException();
@@ -384,6 +386,8 @@ public class Parser {
                 return FireRegister.FireBullet;
             case "Mortar":
                 return FireRegister.FireMortar;
+            case "Void":
+                return FireRegister.FireVoid;
 
         }
         throw new RuntimeException();

@@ -127,6 +127,7 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
             //Tower.TargetConstX = unit.TargetConstX;
             //Tower.TargetConstY = unit.TargetConstY;
             Tower.rotation_corpus = unit.rotation_corpus;
+            Tower.functional.FunctionalIterationAnClient(Tower);
             funcTowerIteration(Tower);
         }
     }
@@ -140,6 +141,7 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
             //Tower.TargetConstX = TowerX;
             //Tower.TargetConstY = TowerY;
             Tower.rotation_corpus = unit.rotation_tower;
+            Tower.functional.FunctionalIterationAnClient(Tower);
             funcTowerIteration(Tower);
         }
         for (Unit Tower : unit.TowerUnitList){
@@ -149,6 +151,7 @@ public class ComponentTowerAuxiliaryIteration extends FunctionalComponent {
             //Tower.TargetConstX = TowerX;
             //Tower.TargetConstY = TowerY;
             Tower.rotation_corpus = unit.rotation_tower;
+            Tower.functional.FunctionalIterationAnClient(Tower);
             funcTowerIteration(Tower);
         }
 

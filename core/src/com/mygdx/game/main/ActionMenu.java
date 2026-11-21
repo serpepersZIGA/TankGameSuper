@@ -17,6 +17,7 @@ import com.mygdx.game.bull.Bullet;
 import com.mygdx.game.UI.button.Button;
 import com.mygdx.game.UI.slider.Slider;
 import com.mygdx.game.method.Keyboard;
+import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.Unit;
 
 import static com.mygdx.game.Inventory.Item.IDListItem;
@@ -30,9 +31,9 @@ import static com.mygdx.game.unit.Unit.IDList;
 public class ActionMenu extends ActionGame {
     private int i;
     private int timer = 0;
-    private static final Slider SliderSound = new Slider(1200,500,300,35,(byte) 0,"Sound",true);
-    private static final Slider SliderListTank = new Slider(1460,0,35,980,(byte) 1,"",false);
-    private static final Slider SliderListMap = new Slider(1460,0,35,980,(byte) 3,"",false);
+    protected static final Slider SliderSound = new Slider(1200,500,300,35,(byte) 0,"Sound",true);
+    protected static final Slider SliderListTank = new Slider(1460,0,35,980,(byte) 1,"",false);
+    protected static final Slider SliderListMap = new Slider(1460,0,35,980,(byte) 3,"",false);
     public static int LenghtListTank,LenghtListMap,LenghtListTeam;
     public static int TotalPointListTank,TotalPointListMap;
     public static boolean ActionGameChoiceConf;
@@ -102,16 +103,14 @@ public class ActionMenu extends ActionGame {
             Main.FlameSpawnList.get(i).all_action();
         }
         Batch.setShader(LightSystem.shader);
-        if(ActionGameTotal != ActionGameH) {
-            for (i = 0; i < Main.BulletList.size(); i++) {
-                Bullet bullet = BulletList.get(i);
-                if(bullet != null) {
-                    if (bullet.height == 1) {
-                        Main.BulletList.get(i).update();
-                    }
-                }
+        for (Integer ind : Bullet.BulletListInd) {
+            Bullet bullet = BulletList.get(ind);
+            if (bullet.height == 1) {
+                bullet.update();
             }
         }
+
+
 
         for(i = 0; i< Main.UnitList.size(); i++) {
             Main.UnitList.get(i).UpdateUnitMenu();
@@ -123,15 +122,13 @@ public class ActionMenu extends ActionGame {
             Main.DebrisList.get(i).UpdateUnit();
         }
 
-        for (i = 0;i< BulletList.size();i++){
-            Bullet bullet = BulletList.get(i);
-            if(bullet != null){
-                if(bullet.height == 1) {
-                    BulletList.get(i).update();
-                }
-            }
-
-        }
+//        for (i = 0; i < Bullet.BulletListInd.size(); i++) {
+//            Bullet bullet = BulletList.get(Bullet.BulletListInd.get(i));
+//            if(bullet.height == 1) {
+//                bullet.update();
+//            }
+//
+//        }
         Render.polyBatch.flush();
 
 //        for(Unit unit : UnitList) {
@@ -145,14 +142,11 @@ public class ActionMenu extends ActionGame {
         //Batch.draw(TextureAtl.createSprite("BottleFlame"),20,20,10,10);
 //        Render.end();
 //        Render.begin();
-        for (i = 0;i< BulletList.size();i++){
-            Bullet bullet = BulletList.get(i);
-            if(bullet != null) {
-                if (bullet.height == 2) {
-                    BulletList.get(i).update();
-                }
+        for (Integer ind : Bullet.BulletListInd) {
+            Bullet bullet = BulletList.get(ind);
+            if (bullet.height == 2) {
+                bullet.update();
             }
-
         }
 
 
@@ -264,6 +258,10 @@ public class ActionMenu extends ActionGame {
             ActionGameChoiceConf = true;
             ActionGameMain.ThreadAllAdd();
         }
+        for (Particle particle : Particle.ClearLiquidList){
+            LiquidList.remove(particle);
+        }
+        Particle.ClearLiquidList.clear();
         Keyboard.LeftMouseClick = false;
         CycleDayNight.WorkTime();
         //Batch.setShader(null);

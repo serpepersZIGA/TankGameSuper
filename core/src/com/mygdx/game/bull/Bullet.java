@@ -1,6 +1,5 @@
 package com.mygdx.game.bull;
 import com.mygdx.game.Network.BullPacket;
-import com.mygdx.game.bull.Updater.Rect;
 import com.mygdx.game.bull.Updater.UpdateRegister;
 import com.mygdx.game.bull.Updater.UpdaterBullet;
 import com.mygdx.game.main.Main;
@@ -218,8 +217,47 @@ public abstract class Bullet implements Serializable,Cloneable {
             }
             bullet.eclipse = new Ellipse2D.Double(bullet.x, bullet.y, bullet.size,bullet.size);
             bullet.ind = BulletList.size();
+
+            BulletAddList.add(bullet);
             BulletListInd.add(bullet.ind);
             BulletList.add(bullet);
+        } catch (CloneNotSupportedException e) {
+            throw new RuntimeException(e);
+        }
+    }
+    public void BulletAddClient(float x, float y, float rotation, byte type_team, byte height,
+                          float speed,float time){
+        Bullet bullet;
+        try {
+            bullet = (Bullet) this.clone();
+            bullet.x = x;
+            bullet.y = y;
+            bullet.rotation = rotation;
+            bullet.type_team = type_team;
+            bullet.height = height;
+            bullet.speed = speed;
+            bullet.time = time;
+            if(bullet.TypeShape){
+                bullet.size += rand.rand(bullet.sizeRandom);
+            }
+            else {
+                bullet.x2 +=rand.rand(bullet.sizeRandom);
+                bullet.y2 +=rand.rand(bullet.sizeRandom);
+                bullet.size = bullet.x2;
+            }
+            bullet.size_render = (int)(bullet.size*Main.Zoom);
+            bullet.speed_save();
+            bullet.eclipse = new Ellipse2D.Double(bullet.x, bullet.y, bullet.size,bullet.size);
+//            switch (bullet.height){
+//                case 1:
+//                    BulletListDown.add(bullet);
+//                    break;
+//                case 2:
+//                    BulletListUp.add(bullet);
+//                    break;
+//            }
+
+            BulletAddList.add(bullet);
         } catch (CloneNotSupportedException e) {
             throw new RuntimeException(e);
         }
@@ -304,7 +342,6 @@ public abstract class Bullet implements Serializable,Cloneable {
     }
     protected void Clear(){
         if(this.clear_sost){
-            BulletListInd.remove((Integer) this.ind);
             BulletListClear.add(this);
         }
     }
@@ -384,6 +421,7 @@ public abstract class Bullet implements Serializable,Cloneable {
 //           R_LOCK.lock();
 //           try {
         //BulletListInd.remove((Integer)ind);
+        BulletListInd.remove((Integer) this.ind);
         BulletList.set(ind,null);
         //BulletListInd.add(this.);
         // }
@@ -507,7 +545,7 @@ protected final void CorpusBullet(){
                     //System.out.println("4");
                     armor_damage(unit,unit.armorCenter);
                 }
-                unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                unit.IndicatorHpInit();
                 return;
             }
         }

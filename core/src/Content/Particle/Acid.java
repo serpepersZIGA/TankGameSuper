@@ -43,7 +43,7 @@ public class Acid extends Particle {
 //                ,size_render,size_render);
         //super.size_update();
         //this.x +=10;
-        super.size_rise_delete(LiquidList);
+        super.size_rise_delete();
     }
 
 }

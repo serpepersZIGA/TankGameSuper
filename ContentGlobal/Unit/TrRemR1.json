@@ -10,5 +10,6 @@
   "TrackXY": [],
   "MedicConf": 3,
   "Height": 1,
-  "ClassUnit": "SupportTransport"
+  "ClassUnit": "SupportTransport",
+  "Mass": 10
 }

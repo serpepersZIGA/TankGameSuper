@@ -41,4 +41,9 @@ public class FireFlame extends Fire {
                 ,unit.AmountFragment,unit.TimeBullet+rand.rand(unit.TimeBulletRand),unit);
 
     }
+    @Override final
+    public void FireUpdate(Unit unit) {
+        super.FireUpdate(unit);
+        unit.indicator_reload();
+    }
 }

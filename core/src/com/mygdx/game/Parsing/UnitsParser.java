@@ -18,7 +18,7 @@ public class UnitsParser {
     public static ClassUnit ClassUnit;
     public static int[] RotateBase;
     public static int height;
-    public static int HillHp;
+    public static int HillHp,Mass;
 
     public static void Pars() {
         FileHandle[] files = Gdx.files.internal("ContentGlobal/Unit").list();
@@ -36,7 +36,8 @@ public class UnitsParser {
             }
 
             new UnitPattern(file.name().replace(".json", ""),
-                    Corpus, Engine, Cannon,RotateBase, TowerXY,Track,TrackXY,Side, ClassUnit, HillHp,height);
+                    Corpus, Engine, Cannon,RotateBase, TowerXY,Track,TrackXY,Side,
+                    ClassUnit, HillHp,height,Mass);
 
 
         }
@@ -63,6 +64,7 @@ public class UnitsParser {
         TrackXY = obj.TrackXY;
         TowerXY = obj.TowerXY;
         Side = obj.Side;
+        Mass = obj.Mass;
         HillHp = obj.MedicConf;
         height = obj.Height;
         ClassUnit = Parser.ClassUnitParsing(obj.ClassUnit);

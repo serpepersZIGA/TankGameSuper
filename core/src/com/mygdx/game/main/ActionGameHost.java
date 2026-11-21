@@ -3,6 +3,7 @@ package com.mygdx.game.main;
 import com.badlogic.gdx.Gdx;
 import com.badlogic.gdx.graphics.Color;
 import com.badlogic.gdx.graphics.GL20;
+import com.badlogic.gdx.graphics.GL30;
 import com.badlogic.gdx.graphics.Texture;
 import com.badlogic.gdx.graphics.g2d.Sprite;
 import com.badlogic.gdx.graphics.glutils.ShapeRenderer;
@@ -20,6 +21,7 @@ import com.mygdx.game.method.Method;
 import com.mygdx.game.method.RenderMethod;
 import com.mygdx.game.object_map.MapObject;
 import com.mygdx.game.Network.DebrisPacket;
+import com.mygdx.game.particle.Particle;
 import com.mygdx.game.unit.AI;
 import com.mygdx.game.unit.Squad;
 import com.mygdx.game.unit.Unit;
@@ -48,19 +50,13 @@ import static java.lang.StrictMath.sin;
 
 public class ActionGameHost extends ActionGame{
 
-    //private static Callable<ArrayList<Bullet>> BulletThreadIteration;
-    private static Callable<ArrayList<Unit>> UnitThreadIteration;
-  //  private static Callable<ArrayList<Unit>> DebrisThreadIteration;
-
-    private Thread ThreadIterationDebris;
-    private Thread ThreadIterationBullet;
-    private Thread ThreadIterationUnit;
-    private int e = 0;
-    private float TimeGlobals = 0f;
+    protected Thread ThreadIterationDebris;
+    protected Thread ThreadIterationBullet;
+    protected Thread ThreadIterationUnit;
 
     //private static IterationBullet IterationBullet = new IterationBullet();
 
-    private int i;
+    protected static int i;
     @Override final
     public void action() {
         if(Unit.ai_sost != 0){
@@ -119,7 +115,7 @@ public class ActionGameHost extends ActionGame{
                 Main.RC.x += 10;
             }
             if(Keyboard.ClickEsc){
-                ActionGameMain = ActionMenu;
+                ActionGameMain = ActionMenuHost;
                 ConfigMenu = 4;
             }
 //            try {
@@ -159,21 +155,10 @@ public class ActionGameHost extends ActionGame{
         RippleIteration(Batch);
 
         LiquidShader.AcidShaderIteration();
-
-        //LiquidShader.BloodShaderIteration();
-
-
-        //liquidGlobal();
-//        for (i = 0; i< Main.FlameStaticList.size(); i++){
-//            Main.FlameStaticList.get(i).all_action();}
-//        for (i = 0; i< Main.FlameList.size(); i++){
-//            Main.FlameList.get(i).all_action();}
-//        for (i = 0; i< Main.FlameParticleList.size(); i++){
-//            Main.FlameParticleList.get(i).all_action();}
         Render.polyBatch.flush();
 
         FlameShader.FlameShaderIteration();
-        Batch.setShader(LightSystem.shader);
+        //Batch.setShader(LightSystem.shader);
 
         for(int i = 0;i<ItemList.size();i++){
             ItemList.get(i).IterationItem();
@@ -181,40 +166,11 @@ public class ActionGameHost extends ActionGame{
 
         Render.polyBatch.flush();
 
-//        for(i = 0;i< DebrisList.size();i++) {
-//            Unit debris = DebrisList.get(i);
-//            packet_debris_server(debris,i);
-//            debris.all_action();
-//            debris.corpus_corpus(Main.UnitList);
-//            debris.corpus_corpus(Main.DebrisList);
-//        }
-//        for(i = 0;i< UnitList.size();i++) {
-//            Unit unit = UnitList.get(i);
-//            packet_player_server(unit);
-//            if (unit.host || unit.control == RegisterControl.controllerBot
-//                    || unit.control == RegisterControl.controllerBotSupport
-//                    || unit.control == RegisterControl.controllerSoldatTransport
-//                    || unit.control == RegisterControl.controllerSoldatBot
-//                    || unit.control == RegisterControl.controllerHelicopter) {
-//                unit.all_action();
-//            } else {
-//                unit.all_action_client();
-//            }
-//        }
-
-
-
-        //IterationBullet.start();
-
-//        IterationBullet.start();
-        for (i = 0;i< BulletList.size();i++){
-            Bullet bullet = BulletList.get(i);
-            if(bullet != null) {
-                if(bullet.height == 1) {
-                    bullet.update();
-                }
+        for (Integer ind : Bullet.BulletListInd) {
+            Bullet bullet = BulletList.get(ind);
+            if(bullet.height == 1) {
+                bullet.update();
             }
-
 
         }
 
@@ -235,14 +191,12 @@ public class ActionGameHost extends ActionGame{
         }
 
         RC.BuildingUpdate();
-
-        for (i = 0;i< BulletList.size();i++){
-            Bullet bullet = BulletList.get(i);
-            if(bullet != null) {
-                if(bullet.height == 2) {
-                    bullet.update();
-                }
+        for (Integer ind : Bullet.BulletListInd) {
+            Bullet bullet = BulletList.get(ind);
+            if(bullet.height == 2) {
+                bullet.update();
             }
+
         }
 
 
@@ -283,7 +237,7 @@ public class ActionGameHost extends ActionGame{
 
     }
     private static float time;
-    private void server_packet() {
+    protected static void server_packet() {
 
         for (Unit unit : ClearUnitList) {
             for (Squad squad : AI.SquadList) {
@@ -304,6 +258,11 @@ public class ActionGameHost extends ActionGame{
             UnitList.remove(unit);
         }
         ClearUnitList.clear();
+        for (Particle particle : Particle.ClearLiquidList){
+            LiquidList.remove(particle);
+        }
+        Particle.ClearLiquidList.clear();
+
         for(Bullet bullet : Bullet.BulletListClear){
             bullet.clear();
             //Bullet.BulletListClear.remove(bullet);
@@ -427,7 +386,7 @@ public class ActionGameHost extends ActionGame{
         pack.TowerList1 = new ArrayList<>();
         TowerPack TowerPacket;
         for (Unit Tower : unit.TowerUnitList){
-            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
+            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.green_len_reload);
             TowerPackInit(TowerPacket,Tower);
             pack.TowerList1.add(TowerPacket);
             //pack.reloadTower.add(Tower.reload);
@@ -452,7 +411,7 @@ public class ActionGameHost extends ActionGame{
         unit.PackUnit.ID = unit.ID;
         int i = 0;
         for (Unit Tower : unit.TowerUnitList){
-            unit.PackUnit.TowerList1.get(i).reloadTower = Tower.reload;
+            unit.PackUnit.TowerList1.get(i).reloadTower = Tower.green_len_reload;
             unit.PackUnit.TowerList1.get(i).rotationTower = Tower.rotation_tower;
             TowerPackInit2(unit.PackUnit.TowerList1.get(i),Tower);
             //pack.reloadTower.add(Tower.reload);
@@ -465,7 +424,7 @@ public class ActionGameHost extends ActionGame{
         TowerPack packTower;
         for (Unit Tower : unit.TowerUnitList){
             packTower = pack.TowerList1.get(i);
-            packTower.reloadTower = Tower.reload;
+            packTower.reloadTower = Tower.green_len_reload;
             packTower.rotationTower = Tower.rotation_tower;
             TowerPackInit(packTower,Tower);
             i++;
@@ -473,7 +432,8 @@ public class ActionGameHost extends ActionGame{
         i = 0;
         for (Unit Tower : unit.TrackUnitList){
             packTower = pack.TowerList2.get(i);
-            packTower.reloadTower = Tower.reload;
+            packTower.reloadTower = Tower.green_len_reload;
+            //System.out.println(packTower.reloadTower);
             packTower.rotationTower = Tower.rotation_tower;
             TowerPackInit(packTower,Tower);
             i++;
@@ -484,12 +444,12 @@ public class ActionGameHost extends ActionGame{
         pack.TowerList2 = new ArrayList<>();
         TowerPack TowerPacket;
         for (Unit Tower : unit.TowerUnitList){
-            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
+            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.green_len_reload);
             TowerPackInit(TowerPacket,Tower);
             pack.TowerList1.add(TowerPacket);
         }
         for (Unit Tower : unit.TrackUnitList){
-            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.reload);
+            TowerPacket = new TowerPack(Tower.rotation_tower,Tower.green_len_reload);
             TowerPackInit(TowerPacket,Tower);
             pack.TowerList2.add(TowerPacket);
         }
@@ -502,7 +462,7 @@ public class ActionGameHost extends ActionGame{
         pack.y = unit.y;
         pack.rotation = unit.rotation_corpus;
     }
-    private class IterationDebris implements Runnable{
+    protected static class IterationDebris implements Runnable{
         public void run(){
             for (int i = 0; i < DebrisList.size(); i++) {
                 Unit debris = DebrisList.get(i);
@@ -516,10 +476,10 @@ public class ActionGameHost extends ActionGame{
             Collision.DebrisCollisionIterationGlobal();
         }
     }
-    private class IterationBullet implements Runnable {
+    protected static class IterationBullet implements Runnable {
         public void run() {
-            for (int i = 0; i < Bullet.BulletListInd.size(); i++) {
-                Bullet bullet = BulletList.get(Bullet.BulletListInd.get(i));
+            for (Integer ind : Bullet.BulletListInd) {
+                Bullet bullet = BulletList.get(ind);
                 bullet.all_action();
 
             }
@@ -532,7 +492,7 @@ public class ActionGameHost extends ActionGame{
 //            }
         }
     }
-    public class IterationUnit implements Runnable {
+    protected static class IterationUnit implements Runnable {
         public void run() {
             if (AIScan) {
                 for (Squad squad : AI.SquadList) {

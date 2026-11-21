@@ -110,7 +110,7 @@ public class Item implements Cloneable{
             case Medic:
                 if(unit.max_hp>=unit.hp+HPHill){
                     unit.hp+=HPHill;
-                    unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                    unit.IndicatorHpInit();
                     return true;
 
                 }
@@ -176,7 +176,7 @@ public class Item implements Cloneable{
             UpgradeUseTower(cannon);
         }
 
-        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+        unit.IndicatorHpInit();
     }
     public void UpgradeUnUse(Unit unit){
         unit.max_hp-= (int) HP;
@@ -195,7 +195,7 @@ public class Item implements Cloneable{
         for (Unit cannon : unit.TowerUnitList) {
             cannon.penetration -= (int) (cannon.PenetrationBase*PenetrationPercent*0.01);
         }
-        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+        unit.IndicatorHpInit();
     }
     public void UpgradeUseTower(Unit tower){
         for (Unit cannon : tower.TowerUnitList) {

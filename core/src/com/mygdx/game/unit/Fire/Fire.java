@@ -7,8 +7,19 @@ public abstract class Fire implements Cloneable{
     public void FireIteration(Unit unit){
 
     }
+    public void FireUpdate(Unit unit){
+        for(Unit tower : unit.TowerUnitList){
+            tower.fire.FireUpdate(tower);
+            //tower.indicator_reload();
+        }
+        for(Unit tower : unit.TrackUnitList){
+            //tower.indicator_reload();
+            tower.fire.FireUpdate(tower);
+        }
 
-    @Override
+    }
+
+    @Override final
     public Fire clone() {
         try {
             // TODO: copy mutable state here, so the clone can't change the internals of the original
@@ -16,8 +27,5 @@ public abstract class Fire implements Cloneable{
         } catch (CloneNotSupportedException e) {
             throw new AssertionError();
         }
-    }
-    public void FireXY(){
-
     }
 }

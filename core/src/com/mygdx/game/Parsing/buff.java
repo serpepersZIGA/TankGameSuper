@@ -14,7 +14,7 @@ public class buff{
     public String Corpus;
     public String Engine;
     public int[][]TowerXY,TrackXY;
-    public int MedicConf,Height;
+    public int MedicConf,Height,Mass;
     public int[] Side;
     public int []RotateBase;
     public String ClassUnit;

@@ -10,20 +10,38 @@ public class ComponentFireDrumControl extends FunctionalComponent {
     public void FunctionalIterationAnHost(Unit unit) {
         unit.FireDrumControl();
         if(unit.ConfShotDrum) {
-            unit.green_len_reload = (unit.ReloadBetweenTotal / unit.ReloadBetweenShots) * Option.size_x_indicator;
+            unit.IndicatorReloadBetweenInit();
         }
         else{
-            unit.green_len_reload = (unit.reload / unit.reload_max) * Option.size_x_indicator;
+            unit.IndicatorReloadInit();
         }
     }
     @Override final
     public void FunctionalIterationClientAnHost(Unit unit) {
         unit.FireDrumControl();
         if(unit.ConfShotDrum) {
-            unit.green_len_reload = (unit.ReloadBetweenTotal / unit.ReloadBetweenShots) * Option.size_x_indicator;
+            unit.IndicatorReloadBetweenInit();
         }
         else{
-            unit.green_len_reload = (unit.reload / unit.reload_max) * Option.size_x_indicator;
+            unit.IndicatorReloadInit();
         }
     }
+//    @Override final
+//    public void FunctionalIterationAnClient(Unit unit){
+//        if(unit.ConfShotDrum) {
+//            unit.IndicatorReloadBetweenInit();
+//        }
+//        else{
+//            unit.IndicatorReloadInit();
+//        }
+//    }
+//    @Override final
+//    public void FunctionalIterationOtherAnClient(Unit unit){
+//        if(unit.ConfShotDrum) {
+//            unit.IndicatorReloadBetweenInit();
+//        }
+//        else{
+//            unit.IndicatorReloadInit();
+//        }
+//    }
 }

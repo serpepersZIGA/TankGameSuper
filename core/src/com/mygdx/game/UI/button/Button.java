@@ -66,12 +66,8 @@ public abstract class Button {
         }
     }
     protected void ActionButton2(){
-        if(TipOff & Keyboard.LeftMouseClick & !condition){
-            condition = true;
-            Keyboard.LeftMouseClick = false;
-        }
-        else if(TipOff & Keyboard.LeftMouseClick & condition){
-            condition = false;
+        if(TipOff & Keyboard.LeftMouseClick){
+            condition = !condition;
             Keyboard.LeftMouseClick = false;
         }
     }

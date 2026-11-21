@@ -14,7 +14,7 @@ SpeedBullet = 0;
 TimeBullet = 0;
 TowerX = 0;
 TowerY = 0;
-Fire = Flame;
+Fire = Void;
 Image = helicopter_blade;
 
 func.Add = ComponentWorkBlade;

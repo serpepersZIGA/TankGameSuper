@@ -37,4 +37,9 @@ public class FireMortar extends Fire {
 
 
     }
+    @Override final
+    public void FireUpdate(Unit unit) {
+        super.FireUpdate(unit);
+        unit.indicator_reload();
+    }
 }

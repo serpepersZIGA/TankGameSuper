@@ -16,4 +16,13 @@ public class ComponentFireTankCumulativeControl extends FunctionalComponent {
         unit.FireTankCumulativeControl();
         unit.green_len_reload = (1-(unit.reload/unit.reload_max))* Option.size_x_indicator;
     }
+//    @Override final
+//    public void FunctionalIterationAnClient(Unit unit){
+//        unit.green_len_reload = (1-(unit.reload/unit.reload_max))* Option.size_x_indicator_zoom;
+//        System.out.println(unit.green_len_reload);
+//    }
+//    @Override final
+//    public void FunctionalIterationOtherAnClient(Unit unit){
+//        unit.green_len_reload = (1-(unit.reload/unit.reload_max))* Option.size_x_indicator_zoom;
+//    }
 }

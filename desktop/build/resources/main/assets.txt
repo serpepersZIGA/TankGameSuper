@@ -58,7 +58,6 @@ image/other/dirt_3.png
 image/other/grass_256_1.png
 image/other/grass_256_2.png
 image/other/helicopter_blade.png
-image/other/machinegun.png
 image/player/corpus_player.png
 image/player/tower_auxiliart_player.png
 image/player/tower_player.png

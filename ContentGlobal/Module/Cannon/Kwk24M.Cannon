@@ -9,7 +9,9 @@ DamageFragment = 0;
 PenetrationFragment = 0;
 TemperatureDamage = 0;
 SizeBullet = 2;
-ReloadMax = 2;
+
+
+ReloadMax = 60;
 SpeedBullet = 12;
 TimeBullet = 270;
 TowerX = 15;

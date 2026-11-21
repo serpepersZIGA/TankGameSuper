@@ -26,11 +26,12 @@ public class UnitPattern extends Unit {
         IDList.put(str,this);
     }
     public UnitPattern(String str, String corpus, String engine, ArrayList<String> cannon,int[]RotateBase, int[][]TowerXY,
-            ArrayList<String>track,int[][]TrackXY,int[]Side, ClassUnit classUnit, int HillHp, int Height){
+            ArrayList<String>track,int[][]TrackXY,int[]Side, ClassUnit classUnit, int HillHp, int Height,int Mass){
         super(corpus,engine,cannon,RotateBase,TowerXY,track,TrackXY,Side,classUnit,HillHp,Height);
         TowerUnitList = new ArrayList<>();
         this.TrackUnitList = new ArrayList<>();
         behavior = 3;
+        this.Mass = Mass;
         //this.classUnit = ClassUnit.Transport;
         this.collision = TypeCollision.rect;
         this.CorpusUnit.CorpusLoad(this);
@@ -148,7 +149,16 @@ public class UnitPattern extends Unit {
         indicator_hp_2();
     }
     public void updateTower(){
-        indicator_reload();
+        //indicator_reload();
+        this.fire.FireUpdate(this);
+        for(Unit tower : TowerUnitList){
+            tower.fire.FireUpdate(tower);
+            //tower.indicator_reload();
+        }
+        for(Unit tower : TrackUnitList){
+            //tower.indicator_reload();
+            tower.fire.FireUpdate(tower);
+        }
     }
     public void UpdateTower(){
         //this.x = tower_x;

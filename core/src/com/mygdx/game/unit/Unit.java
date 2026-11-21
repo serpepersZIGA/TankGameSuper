@@ -98,7 +98,8 @@ public abstract class Unit implements Cloneable{
     protected static int distance_target = 200;
     public float SpeedCollision = 10,ConstTowerCenterX,ConstTowerCenterY;
     protected static int distance_target_2 = 230;
-    public float green_len,green_len_reload,RotationInertion,RotationInertionTimeSyncrone;
+    public float green_len,green_len_reload,RotationInertion,RotationInertionTimeSyncrone
+            ,green_len_Zoom,green_len_reload_Zoom;
     public float rotation_fire;
     public int corpus_width_zoom, corpus_height_zoom,width_tower_zoom,height_tower_zoom,AmountFragment;
     public static int ai_sost = 200;
@@ -116,7 +117,7 @@ public abstract class Unit implements Cloneable{
     public String tower_img,corpus_img;
     public Fire fire = FireVoid;
     public Controller control = RegisterControl.controllerVoid;
-    public int HPTriggerHill;
+    public int HPTriggerHill,Mass;
     public boolean ConfSquad;
     public Unit TargetUnit,EnemyFire;
     public Squad SquadAlly;
@@ -533,7 +534,7 @@ public abstract class Unit implements Cloneable{
         this.height_tower_zoom = (int)(tower_height * Zoom);
         this.const_x_corpus = (int)(corpus_width_2* Zoom);
         this.const_y_corpus = (int)(corpus_height_2* Zoom);
-        green_len = ((float)this.hp/this.max_hp)* Option.size_x_indicator;
+        this.IndicatorHpInit();
     }
     protected final void dataSoldat(){
         classUnit = ClassUnit.Soldat;
@@ -553,7 +554,7 @@ public abstract class Unit implements Cloneable{
         this.height_tower_zoom = (int)(tower_height * Zoom);
         this.const_x_corpus = (int)(corpus_width_2* Zoom);
         this.const_y_corpus = (int)(corpus_height_2* Zoom);
-        green_len = ((float)this.hp/this.max_hp)* Option.size_x_indicator;
+        this.IndicatorHpInit();
     }
     protected final void data_tower(){
         classUnit = ClassUnit.Tower;
@@ -956,21 +957,25 @@ public abstract class Unit implements Cloneable{
         Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), Option.size_x_indicator_zoom, Option.size_y_indicator_zoom
         ,new Color(Option.hp_2_r_indicator, Option.hp_2_g_indicator, Option.hp_2_b_indicator, 0.3F));
         if(!crite_life){
-            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), (int) (green_len * Zoom), Option.size_y_indicator_zoom,
+            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)),
+                    (int) green_len, Option.size_y_indicator_zoom,
                     new Color(Option.hp_r_indicator, Option.hp_g_indicator, Option.hp_b_indicator, 0.3F));
         }
         else{
-            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)), (int) (green_len * Zoom), Option.size_y_indicator_zoom
+            Render.rect(((this.x_rend - Option.const_hp_x_zoom)), ((this.y_rend - Option.const_hp_y_zoom)),
+                    (int) green_len, Option.size_y_indicator_zoom
             ,new Color(Option.hp_crite_r_indicator, Option.hp_crite_g_indicator, Option.hp_crite_b_indicator, 0.3F));
         }
     }
-    protected void indicator_reload(){
+    public void indicator_reload(){
         Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),(this.y_tower_rend- height_tower_zoom),
                 Option.size_x_indicator_zoom,
                 Option.size_y_indicator_zoom,new Color(Option.reload_r_indicator, Option.reload_g_indicator, Option.reload_b_indicator,0.3f));
         Render.rect((this.x_tower_rend+ width_tower_zoom-Option.size_x_indicator_zoom),
-                (this.y_tower_rend- height_tower_zoom),(int)(green_len_reload* Zoom),
-                Option.size_y_indicator_zoom,new Color(Option.reload_2_r_indicator, Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f));
+                (this.y_tower_rend- height_tower_zoom),
+                (int)green_len_reload*Main.Zoom,
+                Option.size_y_indicator_zoom,new Color(Option.reload_2_r_indicator,
+                        Option.reload_2_g_indicator, Option.reload_2_b_indicator,0.3f));
     }
 
 //    public int ReloadBetweenShots,ReloadUP,OneShot,QuantityShot;
@@ -1020,7 +1025,7 @@ public abstract class Unit implements Cloneable{
             finally {
                 R_LOCK.unlock();
             }
-            reload = reload_max;
+            this.reload = this.reload_max;
             this.left_mouse = false;
         }
     }
@@ -1576,9 +1581,26 @@ public abstract class Unit implements Cloneable{
         if(abs(this.t) > 25){
             this.hp -= (int) abs(this.t*0.1f);
             this.t -=this.t*0.02f;
-            this.green_len = ((float) this.hp / this.max_hp) * Option.size_x_indicator;
+            IndicatorHpInit();
 
         }
+    }
+    public void IndicatorHpInit(){
+        //Option.size_x_indicator = 0;
+        this.green_len = ((float) this.hp / this.max_hp) * Option.size_x_indicator_zoom;
+        //System.out.println(this.green_len);
+    }
+    public void IndicatorReloadInit(){
+        //Option.size_x_indicator = 0;
+        this.green_len_reload = ((float) this.reload / this.reload_max) * Option.size_x_indicator;
+        //System.out.println(this.green_len_reload);
+    }
+    public void IndicatorReloadBetweenInit(){
+        //Option.size_x_indicator = 0;
+        this.green_len_reload = ((float) this.ReloadBetweenTotal / this.ReloadBetweenShots) * Option.size_x_indicator;
+
+
+        //System.out.println(this.green_len);
     }
     public void transportDelete(){
         if(this.hp>0)return;
@@ -1928,7 +1950,7 @@ public abstract class Unit implements Cloneable{
             if (sqrt(pow2(this.x - unit.x) + pow2(this.y - unit.y)) < 230 && unit.max_hp > unit.hp
                     && unit.team == this.team) {
                 unit.hp += this.HillHp;
-                unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+                unit.IndicatorHpInit();
                 if(unit.hp >= unit.max_hp  && unit.crite_life){
                     unit.crite_life = false;
                 }
@@ -2128,12 +2150,12 @@ public abstract class Unit implements Cloneable{
 
     }
     public void all_action_client_1(){
-        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
+        this.IndicatorHpInit();
         functional.FunctionalIterationAnClient(this);
         control.ControllerIterationClientAnClient(this);
     }
     public void all_action_client_2(){
-        this.green_len = (float) this.hp /this.max_hp * Option.size_x_indicator;
+        this.IndicatorHpInit();
         functional.FunctionalIterationAnClient(this);
     }
     public void update(){

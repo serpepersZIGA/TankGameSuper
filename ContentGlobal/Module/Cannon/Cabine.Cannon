@@ -14,7 +14,7 @@ SpeedBullet = 6;
 TimeBullet = 85;
 TowerX = 15;
 TowerY = 20;
-Fire = Acid;
+Fire = Void;
 Image = CabinTank;
 RotateBase = 90;
 

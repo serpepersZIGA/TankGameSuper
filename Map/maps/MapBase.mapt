@@ -8,4 +8,3 @@ BuildAdd:B BigBuildingWood1:x7:y10:r1:;
 (str):streetPoselok:x70:y60:;
 BlockAdd:*Asphalt:x70:y53:Y7:;
 (str):Spawn:x 85:y 85:;
-(str):pepper1:x12:y12:;

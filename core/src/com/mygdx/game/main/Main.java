@@ -59,7 +59,6 @@ import static com.mygdx.game.Shader.LiquidShader.LiquidShaderAdd;
 import static com.mygdx.game.method.Keyboard.ClickEsc;
 import static com.mygdx.game.method.Keyboard.ZoomMin;
 import static com.mygdx.game.unit.SpawnPlayer.PlayerSpawnListData.PlayerSpawnCannonVoid;
-import static com.mygdx.game.unit.Unit.IDList;
 
 
 public class Main extends ApplicationAdapter {
@@ -242,6 +241,16 @@ public class Main extends ApplicationAdapter {
 		EngineParser.ParsEngine();
 		CannonParser.ParsCannon();
 		TrackParser.ParsTrack();
+//		float halfSize = 0.065f;
+//		float[] vertices = {
+//				-halfSize, -halfSize,
+//				halfSize, -halfSize,
+//				halfSize,  halfSize,
+//
+//				-halfSize, -halfSize,
+//				halfSize,  halfSize,
+//				-halfSize,  halfSize
+//		};
 
 		ParsGun.Pars();
 		GunRegister.Create();
@@ -264,6 +273,17 @@ public class Main extends ApplicationAdapter {
 		PacketBuildingServer = new PacketBuildingServer();
 		equipmentMain = new EquipmentInterface(new Inventory(new Item[2][2],1));
 		Render = new RenderPrimitive();
+//		Render.Mesh = new Mesh(
+//				true,                  // статическая геометрия
+//				6,                     // максимум вершин
+//				0,                     // индексы не используются
+//				new VertexAttribute(VertexAttributes.Usage.Position, 2, "a_position")
+//		);
+//		Render.Mesh.setVertices(vertices);
+
+
+
+
 //		Render = new ShapeRenderer(128,LightSystem.shader);
 //		Matrix4 u_projTrans = new Matrix4();
 //		Render.setTransformMatrix(u_projTrans);
@@ -271,7 +291,7 @@ public class Main extends ApplicationAdapter {
 
 
 		TeamGlobal.put((byte)0,0);
-		TeamGlobal.put((byte)1,4);
+		TeamGlobal.put((byte)1,20);
 		TeamGlobal.put((byte)2,0);
 		TeamGlobal.put((byte)3,0);
 		TeamGlobal.put((byte)4,0);

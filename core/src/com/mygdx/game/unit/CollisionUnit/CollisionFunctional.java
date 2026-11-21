@@ -9,7 +9,7 @@ import java.awt.geom.Area;
 
 import static com.mygdx.game.main.Main.*;
 import static com.mygdx.game.main.Main.RC;
-import static com.mygdx.game.method.Method.tower_xy_2;
+import static com.mygdx.game.method.Method.*;
 import static com.mygdx.game.method.pow2.pow2;
 import static java.lang.StrictMath.*;
 
@@ -52,13 +52,21 @@ public abstract class CollisionFunctional{
         if (hit) {
             if (torque != 0) {
                 inertion = (abs(unit2.speed) + 0.2f) * v;
-                TowerRotate(unit1, Math.signum(torque) * inertion);
+                float mass1 = (float) unit2.Mass /unit1.Mass;
+                //float mass2 = (float) unit2.Mass /unit.Mass;
+                if(mass1 > 1f){
+                    mass1 = 1f;
+                }
+                //else {
+                    //mass2 = 1f;
+                //}
+                TowerRotate(unit1, Math.signum(torque) * inertion*mass1);
             }
                // ровно один раз
         }
 
 
-        unit1.green_len = ((float) unit1.hp / unit1.max_hp) * Option.size_x_indicator;
+        unit1.IndicatorHpInit();
         return;
 
 
@@ -100,7 +108,7 @@ public abstract class CollisionFunctional{
         }
 
 
-        unit1.green_len = ((float) unit1.hp / unit1.max_hp) * Option.size_x_indicator;
+        unit1.IndicatorHpInit();
         return;
 
 
@@ -143,7 +151,7 @@ public abstract class CollisionFunctional{
 //        }
 
 
-        unit1.green_len = ((float) unit1.hp / unit1.max_hp) * Option.size_x_indicator;
+        unit1.IndicatorHpInit();
         return;
 
 
@@ -344,37 +352,51 @@ public abstract class CollisionFunctional{
         unit.rotation_corpus += inertion;
     }
     public static void MethodCollisionTransport(Unit unit, Unit unit2){
-        unit2.speed *= 0.8f;
-        unit.speed *= 0.8f;
+        float mass1 = (float) unit.Mass /unit2.Mass;
+        float mass2 = (float) unit2.Mass /unit.Mass;
+        if(mass1 > 1f){
+            mass1 = 1f;
+        } else {
+            mass2 = 1f;
+        }
+        //unit2.speed *= 0.95f;
+        //unit.speed *= 0.95f;
         //float rotation = (float) atan2(unit.tower_x-unit2.tower_x,unit.tower_y-unit2.tower_y);
-        float x = (unit.SpeedInertionX - unit2.SpeedInertionX)*0.4f;
-        float y = (unit.SpeedInertionY - unit2.SpeedInertionY)*0.4f;
-        unit2.SpeedInertionX += x;
-        unit2.SpeedInertionY += y;
-        unit.SpeedInertionX +=  -x;
-        unit.SpeedInertionY +=  -y;
+        float x = (unit.SpeedInertionX*mass1 - unit2.SpeedInertionX*mass2);
+        float y = (unit.SpeedInertionY*mass1 - unit2.SpeedInertionY*mass2);
+        unit2.SpeedInertionX += x*mass1;
+        unit2.SpeedInertionY += y*mass1;
+        unit.SpeedInertionX -=  x*mass2;
+        unit.SpeedInertionY -=  y*mass2;
 
 //        unit2.x += (float) (2*sin(rotation));
 //        unit2.y += (float) (2*cos(rotation));
 //        unit.x +=  (float) (2*sin(rotation));
 //        unit.y +=  (float) (2*cos(rotation));
 
+//        float v1 = (float) (atan2(unit.y - unit2.y, unit.x - unit2.x) * RP);
+//        float v2 = (float) (atan2(unit2.y - unit.y, unit2.x - unit.x) * RP);
+//        unit.x -= (float) (unit.SpeedInertionX*sin(v1));
+//        unit.y -= (float) (unit.SpeedInertionY*cos(v1));
+//
+//        unit2.x -= (float) (unit2.SpeedInertionX*sin(v2));
+//        unit2.y -= (float) (unit2.SpeedInertionY*cos(v2));
 
         if(unit2.x< unit.x) {
-            unit2.x -= 2;
-            unit.x += 2;
+            unit2.x -= 1f;
+            unit.x += 1f;
         }
         else if(unit2.x> unit.x) {
-            unit2.x += 2;
-            unit.x -= 2;
+            unit2.x += 1f;
+            unit.x -= 1f;
         }
         if(unit2.y< unit.y) {
-            unit2.y -= 2;
-            unit.y += 2;
+            unit2.y -= 1f;
+            unit.y += 1f;
         }
         else if(unit2.y> unit.y) {
-            unit2.y += 2;
-            unit.y -= 2;
+            unit2.y += 1f;
+            unit.y -= 1f;
         }
     }
     public static void MethodCollisionSoldatSoldat(Unit unit, Unit unit2){

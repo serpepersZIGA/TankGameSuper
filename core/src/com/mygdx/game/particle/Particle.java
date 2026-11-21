@@ -35,6 +35,7 @@ public abstract class Particle {
     protected int time_spawn,time_spawn_max;
     public int x_rend,y_rend,size_render,size_render2;
     public LightingMainSystem.Light light;
+    public  static ArrayList<Particle>ClearLiquidList = new ArrayList<>();
     public float StateTime;
     public static Animator AcidLiquid =
             new Animator("image/animation/AcidAnimation.png",
@@ -170,17 +171,18 @@ public abstract class Particle {
         this.size_2 = this.size/2;
         this.size_3 = this.size_2/2;
     }
-    protected void size_rise_delete(ArrayList<Particle>particles){
+    protected void size_rise_delete(){
 
         this.size -= this.interval_rise_size;
         if(this.size < 4){
-            R_LOCK.lock();
-            try {
-                particles.remove(this);
-            }
-            finally {
-                R_LOCK.unlock();
-            }
+           // R_LOCK.lock();
+            //try {
+            ClearLiquidList.add(this);
+                //LiquidList.remove(this);
+            //}
+            //finally {
+                //R_LOCK.unlock();
+            //}
         }
         //this.size_2 = this.size/2;
         //this.size_3 = this.size_2/2;

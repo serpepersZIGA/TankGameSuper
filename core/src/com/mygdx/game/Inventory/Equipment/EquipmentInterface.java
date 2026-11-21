@@ -64,9 +64,7 @@ public class EquipmentInterface extends InventoryInterface {
             cannon.penetration = cannon.PenetrationBase;
             UpgradeUseTower(cannon);
         }
-
-
-        unit.green_len = ((float) unit.hp / unit.max_hp) * Option.size_x_indicator;
+        unit.IndicatorHpInit();
 //        for(int i = 0;i<inventory.InventorySlots.length;i++){
 //            for(int i2 = 0;i2<inventory.InventorySlots[i].length;i2++){
 //                Item item = inventory.InventorySlots[i][i2];

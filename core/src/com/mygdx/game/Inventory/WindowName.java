@@ -10,8 +10,9 @@ import static com.mygdx.game.method.Keyboard.MouseY;
 import static java.lang.Math.abs;
 
 public class WindowName {
-    public int x,y,width = 120,height = 45,height2 = (int) (height*0.5),width2 = 85;
-    public String str="",str2 = "";
+    public int x,y,width = 210,height = 55,height2 = (int) (height*0.5)+5
+            ,height3 = (int)20,height4 = (int)45,width2 = 115;
+    public String str="",str2 = "",str3 = "";
     public boolean conf=false;
 
     public WindowName(){
@@ -20,7 +21,8 @@ public class WindowName {
     public void MouseCursorHover(int x, int y,Slot slot){
         if(abs(MouseX-x-slot.width2)<slot.width2 && abs(MouseY-y-slot.height2)<slot.height2){
             this.str = slot.item.ID;
-            this.str2 = slot.item.Price+"g";
+            this.str2 = "Price:"+slot.item.Price+"g";
+            this.str3 = "Total:"+TeamGlobal.get(InventoryInterface.Team).toString()+"g";
             this.x = MouseX;
             this.y = MouseY;
             this.conf = true;
@@ -33,7 +35,10 @@ public class WindowName {
         font2.setColor(0.1f,0.9f,0.8f,1f);
         font2.draw(Batch,this.str,x,y+height2);
         font2.setColor(0.8f,0.7f,0.15f,1f);
-        font2.draw(Batch,this.str2,x+width2,y+height2);
+        font2.draw(Batch,this.str2,x+width2,y+height3);
+
+        font2.setColor(0.8f,0.7f,0.15f,1f);
+        font2.draw(Batch,this.str3,x+width2,y+height4);
 
     }
 }

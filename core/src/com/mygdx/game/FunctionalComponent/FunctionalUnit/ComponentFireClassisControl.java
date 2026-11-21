@@ -9,11 +9,22 @@ public class ComponentFireClassisControl extends FunctionalComponent {
     @Override final
     public void FunctionalIterationAnHost(Unit unit) {
         unit.FireControl();
-        unit.green_len_reload = (unit.reload/unit.reload_max)* Option.size_x_indicator;
+        //System.out.println(unit.green_len_reload);
+        //System.out.println(unit.reload+" "+unit.reload_max);
+        unit.IndicatorReloadInit();
     }
     @Override final
     public void FunctionalIterationClientAnHost(Unit unit) {
         unit.FireControl();
-        unit.green_len_reload = (unit.reload/unit.reload_max)* Option.size_x_indicator;
+        unit.IndicatorReloadInit();
     }
+
+//    @Override final
+//    public void FunctionalIterationAnClient(Unit unit){
+//        unit.IndicatorReloadInit();
+//    }
+//    @Override final
+//    public void FunctionalIterationOtherAnClient(Unit unit){
+//        unit.IndicatorReloadInit();
+//    }
 }
